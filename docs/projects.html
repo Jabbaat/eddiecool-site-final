@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+ <html lang="en">
+ <head>
+   <meta charset="UTF-8">
+   <title>Projects - Eddiecool</title>
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <link rel="stylesheet" href="style.css">
+   <style>
+     .single-project {
+       max-width: 700px;
+       margin: 50px auto;
+       position: relative;
+       border-radius: 16px;
+       overflow: hidden;
+       box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+     }
+ 
+     .video-poster {
+       display: block;
+       width: 100%;
+       cursor: pointer;
+     }
+ 
+     .custom-play-button {
+       position: absolute;
+       top: 50%;
+       left: 50%;
+       transform: translate(-50%, -50%);
+       font-size: 60px;
+       color: white;
+       background-color: rgba(0, 0, 0, 0.6);
+       border: none;
+       border-radius: 50%;
+       padding: 20px 25px;
+       cursor: pointer;
+       z-index: 10;
+       animation: pulse 1.5s infinite;
+     }
+ 
+     video {
+       display: none;
+       width: 100%;
+     }
+ 
+     @keyframes pulse {
+       0% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+       50% { transform: translate(-50%, -50%) scale(1.1); opacity: 0.7; }
+       100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+     }
+   </style>
+ </head>
+ <body>
+ 
+ <nav>
+   <div class="logo">
+     <a href="index.html">
+       <img src="images/logo.png" alt="Eddiecool Logo" class="logo-img">
+     </a>
+   </div>
+   <span class="hamburger" id="hamburger-menu">&#9776;</span>
+   <ul class="menu">
+     <li><a href="index.html">Home</a></li>
+     <li><a href="projects.html">Projects</a></li>
+     <li><a href="ai_gallery.html">Gallery</a></li>
+     <li><a href="video_ideas.html">🎬 Video Ideeën</a></li>
+     <li><a href="about.html">About</a></li>
+     <li><a href="contact.html">Contact</a></li>
+    </ul>
+ </nav>
+ 
+ <h1 style="text-align:center; margin-top:40px;">Where AI blends Video, Music and speech </h1>
+ 
+ <div class="single-project">
+  <img src="images/yoda-thumb.jpg" alt="Yoda Thumbnail" class="video-poster" id="video-thumbnail">
+  <button class="custom-play-button" id="custom-play">&#9658;</button>
+  <video id="video-player" controls>
+    <source src="video/yoda_video.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+  <h2 class="project-title">Yoda Wisdom</h2>
+  <p class="project-description">A philosophical moment featuring an AI-generated Grandfather of Yoda. Do or do not, there is no try</p>
+</div>
+
+<div class="single-project">
+  <img src="images/funnyhorror-tumb.jpg" alt="Funny Horror Thumbnail" class="video-poster" id="video-thumbnail-2">
+  <button class="custom-play-button" id="custom-play-2">&#9658;</button>
+  <video id="video-player-2" controls>
+    <source src="video/funnyhorror_video.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+  <h2 class="project-title">Funny Horror</h2>
+  <p class="project-description">What happens when horror meets comedy? This short combines AI-generated visuals with bizarre voiceovers for a spooky laugh.</p>
+</div>
+
+<div class="single-project">
+  <img src="images/fear-thumb.jpg" alt="Fear Thumbnail" class="video-poster" id="video-thumbnail-3">
+  <button class="custom-play-button" id="custom-play-3">&#9658;</button>
+  <video id="video-player-3" controls>
+    <source src="video/fear_video.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+  <h2 class="project-title">FEAR</h2>
+  <p class="project-description">An intense AI experiment exploring our deepest fears. A mix of text-to-video visuals and haunting audio design.</p>
+</div>
+
+
+ <script>
+   // Eerste video
+   const playBtn = document.getElementById("custom-play");
+   const thumbnail = document.getElementById("video-thumbnail");
+   const video = document.getElementById("video-player");
+ 
+   playBtn.addEventListener("click", function () {
+     thumbnail.style.display = "none";
+     playBtn.style.display = "none";
+     video.style.display = "block";
+     video.play();
+   });
+ 
+   // Tweede video
+   const playBtn2 = document.getElementById("custom-play-2");
+   const thumbnail2 = document.getElementById("video-thumbnail-2");
+   const video2 = document.getElementById("video-player-2");
+ 
+   playBtn2.addEventListener("click", function () {
+     thumbnail2.style.display = "none";
+     playBtn2.style.display = "none";
+     video2.style.display = "block";
+     video2.play();
+   });
+
+   // Derde video
+const playBtn3 = document.getElementById("custom-play-3");
+const thumbnail3 = document.getElementById("video-thumbnail-3");
+const video3 = document.getElementById("video-player-3");
+
+playBtn3.addEventListener("click", function () {
+  thumbnail3.style.display = "none";
+  playBtn3.style.display = "none";
+  video3.style.display = "block";
+  video3.play();
+});
+
+   
+ </script>
+ <script>
+  document.getElementById("hamburger-menu").addEventListener("click", function() {
+      var menu = document.querySelector(".menu");
+      menu.classList.toggle("active");
+  });
+</script>
+
+ 
+ </body>
+ </html>
+

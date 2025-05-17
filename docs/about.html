@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+ <html lang="en">
+ <head>
+   <meta charset="UTF-8">
+   <title>About - Eddiecool</title>
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <link rel="stylesheet" href="style.css">
+ </head>
+ <body>
+ 
+     <nav>
+   <div class="logo">
+     <a href="index.html">
+       <img src="images/logo.png" alt="Eddiecool Logo" class="logo-img">
+     </a>
+   </div>
+   <span class="hamburger" id="hamburger-menu">&#9776;</span>
+   <ul class="menu">
+     <li><a href="index.html">Home</a></li>
+     <li><a href="projects.html">Projects</a></li>
+     <li><a href="ai_gallery.html">Gallery</a></li>
+     <li><a href="video_ideas.html">🎬 Video Ideeën</a></li>
+     <li><a href="about.html">About</a></li>
+     <li><a href="contact.html">Contact</a></li>
+    </ul>
+ </nav>
+ 
+ <h1>About Eddiecool</h1>
+ <p>Watch the cool Eddiecool video:</p>
+ 
+ <div class="video-wrapper">
+   <div class="video-container">
+     <video id="eddiecool-video" poster="images/video-thumbnail.jpg" playsinline preload="metadata">
+       <source src="video/eddiecool_intro.mp4" type="video/mp4">
+       Your browser does not support the video tag.
+     </video>
+     <button class="play-button" id="play-button">&#9658;</button>
+   </div>
+ </div>
+ 
+ <script>
+   // Hamburger menu
+   document.getElementById("hamburger-menu").addEventListener("click", function() {
+     document.querySelector(".menu").classList.toggle("active");
+   });
+ 
+   document.addEventListener('DOMContentLoaded', function() {
+     const video = document.getElementById('eddiecool-video');
+     const playButton = document.getElementById('play-button');
+ 
+     playButton.addEventListener('click', function() {
+       playButton.style.display = 'none';
+       video.play();
+     });
+ 
+     // Als de video pauzeert, toon de play-button weer
+     video.addEventListener('pause', function() {
+       playButton.style.display = 'block';
+     });
+   });
+ </script>
+ 
+ </body>
+ </html>

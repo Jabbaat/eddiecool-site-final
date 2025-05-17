@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+ <html lang="en">
+ <head>
+     <meta charset="UTF-8">
+     <title>Home - Eddiecool</title>
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <link rel="stylesheet" href="style.css">
+ </head>
+ <body>
+ 
+     <nav>
+   <div class="logo">
+     <a href="index.html">
+       <img src="images/logo.png" alt="Eddiecool Logo" class="logo-img">
+     </a>
+   </div>
+   <span class="hamburger" id="hamburger-menu">&#9776;</span>
+   <ul class="menu">
+     <li><a href="index.html">Home</a></li>
+     <li><a href="projects.html">Projects</a></li>
+     <li><a href="ai_gallery.html">Gallery</a></li>
+     <li><a href="video_ideas.html">🎬 Video Ideeën</a></li>
+     <li><a href="about.html">About</a></li>
+     <li><a href="contact.html">Contact</a></li>
+    </ul>
+ </nav>
+ <video autoplay muted playsinline onended="this.pause();" class="logo-animation">
+     <source src="video/eddie_logo_animatie.mp4" type="video/mp4">
+     Your browser does not support the video tag.
+   </video>
+   
+   <div class="intro-tekst">
+     <p><strong>Hey there, welcome!</strong><br>
+     This is where I play with awesome AI tools and share the best finds.<br>
+     Dive in, explore, and let the inspiration flow!</p>
+   </div>
+   
+     
+ 
+ <script>
+     document.getElementById("hamburger-menu").addEventListener("click", function() {
+         var menu = document.querySelector(".menu");
+         menu.classList.toggle("active");
+     });
+ </script>
+ 
+ </body>
+ </html>
+ 
+  

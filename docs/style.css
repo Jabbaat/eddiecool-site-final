@@ -1,0 +1,351 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+ 
+/* Algemene body-instellingen */
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  background-color: #09168e;
+  color: #f0f0f0;
+  font-family: 'Montserrat', sans-serif;
+  text-align: center;
+  padding-top: 50px; /* alleen top-padding laten staan */
+}
+ 
+/* Logo instellingen */
+.logo-img {
+  width: 120px;
+  height: auto;
+  max-width: 200px;
+  transition: width 0.3s ease;
+}
+ 
+/* Logo kleiner op mobiel */
+@media (max-width: 768px) {
+  .logo-img {
+    width: 100px;
+    max-width: 150px;
+  }
+}
+ 
+/* Navigatiebalk */
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  background-color: #4e0433;
+  box-shadow: 0 2px 5px rgba(0, 255, 213, 0.2);
+  position: relative; /* Dit zorgt ervoor dat het menu boven andere content komt */
+  z-index: 9999; /* Zorgt ervoor dat het menu boven andere elementen komt */
+}
+ 
+nav .logo a {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+ 
+/* Navigatie menu */
+nav .menu {
+  list-style: none;
+  display: flex;
+  margin: 0;
+  padding: 0;
+}
+ 
+nav .menu li {
+  margin-left: 20px;
+}
+ 
+nav .menu a {
+  color: #00ffd5;
+  text-decoration: none;
+  font-size: 18px;
+  font-weight: bold;
+  padding: 8px 12px;
+  border-radius: 5px;
+  transition: color 0.3s ease, background-color 0.3s ease;
+}
+ 
+nav .menu a:hover {
+  background-color: #8e44ad;
+  color: white;
+}
+ 
+/* Hamburger menu (mobiel) */
+nav .hamburger {
+  display: none;
+  font-size: 30px;
+  cursor: pointer;
+  color: #00ffd5;
+}
+ 
+/* Hamburger actief maken op mobiel */
+@media (max-width: 768px) {
+  nav {
+    flex-wrap: wrap;
+  }
+ 
+  nav .menu {
+    display: none;
+    flex-direction: column;
+    width: 100%;
+    margin-top: 10px;
+  }
+ 
+  nav .menu.active {
+    display: flex;
+    animation: fadeIn 0.4s ease forwards;
+  }
+ 
+  nav .menu li {
+    margin: 10px 0;
+    text-align: center;
+  }
+ 
+  nav .hamburger {
+    display: block;
+  }
+}
+ 
+/* Fade-in animatie mobiel menu */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+ 
+/* Video-wrapper zonder padding of blauwe randjes */
+.video-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 2rem auto;
+  padding: 0;
+  width: 100%;
+  box-sizing: border-box;
+}
+ 
+/* Video-container standaard (desktop: 16:9) */
+.video-container {
+  position: relative;
+  width: 100%;
+  max-width: 600px; /* verlaag van 800px naar 700px of 650px */
+  padding-top: 46.25%;
+  border-radius: 16px;
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.5);
+  border: 3px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.7);
+  z-index: 1; /* Zorgt ervoor dat de video onder het menu komt */
+}
+
+/* Video styling */
+.video-container video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* Was: cover */
+}
+
+/* Portrait modus op mobiel */
+@media (max-width: 768px) {
+  .video-container {
+    max-width: 340px;
+    padding-top: 115%; /* 9:16 verhouding */
+  }
+}
+ 
+/* Play-knop */
+.play-button {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 60px;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.5);
+  border: none;
+  border-radius: 50%;
+  padding: 20px 25px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+  z-index: 10;
+  animation: pulse 1.5s infinite;
+}
+ 
+.play-button:hover {
+  background-color: rgba(0, 0, 0, 0.7);
+  transform: translate(-50%, -50%) scale(1.1);
+}
+ 
+/* Pulse animatie voor play-button */
+@keyframes pulse {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.1);
+    opacity: 0.7;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+}
+
+/* Thumbnails (optioneel voor gallery) */
+.thumbnail {
+  width: 150px;
+  height: auto;
+  margin: 10px;
+  border-radius: 8px;
+  transition: transform 0.3s ease;
+}
+
+.thumbnail:hover {
+  transform: scale(1.05);
+}
+
+/* Fullscreen fix */
+:fullscreen .video-container,
+:-webkit-full-screen .video-container,
+:-moz-full-screen .video-container,
+:-ms-fullscreen .video-container {
+  width: 100%;
+  max-width: 400px;
+  height: auto;
+  margin: auto;
+  padding-top: 150.78%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.9);
+}
+
+.logo-animation {
+  width: 300px;
+  display: block;
+  margin: 0 auto;
+  margin-top: 40px;
+}
+
+form {
+  max-width: 600px;
+  margin: 50px auto;
+  padding: 20px;
+  background-color: #1a1a99; /* iets lichter dan de achtergrondkleur voor contrast */
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(0, 255, 213, 0.2);
+}
+
+input, textarea {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  background-color: #f0f0f0;
+  color: #000;
+}
+
+textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+button {
+  padding: 12px 24px;
+  background-color: #00ffd5;
+  color: #000;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #00c2a8;
+}
+
+@media (min-width: 769px) {
+  form {
+    max-width: 800px; /* breder op desktop */
+    padding: 40px;    /* wat meer ruimte rondom */
+  }
+
+  input, textarea {
+    font-size: 18px;
+    padding: 16px;
+  }
+
+  button {
+    font-size: 18px;
+    padding: 14px 28px;
+  }
+}
+
+h1 {
+  font-size: 30px;
+  color: #e9f1f0;
+  font-weight: 700;
+  text-shadow: 0 0 8px rgba(0, 255, 213, 0.5);
+  margin-bottom: 20px;
+}
+
+h2 {
+  font-size: 28px;
+  color: #ffffff;
+  margin-top: 30px;
+}
+
+p {
+  font-size: 18px;
+  color: #e0e0e0;
+  line-height: 1.6;
+}
+
+.intro-tekst {
+  font-size: 22px;
+  line-height: 1.6;
+  color: #00ffd5; /* aqua neon vibe */
+  margin-top: 40px;
+  background-color: rgba(255, 255, 255, 0.05);
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 255, 213, 0.2);
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.intro-tekst strong {
+  font-size: 26px;
+  color: #ffffff;
+}
+
+@keyframes fadeInSmooth {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.intro-tekst {
+  animation: fadeInSmooth 1.2s ease-in-out both;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+
