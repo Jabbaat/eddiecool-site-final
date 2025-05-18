@@ -98,28 +98,25 @@
     <div id="result"></div>
   </div>
 
-  <script>
-    async function generateIdea() {
-      const userInput = document.getElementById("userInput").value;
-      const resultBox = document.getElementById("result");
-      resultBox.innerText = "AI denkt na...";
+<script>
+  async function generateIdea() {
+    const userInput = document.getElementById("userInput").value;
+    const resultBox = document.getElementById("result");
+    resultBox.innerText = "AI denkt na...";
 
-      try {
-        const response = await fetch("https://eddiecool-site-2.onrender.com/api/video-idea", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({ prompt: userInput })
-        });
+    const response = await fetch("http://127.0.0.1:5000/generate", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ prompt: userInput })
+    });
 
-        const data = await response.json();
-        resultBox.innerText = data.result || "Oeps! Geen idee ontvangen 😅";
-      } catch (error) {
-        resultBox.innerText = "Er ging iets mis. 😬";
-      }
-    }
-  </script>
+    const data = await response.json();
+    resultBox.innerText = data.result || "Er ging iets mis 😅";
+  }
+</script>
+
 
 </body>
 </html>
