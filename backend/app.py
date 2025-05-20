@@ -28,5 +28,3 @@ def generate_idea():
 
 if __name__ == "__main__":
     app.run(debug=True)
-
-
