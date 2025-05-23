@@ -103,6 +103,18 @@
   <p class="project-description">An intense AI experiment exploring our deepest fears. A mix of text-to-video visuals and haunting audio design.</p>
 </div>
 
+<div class="single-project">
+  <img src="images/western-thumb.jpg" alt="Western Thumbnail" class="video-poster" id="video-thumbnail-4">
+  <button class="custom-play-button" id="custom-play-4">&#9658;</button>
+  <video id="video-player-4" controls>
+    <source src="video/western_video.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+  <h2 class="project-title">Western Showdown</h2>
+  <p class="project-description">AI goes wild west – a dusty showdown with dramatic stares and robotic gun-slinging. Yeehaw meets deepfake.</p>
+</div>
+
+
 
  <script>
    // Eerste video
@@ -139,6 +151,17 @@ playBtn3.addEventListener("click", function () {
   playBtn3.style.display = "none";
   video3.style.display = "block";
   video3.play();
+});
+// Vierde video
+const playBtn4 = document.getElementById("custom-play-4");
+const thumbnail4 = document.getElementById("video-thumbnail-4");
+const video4 = document.getElementById("video-player-4");
+
+playBtn4.addEventListener("click", function () {
+  thumbnail4.style.display = "none";
+  playBtn4.style.display = "none";
+  video4.style.display = "block";
+  video4.play();
 });
 
    
