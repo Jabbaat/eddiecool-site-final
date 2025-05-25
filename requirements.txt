@@ -1,0 +1,8 @@
+Flask
+Flask-Cors
+gunicorn
+python-dotenv
+langchain-google-genai
+langchain-core
+langchain
+google-ai-generativelanguage==0.6.15  # <-- DEZE REGEL IS AANGEPAST/TOEGEVOEGD
