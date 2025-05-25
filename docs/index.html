@@ -1,50 +1,118 @@
 <!DOCTYPE html>
- <html lang="en">
- <head>
-     <meta charset="UTF-8">
-     <title>Home - Eddiecool</title>
-     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     <link rel="stylesheet" href="style.css">
- </head>
- <body>
- 
-     <nav>
-   <div class="logo">
-     <a href="index.html">
-       <img src="images/logo.png" alt="Eddiecool Logo" class="logo-img">
-     </a>
-   </div>
-   <span class="hamburger" id="hamburger-menu">&#9776;</span>
-   <ul class="menu">
-     <li><a href="index.html">Home</a></li>
-     <li><a href="projects.html">Projects</a></li>
-     <li><a href="ai_gallery.html">Gallery</a></li>
-     <li><a href="video_ideas.html">🎬 Video Ideeën</a></li>
-     <li><a href="about.html">About</a></li>
-     <li><a href="contact.html">Contact</a></li>
-    </ul>
- </nav>
- <video autoplay muted playsinline onended="this.pause();" class="logo-animation">
-     <source src="video/eddie_logo_animatie.mp4" type="video/mp4">
-     Your browser does not support the video tag.
-   </video>
-   
-   <div class="intro-tekst">
-     <p><strong>Hey there, welcome!</strong><br>
-     This is where I play with awesome AI tools and share the best finds.<br>
-     Dive in, explore, and let the inspiration flow!</p>
-   </div>
-   
-     
- 
- <script>
-     document.getElementById("hamburger-menu").addEventListener("click", function() {
-         var menu = document.querySelector(".menu");
-         menu.classList.toggle("active");
-     });
- </script>
- 
- </body>
- </html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home - Eddiecool</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Styles van projects.html voor video weergave */
+        .single-project {
+            max-width: 700px; /* Pas dit aan voor de gewenste breedte op de homepage */
+            margin: 50px auto;
+            position: relative;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .video-poster {
+            display: block;
+            width: 100%;
+            cursor: pointer;
+        }
+
+        .custom-play-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 60px;
+            color: white;
+            background-color: rgba(0, 0, 0, 0.6);
+            border: none;
+            border-radius: 50%;
+            padding: 20px 25px;
+            cursor: pointer;
+            z-index: 10;
+            animation: pulse 1.5s infinite;
+        }
+
+        /* Zorgt ervoor dat de video eerst verborgen is */
+        .single-project video {
+            display: none;
+            width: 100%;
+        }
+
+        @keyframes pulse {
+            0% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+            50% { transform: translate(-50%, -50%) scale(1.1); opacity: 0.7; }
+            100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+        }
+
+        /* Eventueel specifieke stijlen voor de introductietekst, zodat deze mooi onder de video komt */
+        .intro-tekst {
+            text-align: center;
+            margin-top: 20px; /* Pas dit aan voor meer of minder ruimte */
+            padding: 0 20px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">
+            <a href="index.html">
+                <img src="images/logo.png" alt="Eddiecool Logo" class="logo-img">
+            </a>
+        </div>
+        <span class="hamburger" id="hamburger-menu">&#9776;</span>
+        <ul class="menu">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="projects.html">Projects</a></li>
+            <li><a href="ai_gallery.html">Gallery</a></li>
+            <li><a href="video_ideas.html">🎬 Video Ideeën</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+    </nav>
+
+    <div class="single-project">
+        <img src="images/eddie_promo_thumb.jpg" alt="Eddiecool Promo Thumbnail" class="video-poster" id="home-video-thumbnail">
+        <button class="custom-play-button" id="home-custom-play">&#9658;</button>
+        <video id="home-video-player" controls>
+            <source src="video/eddie_logo_animatie.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+
+    <div class="intro-tekst">
+        <p><strong>Hey there, welcome!</strong><br>
+        This is where I play with awesome AI tools and share the best finds.<br>
+        Dive in, explore, and let the inspiration flow!</p>
+    </div>
+
+    <script>
+        document.getElementById("hamburger-menu").addEventListener("click", function() {
+            var menu = document.querySelector(".menu");
+            menu.classList.toggle("active");
+        });
+
+        // JavaScript voor de homepage video, vergelijkbaar met projects.html
+        const homePlayBtn = document.getElementById("home-custom-play");
+        const homeThumbnail = document.getElementById("home-video-thumbnail");
+        const homeVideo = document.getElementById("home-video-player");
+
+        homePlayBtn.addEventListener("click", function () {
+            homeThumbnail.style.display = "none";
+            homePlayBtn.style.display = "none";
+            homeVideo.style.display = "block";
+            homeVideo.play();
+        });
+    </script>
+
+</body>
+</html>
  
   
