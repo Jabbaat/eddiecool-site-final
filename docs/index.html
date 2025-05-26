@@ -72,19 +72,21 @@
             <li><a href="index.html">Home</a></li>
             <li><a href="projects.html">Projects</a></li>
             <li><a href="ai_gallery.html">Gallery</a></li>
-            <li><a href="video_ideas.html">🎬 Video Ideeën</a></li>
+            <li><a href="video_ideas.html">🎬 Video Ideas</a></li>
             <li><a href="about.html">About</a></li>
             <li><a href="contact.html">Contact</a></li>
         </ul>
     </nav>
-
-    <div class="single-project">
-        <img src="images/eddie_promo_thumb.jpg" alt="Eddiecool Promo Thumbnail" class="video-poster" id="home-video-thumbnail">
-        <button class="custom-play-button" id="home-custom-play">&#9658;</button>
-        <video id="home-video-player" controls>
-            <source src="video/eddie_logo_animatie.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
+    
+    <h1>Home - Eddiecool</h1>
+    <p>Watch the cool Eddiecool promo video:</p> <div class="video-wrapper">
+        <div class="video-container">
+            <video id="home-promo-video" poster="images/eddie_promo_thumb.jpg" playsinline preload="metadata">
+                <source src="video/eddie_logo_animatie.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <button class="play-button" id="home-play-button">&#9658;</button>
+        </div>
     </div>
 
     <div class="intro-tekst">
