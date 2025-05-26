@@ -347,5 +347,99 @@ p {
 * {
   box-sizing: border-box;
 }
+/* VIDEO STYLING (uit about.html) */
 
+/* Video-wrapper zonder padding of blauwe randjes */
+.video-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 2rem auto;
+    padding: 0;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Video-container standaard (desktop) */
+.video-container {
+    position: relative;
+    width: 100%;
+    max-width: 600px; /* Pas deze breedte aan voor desktop als je wilt */
+    padding-top: 56.25%; /* CORRECT: 16:9 aspect ratio (9/16 * 100%) */
+    border-radius: 16px;
+    overflow: hidden;
+    background: rgba(0, 0, 0, 0.5);
+    border: 3px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.7);
+    z-index: 1;
+}
+
+/* Video styling binnen de container */
+.video-container video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* Dit is hoe about.html het doet: video is volledig zichtbaar, met eventuele zwarte balken */
+}
+
+/* Portrait modus op mobiel voor video-container */
+@media (max-width: 768px) {
+    .video-container {
+        max-width: 340px; /* Max breedte voor mobiel portret */
+        padding-top: 177.78%; /* CORRECT: 9:16 aspect ratio (16/9 * 100%) */
+    }
+}
+
+/* Play-knop */
+.play-button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 60px;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.5);
+    border: none;
+    border-radius: 50%;
+    padding: 20px 25px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+    z-index: 10;
+    animation: pulse 1.5s infinite; /* Zorg dat @keyframes pulse ook bestaat */
+}
+
+.play-button:hover {
+    background-color: rgba(0, 0, 0, 0.7);
+    transform: translate(-50%, -50%) scale(1.1);
+}
+
+/* Fullscreen fix (deze is ook in about.html's CSS) */
+:fullscreen .video-container,
+:-webkit-full-screen .video-container,
+:-moz-full-screen .video-container,
+:-ms-fullscreen .video-container {
+    width: 100%;
+    max-width: none; /* Verwijdert de max-width van de container */
+    height: 100%; /* Zorgt dat de container de volle hoogte vult */
+    padding-top: 0 !important; /* Verwijdert de aspect ratio padding in fullscreen */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.9); /* Zwarte achtergrond */
+}
+
+/* Zorgt dat de video zelf de fullscreen container vult, met contain */
+:fullscreen video,
+:-webkit-full-screen video,
+:-moz-full-screen video,
+:-ms-fullscreen video {
+    width: 100%;
+    height: 100%;
+    object-fit: contain !important; /* Hier houdt hij de ratio aan met zwarte balken */
+}
+
+/* De @keyframes pulse stond al in je style.css, dus die hoef je niet nog een keer toe te voegen */
+/* @keyframes pulse { ... } */
 
