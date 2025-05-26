@@ -38,15 +38,11 @@
             animation: pulse 1.5s infinite;
         }
 
-/* Specifieke styling voor de video op de homepage */
-#home-video-player {
-    display: none; /* Hide video initially (blijft nodig, wordt door JS overschreven) */
-    width: 100%;
-    height: 100%; /* Zorgt dat de video de hoogte van de container vult */
-    object-fit: cover; /* Vult de container, snijdt bij als aspect ratio niet klopt */
-    object-position: center; /* Centreert de video bij het bijsnijden */
-}
-        
+        /* Zorgt ervoor dat de video eerst verborgen is */
+        .single-project video {
+            display: none;
+            width: 100%;
+        }
 
         @keyframes pulse {
             0% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
