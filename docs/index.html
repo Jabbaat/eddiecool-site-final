@@ -6,12 +6,57 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
     <style>
-        /* Optionele specifieke stijlen alleen voor de homepage, niet voor de video */
+        /* Styles van projects.html voor video weergave */
+        .single-project {
+            max-width: 700px; /* Pas dit aan voor de gewenste breedte op de homepage */
+            margin: 50px auto;
+            position: relative;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .video-poster {
+            display: block;
+            width: 100%;
+            cursor: pointer;
+        }
+
+        .custom-play-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 60px;
+            color: white;
+            background-color: rgba(0, 0, 0, 0.6);
+            border: none;
+            border-radius: 50%;
+            padding: 20px 25px;
+            cursor: pointer;
+            z-index: 10;
+            animation: pulse 1.5s infinite;
+        }
+
+        /* Zorgt ervoor dat de video eerst verborgen is */
+        .single-project video {
+            display: none;
+            width: 100%;
+        }
+
+        @keyframes pulse {
+            0% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+            50% { transform: translate(-50%, -50%) scale(1.1); opacity: 0.7; }
+            100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+        }
+
+        /* Eventueel specifieke stijlen voor de introductietekst, zodat deze mooi onder de video komt */
         .intro-tekst {
             text-align: center;
             margin-top: 20px; /* Pas dit aan voor meer of minder ruimte */
             padding: 0 20px;
         }
+
     </style>
 </head>
 <body>
@@ -33,18 +78,15 @@
         </ul>
     </nav>
 
-    <h1>Home - Eddiecool</h1>
-    <p>Watch the cool Eddiecool promo video:</p>
-
-    <div class="video-wrapper">
-        <div class="video-container">
-            <video id="home-promo-video" poster="images/eddie_promo_thumb.jpg" playsinline preload="metadata">
-                <source src="video/eddie_logo_animatie.mp4" type="video/mp4">
-                Your browser does not support the video tag.
-            </video>
-            <button class="play-button" id="home-play-button">&#9658;</button>
-        </div>
+    <div class="single-project">
+        <img src="images/eddie_promo_thumb.jpg" alt="Eddiecool Promo Thumbnail" class="video-poster" id="home-video-thumbnail">
+        <button class="custom-play-button" id="home-custom-play">&#9658;</button>
+        <video id="home-video-player" controls>
+            <source src="video/eddie_logo_animatie.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
     </div>
+
     <div class="intro-tekst">
         <p><strong>Hey there, welcome!</strong><br>
         This is where I play with awesome AI tools and share the best finds.<br>
@@ -52,28 +94,21 @@
     </div>
 
     <script>
-        // Hamburger menu
         document.getElementById("hamburger-menu").addEventListener("click", function() {
-            document.querySelector(".menu").classList.toggle("active");
+            var menu = document.querySelector(".menu");
+            menu.classList.toggle("active");
         });
 
-        document.addEventListener('DOMContentLoaded', function() {
-            const video = document.getElementById('home-promo-video');
-            const playButton = document.getElementById('home-play-button');
+        // JavaScript voor de homepage video, vergelijkbaar met projects.html
+        const homePlayBtn = document.getElementById("home-custom-play");
+        const homeThumbnail = document.getElementById("home-video-thumbnail");
+        const homeVideo = document.getElementById("home-video-player");
 
-            playButton.addEventListener('click', function() {
-                playButton.style.display = 'none';
-                video.play();
-            });
-
-            // Als de video pauzeert, toon de play-button weer
-            video.addEventListener('pause', function() {
-                playButton.style.display = 'block';
-            });
-            // Als de video is afgelopen, toon de play-button weer
-            video.addEventListener('ended', function() {
-                playButton.style.display = 'block';
-            });
+        homePlayBtn.addEventListener("click", function () {
+            homeThumbnail.style.display = "none";
+            homePlayBtn.style.display = "none";
+            homeVideo.style.display = "block";
+            homeVideo.play();
         });
     </script>
 
