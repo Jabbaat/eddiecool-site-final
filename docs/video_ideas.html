@@ -1,122 +1,146 @@
 <!DOCTYPE html>
 <html lang="nl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>🎬 Video Idea Generator</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #eef3ff;
-      margin: 0;
-      padding: 0;
-    }
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎬 Video Idea Generator</title>
+    <link rel="stylesheet" href="style.css"> <style>
+        /* ALLEEN DEZE STIJLEN LATEN STAAN ALS JE ZIJ SPECIFIEK VOOR DEZE PAGINA WILT HOUDEN */
+        body {
+            /* Gebruik de body stijlen uit style.css */
+            /* Maar als je een andere achtergrondkleur of padding-top wilt dan in style.css, zet het hier */
+            background-color: #09168e; /* Match met je algemene thema */
+            color: #f0f0f0; /* Match met je algemene thema */
+            font-family: 'Montserrat', sans-serif; /* Match met je algemene thema */
+            text-align: center;
+            padding-top: 50px; /* Alleen als je een andere padding-top wilt dan in style.css */
+        }
 
-    nav {
-      background: #007bff;
-      padding: 15px;
-    }
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            background: #1a1a99; /* Donkerder blauw, zoals je formulier achtergrond */
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 255, 213, 0.2); /* Neon gloed */
+        }
 
-    nav ul {
-      list-style: none;
-      display: flex;
-      justify-content: center;
-      padding: 0;
-      margin: 0;
-    }
+        h1 {
+            color: #00ffd5; /* Match met je thema */
+            text-shadow: 0 0 8px rgba(0, 255, 213, 0.5);
+        }
 
-    nav li {
-      margin: 0 15px;
-    }
+        p {
+            color: #e0e0e0; /* Lichtere tekstkleur */
+        }
 
-    nav a {
-      color: white;
-      text-decoration: none;
-      font-weight: bold;
-    }
+        input, button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 10px;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
 
-    .container {
-      max-width: 800px;
-      margin: 40px auto;
-      background: white;
-      padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
+        input {
+            background-color: #f0f0f0;
+            color: #000;
+        }
 
-    h1 {
-      color: #333;
-    }
+        button {
+            background-color: #00ffd5; /* Je neon-groen */
+            color: #000;
+            border: none;
+            cursor: pointer;
+            font-weight: bold; /* Maak de knop vetter */
+        }
 
-    input, button {
-      width: 100%;
-      padding: 12px;
-      margin-top: 10px;
-      font-size: 1rem;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-    }
+        button:hover {
+            background-color: #00c2a8; /* Donkerder neon-groen bij hover */
+        }
 
-    button {
-      background-color: #007bff;
-      color: white;
-      border: none;
-      cursor: pointer;
-    }
+        #result {
+            margin-top: 20px;
+            padding: 15px;
+            background: #0d0d6e; /* Iets donkerder dan container background voor contrast */
+            border-radius: 8px;
+            white-space: pre-wrap;
+            color: #00ffd5; /* Neon kleur voor het resultaat */
+            border: 1px solid rgba(0, 255, 213, 0.3); /* Randje */
+        }
 
-    button:hover {
-      background-color: #0056b3;
-    }
+        /* Responsive aanpassingen voor grotere schermen voor de input/button/result */
+        @media (min-width: 769px) {
+            .container {
+                max-width: 900px; /* Iets breder op desktop */
+                padding: 50px;
+            }
 
-    #result {
-      margin-top: 20px;
-      padding: 15px;
-      background: #f9f9f9;
-      border-radius: 8px;
-      white-space: pre-wrap;
-    }
-  </style>
+            input, button {
+                font-size: 1.1rem;
+                padding: 15px;
+            }
+
+            #result {
+                font-size: 1.1rem;
+                padding: 20px;
+            }
+        }
+    </style>
 </head>
 <body>
 
-  <nav>
-    <ul>
-      <li><a href="index.html">Home</a></li>
-      <li><a href="projects.html">Projects</a></li>
-      <li><a href="ai_gallery.html">Gallery</a></li>
-      <li><a href="video_ideas.html">🎬 Video Ideas</a></li>
-      <li><a href="about.html">About</a></li>
-      <li><a href="contact.html">Contact</a></li>
-    </ul>
-  </nav>
+    <nav>
+        <div class="logo">
+            <a href="index.html">
+                <img src="images/logo.png" alt="Eddiecool Logo" class="logo-img">
+            </a>
+        </div>
+        <span class="hamburger" id="hamburger-menu">&#9776;</span>
+        <ul class="menu">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="projects.html">Projects</a></li>
+            <li><a href="ai_gallery.html">Gallery</a></li>
+            <li><a href="video_ideas.html">🎬 Video Ideas</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+    </nav>
 
-  <div class="container">
-    <h1>🎬 Video Idea Generator</h1>
-    <p>Type in a mood or theme (e.g., 'mysterious sci-fi short film with a plot twist') and hit the button.</p>
-    <input type="text" id="userInput" placeholder="E.g., space horror film with a time loop">
-    <button onclick="generateIdea()">Generate Idea</button>
-    <div id="result"></div>
-  </div>
+    <div class="container">
+        <h1>🎬 Video Idea Generator</h1>
+        <p>Type in a mood or theme (e.g., 'mysterious sci-fi short film with a plot twist') and hit the button.</p>
+        <input type="text" id="userInput" placeholder="E.g., space horror film with a time loop">
+        <button onclick="generateIdea()">Generate Idea</button>
+        <div id="result"></div>
+    </div>
 
-<script>
-  async function generateIdea() {
-    const userInput = document.getElementById("userInput").value;
-    const resultBox = document.getElementById("result");
-    resultBox.innerText = "AI denkt na...";
+    <script>
+        // JavaScript voor het hamburger menu
+        document.getElementById("hamburger-menu").addEventListener("click", function() {
+            document.querySelector(".menu").classList.toggle("active");
+        });
 
-    const response = await fetch("https://video-ideas-generator-api.onrender.com/generate", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ prompt: userInput })
-    });
+        // JavaScript voor de video idee generator
+        async function generateIdea() {
+            const userInput = document.getElementById("userInput").value;
+            const resultBox = document.getElementById("result");
+            resultBox.innerText = "AI is thinking..."; // Aangepaste tekst
 
-    const data = await response.json();
-    resultBox.innerText = data.result || "Er ging iets mis 😅";
-  }
-</script>
+            // Je API-aanroep
+            const response = await fetch("https://video-ideas-generator-api.onrender.com/generate", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ prompt: userInput })
+            });
 
+            const data = await response.json();
+            resultBox.innerText = data.result || "Something went wrong 😅"; // Aangepaste tekst
+        }
+    </script>
 
 </body>
 </html>
