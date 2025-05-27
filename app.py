@@ -1,78 +1,84 @@
-# app.py
 from flask import Flask, request, jsonify
-from dotenv import load_dotenv
+from flask_cors import CORS
 import os
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
-from langchain.chains import ConversationChain
-from langchain.memory import ConversationBufferMemory
-from flask_cors import CORS # Nodig om de website te laten praten met je backend
+from langchain_core.messages import HumanMessage, AIMessage
 
 app = Flask(__name__)
-CORS(app) # Schakel CORS in, zodat je frontend (de website) je backend kan aanroepen
+CORS(app) # Enable CORS for all routes
 
-# --- AI Inspirator Logica ---
-load_dotenv()
-# Lees de API sleutel uit .env bestand.
-# Op Render stel je dit in als 'omgevingsvariabele' in het dashboard.
-google_api_key = os.getenv("GOOGLE_API_KEY")
+# Haal de Google API key op uit de omgevingsvariabele
+# Render stelt deze in, lokaal kun je een .env bestand gebruiken
+api_key = os.getenv("GOOGLE_API_KEY")
 
-if not google_api_key:
-    # Zorg dat deze melding alleen in de terminal komt als er een probleem is
-    print("Fout: GOOGLE_API_KEY niet gevonden. Stel deze in je .env bestand in voor lokaal testen, of als omgevingsvariabele op Render.")
-    # In een live app wil je misschien een andere foutafhandeling
-    raise ValueError("GOOGLE_API_KEY is niet ingesteld!")
+if not api_key:
+    print("Fout: GOOGLE_API_KEY is niet ingesteld. Zorg ervoor dat deze als omgevingsvariabele is gedefinieerd.")
+    # Optioneel: Voor lokale ontwikkeling kun je hier een Exception opwerpen
+    # raise ValueError("GOOGLE_API_KEY is niet ingesteld. Kan de app niet starten.")
 
-# Gebruik het werkende model dat we eerder gevonden hebben
-llm = ChatGoogleGenerativeAI(model="models/gemini-1.5-flash", google_api_key=google_api_key, temperature=0.8)
+# Initialiseer het Google Gemini model
+model = ChatGoogleGenerativeAI(model="gemini-1.5-flash", google_api_key=api_key, temperature=0.9)
 
-# Prompt en geheugen initialisatie (deze code is hetzelfde als in je CLI-script)
-prompt = ChatPromptTemplate.from_messages([
-    ("system", """
-    Je bent de "Creatieve AI Inspirator" voor een portfolio website gericht op AI en creativiteit.
-    Jouw doel is om bezoekers te helpen brainstormen over hun eigen creatieve projectideeën met behulp van AI.
-    Wees enthousiast, inspirerend en help de gebruiker om hun gedachten te structureren.
-    Stel vragen om hun interesses, beschikbare tools of gewenste projecttype te achterhalen.
-    Geef vervolgens concrete, creatieve en haalbare projectideeën die AI gebruiken.
-    Je kunt je laten inspireren door algemene trends in AI creativiteit (beeld, tekst, muziek, video, code etc.), maar ook door het type projecten dat je waarschijnlijk op de website van de maker zult vinden (hou het gerelateerd aan creativiteit en AI).
-    Formuleer je antwoord altijd op een positieve en aanmoedigende toon.
-    Organiseer de ideeën duidelijk, bijvoorbeeld in een lijst.
-
-    Hieronder volgt de geschiedenis van onze conversatie:
-    """),
-    MessagesPlaceholder(variable_name="history"),
-    ("user", "{input}")
-])
-
-memory = ConversationBufferMemory(return_messages=True)
-conversation_chain = ConversationChain(
-    memory=memory,
-    prompt=prompt,
-    llm=llm,
-    verbose=False
+# Definieer de systeeminstructies voor de AI
+# Deze instructies bepalen de 'persoonlijkheid' en het gedrag van de AI
+system_prompt = (
+    "Je bent een creatieve AI Inspirator gespecialiseerd in het genereren van unieke video-ideeën. "
+    "Je bent enthousiast, origineel en helpt gebruikers om hun concepten te verfijnen. "
+    "Geef altijd beknopte, creatieve en bruikbare ideeën. "
+    "Als de gebruiker een specifiek thema noemt, focus dan daarop. "
+    "Als de gebruiker verder chat, bouw dan voort op de vorige ideeën en help ze deze te verdiepen. "
+    "Gebruik geen opsommingstekens zoals '- ' in je antwoord, tenzij expliciet gevraagd. "
+    "Geef alleen het idee, geen inleiding of afsluiting, tenzij het een welkomstbericht is."
 )
-# --- Einde AI Inspirator Logica ---
 
-# Dit is het "adres" (endpoint) waar je website mee praat
+# ChatPromptTemplate om de systeeminstructies en geschiedenis te structureren
+# De geschiedenis wordt nu direct doorgegeven via de 'messages' variabele
+chat_template = ChatPromptTemplate.from_messages(
+    [
+        ("system", system_prompt),
+        MessagesPlaceholder(variable_name="messages") # Hier komt de geschiedenis van de frontend
+    ]
+)
+
 @app.route('/generate', methods=['POST'])
 def generate_idea():
-    data = request.get_json() # Haal de data (de "prompt" van de gebruiker) uit het verzoek
-    user_input = data.get('prompt')
+    data = request.json
+    # De frontend stuurt nu de hele 'messages' array
+    messages_from_frontend = data.get("messages", [])
 
-    if not user_input:
-        return jsonify({"error": "Geen invoer ontvangen"}), 400
+    if not messages_from_frontend:
+        return jsonify({"error": "Geen berichten meegegeven"}), 400
 
     try:
-        # Roep je AI Inspirator aan met de invoer van de gebruiker
-        response_data = conversation_chain.invoke({"input": user_input})
-        ai_response = response_data.get('response', 'Geen antwoord ontvangen van de AI.')
-        # Stuur het antwoord terug naar de website als JSON
-        return jsonify({"result": ai_response})
-    except Exception as e:
-        # Als er een fout optreedt, log het en stuur een foutmelding terug
-        print(f"Fout bij genereren van idee: {e}")
-        return jsonify({"error": "Er ging iets mis bij het genereren van het idee."}), 500
+        # Converteer de ontvangen berichten naar LangChain's HumanMessage/AIMessage formaat
+        formatted_messages = []
+        for msg in messages_from_frontend:
+            if msg['role'] == 'user':
+                formatted_messages.append(HumanMessage(content=msg['parts'][0]['text']))
+            elif msg['role'] == 'model':
+                formatted_messages.append(AIMessage(content=msg['parts'][0]['text']))
 
-# Voor lokaal testen (zodat je het via http://127.0.0.1:5000 kunt benaderen)
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+        # Voeg de systeeminstructies toe aan het begin van de berichtenlijst die naar het model gaat
+        # De 'chat_template' zorgt ervoor dat de 'system_prompt' correct wordt geïnjecteerd
+        final_messages_for_model = chat_template.format_messages(messages=formatted_messages)
+
+        # Roep het model direct aan met de complete, geformatteerde geschiedenis
+        response = model.invoke(final_messages_for_model)
+        
+        # Haal de tekst uit het antwoord
+        idea = response.content
+        return jsonify({"result": idea})
+
+    except Exception as e:
+        # Log de fout voor debugging op de server
+        print(f"Fout bij genereren van idee: {e}")
+        # Stuur een generieke foutmelding terug naar de frontend
+        return jsonify({"error": "Er is een interne serverfout opgetreden."}), 500
+
+if __name__ == "__main__":
+    # Voor lokale ontwikkeling:
+    # Zorg dat je GOOGLE_API_KEY is ingesteld in je omgeving (bijv. via een .env-bestand en python-dotenv)
+    # app.run(debug=True, host='0.0.0.0', port=5000)
+    # Voor Render deployment, wordt dit deel meestal niet gebruikt, omdat Render het op een andere manier start.
+    pass
