@@ -4,91 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🎬 Video Idea Generator</title>
-    <link rel="stylesheet" href="style.css"> <style>
-        /* ALLEEN DEZE STIJLEN LATEN STAAN ALS JE ZIJ SPECIFIEK VOOR DEZE PAGINA WILT HOUDEN */
-        body {
-            /* Gebruik de body stijlen uit style.css */
-            /* Maar als je een andere achtergrondkleur of padding-top wilt dan in style.css, zet het hier */
-            background-color: #09168e; /* Match met je algemene thema */
-            color: #f0f0f0; /* Match met je algemene thema */
-            font-family: 'Montserrat', sans-serif; /* Match met je algemene thema */
-            text-align: center;
-            padding-top: 50px; /* Alleen als je een andere padding-top wilt dan in style.css */
-        }
-
-        .container {
-            max-width: 800px;
-            margin: 40px auto;
-            background: #1a1a99; /* Donkerder blauw, zoals je formulier achtergrond */
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 0 20px rgba(0, 255, 213, 0.2); /* Neon gloed */
-        }
-
-        h1 {
-            color: #00ffd5; /* Match met je thema */
-            text-shadow: 0 0 8px rgba(0, 255, 213, 0.5);
-        }
-
-        p {
-            color: #e0e0e0; /* Lichtere tekstkleur */
-        }
-
-        input, button {
-            width: 100%;
-            padding: 12px;
-            margin-top: 10px;
-            font-size: 1rem;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-        }
-
-        input {
-            background-color: #f0f0f0;
-            color: #000;
-        }
-
-        button {
-            background-color: #00ffd5; /* Je neon-groen */
-            color: #000;
-            border: none;
-            cursor: pointer;
-            font-weight: bold; /* Maak de knop vetter */
-        }
-
-        button:hover {
-            background-color: #00c2a8; /* Donkerder neon-groen bij hover */
-        }
-
-        #result {
-            margin-top: 20px;
-            padding: 15px;
-            background: #0d0d6e; /* Iets donkerder dan container background voor contrast */
-            border-radius: 8px;
-            white-space: pre-wrap;
-            color: #00ffd5; /* Neon kleur voor het resultaat */
-            border: 1px solid rgba(0, 255, 213, 0.3); /* Randje */
-        }
-
-        /* Responsive aanpassingen voor grotere schermen voor de input/button/result */
-        @media (min-width: 769px) {
-            .container {
-                max-width: 900px; /* Iets breder op desktop */
-                padding: 50px;
-            }
-
-            input, button {
-                font-size: 1.1rem;
-                padding: 15px;
-            }
-
-            #result {
-                font-size: 1.1rem;
-                padding: 20px;
-            }
-        }
-    </style>
-</head>
+    <link rel="stylesheet" href="style.css"> </head>
 <body>
 
     <nav>
@@ -101,46 +17,117 @@
         <ul class="menu">
             <li><a href="index.html">🏠 Home</a></li>
             <li><a href="projects.html">✨ Projects</a></li>
-            <li><a href="ai_gallery.html">🖼️ Gallery</a></li>
+            <li><a href="ai_gallery.html">🎨 Gallery</a></li>
             <li><a href="video_ideas.html">🎬 Video Ideas</a></li>
-            <li><a href="about.html">ℹ️ About</a></li>
-            <li><a href="contact.html">📧 Contact</a></li>
+            <li><a href="about.html">💡 About</a></li>
+            <li><a href="contact.html">✉️ Contact</a></li>
         </ul>
     </nav>
 
     <div class="container">
         <h1>🎬 Video Idea Generator</h1>
-        <p>Type in a mood or theme (e.g., 'mysterious sci-fi short film with a plot twist') and hit the button.</p>
-        <input type="text" id="userInput" placeholder="E.g., space horror film with a time loop">
-        <button onclick="generateIdea()">Generate Idea</button>
-        <div id="result"></div>
+        <p>Type in a mood or theme to start generating video ideas. You can keep chatting to refine your ideas!</p>
+        
+        <div id="chatDisplay" class="chat-display">
+            </div>
+
+        <div class="chat-input-area">
+            <input type="text" id="userInput" placeholder="E.g., space horror film with a time loop">
+            <button id="sendButton">Generate Idea</button>
+        </div>
+        <button id="clearChatButton" class="clear-chat-button">Clear Chat</button>
     </div>
 
-    <script>
-        // JavaScript voor het hamburger menu
-        document.getElementById("hamburger-menu").addEventListener("click", function() {
-            document.querySelector(".menu").classList.toggle("active");
-        });
+<script>
+    // Array om de chatgeschiedenis bij te houden in het formaat dat de Gemini API verwacht
+    let chatMessages = [];
 
-        // JavaScript voor de video idee generator
-        async function generateIdea() {
-            const userInput = document.getElementById("userInput").value;
-            const resultBox = document.getElementById("result");
-            resultBox.innerText = "AI is thinking..."; // Aangepaste tekst
+    // Verwijzingen naar HTML-elementen
+    const userInput = document.getElementById("userInput");
+    const sendButton = document.getElementById("sendButton");
+    const chatDisplay = document.getElementById("chatDisplay");
+    const clearChatButton = document.getElementById("clearChatButton");
+    const hamburgerMenu = document.getElementById("hamburger-menu");
+    const navMenu = document.querySelector(".menu");
 
-            // Je API-aanroep
+    // Event listener voor het hamburger menu
+    hamburgerMenu.addEventListener("click", function() {
+        navMenu.classList.toggle("active");
+    });
+
+    // Functie om berichten weer te geven in de chatDisplay
+    function displayMessage(role, text) {
+        const messageDiv = document.createElement('div');
+        messageDiv.classList.add('chat-message', `${role}-message`);
+        messageDiv.innerHTML = `<strong>${role === 'user' ? 'You' : 'AI'}:</strong> ${text}`;
+        chatDisplay.appendChild(messageDiv);
+        chatDisplay.scrollTop = chatDisplay.scrollHeight; // Scroll naar beneden
+    }
+
+    // Functie om de chat te wissen
+    function clearChat() {
+        chatMessages = []; // Leeg de geschiedenis
+        chatDisplay.innerHTML = ''; // Leeg de weergave
+        displayMessage('ai', 'Chat cleared! How can I help you today?'); // Startbericht
+    }
+
+    // Functie om een idee te genereren (nu voor de chat)
+    async function generateIdea() {
+        const userText = userInput.value.trim();
+        if (!userText) return; // Doe niets als invoer leeg is
+
+        displayMessage('user', userText); // Toon gebruikersbericht direct
+        chatMessages.push({ role: "user", parts: [{ text: userText }] }); // Voeg toe aan geschiedenis
+
+        userInput.value = ''; // Leeg het invoerveld
+        userInput.disabled = true; // Schakel invoer uit tijdens AI-denken
+        sendButton.disabled = true; // Schakel knop uit
+        displayMessage('ai', 'AI is thinking...'); // Toon laadbericht
+
+        try {
             const response = await fetch("https://video-ideas-generator-api.onrender.com/generate", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify({ prompt: userInput })
+                body: JSON.stringify({ messages: chatMessages }) // Stuur HELE geschiedenis
             });
 
             const data = await response.json();
-            resultBox.innerText = data.result || "Something went wrong 😅"; // Aangepaste tekst
+            const aiResponse = data.result || "Something went wrong 😅";
+            
+            // Verwijder het 'AI is thinking...' bericht
+            chatDisplay.removeChild(chatDisplay.lastChild); 
+
+            displayMessage('ai', aiResponse); // Toon AI-antwoord
+            chatMessages.push({ role: "model", parts: [{ text: aiResponse }] }); // Voeg AI-antwoord toe aan geschiedenis
+
+        } catch (error) {
+            console.error("Error generating idea:", error);
+            // Verwijder het 'AI is thinking...' bericht
+            chatDisplay.removeChild(chatDisplay.lastChild); 
+            displayMessage('ai', 'An error occurred. Please try again.');
+        } finally {
+            userInput.disabled = false; // Schakel invoer weer in
+            sendButton.disabled = false; // Schakel knop weer in
+            userInput.focus(); // Focus terug op invoerveld
         }
-    </script>
+    }
+
+    // Event listeners
+    sendButton.addEventListener('click', generateIdea);
+    userInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            generateIdea();
+        }
+    });
+    clearChatButton.addEventListener('click', clearChat);
+
+    // Initialiseer de chat met een welkomstbericht
+    document.addEventListener('DOMContentLoaded', function() {
+        displayMessage('ai', 'Hello! I am your AI Video Idea Generator. Tell me your theme or mood!');
+    });
+</script>
 
 </body>
 </html>
