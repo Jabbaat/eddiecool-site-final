@@ -1,17 +1,10 @@
 <!DOCTYPE html>
- <html lang="en">
- <head>
+<html lang="en">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>eddiecool AI playground</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-        }
-    </style>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <title>About - Eddiecool</title> <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css"> <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
@@ -19,66 +12,77 @@
 
       gtag('config', 'G-SYG5T1Z0MV'); // VERVANG DIT DOOR JOUW MEASUREMENT ID
     </script>
-    </head>
-  
-   <meta charset="UTF-8">
-   <title>About - Eddiecool</title>
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <link rel="stylesheet" href="style.css">
- </head>
- <body>
+</head>
+<body>
  
-     <nav>
-   <div class="logo">
-     <a href="index.html">
-       <img src="images/logo.png" alt="Eddiecool Logo" class="logo-img">
-     </a>
-   </div>
-   <span class="hamburger" id="hamburger-menu">&#9776;</span>
-   <ul class="menu">
+    <nav>
+        <div class="logo">
+            <a href="index.html">
+                <img src="images/logo.png" alt="Eddiecool Logo" class="logo-img">
+            </a>
+        </div>
+        <span class="hamburger" id="hamburger-menu">&#9776;</span>
+        <ul class="menu">
             <li><a href="index.html">🏠 Home</a></li>
             <li><a href="projects.html">✨ Projects</a></li>
             <li><a href="ai_gallery.html">🖼️ Gallery</a></li>
             <li><a href="video_ideas.html">🎬 Video Ideas</a></li>
             <li><a href="about.html">ℹ️ About</a></li>
             <li><a href="contact.html">📧 Contact</a></li>
-    </ul>
- </nav>
+        </ul>
+    </nav>
  
- <h1>About Eddiecool</h1>
- <p>Watch the cool Eddiecool video:</p>
+    <h1>About Eddiecool</h1>
+    <p>Watch the cool Eddiecool video:</p>
  
- <div class="video-wrapper">
-   <div class="video-container">
-     <video id="eddiecool-video" poster="images/video-thumbnail.jpg" playsinline preload="metadata">
-       <source src="video/eddiecool_intro.mp4" type="video/mp4">
-       Your browser does not support the video tag.
-     </video>
-     <button class="play-button" id="play-button">&#9658;</button>
-   </div>
- </div>
+    <div class="single-project">
+      <img src="images/video-thumbnail.jpg" alt="Eddiecool Intro Thumbnail" class="video-poster" id="about-video-thumbnail">
+      <button class="custom-play-button" id="about-custom-play">&#9658;</button>
+      <video id="about-video-player" controls>
+        <source src="video/eddiecool_intro.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+      </div>
  
- <script>
-   // Hamburger menu
-   document.getElementById("hamburger-menu").addEventListener("click", function() {
-     document.querySelector(".menu").classList.toggle("active");
-   });
+    <script>
+        // Hamburger menu
+        document.getElementById("hamburger-menu").addEventListener("click", function() {
+            document.querySelector(".menu").classList.toggle("active");
+        });
  
-   document.addEventListener('DOMContentLoaded', function() {
-     const video = document.getElementById('eddiecool-video');
-     const playButton = document.getElementById('play-button');
+        // JAVASCRIPT VOOR DE VIDEO OP DE ABOUT PAGINA
+        document.addEventListener('DOMContentLoaded', function() {
+            const playBtnAbout = document.getElementById("about-custom-play");
+            const thumbnailAbout = document.getElementById("about-video-thumbnail");
+            const videoAbout = document.getElementById("about-video-player");
  
-     playButton.addEventListener('click', function() {
-       playButton.style.display = 'none';
-       video.play();
-     });
+            if (playBtnAbout && thumbnailAbout && videoAbout) {
+                playBtnAbout.addEventListener("click", function () {
+                    thumbnailAbout.style.display = "none";
+                    playBtnAbout.style.display = "none";
+                    videoAbout.style.display = "block";
+                    videoAbout.play();
+                });
  
-     // Als de video pauzeert, toon de play-button weer
-     video.addEventListener('pause', function() {
-       playButton.style.display = 'block';
-     });
-   });
- </script>
+                thumbnailAbout.addEventListener("click", function () {
+                    thumbnailAbout.style.display = "none";
+                    playBtnAbout.style.display = "none";
+                    videoAbout.style.display = "block";
+                    videoAbout.play();
+                });
+                
+                // Optioneel: Als je wilt dat de play-knop weer verschijnt bij pauze/einde
+                // videoAbout.addEventListener('pause', function() {
+                //     playBtnAbout.style.display = 'block';
+                //     thumbnailAbout.style.display = 'block'; // Toon thumbnail ook weer
+                // });
+                // videoAbout.addEventListener('ended', function() {
+                //     playBtnAbout.style.display = 'block';
+                //     thumbnailAbout.style.display = 'block'; // Toon thumbnail ook weer
+                // });
+            }
+        });
+    </script>
  
- </body>
- </html>
+</body>
+</html>
