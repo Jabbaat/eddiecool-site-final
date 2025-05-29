@@ -9,7 +9,7 @@ body {
     color: #f0f0f0;
     font-family: 'Montserrat', sans-serif;
     text-align: center;
-    padding-top: 50px; /* alleen top-padding laten staan */
+    padding-top: 50px;
 }
 
 /* Logo instellingen */
@@ -36,8 +36,8 @@ nav {
     padding: 15px 20px;
     background-color: #4e0433;
     box-shadow: 0 2px 5px rgba(0, 255, 213, 0.2);
-    position: relative; /* Dit zorgt ervoor dat het menu boven andere content komt */
-    z-index: 9999; /* Zorgt ervoor dat het menu boven andere elementen komt */
+    position: relative;
+    z-index: 9999;
 }
 
 nav .logo a {
@@ -115,124 +115,68 @@ nav .hamburger {
     to { opacity: 1; transform: translateY(0); }
 }
 
-/* Video-wrapper zonder padding of blauwe randjes */
-.video-wrapper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 2rem auto;
-    padding: 0;
-    width: 100%;
-    box-sizing: border-box;
-}
-
-/* Video-container standaard (desktop) */
-.video-container {
+/* NIEUWE STIJLEN VOOR VIDEO WEERGAVE, GEBASEERD OP PROJECTS.HTML */
+.single-project {
+    max-width: 700px; /* Dit bepaalt de breedte van je video's */
+    margin: 50px auto;
     position: relative;
-    width: 100%;
-    max-width: 600px; /* Pas deze breedte aan voor desktop als je wilt */
-    padding-top: 56.25%; /* CORRECT: 16:9 aspect ratio (9/16 * 100%) */
     border-radius: 16px;
     overflow: hidden;
-    background: rgba(0, 0, 0, 0.5);
-    border: 3px solid rgba(255, 255, 255, 0.4);
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.7);
-    z-index: 1; /* Zorgt ervoor dat de video onder het menu komt */
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.5); /* Voor consistentie en een achtergrond bij laden */
 }
 
-/* Video styling binnen de container */
-.video-container video {
-    position: absolute;
-    top: 0;
-    left: 0;
+.video-poster {
+    display: block;
     width: 100%;
-    height: 100%;
-    object-fit: cover; /* GEWIJZIGD: Vult de container, snijdt bij als aspect ratio niet klopt */
+    cursor: pointer;
 }
 
-/* Portrait modus op mobiel */
-@media (max-width: 768px) {
-    .video-container {
-        max-width: 340px; /* Max breedte voor mobiel portret */
-        padding-top: 177.78%; /* CORRECT: 9:16 aspect ratio (16/9 * 100%) */
-    }
-}
-
-/* Play-knop */
-.play-button {
+.custom-play-button {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     font-size: 60px;
     color: white;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.6);
     border: none;
     border-radius: 50%;
     padding: 20px 25px;
     cursor: pointer;
-    transition: background-color 0.3s, transform 0.3s;
     z-index: 10;
     animation: pulse 1.5s infinite;
 }
 
-.play-button:hover {
-    background-color: rgba(0, 0, 0, 0.7);
-    transform: translate(-50%, -50%) scale(1.1);
+/* Let op: deze video-regel geldt voor ALLE video's tenzij je ze specifieker maakt. */
+/* De video's in 'single-project' worden direct hierdoor beïnvloed */
+video {
+    display: none; /* Video is standaard verborgen */
+    width: 100%; /* Video vult de breedte van de 'single-project' div */
+    height: auto; /* Behoudt de aspect ratio */
 }
 
-/* Pulse animatie voor play-button */
 @keyframes pulse {
-    0% {
-        transform: translate(-50%, -50%) scale(1);
-        opacity: 1;
-    }
-    50% {
-        transform: translate(-50%, -50%) scale(1.1);
-        opacity: 0.7;
-    }
-    100% {
-        transform: translate(-50%, -50%) scale(1);
-        opacity: 1;
-    }
+    0% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+    50% { transform: translate(-50%, -50%) scale(1.1); opacity: 0.7; }
+    100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
 }
 
-/* Thumbnails (optioneel voor gallery) */
-.thumbnail {
-    width: 150px;
-    height: auto;
-    margin: 10px;
-    border-radius: 8px;
-    transition: transform 0.3s ease;
-}
+/* EINDE NIEUWE STIJLEN VOOR VIDEO WEERGAVE */
 
-.thumbnail:hover {
-    transform: scale(1.05);
-}
+
+/* OLD STIJLEN VOOR VIDEO'S ZIJN VERWIJDERD (.video-wrapper, .video-container, .play-button) */
+
 
 /* Fullscreen fix */
-:fullscreen .video-container,
-:-webkit-full-screen .video-container,
-:-moz-full-screen .video-container,
-:-ms-fullscreen .video-container {
-    width: 100%;
-    max-width: none; /* Verwijdert de max-width van de container */
-    height: 100%; /* Zorgt dat de container de volle hoogte vult */
-    padding-top: 0 !important; /* Verwijdert de aspect ratio padding in fullscreen */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: rgba(0, 0, 0, 0.9); /* Zwarte achtergrond */
-}
-
-/* Zorgt dat de video zelf de fullscreen container vult, met cover */
-:fullscreen video,
-:-webkit-full-screen video,
-:-moz-full-screen video,
-:-ms-fullscreen video {
+:fullscreen .single-project video,
+:-webkit-full-screen .single-project video,
+:-moz-full-screen .single-project video,
+:-ms-fullscreen .single-project video {
     width: 100%;
     height: 100%;
-    object-fit: cover !important; /* GEWIJZIGD: Vult hier ook het scherm, snijdt bij */
+    object-fit: contain !important; /* Pas hier aan naar 'cover' als je geen zwarte balken wilt */
+    display: block; /* Zorgt dat de video zichtbaar is in fullscreen */
 }
 
 .logo-animation {
@@ -246,7 +190,7 @@ form {
     max-width: 600px;
     margin: 50px auto;
     padding: 20px;
-    background-color: #1a1a99; /* iets lichter dan de achtergrondkleur voor contrast */
+    background-color: #1a1a99;
     border-radius: 12px;
     box-shadow: 0 0 20px rgba(0, 255, 213, 0.2);
 }
@@ -284,8 +228,8 @@ button:hover {
 
 @media (min-width: 769px) {
     form {
-        max-width: 800px; /* breder op desktop */
-        padding: 40px;      /* wat meer ruimte rondom */
+        max-width: 800px;
+        padding: 40px;
     }
 
     input, textarea {
@@ -322,7 +266,7 @@ p {
 .intro-tekst {
     font-size: 22px;
     line-height: 1.6;
-    color: #00ffd5; /* aqua neon vibe */
+    color: #00ffd5;
     margin-top: 40px;
     background-color: rgba(255, 255, 255, 0.05);
     padding: 20px;
@@ -359,129 +303,122 @@ p {
 
 /* Styles voor de Video Idea Generator chatinterface */
 
-/* Algemene styling voor de container op de Video Idea Generator pagina */
 .container {
-    max-width: 800px; /* Blijft hetzelfde */
-    margin: 40px auto; /* Blijft hetzelfde */
-    background: #1a1a99; /* Donkerder blauw, zoals je formulier achtergrond */
+    max-width: 800px;
+    margin: 40px auto;
+    background: #1a1a99;
     padding: 30px;
     border-radius: 10px;
-    box-shadow: 0 0 20px rgba(0, 255, 213, 0.2); /* Neon gloed */
-    text-align: center; /* Centreer de inhoud van de container */
-    display: flex; /* Gebruik flexbox voor lay-out binnen de container */
-    flex-direction: column; /* Stapel items verticaal */
-    gap: 20px; /* Ruimte tussen de secties */
+    box-shadow: 0 0 20px rgba(0, 255, 213, 0.2);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 
-/* Titels en paragrafen binnen de container */
 .container h1 {
-    color: #00ffd5; /* Neon kleur */
+    color: #00ffd5;
     text-shadow: 0 0 8px rgba(0, 255, 213, 0.5);
-    margin-bottom: 10px; /* Ruimte onder de titel */
+    margin-bottom: 10px;
 }
 
 .container p {
-    color: #e0e0e0; /* Lichtere tekstkleur */
-    margin-bottom: 20px; /* Ruimte onder de introductieparagraaf */
+    color: #e0e0e0;
+    margin-bottom: 20px;
 }
 
-/* Chatweergave / Resultaatbox */
 .chat-display {
-    background-color: #0d0d6e; /* Iets donkerder dan container background voor contrast */
-    border: 1px solid rgba(0, 255, 213, 0.3); /* Randje */
+    background-color: #0d0d6e;
+    border: 1px solid rgba(0, 255, 213, 0.3);
     border-radius: 8px;
     padding: 15px;
-    min-height: 250px; /* Iets hogere minimale hoogte */
-    max-height: 450px; /* Maximale hoogte met scroll */
-    overflow-y: auto; /* Scrollen als inhoud te lang is */
+    min-height: 250px;
+    max-height: 450px;
+    overflow-y: auto;
     display: flex;
     flex-direction: column;
-    gap: 10px; /* Ruimte tussen berichten */
-    color: #e0e0e0; /* Standaard tekstkleur */
-    text-align: left; /* Berichten links uitlijnen binnen de chatbox */
-    box-shadow: inset 0 0 10px rgba(0, 255, 213, 0.1); /* Subtiele innerlijke gloed */
+    gap: 10px;
+    color: #e0e0e0;
+    text-align: left;
+    box-shadow: inset 0 0 10px rgba(0, 255, 213, 0.1);
 }
 
-/* Individuele chatberichten */
 .chat-message {
     padding: 10px 15px;
     border-radius: 15px;
     max-width: 85%;
-    word-wrap: break-word; /* Zorgt ervoor dat lange woorden afbreken */
+    word-wrap: break-word;
     line-height: 1.4;
 }
 
 .user-message {
-    background-color: #007bff; /* Blauw voor gebruiker */
+    background-color: #007bff;
     color: white;
-    align-self: flex-end; /* Rechts uitlijnen */
-    border-bottom-right-radius: 2px; /* Kleine aanpassing aan de hoek */
+    align-self: flex-end;
+    border-bottom-right-radius: 2px;
 }
 
 .ai-message {
-    background-color: #4e0433; /* Paarsachtig voor AI */
-    color: #00ffd5; /* Neon kleur voor AI tekst */
-    align-self: flex-start; /* Links uitlijnen */
-    border-bottom-left-radius: 2px; /* Kleine aanpassing aan de hoek */
+    background-color: #4e0433;
+    color: #00ffd5;
+    align-self: flex-start;
+    border-bottom-left-radius: 2px;
 }
 
-/* Invoergebied voor chat */
 .chat-input-area {
     display: flex;
-    gap: 10px; /* Ruimte tussen input en knop */
+    gap: 10px;
     margin-top: 10px;
-    width: 100%; /* Zorgt dat het de breedte van de container vult */
+    width: 100%;
 }
 
 .chat-input-area input {
-    flex-grow: 1; /* Zorgt dat de input de beschikbare ruimte vult */
+    flex-grow: 1;
     padding: 12px;
-    border: 1px solid #00ffd5; /* Neon rand */
-    background-color: #0d0d6e; /* Donkerder achtergrond */
+    border: 1px solid #00ffd5;
+    background-color: #0d0d6e;
     color: #e0e0e0;
     border-radius: 8px;
-    font-size: 1rem; /* Zorg voor consistente font-size */
+    font-size: 1rem;
 }
 
 .chat-input-area input::placeholder {
     color: rgba(224, 224, 224, 0.7);
 }
 
-/* Knoppen (Generate Idea en Clear Chat) */
 .chat-input-area button,
 .clear-chat-button {
     padding: 12px 20px;
-    background-color: #00ffd5; /* Je neon-groen */
+    background-color: #00ffd5;
     color: #000;
     border: none;
     border-radius: 8px;
     font-weight: bold;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.2s ease;
-    box-shadow: 0 4px 10px rgba(0, 255, 213, 0.3); /* Neon schaduw */
+    box-shadow: 0 4px 10px rgba(0, 255, 213, 0.3);
 }
 
 .chat-input-area button:hover,
 .clear-chat-button:hover {
     background-color: #00c2a8;
-    transform: translateY(-2px); /* Subtiel 'lift' effect */
+    transform: translateY(-2px);
 }
 
 .clear-chat-button {
-    background-color: #dc3545; /* Rood voor 'Clear' */
+    background-color: #dc3545;
     color: white;
-    box-shadow: 0 4px 10px rgba(220, 53, 69, 0.3); /* Rode schaduw */
-    margin-top: 10px; /* Ruimte boven de knop */
+    box-shadow: 0 4px 10px rgba(220, 53, 69, 0.3);
+    margin-top: 10px;
 }
 
 .clear-chat-button:hover {
     background-color: #c82333;
 }
 
-/* Responsive aanpassingen voor grotere schermen */
 @media (min-width: 769px) {
     .container {
-        max-width: 900px; /* Iets breder op desktop */
+        max-width: 900px;
         padding: 50px;
     }
 
@@ -498,7 +435,6 @@ p {
     }
 }
 
-/* Aanpassingen voor kleine schermen (mobiel) */
 @media (max-width: 480px) {
     .container {
         margin: 20px auto;
@@ -512,11 +448,11 @@ p {
     }
 
     .chat-input-area {
-        flex-direction: column; /* Knoppen onder elkaar op heel kleine schermen */
+        flex-direction: column;
         gap: 10px;
     }
 
     .chat-input-area button {
-        width: 100%; /* Knoppen volledige breedte */
+        width: 100%;
     }
 }
