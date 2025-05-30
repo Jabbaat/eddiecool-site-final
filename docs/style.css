@@ -456,3 +456,51 @@ p {
         width: 100%;
     }
 }
+/* Specifieke stijlen voor de galerij container */
+.gallery {
+    display: grid; /* Gebruik Grid voor een nette, responsieve lay-out */
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); /* Min breedte 180px, vult de rest op */
+    gap: 15px; /* Ruimte tussen de afbeeldingen */
+    max-width: 1200px; /* Maximale breedte van de galerij */
+    margin: 40px auto; /* Centreer de galerij met wat ruimte erboven/onder */
+    padding: 0 15px; /* Ruimte aan de zijkanten op kleinere schermen */
+}
+
+/* Stijlen voor de afbeeldingen binnen de galerij */
+.gallery img.thumbnail {
+    width: 100%; /* Zorgt ervoor dat de afbeeldingen de breedte van hun grid-cel vullen */
+    height: 180px; /* Vaste hoogte voor thumbnails */
+    object-fit: cover; /* Zorgt ervoor dat de afbeeldingen de ruimte vullen zonder vervorming */
+    display: block;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    cursor: pointer;
+}
+
+.gallery img.thumbnail:hover {
+    transform: translateY(-5px); /* Subtiel omhoog bij hover */
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4); /* Meer schaduw bij hover */
+}
+
+/* Media query voor kleinere schermen (bijvoorbeeld mobiel) */
+@media (max-width: 768px) {
+    .gallery {
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); /* Iets kleinere thumbnails op mobiel */
+        gap: 10px;
+    }
+
+    .gallery img.thumbnail {
+        height: 140px; /* Pas de hoogte aan voor mobiel */
+    }
+}
+
+/* En een specifieke stijl voor de titel op de galerijpagina, als je die ook wilt centreren en mooi maken */
+#ai-gallery-title { /* Geef je <h1> op ai_gallery.html eventueel dit ID */
+    text-align: center;
+    margin-top: 30px;
+    margin-bottom: 20px;
+    color: #e9f1f0;
+    font-size: 36px;
+    text-shadow: 0 0 10px rgba(0, 255, 213, 0.6);
+}
