@@ -614,3 +614,158 @@ p {
         font-size: 16px;
     }
 }
+/* Styling voor de nieuwe AI Toolkit sectie */
+.ai-toolkit-section {
+    max-width: 1000px; /* Iets breder dan de introductie */
+    margin: 80px auto; /* Meer ruimte boven en onder */
+    padding: 40px 30px;
+    background-color: #1a1a99; /* Donkerder blauw, zoals je formulier */
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0, 255, 213, 0.3); /* Duidelijkere neon gloed */
+    text-align: center;
+}
+
+.ai-toolkit-section h2 {
+    font-size: 42px; /* Grote, pakkende titel */
+    color: #00ffd5; /* Neon accentkleur */
+    margin-bottom: 30px;
+    text-shadow: 0 0 15px rgba(0, 255, 213, 0.8);
+    font-weight: 700;
+}
+
+.ai-toolkit-section .toolkit-intro {
+    font-size: 20px;
+    color: #e0e0e0;
+    line-height: 1.7;
+    margin-bottom: 40px;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.toolkit-categories {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* 2 of 3 kolommen op desktop */
+    gap: 30px; /* Ruimte tussen de categorieën */
+    margin-top: 40px;
+}
+
+.toolkit-category {
+    background-color: #0d0d6e; /* Iets donkerder dan de sectie zelf */
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
+    text-align: left; /* Tekst binnen categorie links uitlijnen */
+    border: 1px solid rgba(0, 255, 213, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.toolkit-category:hover {
+    transform: translateY(-8px); /* Lift effect bij hover */
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
+}
+
+.toolkit-category h3 {
+    font-size: 26px; /* Categorie titels */
+    color: #ffffff;
+    margin-bottom: 20px;
+    font-weight: 600;
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
+}
+
+.toolkit-category ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.toolkit-category li {
+    font-size: 17px;
+    color: #f0f0f0;
+    margin-bottom: 12px;
+    line-height: 1.5;
+}
+
+.toolkit-category li:last-child {
+    margin-bottom: 0; /* Geen marge onder het laatste item */
+}
+
+.toolkit-category a {
+    color: #00ffd5; /* Link kleur */
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+.toolkit-category a:hover {
+    color: #8e44ad; /* Hover kleur */
+    text-decoration: underline;
+}
+
+.ai-toolkit-section .toolkit-outro {
+    font-size: 18px;
+    color: #e0e0e0;
+    margin-top: 50px;
+    line-height: 1.6;
+}
+
+.ai-toolkit-section .toolkit-outro a {
+    color: #8e44ad;
+    text-decoration: underline;
+    font-weight: bold;
+}
+
+.ai-toolkit-section .toolkit-outro a:hover {
+    color: #ad62c9;
+}
+
+/* Media queries voor responsiviteit */
+@media (max-width: 992px) {
+    .ai-toolkit-section {
+        max-width: 90%; /* Iets smaller op tablets */
+        margin: 60px auto;
+        padding: 30px 20px;
+    }
+    .toolkit-categories {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Iets kleinere kolommen */
+        gap: 20px;
+    }
+    .ai-toolkit-section h2 {
+        font-size: 36px;
+    }
+    .ai-toolkit-section .toolkit-intro {
+        font-size: 18px;
+    }
+    .toolkit-category h3 {
+        font-size: 22px;
+    }
+    .toolkit-category li {
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 768px) {
+    .ai-toolkit-section {
+        margin: 40px auto;
+        padding: 25px 15px;
+    }
+    .toolkit-categories {
+        grid-template-columns: 1fr; /* Eén kolom op mobiel */
+        gap: 20px;
+    }
+    .ai-toolkit-section h2 {
+        font-size: 30px;
+    }
+    .ai-toolkit-section .toolkit-intro {
+        font-size: 17px;
+    }
+    .toolkit-category h3 {
+        font-size: 20px;
+    }
+    .toolkit-category li {
+        font-size: 15px;
+    }
+    .ai-toolkit-section .toolkit-outro {
+        font-size: 16px;
+    }
+}
