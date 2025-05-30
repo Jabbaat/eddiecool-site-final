@@ -462,3 +462,155 @@ p {
     font-size: 36px;
     text-shadow: 0 0 10px rgba(0, 255, 213, 0.6);
 }
+/* Styling voor het nieuwe hoofd introductieblok */
+.main-intro-content {
+    max-width: 900px;
+    margin: 60px auto; /* Meer ruimte rondom */
+    padding: 30px 25px; /* Wat meer padding */
+    background-color: rgba(255, 255, 255, 0.08); /* Iets donkerdere achtergrond */
+    border-radius: 18px;
+    box-shadow: 0 8px 30px rgba(0, 255, 213, 0.25); /* Meer uitgesproken schaduw */
+    text-align: left; /* Tekst links uitlijnen voor betere leesbaarheid */
+    animation: fadeInSmooth 1.5s ease-out both; /* Iets langzamere animatie */
+}
+
+.main-intro-content h2 {
+    font-size: 38px; /* Grotere titel */
+    color: #00ffd5; /* Accentkleur */
+    text-align: center; /* Titel centreren */
+    margin-bottom: 25px;
+    text-shadow: 0 0 12px rgba(0, 255, 213, 0.7);
+}
+
+.main-intro-content p {
+    font-size: 19px; /* Iets grotere paragraaf tekst */
+    line-height: 1.8;
+    color: #e0e0e0;
+    margin-bottom: 20px;
+}
+
+.ai-workflow-section {
+    background-color: rgba(0, 0, 0, 0.2); /* Donkerdere achtergrond voor deze sectie */
+    padding: 25px;
+    border-radius: 12px;
+    margin-top: 35px; /* Ruimte boven de workflow */
+    box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.3);
+}
+
+.ai-workflow-section h3 {
+    font-size: 28px; /* Titel van de workflow */
+    color: #ffffff;
+    text-align: center;
+    margin-bottom: 20px;
+    font-weight: 700;
+}
+
+.workflow-list {
+    list-style: none; /* Geen standaard lijststijl */
+    padding: 0;
+    margin: 0;
+}
+
+.workflow-list li {
+    font-size: 18px;
+    color: #f0f0f0;
+    margin-bottom: 15px; /* Ruimte tussen de lijstitems */
+    display: flex; /* Voor icon en tekst naast elkaar */
+    align-items: flex-start; /* Lijn items bovenaan uit */
+}
+
+.workflow-icon {
+    font-size: 24px; /* Grotere iconen */
+    margin-right: 15px;
+    color: #00ffd5; /* Accentkleur voor de iconen */
+    min-width: 30px; /* Zorgt dat de iconen niet in de tekst schuiven */
+    text-align: center;
+}
+
+.workflow-list a {
+    color: #8e44ad; /* Link kleur */
+    text-decoration: underline;
+    font-weight: bold;
+}
+
+.workflow-list a:hover {
+    color: #ad62c9; /* Hover effect voor links */
+}
+
+.workflow-result {
+    font-size: 20px;
+    font-style: italic;
+    color: #00ffd5; /* Accentkleur */
+    text-align: center;
+    margin-top: 30px;
+    font-weight: 600;
+}
+
+.call-to-action {
+    font-size: 22px;
+    color: #fff;
+    text-align: center;
+    margin-top: 30px;
+    font-weight: bold;
+}
+
+.call-to-action a {
+    color: #8e44ad; /* Accentkleur voor call to action link */
+    text-decoration: underline;
+    font-weight: 700;
+    transition: color 0.3s ease;
+}
+
+.call-to-action a:hover {
+    color: #ad62c9;
+}
+
+/* Media queries voor kleinere schermen */
+@media (max-width: 768px) {
+    .main-intro-content {
+        margin: 30px auto;
+        padding: 20px;
+    }
+    .main-intro-content h2 {
+        font-size: 30px;
+    }
+    .main-intro-content p {
+        font-size: 17px;
+    }
+    .ai-workflow-section h3 {
+        font-size: 24px;
+    }
+    .workflow-list li {
+        font-size: 16px;
+    }
+    .workflow-icon {
+        font-size: 20px;
+        margin-right: 10px;
+        min-width: 25px;
+    }
+    .workflow-result, .call-to-action {
+        font-size: 18px;
+    }
+}
+
+@media (max-width: 480px) {
+    .main-intro-content h2 {
+        font-size: 26px;
+    }
+    .main-intro-content p {
+        font-size: 16px;
+    }
+    .ai-workflow-section h3 {
+        font-size: 20px;
+    }
+    .workflow-list li {
+        font-size: 15px;
+    }
+    .workflow-icon {
+        font-size: 18px;
+        min-width: 20px;
+    }
+    .workflow-result, .call-to-action {
+        font-size: 16px;
+    }
+}
