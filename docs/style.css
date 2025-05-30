@@ -1,6 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
 
-/* Algemene body-instellingen */
 body {
     margin: 0;
     padding: 0;
@@ -12,7 +11,6 @@ body {
     padding-top: 50px;
 }
 
-/* Logo instellingen */
 .logo-img {
     width: 120px;
     height: auto;
@@ -20,7 +18,6 @@ body {
     transition: width 0.3s ease;
 }
 
-/* Logo kleiner op mobiel */
 @media (max-width: 768px) {
     .logo-img {
         width: 100px;
@@ -28,7 +25,6 @@ body {
     }
 }
 
-/* Navigatiebalk */
 nav {
     display: flex;
     justify-content: space-between;
@@ -46,7 +42,6 @@ nav .logo a {
     text-decoration: none;
 }
 
-/* Navigatie menu */
 nav .menu {
     list-style: none;
     display: flex;
@@ -73,7 +68,6 @@ nav .menu a:hover {
     color: white;
 }
 
-/* Hamburger menu (mobiel) */
 nav .hamburger {
     display: none;
     font-size: 30px;
@@ -81,49 +75,42 @@ nav .hamburger {
     color: #00ffd5;
 }
 
-/* Hamburger actief maken op mobiel */
 @media (max-width: 768px) {
     nav {
         flex-wrap: wrap;
     }
-
     nav .menu {
         display: none;
         flex-direction: column;
         width: 100%;
         margin-top: 10px;
     }
-
     nav .menu.active {
         display: flex;
         animation: fadeIn 0.4s ease forwards;
     }
-
     nav .menu li {
         margin: 10px 0;
         text-align: center;
     }
-
     nav .hamburger {
         display: block;
     }
 }
 
-/* Fade-in animatie mobiel menu */
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(-10px); }
     to { opacity: 1; transform: translateY(0); }
 }
 
-/* NIEUWE STIJLEN VOOR VIDEO WEERGAVE, GEBASEERD OP PROJECTS.HTML */
 .single-project {
-    max-width: 700px; /* Dit bepaalt de breedte van je video's */
+    max-width: 700px;
     margin: 50px auto;
     position: relative;
     border-radius: 16px;
     overflow: hidden;
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
-    background-color: rgba(0, 0, 0, 0.5); /* Voor consistentie en een achtergrond bij laden */
+    background-color: rgba(0, 0, 0, 0.5);
 }
 
 .video-poster {
@@ -148,12 +135,10 @@ nav .hamburger {
     animation: pulse 1.5s infinite;
 }
 
-/* Let op: deze video-regel geldt voor ALLE video's tenzij je ze specifieker maakt. */
-/* De video's in 'single-project' worden direct hierdoor beïnvloed */
 video {
-    display: none; /* Video is standaard verborgen */
-    width: 100%; /* Video vult de breedte van de 'single-project' div */
-    height: auto; /* Behoudt de aspect ratio */
+    display: none;
+    width: 100%;
+    height: auto;
 }
 
 @keyframes pulse {
@@ -162,21 +147,14 @@ video {
     100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
 }
 
-/* EINDE NIEUWE STIJLEN VOOR VIDEO WEERGAVE */
-
-
-/* OLD STIJLEN VOOR VIDEO'S ZIJN VERWIJDERD (.video-wrapper, .video-container, .play-button) */
-
-
-/* Fullscreen fix */
 :fullscreen .single-project video,
 :-webkit-full-screen .single-project video,
 :-moz-full-screen .single-project video,
 :-ms-fullscreen .single-project video {
     width: 100%;
     height: 100%;
-    object-fit: contain !important; /* Pas hier aan naar 'cover' als je geen zwarte balken wilt */
-    display: block; /* Zorgt dat de video zichtbaar is in fullscreen */
+    object-fit: contain !important;
+    display: block;
 }
 
 .logo-animation {
@@ -195,7 +173,8 @@ form {
     box-shadow: 0 0 20px rgba(0, 255, 213, 0.2);
 }
 
-input, textarea {
+input,
+textarea {
     width: 100%;
     padding: 12px;
     margin-bottom: 15px;
@@ -231,12 +210,11 @@ button:hover {
         max-width: 800px;
         padding: 40px;
     }
-
-    input, textarea {
+    input,
+    textarea {
         font-size: 18px;
         padding: 16px;
     }
-
     button {
         font-size: 18px;
         padding: 14px 28px;
@@ -275,6 +253,7 @@ p {
     max-width: 800px;
     margin-left: auto;
     margin-right: auto;
+    animation: fadeInSmooth 1.2s ease-in-out both;
 }
 
 .intro-tekst strong {
@@ -283,25 +262,13 @@ p {
 }
 
 @keyframes fadeInSmooth {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.intro-tekst {
-    animation: fadeInSmooth 1.2s ease-in-out both;
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 * {
     box-sizing: border-box;
 }
-
-/* Styles voor de Video Idea Generator chatinterface */
 
 .container {
     max-width: 800px;
@@ -421,14 +388,12 @@ p {
         max-width: 900px;
         padding: 50px;
     }
-
     .chat-input-area input,
     .chat-input-area button,
     .clear-chat-button {
         font-size: 1.1rem;
         padding: 15px;
     }
-
     .chat-display {
         font-size: 1.1rem;
         padding: 20px;
@@ -441,36 +406,32 @@ p {
         padding: 20px;
         border-radius: 5px;
     }
-
     .chat-display {
         min-height: 150px;
         max-height: 300px;
     }
-
     .chat-input-area {
         flex-direction: column;
         gap: 10px;
     }
-
     .chat-input-area button {
         width: 100%;
     }
 }
-/* Specifieke stijlen voor de galerij container */
+
 .gallery {
-    display: grid; /* Gebruik Grid voor een nette, responsieve lay-out */
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); /* Min breedte 180px, vult de rest op */
-    gap: 15px; /* Ruimte tussen de afbeeldingen */
-    max-width: 1200px; /* Maximale breedte van de galerij */
-    margin: 40px auto; /* Centreer de galerij met wat ruimte erboven/onder */
-    padding: 0 15px; /* Ruimte aan de zijkanten op kleinere schermen */
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 15px;
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 15px;
 }
 
-/* Stijlen voor de afbeeldingen binnen de galerij */
 .gallery img.thumbnail {
-    width: 100%; /* Zorgt ervoor dat de afbeeldingen de breedte van hun grid-cel vullen */
-    height: 180px; /* Vaste hoogte voor thumbnails */
-    object-fit: cover; /* Zorgt ervoor dat de afbeeldingen de ruimte vullen zonder vervorming */
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
     display: block;
     border-radius: 8px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
@@ -479,24 +440,21 @@ p {
 }
 
 .gallery img.thumbnail:hover {
-    transform: translateY(-5px); /* Subtiel omhoog bij hover */
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4); /* Meer schaduw bij hover */
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
 }
 
-/* Media query voor kleinere schermen (bijvoorbeeld mobiel) */
 @media (max-width: 768px) {
     .gallery {
-        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); /* Iets kleinere thumbnails op mobiel */
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
         gap: 10px;
     }
-
     .gallery img.thumbnail {
-        height: 140px; /* Pas de hoogte aan voor mobiel */
+        height: 140px;
     }
 }
 
-/* En een specifieke stijl voor de titel op de galerijpagina, als je die ook wilt centreren en mooi maken */
-#ai-gallery-title { /* Geef je <h1> op ai_gallery.html eventueel dit ID */
+#ai-gallery-title {
     text-align: center;
     margin-top: 30px;
     margin-bottom: 20px;
