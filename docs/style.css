@@ -221,13 +221,7 @@ button:hover {
     }
 }
 
-h1 {
-    font-size: 30px;
-    color: #e9f1f0;
-    font-weight: 700;
-    text-shadow: 0 0 8px rgba(0, 255, 213, 0.5);
-    margin-bottom: 20px;
-}
+
 
 h2 {
     font-size: 28px;
@@ -283,11 +277,7 @@ p {
     gap: 20px;
 }
 
-.container h1 {
-    color: #00ffd5;
-    text-shadow: 0 0 8px rgba(0, 255, 213, 0.5);
-    margin-bottom: 10px;
-}
+
 
 .container p {
     color: #e0e0e0;
@@ -454,14 +444,7 @@ p {
     }
 }
 
-#ai-gallery-title {
-    text-align: center;
-    margin-top: 30px;
-    margin-bottom: 20px;
-    color: #e9f1f0;
-    font-size: 36px;
-    text-shadow: 0 0 10px rgba(0, 255, 213, 0.6);
-}
+
 /* Styling voor het nieuwe hoofd introductieblok */
 .main-intro-content {
     max-width: 900px;
@@ -1055,5 +1038,32 @@ p {
     .idea-generator button {
         font-size: 16px;
         padding: 10px 20px;
+    }
+}
+/* Algemene H1 stijl voor alle hoofdtitels van pagina's */
+h1 {
+    font-size: 36px; /* Groter en prominenter */
+    color: #00ffd5; /* De neon-groene kleur van video_ideas */
+    font-weight: 700;
+    text-shadow: 0 0 10px rgba(0, 255, 213, 0.6); /* Sterkere neon gloed */
+    margin-top: 40px; /* Consistentie in ruimte bovenaan */
+    margin-bottom: 20px; /* Consistentie in ruimte onderaan */
+    text-align: center; /* Zorgt ervoor dat de titel altijd gecentreerd is */
+}
+
+/* Media query voor kleinere schermen om de H1 lettergrootte aan te passen */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 30px;
+        margin-top: 30px;
+        margin-bottom: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    h1 {
+        font-size: 24px;
+        margin-top: 20px;
+        margin-bottom: 10px;
     }
 }
