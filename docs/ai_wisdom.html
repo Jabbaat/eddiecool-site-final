@@ -31,9 +31,10 @@
             <li><a href="projects.html">✨ Projects</a></li>
             <li><a href="ai_gallery.html">🖼️ Gallery</a></li>
             <li><a href="video_ideas.html">🎬 Video Ideas</a></li>
+            <li><a href="ai_wisdom.html">🔮 AI Wijsheid</a></li>
             <li><a href="about.html">ℹ️ About</a></li>
             <li><a href="contact.html">📧 Contact</a></li>
-            <li><a href="ai_wisdom.html">🔮 AI Wijsheid</a></li> <!-- NIEUWE LINK -->
+            
         </ul>
     </nav>
 
@@ -49,7 +50,8 @@
         </div>
 
         <div id="wisdomOutput" class="wisdom-output hidden">
-            <img id="wisdomImage" src="" alt="Gegenereerde AI Wijsheid Afbeelding" class="wisdom-image">
+            <!-- Placeholder afbeelding in plaats van gegenereerde afbeelding -->
+            <img id="wisdomImage" src="https://placehold.co/400x300/1a1a99/00ffd5?text=AI+Wijsheid" alt="Gegenereerde AI Wijsheid Afbeelding" class="wisdom-image">
             <p id="wisdomText" class="wisdom-text"></p>
         </div>
     </div>
@@ -125,33 +127,15 @@
 
                     wisdomText.textContent = generatedSaying;
 
-                    // Stap 2: Genereer de afbeelding met Imagen
-                    const imagePrompt = `Een abstracte, pseudo-wetenschappelijke, spirituele afbeelding die past bij de volgende spreuk: "${generatedSaying}". Stijl: neon, futuristisch, mystiek, met elementen van technologie en natuur.`;
-                    
-                    const imagePayload = { instances: { prompt: imagePrompt }, parameters: { "sampleCount": 1} };
-                    const imageApiUrl = `https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-generate-002:predict?key=${apiKey}`;
-                    
-                    const imageResponse = await fetch(imageApiUrl, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(imagePayload)
-                    });
-                    const imageResult = await imageResponse.json();
-
-                    if (imageResult.predictions && imageResult.predictions.length > 0 && imageResult.predictions[0].bytesBase64Encoded) {
-                        const imageUrl = `data:image/png;base64,${imageResult.predictions[0].bytesBase64Encoded}`;
-                        wisdomImage.src = imageUrl;
-                        wisdomImage.alt = generatedSaying;
-                    } else {
-                        console.error("Onverwachte responsstructuur van Imagen:", imageResult);
-                        wisdomImage.src = "https://placehold.co/400x300/333/FFF?text=Afbeelding+niet+geladen"; // Fallback afbeelding
-                        wisdomImage.alt = "Kon geen afbeelding genereren.";
-                    }
+                    // Stap 2: Imagen API aanroep is hier WEGGEHAALD voor de workaround
+                    // De placeholder afbeelding wordt nu altijd getoond.
+                    wisdomImage.src = "https://placehold.co/400x300/1a1a99/00ffd5?text=AI+Wijsheid"; // Standaard placeholder
+                    wisdomImage.alt = generatedSaying; // Alt-tekst blijft de gegenereerde wijsheid
 
                 } catch (error) {
-                    console.error("Fout bij het genereren van wijsheid of afbeelding:", error);
+                    console.error("Fout bij het genereren van wijsheid:", error);
                     wisdomText.textContent = "Er ging iets mis bij het genereren. Controleer je internetverbinding of probeer later opnieuw.";
-                    wisdomImage.src = "https://placehold.co/400x300/333/FFF?text=Fout"; // Fallback afbeelding
+                    wisdomImage.src = "https://placehold.co/400x300/333/FFF?text=Fout"; // Fallback afbeelding bij algemene fout
                     wisdomImage.alt = "Fout bij genereren.";
                 } finally {
                     // Verberg loading indicator, toon output, schakel knop weer in
