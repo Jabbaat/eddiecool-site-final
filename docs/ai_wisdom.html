@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Wijsheid Generator - Eddiecool</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- Google Analytics Script -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-SYG5T1Z0MV'); // VERVANG DIT DOOR JOUW MEASUREMENT ID
+    </script>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">
+            <a href="index.html">
+                <img src="images/logo.png" alt="Eddiecool Logo" class="logo-img">
+            </a>
+        </div>
+        <span class="hamburger" id="hamburger-menu">&#9776;</span>
+        <ul class="menu">
+            <li><a href="index.html">🏠 Home</a></li>
+            <li><a href="projects.html">✨ Projects</a></li>
+            <li><a href="ai_gallery.html">🖼️ Gallery</a></li>
+            <li><a href="video_ideas.html">🎬 Video Ideas</a></li>
+            <li><a href="about.html">ℹ️ About</a></li>
+            <li><a href="contact.html">📧 Contact</a></li>
+            <li><a href="ai_wisdom.html">🔮 AI Wijsheid</a></li> <!-- NIEUWE LINK -->
+        </ul>
+    </nav>
+
+    <h1>🔮 AI Wijsheid Generator</h1>
+    <p class="page-description">Druk op de knop voor een diepzinnige (en grappige!) pseudo-wijsheid over AI, compleet met een unieke afbeelding.</p>
+
+    <div class="wisdom-generator-container">
+        <button id="generateWisdomBtn" class="generate-button">Genereer Nieuwe Wijsheid</button>
+        
+        <div id="loadingIndicator" class="loading-spinner hidden">
+            <div class="spinner"></div>
+            <p>AI aan het filosoferen...</p>
+        </div>
+
+        <div id="wisdomOutput" class="wisdom-output hidden">
+            <img id="wisdomImage" src="" alt="Gegenereerde AI Wijsheid Afbeelding" class="wisdom-image">
+            <p id="wisdomText" class="wisdom-text"></p>
+        </div>
+    </div>
+
+    <script>
+        // Hamburger menu functionaliteit
+        document.getElementById("hamburger-menu").addEventListener("click", function() {
+            document.querySelector(".menu").classList.toggle("active");
+        });
+
+        // AI Wijsheid Generator functionaliteit
+        document.addEventListener('DOMContentLoaded', function() {
+            const generateBtn = document.getElementById('generateWisdomBtn');
+            const loadingIndicator = document.getElementById('loadingIndicator');
+            const wisdomOutput = document.getElementById('wisdomOutput');
+            const wisdomImage = document.getElementById('wisdomImage');
+            const wisdomText = document.getElementById('wisdomText');
+
+            generateBtn.addEventListener('click', generateAIWisdom);
+
+            async function generateAIWisdom() {
+                // Verberg vorige output, toon loading indicator
+                wisdomOutput.classList.add('hidden');
+                loadingIndicator.classList.remove('hidden');
+                generateBtn.disabled = true; // Schakel knop uit tijdens generatie
+
+                try {
+                    // Stap 1: Genereer de wijsheidstekst met Gemini
+                    const textPrompt = "Genereer één grappige, pseudo-wetenschappelijke, spirituele of filosofische spreuk over AI. De spreuk moet kort en pakkend zijn, en een beetje 'mind-blowing' of absurd. Geef alleen de spreuk terug in JSON-formaat.";
+                    
+                    let chatHistory = [];
+                    chatHistory.push({ role: "user", parts: [{ text: textPrompt }] });
+
+                    const textPayload = {
+                        contents: chatHistory,
+                        generationConfig: {
+                            responseMimeType: "application/json",
+                            responseSchema: {
+                                type: "OBJECT",
+                                properties: {
+                                    "saying": { "type": "STRING" }
+                                },
+                                propertyOrdering: ["saying"]
+                            }
+                        }
+                    };
+
+                    const apiKey = ""; // Canvas voorziet deze automatisch
+                    const textApiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+                    
+                    const textResponse = await fetch(textApiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(textPayload)
+                    });
+                    const textResult = await textResponse.json();
+
+                    let generatedSaying = "Kon geen wijsheid genereren. Probeer opnieuw.";
+                    if (textResult.candidates && textResult.candidates.length > 0 &&
+                        textResult.candidates[0].content && textResult.candidates[0].content.parts &&
+                        textResult.candidates[0].content.parts.length > 0) {
+                        try {
+                            const jsonText = textResult.candidates[0].content.parts[0].text;
+                            const parsedJson = JSON.parse(jsonText);
+                            generatedSaying = parsedJson.saying;
+                        } catch (e) {
+                            console.error("Fout bij parsen van Gemini JSON:", e, jsonText);
+                            generatedSaying = "Oeps, de AI sprak in raadsels. Probeer opnieuw!";
+                        }
+                    } else {
+                        console.error("Onverwachte responsstructuur van Gemini:", textResult);
+                    }
+
+                    wisdomText.textContent = generatedSaying;
+
+                    // Stap 2: Genereer de afbeelding met Imagen
+                    const imagePrompt = `Een abstracte, pseudo-wetenschappelijke, spirituele afbeelding die past bij de volgende spreuk: "${generatedSaying}". Stijl: neon, futuristisch, mystiek, met elementen van technologie en natuur.`;
+                    
+                    const imagePayload = { instances: { prompt: imagePrompt }, parameters: { "sampleCount": 1} };
+                    const imageApiUrl = `https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-generate-002:predict?key=${apiKey}`;
+                    
+                    const imageResponse = await fetch(imageApiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(imagePayload)
+                    });
+                    const imageResult = await imageResponse.json();
+
+                    if (imageResult.predictions && imageResult.predictions.length > 0 && imageResult.predictions[0].bytesBase64Encoded) {
+                        const imageUrl = `data:image/png;base64,${imageResult.predictions[0].bytesBase64Encoded}`;
+                        wisdomImage.src = imageUrl;
+                        wisdomImage.alt = generatedSaying;
+                    } else {
+                        console.error("Onverwachte responsstructuur van Imagen:", imageResult);
+                        wisdomImage.src = "https://placehold.co/400x300/333/FFF?text=Afbeelding+niet+geladen"; // Fallback afbeelding
+                        wisdomImage.alt = "Kon geen afbeelding genereren.";
+                    }
+
+                } catch (error) {
+                    console.error("Fout bij het genereren van wijsheid of afbeelding:", error);
+                    wisdomText.textContent = "Er ging iets mis bij het genereren. Controleer je internetverbinding of probeer later opnieuw.";
+                    wisdomImage.src = "https://placehold.co/400x300/333/FFF?text=Fout"; // Fallback afbeelding
+                    wisdomImage.alt = "Fout bij genereren.";
+                } finally {
+                    // Verberg loading indicator, toon output, schakel knop weer in
+                    loadingIndicator.classList.add('hidden');
+                    wisdomOutput.classList.remove('hidden');
+                    generateBtn.disabled = false;
+                }
+            }
+        });
+    </script>
+
+</body>
+</html>

@@ -1067,3 +1067,142 @@ h1 {
         margin-bottom: 10px;
     }
 }
+/* Styling voor de AI Wijsheid Generator pagina */
+.page-description {
+    max-width: 800px;
+    margin: 20px auto 40px auto;
+    font-size: 1.1rem;
+    color: #e0e0e0;
+    line-height: 1.6;
+    text-align: center;
+}
+
+.wisdom-generator-container {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 30px;
+    background-color: #1a1a99; /* Donkerder blauw */
+    border-radius: 15px;
+    box-shadow: 0 0 25px rgba(0, 255, 213, 0.3);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px; /* Ruimte tussen elementen */
+}
+
+.generate-button {
+    padding: 15px 30px;
+    background-color: #00ffd5; /* Neon groen */
+    color: #000;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0, 255, 213, 0.4);
+}
+
+.generate-button:hover {
+    background-color: #00c2a8;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 255, 213, 0.6);
+}
+
+.generate-button:disabled {
+    background-color: #555;
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
+}
+
+.loading-spinner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    color: #00ffd5;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.spinner {
+    border: 4px solid rgba(255, 255, 255, 0.3);
+    border-top: 4px solid #00ffd5;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.wisdom-output {
+    background-color: #0d0d6e; /* Iets donkerder dan container */
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.4);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 25px;
+    width: 100%; /* Vult de breedte van de container */
+    text-align: center;
+}
+
+.wisdom-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+    border: 2px solid rgba(0, 255, 213, 0.3);
+}
+
+.wisdom-text {
+    font-size: 1.5rem; /* Grotere tekst voor de spreuk */
+    color: #f0f0f0;
+    font-style: italic;
+    line-height: 1.5;
+    margin: 0;
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.2);
+}
+
+/* Utility class */
+.hidden {
+    display: none !important;
+}
+
+/* Media queries voor responsiviteit */
+@media (max-width: 768px) {
+    .wisdom-generator-container {
+        margin: 20px auto;
+        padding: 20px;
+        gap: 20px;
+    }
+    .generate-button {
+        font-size: 1rem;
+        padding: 12px 25px;
+    }
+    .wisdom-text {
+        font-size: 1.2rem;
+    }
+    .loading-spinner p {
+        font-size: 1rem;
+    }
+    .spinner {
+        width: 30px;
+        height: 30px;
+    }
+}
+
+@media (max-width: 480px) {
+    .wisdom-text {
+        font-size: 1rem;
+    }
+    .generate-button {
+        width: 100%;
+    }
+}
