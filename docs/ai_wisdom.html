@@ -50,8 +50,7 @@
         </div>
 
         <div id="wisdomOutput" class="wisdom-output hidden">
-            <!-- Placeholder afbeelding in plaats van gegenereerde afbeelding -->
-            <img id="wisdomImage" src="https://placehold.co/400x300/1a1a99/00ffd5?text=AI+Wijsheid" alt="Gegenereerde AI Wijsheid Afbeelding" class="wisdom-image">
+            <img id="wisdomImage" src="" alt="Gegenereerde AI Wijsheid Afbeelding" class="wisdom-image">
             <p id="wisdomText" class="wisdom-text"></p>
         </div>
     </div>
@@ -79,63 +78,37 @@
                 generateBtn.disabled = true; // Schakel knop uit tijdens generatie
 
                 try {
-                    // Stap 1: Genereer de wijsheidstekst met Gemini
-                    const textPrompt = "Genereer één grappige, pseudo-wetenschappelijke, spirituele of filosofische spreuk over AI. De spreuk moet kort en pakkend zijn, en een beetje 'mind-blowing' of absurd. Geef alleen de spreuk terug in JSON-formaat.";
-                    
-                    let chatHistory = [];
-                    chatHistory.push({ role: "user", parts: [{ text: textPrompt }] });
+                    // *** BELANGRIJKE WIJZIGING HIER: Roep nu de EIGEN BACKEND aan! ***
+                    // Deze URL MOET je later aanpassen naar de URL van je Render backend service.
+                    // Voor nu gebruiken we 'http://localhost:3000' als je lokaal test.
+                    // Bijv. "https://ai-wisdom-backend-xyz.render.com/generate-wisdom"
+                    const backendUrl = "http://localhost:3000/generate-wisdom"; 
 
-                    const textPayload = {
-                        contents: chatHistory,
-                        generationConfig: {
-                            responseMimeType: "application/json",
-                            responseSchema: {
-                                type: "OBJECT",
-                                properties: {
-                                    "saying": { "type": "STRING" }
-                                },
-                                propertyOrdering: ["saying"]
-                            }
-                        }
-                    };
-
-                    const apiKey = ""; // Canvas voorziet deze automatisch
-                    const textApiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
-                    
-                    const textResponse = await fetch(textApiUrl, {
+                    const response = await fetch(backendUrl, {
                         method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(textPayload)
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        // We sturen geen specifieke data mee, de backend genereert alles
+                        body: JSON.stringify({}) 
                     });
-                    const textResult = await textResponse.json();
 
-                    let generatedSaying = "Kon geen wijsheid genereren. Probeer opnieuw.";
-                    if (textResult.candidates && textResult.candidates.length > 0 &&
-                        textResult.candidates[0].content && textResult.candidates[0].content.parts &&
-                        textResult.candidates[0].content.parts.length > 0) {
-                        try {
-                            const jsonText = textResult.candidates[0].content.parts[0].text;
-                            const parsedJson = JSON.parse(jsonText);
-                            generatedSaying = parsedJson.saying;
-                        } catch (e) {
-                            console.error("Fout bij parsen van Gemini JSON:", e, jsonText);
-                            generatedSaying = "Oeps, de AI sprak in raadsels. Probeer opnieuw!";
-                        }
-                    } else {
-                        console.error("Onverwachte responsstructuur van Gemini:", textResult);
+                    // Controleer of de response van de backend succesvol was
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        throw new Error(errorData.error || `Backend error: ${response.status}`);
                     }
 
-                    wisdomText.textContent = generatedSaying;
+                    const data = await response.json(); // Ontvang de tekst en afbeelding URL van de backend
 
-                    // Stap 2: Imagen API aanroep is hier WEGGEHAALD voor de workaround
-                    // De placeholder afbeelding wordt nu altijd getoond.
-                    wisdomImage.src = "https://placehold.co/400x300/1a1a99/00ffd5?text=AI+Wijsheid"; // Standaard placeholder
-                    wisdomImage.alt = generatedSaying; // Alt-tekst blijft de gegenereerde wijsheid
+                    wisdomText.textContent = data.saying;
+                    wisdomImage.src = data.imageUrl; // De backend stuurt de base64 data-URL terug
 
                 } catch (error) {
-                    console.error("Fout bij het genereren van wijsheid:", error);
-                    wisdomText.textContent = "Er ging iets mis bij het genereren. Controleer je internetverbinding of probeer later opnieuw.";
-                    wisdomImage.src = "https://placehold.co/400x300/333/FFF?text=Fout"; // Fallback afbeelding bij algemene fout
+                    console.error("Fout bij het genereren van wijsheid via backend:", error);
+                    wisdomText.textContent = "Er ging iets mis bij het genereren. Probeer opnieuw.";
+                    // Toon een standaard fallback afbeelding bij een fout
+                    wisdomImage.src = "https://placehold.co/400x300/333/FFF?text=Fout";
                     wisdomImage.alt = "Fout bij genereren.";
                 } finally {
                     // Verberg loading indicator, toon output, schakel knop weer in
