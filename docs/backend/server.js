@@ -9,16 +9,10 @@ import cors from 'cors'; // Voor het afhandelen van Cross-Origin Resource Sharin
 // Maak een Express app aan
 const app = express();
 
-// *** BELANGRIJKE WIJZIGING HIER: CORS configuratie ***
-// Sta specifiek je frontend domein toe om aanroepen te doen.
-// Dit voorkomt de CORS-fout in de browser.
-const corsOptions = {
-  origin: 'https://eddiecool.nl', // Vervang dit door je daadwerkelijke frontend domein
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', // Toegestane HTTP-methoden
-  credentials: true, // Sta toe dat cookies/autorisatie headers worden meegestuurd
-  optionsSuccessStatus: 204 // Sommige oudere browsers (IE11, various SmartTVs) choke on 200
-};
-app.use(cors(corsOptions)); // Gebruik de geconfigureerde CORS-opties
+// *** TIJDELIJKE WIJZIGING VOOR DEBUGGING: CORS volledig openzetten ***
+// NIET voor productie! Dit staat aanroepen van ELK domein toe.
+// Als dit werkt, weten we dat het probleem in de 'origin' configuratie zat.
+app.use(cors()); 
 
 // Gebruik express.json() middleware om JSON-body's in inkomende verzoeken te parsen
 app.use(express.json());
