@@ -4,31 +4,19 @@
 // Importeer benodigde modules
 import express from 'express'; // Voor het opzetten van de webserver
 import fetch from 'node-fetch'; // Voor het maken van HTTP-aanroepen (naar Google API's)
-// import cors from 'cors'; // DEZE REGEL HEBBEN WE NU NIET MEER NODIG, MAAR LAAT HEM MAAR STAAN ALS COMMENTAAR
+import cors from 'cors'; // Voor het afhandelen van Cross-Origin Resource Sharing (belangrijk voor beveiliging)
 
 // Maak een Express app aan
 const app = express();
 
-// *** BELANGRIJKE WIJZIGING HIER: HANDMATIGE CORS configuratie ***
-// Dit is een tijdelijke, zeer open instelling voor debugging.
-// We voegen de CORS headers handmatig toe aan elke response.
-app.use((req, res, next) => {
-  // Sta aanroepen van ELK domein toe (tijdelijk)
-  res.setHeader('Access-Control-Allow-Origin', '*'); 
-  // Toegestane HTTP-methoden
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-  // Toegestane headers in requests
-  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,Content-Type,Accept');
-  // Sta toe dat cookies/autorisatie headers worden meegestuurd (als je die zou gebruiken)
-  res.setHeader('Access-Control-Allow-Credentials', true);
-  
-  // Handelt "preflight" OPTIONS requests af (browsers sturen deze om CORS-regels te controleren)
-  if (req.method === 'OPTIONS') {
-    return res.sendStatus(204); // Stuur een 204 (No Content) status terug
-  }
-  next(); // Ga door naar de volgende middleware/route handler
-});
-
+// *** VEILIGE CORS configuratie: Staat alleen je eigen frontend domein toe ***
+const corsOptions = {
+  origin: 'https://eddiecool.nl', // STAAT ALLEEN DIT DOMEIN TOE
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', // Toegestane HTTP-methoden
+  credentials: true, // Sta toe dat cookies/autorisatie headers worden meegestuurd
+  optionsSuccessStatus: 204 // Sommige oudere browsers (IE11, various SmartTVs) choke on 200
+};
+app.use(cors(corsOptions)); // Gebruik de geconfigureerde CORS-opties
 
 // Gebruik express.json() middleware om JSON-body's in inkomende verzoeken te parsen
 app.use(express.json());
