@@ -1,10 +1,10 @@
 // server.js
-// VERSIE: Pad C - Prachtige afbeeldingen via Unsplash API
+// VERSIE: Pad C V2 - Willekeurige prachtige afbeeldingen via Unsplash API
 
 import express from 'express';
 import cors from 'cors';
 import { GoogleGenerativeAI } from '@google/generative-ai';
-import fetch from 'node-fetch'; // fetch is al geïnstalleerd, nu gebruiken we het ook voor Unsplash
+import fetch from 'node-fetch';
 
 const app = express();
 
@@ -32,12 +32,12 @@ const textModel = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
 app.post('/generate-wisdom', async (req, res) => {
   try {
-    // Stap 1: Genereer de wijsheidstekst (zoals voorheen)
+    // Stap 1: Genereer de wijsheidstekst
     const textPrompt = "Genereer één grappige, pseudo-wetenschappelijke of filosofische spreuk over AI. De spreuk moet kort en pakkend zijn, maximaal 10 woorden. Geef alleen de spreuk terug in een JSON-object met de sleutel 'saying'.";
     
     const textResult = await textModel.generateContent(textPrompt);
     const responseText = textResult.response.text();
-    let generatedSaying = "De AI is even een blokje om.";
+    let generatedSaying = "De AI is even pauze aan het houden.";
 
     try {
       const cleanedJson = responseText.replace(/```json\n|\n```/g, '').trim();
@@ -47,14 +47,15 @@ app.post('/generate-wisdom', async (req, res) => {
       generatedSaying = responseText.trim();
     }
 
-    // Stap 2: Zoek een passende afbeelding op Unsplash
+    // Stap 2: *** DE WIJZIGING *** Haal nu een WILLEKEURIGE foto op van Unsplash
     let imageUrl = `https://placehold.co/600x400/1a1a2e/f0f0f0?text=Geen+passende+foto+gevonden&font=inter`; // Fallback
     
     try {
-      // We maken een zoekterm met een paar vaste woorden en de nieuwe wijsheid
-      const query = `technology abstract futuristic ${generatedSaying}`;
+      const query = `technology,abstract,futuristic,nature`; // Zoek naar foto's met deze thema's
       const encodedQuery = encodeURIComponent(query);
-      const unsplashUrl = `https://api.unsplash.com/search/photos?query=${encodedQuery}&per_page=1&orientation=landscape`;
+      
+      // We gebruiken nu de /photos/random endpoint. Dit is de sleutel tot de oplossing.
+      const unsplashUrl = `https://api.unsplash.com/photos/random?query=${encodedQuery}&orientation=landscape`;
 
       const unsplashResponse = await fetch(unsplashUrl, {
         headers: {
@@ -64,11 +65,12 @@ app.post('/generate-wisdom', async (req, res) => {
 
       const unsplashData = await unsplashResponse.json();
 
-      if (unsplashData.results && unsplashData.results.length > 0) {
-        imageUrl = unsplashData.results[0].urls.regular; // Pak de URL van de gevonden foto
-        console.log('Unsplash foto gevonden:', imageUrl);
+      // De data structuur van de 'random' endpoint is iets anders
+      if (unsplashData && unsplashData.urls && unsplashData.urls.regular) {
+        imageUrl = unsplashData.urls.regular;
+        console.log('Willekeurige Unsplash foto gevonden:', imageUrl);
       } else {
-        console.log('Geen resultaten van Unsplash voor zoekterm:', query);
+        console.log('Kon geen willekeurige foto van Unsplash ontvangen.');
       }
     } catch (unsplashError) {
       console.error('Fout bij het ophalen van Unsplash foto:', unsplashError);
@@ -76,7 +78,7 @@ app.post('/generate-wisdom', async (req, res) => {
 
     // Stap 3: Stuur alles terug naar de frontend
     res.json({
-      saying: generatedSaying, // De 'dubbele AI:' fix is hier al toegepast
+      saying: generatedSaying,
       imageUrl: imageUrl
     });
 
@@ -88,5 +90,5 @@ app.post('/generate-wisdom', async (req, res) => {
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
-  console.log(`Backend server (Unsplash Versie) luistert op poort ${port}`);
+  console.log(`Backend server (Random Unsplash Versie) luistert op poort ${port}`);
 });
