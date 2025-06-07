@@ -118,3 +118,4 @@ const port = process.env.PORT || 3000;
 // Start de server
 app.listen(port, () => {
   console.log(`Backend server luistert op poort ${port}`);
+});
