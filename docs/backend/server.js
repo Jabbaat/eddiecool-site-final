@@ -1,86 +1,92 @@
 // server.js
-// Dit bestand draait op je backend-server (bijv. Render) en handelt de AI-aanroepen af.
-// VERSIE: Pad B - Gratis afbeeldingen via Placehold.co
+// VERSIE: Pad C - Prachtige afbeeldingen via Unsplash API
 
-// Importeer benodigde modules
-import express from 'express'; // Voor het opzetten van de webserver
-import cors from 'cors'; // Voor het afhandelen van Cross-Origin Resource Sharing
-import { GoogleGenerativeAI } from '@google/generative-ai'; // Google AI SDK
+import express from 'express';
+import cors from 'cors';
+import { GoogleGenerativeAI } from '@google/generative-ai';
+import fetch from 'node-fetch'; // fetch is al geïnstalleerd, nu gebruiken we het ook voor Unsplash
 
-// Maak een Express app aan
 const app = express();
 
-// *** VEILIGE CORS configuratie: Staat alleen je eigen frontend domein toe ***
 const corsOptions = {
-  origin: 'https://eddiecool.nl', // STAAT ALLEEN DIT DOMEIN TOE
+  origin: 'https://eddiecool.nl',
   methods: 'POST',
   credentials: true,
   optionsSuccessStatus: 204
 };
-app.use(cors(corsOptions)); // Gebruik de geconfigureerde CORS-opties
-
-// Gebruik express.json() middleware om JSON-body's in inkomende verzoeken te parsen
+app.use(cors(corsOptions));
 app.use(express.json());
 
-// Haal de API-sleutel op uit de omgevingsvariabelen op Render
-const GENERATIVE_API_KEY = process.env.GENERATIVE_API_KEY; 
+// Haal beide API-sleutels op uit de omgevingsvariabelen
+const GENERATIVE_API_KEY = process.env.GENERATIVE_API_KEY;
+const UNSPLASH_ACCESS_KEY = process.env.UNSPLASH_ACCESS_KEY;
 
-if (!GENERATIVE_API_KEY) {
-  console.error('Fout: GENERATIVE_API_KEY is niet ingesteld in de omgevingsvariabelen.');
+if (!GENERATIVE_API_KEY || !UNSPLASH_ACCESS_KEY) {
+  console.error('Fout: Zorg ervoor dat GENERATIVE_API_KEY en UNSPLASH_ACCESS_KEY zijn ingesteld.');
   process.exit(1); 
 }
 
-// Initialiseer de Generative AI Client met de API key
+// Initialiseer de Google AI Client
 const genAI = new GoogleGenerativeAI(GENERATIVE_API_KEY); 
+const textModel = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-// Haal het text model op. We hebben het image model niet meer nodig in deze versie.
-const textModel = genAI.getGenerativeModel({ model: "gemini-1.5-flash" }); // Gebruik een modern, snel model
-
-// Definieer de POST-route voor het genereren van de wijsheid
 app.post('/generate-wisdom', async (req, res) => {
   try {
-    // 1. Genereer de wijsheidstekst met Gemini
+    // Stap 1: Genereer de wijsheidstekst (zoals voorheen)
     const textPrompt = "Genereer één grappige, pseudo-wetenschappelijke of filosofische spreuk over AI. De spreuk moet kort en pakkend zijn, maximaal 10 woorden. Geef alleen de spreuk terug in een JSON-object met de sleutel 'saying'.";
     
     const textResult = await textModel.generateContent(textPrompt);
     const responseText = textResult.response.text();
+    let generatedSaying = "De AI is even een blokje om.";
 
-    let generatedSaying = "Kon geen wijsheid genereren.";
     try {
-      // Probeer de JSON uit de tekst van de AI te halen
       const cleanedJson = responseText.replace(/```json\n|\n```/g, '').trim();
       const parsedJson = JSON.parse(cleanedJson);
       generatedSaying = parsedJson.saying;
     } catch (e) {
-      console.error("Fout bij parsen van Gemini JSON:", e, responseText);
-      // Als het parsen mislukt, gebruiken we de ruwe tekst als fallback
-      generatedSaying = responseText;
+      generatedSaying = responseText.trim();
     }
 
-    // 2. Genereer een dynamische placeholder afbeelding met de wijsheid erin
-    // Dit vervangt de aanroep naar de betaalde Imagen API.
-    const encodedWisdom = encodeURIComponent(generatedSaying);
-    const imageUrl = `https://placehold.co/600x400/1a1a2e/f0f0f0?text=${encodedWisdom}&font=inter`;
+    // Stap 2: Zoek een passende afbeelding op Unsplash
+    let imageUrl = `https://placehold.co/600x400/1a1a2e/f0f0f0?text=Geen+passende+foto+gevonden&font=inter`; // Fallback
+    
+    try {
+      // We maken een zoekterm met een paar vaste woorden en de nieuwe wijsheid
+      const query = `technology abstract futuristic ${generatedSaying}`;
+      const encodedQuery = encodeURIComponent(query);
+      const unsplashUrl = `https://api.unsplash.com/search/photos?query=${encodedQuery}&per_page=1&orientation=landscape`;
 
-    console.log(`Afbeelding-URL gegenereerd voor wijsheid: "${generatedSaying}"`);
+      const unsplashResponse = await fetch(unsplashUrl, {
+        headers: {
+          'Authorization': `Client-ID ${UNSPLASH_ACCESS_KEY}`
+        }
+      });
 
-    // 3. Stuur de gegenereerde tekst en de nieuwe afbeelding URL terug naar de frontend
+      const unsplashData = await unsplashResponse.json();
+
+      if (unsplashData.results && unsplashData.results.length > 0) {
+        imageUrl = unsplashData.results[0].urls.regular; // Pak de URL van de gevonden foto
+        console.log('Unsplash foto gevonden:', imageUrl);
+      } else {
+        console.log('Geen resultaten van Unsplash voor zoekterm:', query);
+      }
+    } catch (unsplashError) {
+      console.error('Fout bij het ophalen van Unsplash foto:', unsplashError);
+    }
+
+    // Stap 3: Stuur alles terug naar de frontend
     res.json({
-      saying: "AI: " + generatedSaying,
+      saying: generatedSaying, // De 'dubbele AI:' fix is hier al toegepast
       imageUrl: imageUrl
     });
 
   } catch (error) {
-    console.error("Fout in backend /generate-wisdom route:", error);
-    // Stuur een 500 statuscode terug bij een algemene serverfout
-    res.status(500).json({ error: "Serverfout bij het genereren van AI-wijsheid." });
+    console.error("Fout in /generate-wisdom route:", error);
+    res.status(500).json({ error: "Serverfout bij het genereren van wijsheid." });
   }
 });
 
-// Definieer de poort waarop de server zal luisteren
 const port = process.env.PORT || 3000;
-
-// Start de server
 app.listen(port, () => {
-  console.log(`Backend server (Gratis Afbeeldingen Versie) luistert op poort ${port}`);
+  console.log(`Backend server (Unsplash Versie) luistert op poort ${port}`);
 });
