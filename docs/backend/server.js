@@ -1,121 +1,152 @@
 // server.js
-// Dit bestand draait op je backend-server (bijv. Render) en handelt de AI-aanroepen af.
+// V2: Gebruikt een modern multimodaal model voor tekst en beeld in één call.
 
-// Importeer benodigde modules
-import express from 'express'; // Voor het opzetten van de webserver
-import fetch from 'node-fetch'; // Voor het maken van HTTP-aanroepen (naar Google API's)
-import cors from 'cors'; // Voor het afhandelen van Cross-Origin Resource Sharing (belangrijk voor beveiliging)
+import express from 'express';
+import fetch from 'node-fetch';
+import cors from 'cors';
+import { GoogleAuth } from 'google-auth-library'; // Belangrijke toevoeging!
 
-// Maak een Express app aan
 const app = express();
+const port = process.env.PORT || 3000;
 
-// *** VEILIGE CORS configuratie: Staat alleen je eigen frontend domein toe ***
+// *** VEILIGE CORS configuratie ***
 const corsOptions = {
-  origin: 'https://eddiecool.nl', // STAAT ALLEEN DIT DOMEIN TOE
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', // Toegestane HTTP-methoden
-  credentials: true, // Sta toe dat cookies/autorisatie headers worden meegestuurd
-  optionsSuccessStatus: 204 // Sommige oudere browsers (IE11, various SmartTVs) choke on 200
+  origin: 'https://eddiecool.nl',
+  methods: 'POST',
+  credentials: true,
+  optionsSuccessStatus: 204
 };
-app.use(cors(corsOptions)); // Gebruik de geconfigureerde CORS-opties
-
-// Gebruik express.json() middleware om JSON-body's in inkomende verzoeken te parsen
+app.use(cors(corsOptions));
 app.use(express.json());
 
-// Haal de API-sleutel op uit de omgevingsvariabelen
-// Deze variabele (GENERATIVE_API_KEY) stel je in op Render, NIET hier in de code.
-const API_KEY = process.env.GENERATIVE_API_KEY;
+// --- BELANGRIJKE WIJZIGING: GOOGLE AUTH & VERTEX AI INSTELLINGEN ---
+// We gebruiken nu de Vertex AI endpoint, die stabieler is voor beeldgeneratie.
+// Deze variabelen moet je instellen in Render Environment Variables.
+const PROJECT_ID = process.env.GOOGLE_PROJECT_ID; // Je Google Cloud Project ID
+const LOCATION = 'us-central1'; // Standaardlocatie, pas aan indien nodig
+const MODEL_ID = 'gemini-1.5-flash-001'; // Een krachtig en snel multimodaal model
 
-// Controleer of de API-sleutel is ingesteld
-if (!API_KEY) {
-  console.error('Fout: GENERATIVE_API_KEY is niet ingesteld in de omgevingsvariabelen.');
-  // Stop de applicatie als de sleutel ontbreekt, want de API-aanroepen zullen falen.
-  process.exit(1); 
+// Valideer dat de omgevingsvariabelen zijn ingesteld
+if (!PROJECT_ID) {
+  console.error('Fout: GOOGLE_PROJECT_ID is niet ingesteld in de omgevingsvariabelen.');
+  process.exit(1);
 }
 
-// Definieer een POST-route voor het genereren van AI-wijsheid en afbeeldingen
+// Functie om een authenticatie token te krijgen
+async function getAuthToken() {
+  const auth = new GoogleAuth({
+    scopes: 'https://www.googleapis.com/auth/cloud-platform'
+  });
+  const client = await auth.getClient();
+  const accessToken = await client.getAccessToken();
+  return accessToken.token;
+}
+
+// POST-route voor het genereren van wijsheid en afbeelding
 app.post('/generate-wisdom', async (req, res) => {
   try {
-    // 1. Genereer de wijsheidstekst met Gemini
-    const textPrompt = "Genereer één grappige, pseudo-wetenschappelijke, spirituele of filosofische spreuk over AI. De spreuk moet kort en pakkend zijn, en een beetje 'mind-blowing' of absurd. Geef alleen de spreuk terug in JSON-formaat.";
-    
-    const textPayload = {
-      contents: [{ role: "user", parts: [{ text: textPrompt }] }],
-      generationConfig: {
-        responseMimeType: "application/json",
-        responseSchema: {
-          type: "OBJECT",
-          properties: {
-            "saying": { "type": "STRING" }
-          },
-          propertyOrdering: ["saying"]
+    const authToken = await getAuthToken();
+
+    const prompt = `Genereer één grappige, pseudo-wetenschappelijke, spirituele of filosofische spreuk over AI. De spreuk moet kort en pakkend zijn, en een beetje 'mind-blowing' of absurd.
+    Genereer daarnaast een afbeelding die hierbij past. Stijl: abstract, neon, futuristisch, mystiek, met elementen van technologie en natuur.
+    Geef alleen het JSON-object terug met de sleutels "saying" (voor de tekst) en "image" (voor de afbeelding).`;
+
+    const payload = {
+      contents: [{
+        role: "user",
+        parts: [{ text: prompt }]
+      }],
+      tools: [{
+        'function_declarations': [{
+          name: 'generate_wisdom_and_image',
+          description: 'Genereert een wijsheid en een bijpassende afbeelding.',
+          parameters: {
+            type: 'OBJECT',
+            properties: {
+              saying: { type: 'STRING', description: 'De gegenereerde wijsheid over AI.' },
+              image: { type: 'STRING', description: 'Een visuele, abstracte representatie van de wijsheid.' }
+            },
+            required: ['saying', 'image']
+          }
+        }]
+      }],
+      tool_config: {
+        function_calling_config: {
+          mode: 'ANY',
+          allowed_function_names: ['generate_wisdom_and_image']
         }
+      },
+      generation_config: {
+        "temperature": 1,
+        "topP": 0.95,
+        "topK": 64,
+        "maxOutputTokens": 8192,
+        "responseMimeType": "application/json"
       }
     };
-
-    const textApiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`;
     
-    const textResponse = await fetch(textApiUrl, {
+    // De nieuwe, stabiele Vertex AI endpoint
+    const apiUrl = `https://${LOCATION}-aiplatform.googleapis.com/v1/projects/${PROJECT_ID}/locations/${LOCATION}/publishers/google/models/${MODEL_ID}:generateContent`;
+
+    const apiResponse = await fetch(apiUrl, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(textPayload)
+      headers: {
+        'Authorization': `Bearer ${authToken}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload)
     });
-    const textResult = await textResponse.json();
 
-    let generatedSaying = "Kon geen wijsheid genereren.";
-    if (textResult.candidates && textResult.candidates.length > 0 &&
-        textResult.candidates[0].content && textResult.candidates[0].content.parts &&
-        textResult.candidates[0].content.parts.length > 0) {
-      try {
-        const jsonText = textResult.candidates[0].content.parts[0].text;
-        const parsedJson = JSON.parse(jsonText);
-        generatedSaying = parsedJson.saying;
-      } catch (e) {
-        console.error("Fout bij parsen van Gemini JSON op backend:", e, jsonText);
-        generatedSaying = "Oeps, de AI sprak in raadsels op de backend.";
-      }
-    } else {
-      console.error("Onverwachte responsstructuur van Gemini op backend:", textResult);
-      generatedSaying = "Probleem met Gemini respons op backend.";
+    if (!apiResponse.ok) {
+        const errorBody = await apiResponse.text();
+        console.error("Fout van Google API:", apiResponse.status, errorBody);
+        throw new Error(`Google API error: ${apiResponse.status}`);
     }
+    
+    const result = await apiResponse.json();
+    
+    const functionCall = result.candidates[0].content.parts[0].functionCall;
+    const { saying, image } = functionCall.args;
+    
+    // Nu roepen we de Imagen model aan voor de daadwerkelijke beeldgeneratie
+    const imagePayload = {
+        "instances": [
+            { "prompt": `Een abstracte, pseudo-wetenschappelijke, spirituele afbeelding die past bij de volgende spreuk: "${saying}". Stijl: ${image}` }
+        ],
+        "parameters": { "sampleCount": 1 }
+    };
+    
+    const imageApiUrl = `https://${LOCATION}-aiplatform.googleapis.com/v1/projects/${PROJECT_ID}/locations/${LOCATION}/publishers/google/models/imagegeneration@006:predict`;
 
-    // 2. Genereer de afbeelding met Imagen
-    const imagePrompt = `Een abstracte, pseudo-wetenschappelijke, spirituele afbeelding die past bij de volgende spreuk: "${generatedSaying}". Stijl: neon, futuristisch, mystiek, met elementen van technologie en natuur.`;
-    
-    const imagePayload = { instances: { prompt: imagePrompt }, parameters: { "sampleCount": 1} };
-    const imageApiUrl = `https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-generate-002:predict?key=${API_KEY}`;
-    
     const imageResponse = await fetch(imageApiUrl, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(imagePayload)
+        method: 'POST',
+        headers: {
+            'Authorization': `Bearer ${authToken}`,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(imagePayload)
     });
-    const imageResult = await imageResponse.json();
-
-    let imageUrl = "https://placehold.co/400x300/333/FFF?text=Afbeelding+niet+geladen"; // Fallback
-    if (imageResult.predictions && imageResult.predictions.length > 0 && imageResult.predictions[0].bytesBase64Encoded) {
-      imageUrl = `data:image/png;base64,${imageResult.predictions[0].bytesBase64Encoded}`;
-    } else {
-      console.error("Onverwachte responsstructuur van Imagen op backend:", imageResult);
+    
+    if (!imageResponse.ok) {
+        const errorBody = await imageResponse.text();
+        console.error("Fout van Imagen API:", imageResponse.status, errorBody);
+        throw new Error(`Imagen API error: ${imageResponse.status}`);
     }
+    
+    const imageResult = await imageResponse.json();
+    const imageBase64 = imageResult.predictions[0].bytesBase64Encoded;
 
-    // 3. Stuur de gegenereerde tekst en afbeelding URL terug naar de frontend
     res.json({
-      saying: generatedSaying,
-      imageUrl: imageUrl
+      saying: saying,
+      imageUrl: `data:image/png;base64,${imageBase64}`
     });
 
   } catch (error) {
     console.error("Fout in backend /generate-wisdom route:", error);
-    // Stuur een 500 statuscode terug bij een serverfout
-    res.status(500).json({ error: "Serverfout bij het genereren van AI-wijsheid." });
+    res.status(500).json({ error: "Serverfout bij het genereren." });
   }
 });
 
-// Definieer de poort waarop de server zal luisteren
-// Render voorziet een PORT omgevingsvariabele. Lokaal is het 3000.
-const port = process.env.PORT || 3000;
-
-// Start de server
 app.listen(port, () => {
-  console.log(`Backend server luistert op poort ${port}`);
+  console.log(`Backend server V2 luistert op poort ${port}`);
 });
