@@ -128,6 +128,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialiseer de chat met een welkomstbericht
     // Zorg ervoor dat dit alleen gebeurt als de chatDisplay leeg is bij het laden
     if (chatDisplay && chatDisplay.innerHTML.trim() === '') {
-        displayMessage('ai', 'Hello! I am your AI Video Idea Generator. Tell me your theme or mood!');
+        displayMessage('AI: Hallo! Ik ben je AI Video Ideeën Generator. Geef me een thema of sfeer!');
     }
 });
