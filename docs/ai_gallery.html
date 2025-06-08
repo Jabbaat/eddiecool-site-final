@@ -1,14 +1,45 @@
 <!DOCTYPE html>
- <html lang="en">
- <head>
+<html lang="nl">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>eddiecool AI playground</title>
+    <title>AI Galerij - Eddiecool</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/css/lightbox.min.css" rel="stylesheet" />
     <style>
         body {
             font-family: 'Inter', sans-serif;
+        }
+        .gallery {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px; /* Ruimte tussen de afbeeldingen */
+            justify-content: center;
+            padding: 20px;
+        }
+        .gallery-item {
+            width: 250px; /* Vaste breedte voor elk item */
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            overflow: hidden;
+            background-color: #2d2d2d; /* Donkere achtergrond voor het item */
+        }
+        .gallery-item img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 0.3s ease;
+        }
+        .gallery-item:hover img {
+            transform: scale(1.05);
+        }
+        .caption {
+            padding: 10px;
+            font-size: 0.9em;
+            color: #ccc; /* Lichte tekstkleur voor contrast */
         }
     </style>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
@@ -19,93 +50,86 @@
 
       gtag('config', 'G-SYG5T1Z0MV'); // VERVANG DIT DOOR JOUW MEASUREMENT ID
     </script>
-    </head>
-  
-     <meta charset="UTF-8">
-     <title>AI Gallery - Eddiecool</title>
-     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     <link rel="stylesheet" href="style.css">
-     <!-- Lightbox CSS -->
-     <link href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/css/lightbox.min.css" rel="stylesheet" />
- </head>
- <body>
-     <nav>
-   <div class="logo">
-     <a href="index.html">
-       <img src="images/logo.png" alt="Eddiecool Logo" class="logo-img">
-     </a>
-   </div>
-   <span class="hamburger" id="hamburger-menu">&#9776;</span>
-   <ul class="menu">
+</head>
+<body>
+    <nav>
+        <div class="logo">
+          <a href="index.html">
+            <img src="images/logo.png" alt="Eddiecool Logo" class="logo-img">
+          </a>
+        </div>
+        <span class="hamburger" id="hamburger-menu">&#9776;</span>
+        <ul class="menu">
             <li><a href="index.html">🏠 Home</a></li>
-            <li><a href="projects.html">✨ Projects</a></li>
-            <li><a href="ai_gallery.html">🖼️ Gallery</a></li>
-            <li><a href="video_ideas.html">🎬 Video Ideas</a></li>
+            <li><a href="projects.html">✨ Projecten</a></li>
+            <li><a href="ai_gallery.html">🖼️ Galerij</a></li>
+            <li><a href="video_ideas.html">🎬 Video Ideeën</a></li>
             <li><a href="ai_wisdom.html">🔮 AI Wijsheid</a></li>
-            <li><a href="about.html">ℹ️ About</a></li>
+            <li><a href="about.html">ℹ️ Over Mij</a></li>
             <li><a href="contact.html">📧 Contact</a></li>
-    </ul>
- </nav>
-     
-       
- 
-     <h1>🖼️ AI Gallery</h1>
- 
-     <!-- Zet dit hieronder in je ai_gallery.html -->
-     <h2>Tab image to enlarge</h2>
-      <div class="gallery">
-     <a href="images/art1.jpg" data-lightbox="ai-gallery"><img src="images/art1.jpg" alt="Art 1" class="thumbnail" loading="lazy"></a>
-     <a href="images/art2.jpg" data-lightbox="ai-gallery"><img src="images/art2.jpg" alt="Art 2" class="thumbnail" loading="lazy"></a>
-     <a href="images/art3.jpg" data-lightbox="ai-gallery"><img src="images/art3.jpg" alt="Art 3" class="thumbnail" loading="lazy"></a>
-     <a href="images/art4.jpg" data-lightbox="ai-gallery"><img src="images/art4.jpg" alt="Art 4" class="thumbnail" loading="lazy"></a>
-     <a href="images/art5.jpg" data-lightbox="ai-gallery"><img src="images/art5.jpg" alt="Art 5" class="thumbnail" loading="lazy"></a>
-     <a href="images/art6.jpg" data-lightbox="ai-gallery"><img src="images/art6.jpg" alt="Art 6" class="thumbnail" loading="lazy"></a>
-     <a href="images/art7.jpg" data-lightbox="ai-gallery"><img src="images/art7.jpg" alt="Art 7" class="thumbnail" loading="lazy"></a>
-     <a href="images/art8.jpg" data-lightbox="ai-gallery"><img src="images/art8.jpg" alt="Art 8" class="thumbnail" loading="lazy"></a>
-     <a href="images/art9.jpg" data-lightbox="ai-gallery"><img src="images/art9.jpg" alt="Art 9" class="thumbnail" loading="lazy"></a>
-     <a href="images/art10.jpg" data-lightbox="ai-gallery"><img src="images/art10.jpg" alt="Art 10" class="thumbnail" loading="lazy"></a>
-     <a href="images/art11.jpg" data-lightbox="ai-gallery"><img src="images/art11.jpg" alt="Art 11" class="thumbnail" loading="lazy"></a>
-     <a href="images/art12.jpg" data-lightbox="ai-gallery"><img src="images/art12.jpg" alt="Art 12" class="thumbnail" loading="lazy"></a>
-     <a href="images/art13.jpg" data-lightbox="ai-gallery"><img src="images/art13.jpg" alt="Art 13" class="thumbnail" loading="lazy"></a>
-     <a href="images/art14.jpg" data-lightbox="ai-gallery"><img src="images/art14.jpg" alt="Art 14" class="thumbnail" loading="lazy"></a>
-     <a href="images/art15.jpg" data-lightbox="ai-gallery"><img src="images/art15.jpg" alt="Art 15" class="thumbnail" loading="lazy"></a>
-     <a href="images/art16.jpg" data-lightbox="ai-gallery"><img src="images/art16.jpg" alt="Art 16" class="thumbnail" loading="lazy"></a>
-     <a href="images/art17.jpg" data-lightbox="ai-gallery"><img src="images/art17.jpg" alt="Art 17" class="thumbnail" loading="lazy"></a>
-     <a href="images/art18.jpg" data-lightbox="ai-gallery"><img src="images/art18.jpg" alt="Art 18" class="thumbnail" loading="lazy"></a>
-     <a href="images/art19.jpg" data-lightbox="ai-gallery"><img src="images/art19.jpg" alt="Art 19" class="thumbnail" loading="lazy"></a>
-     <a href="images/art20.jpg" data-lightbox="ai-gallery"><img src="images/art20.jpg" alt="Art 20" class="thumbnail" loading="lazy"></a>
-     <a href="images/art21.jpg" data-lightbox="ai-gallery"><img src="images/art21.jpg" alt="Art 21" class="thumbnail" loading="lazy"></a>
-     <a href="images/art22.jpg" data-lightbox="ai-gallery"><img src="images/art22.jpg" alt="Art 22" class="thumbnail" loading="lazy"></a>
-     <a href="images/art23.jpg" data-lightbox="ai-gallery"><img src="images/art23.jpg" alt="Art 23" class="thumbnail" loading="lazy"></a>
-     <a href="images/art24.jpg" data-lightbox="ai-gallery"><img src="images/art24.jpg" alt="Art 24" class="thumbnail" loading="lazy"></a>
-     <a href="images/art25.jpg" data-lightbox="ai-gallery"><img src="images/art25.jpg" alt="Art 25" class="thumbnail" loading="lazy"></a>
-     <a href="images/art26.jpg" data-lightbox="ai-gallery"><img src="images/art26.jpg" alt="Art 26" class="thumbnail" loading="lazy"></a>
-     <a href="images/art27.jpg" data-lightbox="ai-gallery"><img src="images/art27.jpg" alt="Art 27" class="thumbnail" loading="lazy"></a>
-     <a href="images/art28.jpg" data-lightbox="ai-gallery"><img src="images/art28.jpg" alt="Art 28" class="thumbnail" loading="lazy"></a>
-     <a href="images/art29.jpg" data-lightbox="ai-gallery"><img src="images/art29.jpg" alt="Art 29" class="thumbnail" loading="lazy"></a>
-     <a href="images/art30.jpg" data-lightbox="ai-gallery"><img src="images/art30.jpg" alt="Art 30" class="thumbnail" loading="lazy"></a>
-     <a href="images/art31.jpg" data-lightbox="ai-gallery"><img src="images/art31.jpg" alt="Art 31" class="thumbnail" loading="lazy"></a>
-     <a href="images/art32.jpg" data-lightbox="ai-gallery"><img src="images/art32.jpg" alt="Art 32" class="thumbnail" loading="lazy"></a>
-     <a href="images/art33.jpg" data-lightbox="ai-gallery"><img src="images/art33.jpg" alt="Art 33" class="thumbnail" loading="lazy"></a>
-     <a href="images/art34.jpg" data-lightbox="ai-gallery"><img src="images/art34.jpg" alt="Art 34" class="thumbnail" loading="lazy"></a>
-     <a href="images/art35.jpg" data-lightbox="ai-gallery"><img src="images/art35.jpg" alt="Art 35" class="thumbnail" loading="lazy"></a>
-     <a href="images/art36.jpg" data-lightbox="ai-gallery"><img src="images/art36.jpg" alt="Art 36" class="thumbnail" loading="lazy"></a>
-     <a href="images/art37.jpg" data-lightbox="ai-gallery"><img src="images/art37.jpg" alt="Art 37" class="thumbnail" loading="lazy"></a>
-     <a href="images/art38.jpg" data-lightbox="ai-gallery"><img src="images/art38.jpg" alt="Art 38" class="thumbnail" loading="lazy"></a>
-     <a href="images/art39.jpg" data-lightbox="ai-gallery"><img src="images/art39.jpg" alt="Art 39" class="thumbnail" loading="lazy"></a>
-     <a href="images/art40.jpg" data-lightbox="ai-gallery"><img src="images/art40.jpg" alt="Art 40" class="thumbnail" loading="lazy"></a>
- </div>
-   <!-- jQuery + Lightbox JS -->
- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
- <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/js/lightbox.min.js"></script>
-   
- <script>
-     document.getElementById("hamburger-menu").addEventListener("click", function() {
-         var menu = document.querySelector(".menu");
-         menu.classList.toggle("active");
-     });
- </script>
-     
- </body>
- 
- </html>
+        </ul>
+    </nav>
+    
+    <h1>🖼️ AI Galerij</h1>
+    <h2>Klik op een afbeelding om deze te vergroten</h2>
+    
+    <div class="gallery">
+        <div class="gallery-item"><a href="images/art1.jpg" data-lightbox="ai-gallery" data-title="Twee gezichten, één verhaal."><img src="images/art1.jpg" alt="Gespleten portretten" loading="lazy"></a><p class="caption">Twee gezichten, één verhaal.</p></div>
+        <div class="gallery-item"><a href="images/art2.jpg" data-lightbox="ai-gallery" data-title="De verzamelaar en zijn wonderkabinet."><img src="images/art2.jpg" alt="Man in hoge hoed" loading="lazy"></a><p class="caption">De verzamelaar en zijn wonderkabinet.</p></div>
+        <div class="gallery-item"><a href="images/art3.jpg" data-lightbox="ai-gallery" data-title="Welkom in het theater van de AI."><img src="images/art3.jpg" alt="Vrouw in rood circus" loading="lazy"></a><p class="caption">Welkom in het theater van de AI.</p></div>
+        <div class="gallery-item"><a href="images/art4.jpg" data-lightbox="ai-gallery" data-title="Echo's in een verlaten kamer."><img src="images/art4.jpg" alt="Vervallen kamer met geesten" loading="lazy"></a><p class="caption">Echo's in een verlaten kamer.</p></div>
+        <div class="gallery-item"><a href="images/art5.jpg" data-lightbox="ai-gallery" data-title="De oerkracht van een digitale tijger."><img src="images/art5.jpg" alt="Gloeiende tijger" loading="lazy"></a><p class="caption">De oerkracht van een digitale tijger.</p></div>
+        <div class="gallery-item"><a href="images/art6.jpg" data-lightbox="ai-gallery" data-title="Een geest van data dwaalt door het bos."><img src="images/art6.jpg" alt="Blauwe geest in bos" loading="lazy"></a><p class="caption">Een geest van data dwaalt door het bos.</p></div>
+
+        <div class="gallery-item"><a href="images/art7.jpg" data-lightbox="ai-gallery" data-title="Verdwaald in een vergeten herinnering."><img src="images/art7.jpg" alt="Vrouw in witte jurk in ruïne" loading="lazy"></a><p class="caption">Verdwaald in een vergeten herinnering.</p></div>
+        <div class="gallery-item"><a href="images/art8.jpg" data-lightbox="ai-gallery" data-title="Portret van een heer, in lagen opgebouwd."><img src="images/art8.jpg" alt="Man met snor collage" loading="lazy"></a><p class="caption">Portret van een heer, in lagen opgebouwd.</p></div>
+        <div class="gallery-item"><a href="images/art9.jpg" data-lightbox="ai-gallery" data-title="De mars van de droomijsbeer."><img src="images/art9.jpg" alt="Twee etherische olifanten" loading="lazy"></a><p class="caption">De mars van de droomijsbeer.</p></div>
+        <div class="gallery-item"><a href="images/art10.jpg" data-lightbox="ai-gallery" data-title="Mechanische reuzen in een mistig landschap."><img src="images/art10.jpg" alt="Twee mechanische olifanten" loading="lazy"></a><p class="caption">Mechanische reuzen in een mistig landschap.</p></div>
+        <div class="gallery-item"><a href="images/art11.jpg" data-lightbox="ai-gallery" data-title="De tijd tikt in haar gedachten."><img src="images/art11.jpg" alt="Vrouwengezicht met klokwerk" loading="lazy"></a><p class="caption">De tijd tikt in haar gedachten.</p></div>
+        <div class="gallery-item"><a href="images/art12.jpg" data-lightbox="ai-gallery" data-title="De witte tijger, herboren in staal."><img src="images/art12.jpg" alt="Mechanische witte tijger" loading="lazy"></a><p class="caption">De witte tijger, herboren in staal.</p></div>
+        
+        <div class="gallery-item"><a href="images/art13.jpg" data-lightbox="ai-gallery" data-title="Straatbeeld uit een vervlogen, grauwe tijd."><img src="images/art13.jpg" alt="Verlaten straat met oude auto" loading="lazy"></a><p class="caption">Straatbeeld uit een vervlogen, grauwe tijd.</p></div>
+        <div class="gallery-item"><a href="images/art14.jpg" data-lightbox="ai-gallery" data-title="Zelfs met een vriend is de nacht eng."><img src="images/art14.jpg" alt="Kind met teddybeer kijkt naar huis" loading="lazy"></a><p class="caption">Zelfs met een vriend is de nacht eng.</p></div>
+        <div class="gallery-item"><a href="images/art15.jpg" data-lightbox="ai-gallery" data-title="Gebroken spiegel, versplinterde ziel."><img src="images/art15.jpg" alt="Reflectie in gebroken spiegel" loading="lazy"></a><p class="caption">Gebroken spiegel, versplinterde ziel.</p></div>
+        <div class="gallery-item"><a href="images/art16.jpg" data-lightbox="ai-gallery" data-title="Wie wacht er aan het einde van de gang?"><img src="images/art16.jpg" alt="Geest aan het einde van een gang" loading="lazy"></a><p class="caption">Wie wacht er aan het einde van de gang?</p></div>
+        <div class="gallery-item"><a href="images/art17.jpg" data-lightbox="ai-gallery" data-title="De bruid wacht in het schemerlicht."><img src="images/art17.jpg" alt="Geestachtige bruid" loading="lazy"></a><p class="caption">De bruid wacht in het schemerlicht.</p></div>
+        <div class="gallery-item"><a href="images/art18.jpg" data-lightbox="ai-gallery" data-title="Eenzame boom, getuige van de tijd."><img src="images/art18.jpg" alt="Eenzame boom op eiland" loading="lazy"></a><p class="caption">Eenzame boom, getuige van de tijd.</p></div>
+
+        <div class="gallery-item"><a href="images/art19.jpg" data-lightbox="ai-gallery" data-title="Kijkend naar de oneindige kosmos."><img src="images/art19.jpg" alt="Persoon kijkt naar sterrenhemel" loading="lazy"></a><p class="caption">Kijkend naar de oneindige kosmos.</p></div>
+        <div class="gallery-item"><a href="images/art20.jpg" data-lightbox="ai-gallery" data-title="De snaren van haar ziel rocken luid."><img src="images/art20.jpg" alt="Vrouw speelt op een explosieve gitaar" loading="lazy"></a><p class="caption">De snaren van haar ziel rocken luid.</p></div>
+        <div class="gallery-item"><a href="images/art21.jpg" data-lightbox="ai-gallery" data-title="Porseleinen huid, gebroken van binnen."><img src="images/art21.jpg" alt="Vrouw met gebarsten porseleinen huid" loading="lazy"></a><p class="caption">Porseleinen huid, gebroken van binnen.</p></div>
+        <div class="gallery-item"><a href="images/art22.jpg" data-lightbox="ai-gallery" data-title="Verloren in een schaakbord-dimensie."><img src="images/art22.jpg" alt="Figuren in een zwart-wit geblokte kamer" loading="lazy"></a><p class="caption">Verloren in een schaakbord-dimensie.</p></div>
+        <div class="gallery-item"><a href="images/art23.jpg" data-lightbox="ai-gallery" data-title="De excentrieke meester van het circus."><img src="images/art23.jpg" alt="Man met rode hoge hoed" loading="lazy"></a><p class="caption">De excentrieke meester van het circus.</p></div>
+        <div class="gallery-item"><a href="images/art24.jpg" data-lightbox="ai-gallery" data-title="De tijd staat even stil voor hem."><img src="images/art24.jpg" alt="Man in een kamer vol klokken" loading="lazy"></a><p class="caption">De tijd staat even stil voor hem.</p></div>
+        
+        <div class="gallery-item"><a href="images/art25.jpg" data-lightbox="ai-gallery" data-title="Alleen in de mist van een vroege ochtend."><img src="images/art25.jpg" alt="Silhouet in mistig landschap" loading="lazy"></a><p class="caption">Alleen in de mist van een vroege ochtend.</p></div>
+        <div class="gallery-item"><a href="images/art26.jpg" data-lightbox="ai-gallery" data-title="Uit de scherven van het verleden."><img src="images/art26.jpg" alt="Figuur komt uit gebroken glas" loading="lazy"></a><p class="caption">Uit de scherven van het verleden.</p></div>
+        <div class="gallery-item"><a href="images/art27.jpg" data-lightbox="ai-gallery" data-title="De laatste akkoorden van de dag."><img src="images/art27.jpg" alt="Gitaar op strand bij zonsondergang" loading="lazy"></a><p class="caption">De laatste akkoorden van de dag.</p></div>
+        <div class="gallery-item"><a href="images/art28.jpg" data-lightbox="ai-gallery" data-title="Schimmen die voor eeuwig ronddwalen."><img src="images/art28.jpg" alt="Twee geesten in een gang" loading="lazy"></a><p class="caption">Schimmen die voor eeuwig ronddwalen.</p></div>
+        <div class="gallery-item"><a href="images/art29.jpg" data-lightbox="ai-gallery" data-title="De zwaarte van onuitgesproken woorden."><img src="images/art29.jpg" alt="Vrouw in diepe gedachten" loading="lazy"></a><p class="caption">De zwaarte van onuitgesproken woorden.</p></div>
+        <div class="gallery-item"><a href="images/art30.jpg" data-lightbox="ai-gallery" data-title="Haar ware kleuren komen naar boven."><img src="images/art30.jpg" alt="Vrouw met gebarsten verf op gezicht" loading="lazy"></a><p class="caption">Haar ware kleuren komen naar boven.</p></div>
+
+        <div class="gallery-item"><a href="images/art31.jpg" data-lightbox="ai-gallery" data-title="Een ijzige blik die alles doorziet."><img src="images/art31.jpg" alt="Vrouw met kort wit haar" loading="lazy"></a><p class="caption">Een ijzige blik die alles doorziet.</p></div>
+        <div class="gallery-item"><a href="images/art32.jpg" data-lightbox="ai-gallery" data-title="Een canvas van huid en emotie."><img src="images/art32.jpg" alt="Vrouwengezicht met verfstreken" loading="lazy"></a><p class="caption">Een canvas van huid en emotie.</p></div>
+        <div class="gallery-item"><a href="images/art33.jpg" data-lightbox="ai-gallery" data-title="De pure essentie van muziek."><img src="images/art33.jpg" alt="Vrouw speelt gitaar in zwart-wit" loading="lazy"></a><p class="caption">De pure essentie van muziek.</p></div>
+        <div class="gallery-item"><a href="images/art34.jpg" data-lightbox="ai-gallery" data-title="Niet elke lach is vriendelijk."><img src="images/art34.jpg" alt="Griezelige kleurrijke clown" loading="lazy"></a><p class="caption">Niet elke lach is vriendelijk.</p></div>
+        <div class="gallery-item"><a href="images/art35.jpg" data-lightbox="ai-gallery" data-title="Samen op weg naar het einde van de wereld."><img src="images/art35.jpg" alt="Twee figuren in een desolaat landschap" loading="lazy"></a><p class="caption">Samen op weg naar het einde van de wereld.</p></div>
+        <div class="gallery-item"><a href="images/art36.jpg" data-lightbox="ai-gallery" data-title="Verstilde elegantie in marmer."><img src="images/art36.jpg" alt="Standbeelden in een lichte kamer" loading="lazy"></a><p class="caption">Verstilde elegantie in marmer.</p></div>
+        
+        <div class="gallery-item"><a href="images/art37.jpg" data-lightbox="ai-gallery" data-title="Kathedraal van een vergeten tijdperk."><img src="images/art37.jpg" alt="Groot koepelgebouw" loading="lazy"></a><p class="caption">Kathedraal van een vergeten tijdperk.</p></div>
+        <div class="gallery-item"><a href="images/art38.jpg" data-lightbox="ai-gallery" data-title="Dansend op het ritme van de nacht."><img src="images/art38.jpg" alt="Ballerina danst onder de maan" loading="lazy"></a><p class="caption">Dansend op het ritme van de nacht.</p></div>
+        <div class="gallery-item"><a href="images/art39.jpg" data-lightbox="ai-gallery" data-title="Gedachten en gezichten vloeien samen."><img src="images/art39.jpg" alt="Dubbel portret van vrouw" loading="lazy"></a><p class="caption">Gedachten en gezichten vloeien samen.</p></div>
+        <div class="gallery-item"><a href="images/art40.jpg" data-lightbox="ai-gallery" data-title="Alleen in de straten van de toekomst."><img src="images/art40.jpg" alt="Figuur in een futuristische neon stad" loading="lazy"></a><p class="caption">Alleen in de straten van de toekomst.</p></div>
+    </div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/js/lightbox.min.js"></script>
+    
+    <script>
+      document.getElementById("hamburger-menu").addEventListener("click", function() {
+          var menu = document.querySelector(".menu");
+          menu.classList.toggle("active");
+      });
+    </script>
+</body>
+</html>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🎬 Video Idea Generator - Eddiecool AI Playground</title>
+    <title>🎬 Video Ideeën Generator - Eddiecool AI Speelplaats</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css"> 
     
@@ -27,46 +27,52 @@
         <span class="hamburger" id="hamburger-menu">&#9776;</span>
         <ul class="menu">
             <li><a href="index.html">🏠 Home</a></li>
-            <li><a href="projects.html">✨ Projects</a></li>
-            <li><a href="ai_gallery.html">🎨 Gallery</a></li>
-            <li><a href="video_ideas.html">🎬 Video Ideas</a></li>
+            <li><a href="projects.html">✨ Projecten</a></li>
+            <li><a href="ai_gallery.html">🖼️ Galerij</a></li>
+            <li><a href="video_ideas.html">🎬 Video Ideeën</a></li>
             <li><a href="ai_wisdom.html">🔮 AI Wijsheid</a></li>
-            <li><a href="about.html">💡 About</a></li>
-            <li><a href="contact.html">✉️ Contact</a></li>
+            <li><a href="about.html">ℹ️ Over Mij</a></li>
+            <li><a href="contact.html">📧 Contact</a></li>
         </ul>
     </nav>
 
     <main class="content-container">
-        <h1>🎬 Video Idea Generator</h1>
-        <p>Type in a mood or theme to start generating video ideas. You can keep chatting to refine your ideas!</p>
+        <h1>🎬 Video Ideeën Generator</h1>
+        <p>Typ een sfeer of thema in om video-ideeën te genereren. Je kunt blijven chatten om je ideeën te verfijnen!</p>
         
         <div class="quick-start-ideas">
-            <h2>🚀 Not Sure Where to Start? Try These Popular Themes:</h2>
+            <h2>🚀 Weet je niet waar je moet beginnen? Probeer deze populaire thema's:</h2>
             <div class="theme-buttons">
-                <button class="theme-btn" data-theme="Funny">Funny</button>
-                <button class="theme-btn" data-theme="Educational">Educational</button>
+                <button class="theme-btn" data-theme="Funny">Grappig</button>
+                <button class="theme-btn" data-theme="Educational">Educatief</button>
                 <button class="theme-btn" data-theme="Trending">Trending</button>
-                <button class="theme-btn" data-theme="Creative">Creative</button>
-                <button class="theme-btn" data-theme="Challenge">Challenge</button>
+                <button class="theme-btn" data-theme="Creative">Creatief</button>
+                <button class="theme-btn" data-theme="Challenge">Uitdaging</button>
                 <button class="theme-btn" data-theme="Tutorial">Tutorial</button>
             </div>
-            <p class="theme-instruction">Click any button to instantly fill a theme, or type your own below ↓</p>
+            <p class="theme-instruction">Klik op een knop om direct een thema in te vullen, of typ hieronder je eigen thema ↓</p>
         </div>
         <div class="idea-generator">
-            <h3>Generate Your Own Idea:</h3>
+            <h3>Genereer je eigen idee:</h3>
             <div id="chatDisplay" class="chat-display">
                 </div>
 
             <div class="chat-input-area">
-                <input type="text" id="userInput" placeholder="E.g., space horror film with a time loop" aria-label="Enter your video idea theme">
-                <button id="sendButton">Generate Idea</button>
+                <input type="text" id="userInput" placeholder="Bijv., een horrorfilm in de ruimte met een tijdlus" aria-label="Voer je video-idee thema in">
+                <button id="sendButton">Genereer Idee</button>
             </div>
-            <button id="clearChatButton" class="clear-chat-button">Clear Chat</button>
+            <button id="clearChatButton" class="clear-chat-button">Chat Wissen</button>
         </div>
 
     </main>
 
     <script src="video_ideas.js"></script>
+    <script>
+        // Script voor hamburger menu (indien niet in video_ideas.js)
+        document.getElementById("hamburger-menu").addEventListener("click", function() {
+            document.querySelector(".menu").classList.toggle("active");
+        });
+    </script>
 
 </body>
 </html>
