@@ -167,7 +167,7 @@
                 
                 const prompt = constructPoemPrompt();
                 const payload = { contents: [{ role: "user", parts: [{ text: prompt }] }] };
-                const apiKey = ""; // Wordt door de omgeving ingevoegd
+                const apiKey = ""; // If you want to use models other than gemini-2.5-flash-preview-05-20 or imagen-3.0-generate-002, provide an API key here. Otherwise, leave this as-is.
                 const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
 
                 try {
@@ -176,16 +176,24 @@
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(payload)
                     });
-                    if (!response.ok) throw new Error(`API Fout: ${response.status}`);
+                    
+                    if (!response.ok) {
+                        const errorBody = await response.text();
+                        throw new Error(`API Fout: ${response.status} - ${errorBody}`);
+                    }
+
                     const result = await response.json();
-                    if (result.candidates && result.candidates[0].content.parts[0]) {
+                    
+                    if (result.candidates && result.candidates.length > 0 && result.candidates[0].content && result.candidates[0].content.parts && result.candidates[0].content.parts.length > 0) {
                         displayPoem(result.candidates[0].content.parts[0].text);
                     } else {
+                        // Handle cases where the response structure is unexpected or content is missing
+                        console.error("Onverwachte API respons structuur:", result);
                         throw new Error("Antwoord was leeg of onjuist.");
                     }
                 } catch (error) {
                     console.error("Fout bij het ophalen van gedicht:", error);
-                    poemOutput.innerHTML = `<p>De muze zwijgt. Probeer het later opnieuw.</p>`;
+                    poemOutput.innerHTML = `<p class="text-red-400">De muze zwijgt. Fout: ${error.message}. Probeer het later opnieuw.</p>`;
                 } finally {
                     isGenerating = false;
                 }
@@ -223,3 +231,4 @@
     </script>
 </body>
 </html>
+
