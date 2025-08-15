@@ -110,7 +110,7 @@
             const backBtn = document.getElementById('back-btn');
 
             // --- Status ---
-            let currentCategory = null;
+            let currentCategoryKey = null;
             let isGenerating = false;
 
             // --- Data: Categorieën ---
@@ -137,9 +137,10 @@
                 }
             }
 
-            function selectCategory(categoryKey) {
+            function selectCategory(key) {
                 if (isGenerating) return;
-                currentCategory = categories[categoryKey];
+                currentCategoryKey = key;
+                const currentCategory = categories[key];
                 
                 body.className = currentCategory.theme;
                 poemOutput.className = `text-lg md:text-xl lg:text-2xl leading-relaxed md:leading-loose text-center mb-12 min-h-[300px] ${currentCategory.font}`;
@@ -156,43 +157,33 @@
                 body.className = 'theme-base'; // Herstel naar het standaardthema
             }
 
-            function constructPoemPrompt() {
-                return `Je bent een creatieve AI-persona, een fusie van een filosoof en een dichter. Je doel is om diepgaande, tot nadenken stemmende poëzie te genereren. **Regels:** 1. **Taal:** Schrijf in het Nederlands. 2. **Stijl:** Schrijf in verfijnd, elegant vrij vers. Vermijd simpele rijmschema's. 3. **Structuur:** 3 tot 5 strofen. 4. **Inhoud:** Bevat een centrale metafoor, rijke zintuiglijke beeldspraak en een "volta" (wending) in de laatste strofe. 5. **Thema:** Geïnspireerd op "${currentCategory.name}". 6. **Symboliek:** Verweef concepten gerelateerd aan: ${currentCategory.symbols}. 7. **Uitvoerformaat:** ALLEEN de tekst van het gedicht. Geen titel of inleiding.`;
-            }
-
             async function generatePoem() {
-                if (isGenerating) return;
+                if (isGenerating || !currentCategoryKey) return;
                 isGenerating = true;
+                const currentCategory = categories[currentCategoryKey];
                 poemOutput.innerHTML = `<div class="loader ${currentCategory.font}">De muze overdenkt...</div>`;
                 
-                const prompt = constructPoemPrompt();
-                const payload = { contents: [{ role: "user", parts: [{ text: prompt }] }] };
-                const apiKey = ""; // If you want to use models other than gemini-2.5-flash-preview-05-20 or imagen-3.0-generate-002, provide an API key here. Otherwise, leave this as-is.
-                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+                // URL naar je backend. Voor lokaal testen is dit meestal http://localhost:3000
+                // Pas dit aan naar je Render URL als je het online zet.
+                const backendUrl = 'http://localhost:3000/generate-poem';
 
                 try {
-                    const response = await fetch(apiUrl, {
+                    const response = await fetch(backendUrl, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(payload)
+                        body: JSON.stringify({ categoryKey: currentCategoryKey }) // Stuur de gekozen categorie mee
                     });
                     
                     if (!response.ok) {
-                        const errorBody = await response.text();
-                        throw new Error(`API Fout: ${response.status} - ${errorBody}`);
+                        const errorBody = await response.json();
+                        throw new Error(errorBody.error || `Backend Fout: ${response.status}`);
                     }
 
                     const result = await response.json();
-                    
-                    if (result.candidates && result.candidates.length > 0 && result.candidates[0].content && result.candidates[0].content.parts && result.candidates[0].content.parts.length > 0) {
-                        displayPoem(result.candidates[0].content.parts[0].text);
-                    } else {
-                        // Handle cases where the response structure is unexpected or content is missing
-                        console.error("Onverwachte API respons structuur:", result);
-                        throw new Error("Antwoord was leeg of onjuist.");
-                    }
+                    displayPoem(result.poem);
+
                 } catch (error) {
-                    console.error("Fout bij het ophalen van gedicht:", error);
+                    console.error("Fout bij het ophalen van gedicht via backend:", error);
                     poemOutput.innerHTML = `<p class="text-red-400">De muze zwijgt. Fout: ${error.message}. Probeer het later opnieuw.</p>`;
                 } finally {
                     isGenerating = false;
@@ -221,7 +212,7 @@
 
             // --- Event Listeners ---
             regenerateBtn.addEventListener('click', () => {
-                if (!isGenerating && currentCategory) generatePoem();
+                if (!isGenerating && currentCategoryKey) generatePoem();
             });
             backBtn.addEventListener('click', goBackToCategories);
 
@@ -231,4 +222,5 @@
     </script>
 </body>
 </html>
+
 

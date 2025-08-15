@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>3D Spirograaf Simulator</title>
+    <title>3D Spirograaf Simulator (Lagen & Zoom)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -11,12 +11,14 @@
     <style>
         body {
             font-family: 'Inter', sans-serif;
+            /* Zorgt ervoor dat de body zelf kan scrollen */
         }
         #spiroContainer {
             width: 100%;
             height: auto;
             aspect-ratio: 1 / 1;
             cursor: move;
+            /* Deze regel voorkomt scrollen ALLEEN als je het 3D canvas aanraakt */
             touch-action: none; 
         }
         input[type="range"] {
@@ -56,16 +58,15 @@
         <div class="flex flex-col lg:flex-row gap-8">
             
             <div class="w-full lg:w-2/3 flex-shrink-0">
-                <!-- AANGEPAST: De achtergrondkleur class is hier gewijzigd -->
                 <div id="spiroContainer" class="bg-indigo-900 rounded-lg border-2 border-gray-200"></div>
             </div>
 
             <div class="w-full lg:w-1/3 flex flex-col">
                 <!-- Tabs -->
                 <div class="flex border-b border-gray-200 mb-4">
-                    <button class="tab flex-1 py-3 px-2 text-center font-semibold text-gray-600 border-b-4 border-transparent transition" data-index="0">Figuur 1</button>
-                    <button class="tab flex-1 py-3 px-2 text-center font-semibold text-gray-600 border-b-4 border-transparent transition" data-index="1">Figuur 2</button>
-                    <button class="tab flex-1 py-3 px-2 text-center font-semibold text-gray-600 border-b-4 border-transparent transition" data-index="2">Figuur 3</button>
+                    <button class="tab flex-1 py-3 px-2 text-center font-semibold text-gray-600 border-b-4 border-transparent transition" data-index="0">Figuur 1 (Voor)</button>
+                    <button class="tab flex-1 py-3 px-2 text-center font-semibold text-gray-600 border-b-4 border-transparent transition" data-index="1">Figuur 2 (Midden)</button>
+                    <button class="tab flex-1 py-3 px-2 text-center font-semibold text-gray-600 border-b-4 border-transparent transition" data-index="2">Figuur 3 (Achter)</button>
                 </div>
 
                 <div class="flex flex-col space-y-6">
@@ -104,7 +105,13 @@
                     </div>
                     <div>
                          <h2 class="text-xl font-bold mb-4">Acties</h2>
-                         <button id="clearBtn" class="w-full bg-red-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-red-700 transition-colors duration-300">Alles Wissen</button>
+                         <div class="space-y-3">
+                            <div class="grid grid-cols-2 gap-3">
+                                <button id="zoomOutBtn" class="flex items-center justify-center w-full bg-gray-200 text-gray-800 font-bold py-3 px-4 rounded-lg hover:bg-gray-300 transition-colors duration-300">-</button>
+                                <button id="zoomInBtn" class="flex items-center justify-center w-full bg-gray-200 text-gray-800 font-bold py-3 px-4 rounded-lg hover:bg-gray-300 transition-colors duration-300">+</button>
+                            </div>
+                            <button id="clearBtn" class="w-full bg-red-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-red-700 transition-colors duration-300">Alles Wissen</button>
+                         </div>
                     </div>
                 </div>
             </div>
@@ -125,27 +132,20 @@
 
         // --- DOM Elementen ---
         const container = document.getElementById('spiroContainer');
-        const sliders = {
-            R: document.getElementById('R'),
-            r: document.getElementById('r'),
-            d: document.getElementById('d'),
-            rotation: document.getElementById('rotation')
-        };
-        const values = {
-            R: document.getElementById('R_value'),
-            r: document.getElementById('r_value'),
-            d: document.getElementById('d_value'),
-            rotation: document.getElementById('rotation_value')
-        };
+        const sliders = { R: document.getElementById('R'), r: document.getElementById('r'), d: document.getElementById('d'), rotation: document.getElementById('rotation') };
+        const values = { R: document.getElementById('R_value'), r: document.getElementById('r_value'), d: document.getElementById('d_value'), rotation: document.getElementById('rotation_value') };
         const tabs = document.querySelectorAll('.tab');
         const modeInsideBtn = document.getElementById('modeInside');
         const modeOutsideBtn = document.getElementById('modeOutside');
         const colorPalette = document.getElementById('color-palette');
         const clearBtn = document.getElementById('clearBtn');
+        const zoomInBtn = document.getElementById('zoomInBtn');
+        const zoomOutBtn = document.getElementById('zoomOutBtn');
         
         // --- 3D Scene Setup ---
         let scene, camera, renderer, controls;
-        let figureObjects = []; // Holds THREE.Mesh objects
+        let figureObjects = [];
+        const zPositions = [10, 0, -10]; // Diepte voor elke laag
         
         // --- Globale Staat ---
         let activeFigureIndex = 0;
@@ -162,54 +162,41 @@
         }
 
         function createResetFigures() {
-            const minR = parseInt(sliders.R.min);
-            const minr = parseInt(sliders.r.min);
-            const mind = parseInt(sliders.d.min);
-            const minRotation = parseInt(sliders.rotation.min);
             return [
-                { R: minR, r: minr, d: mind, rotation: minRotation, color: '#60A5FA', mode: 'inside' },
-                { R: minR, r: minr, d: mind, rotation: minRotation, color: '#A3E635', mode: 'inside' },
-                { R: minR, r: minr, d: mind, rotation: minRotation, color: '#F87171', mode: 'outside' }
+                { R: 10, r: 1, d: 1, rotation: 0, color: '#60A5FA', mode: 'inside' },
+                { R: 10, r: 1, d: 1, rotation: 0, color: '#A3E635', mode: 'inside' },
+                { R: 10, r: 1, d: 1, rotation: 0, color: '#F87171', mode: 'outside' }
             ];
         }
 
         // --- Initialisatie ---
         function init() {
-            // Scene
             scene = new THREE.Scene();
-            
-            // Renderer
             renderer = new THREE.WebGLRenderer({ antialias: true });
             renderer.setPixelRatio(window.devicePixelRatio);
             renderer.setSize(container.clientWidth, container.clientHeight);
-            // AANGEPAST: De achtergrondkleur van de 3D scene is hier gewijzigd
-            renderer.setClearColor(0x312e81); // Donker indigo
+            renderer.setClearColor(0x312e81);
             container.appendChild(renderer.domElement);
 
-            // Camera
             camera = new THREE.PerspectiveCamera(50, container.clientWidth / container.clientHeight, 0.1, 1000);
             camera.position.set(0, 0, 80);
             
-            // Controls
             controls = new OrbitControls(camera, renderer.domElement);
             controls.enableDamping = true;
-            controls.dampingFactor = 0.05;
 
-            // Lights
             scene.add(new THREE.AmbientLight(0xcccccc, 1.5));
             const dirLight = new THREE.DirectionalLight(0xffffff, 2.5);
             dirLight.position.set(5, 5, 10);
             scene.add(dirLight);
 
-            // Data en UI
             figures = createInitialFigures();
             populateColorPalette();
             
-            // Create 3D objects
             for (let i = 0; i < 3; i++) {
-                const mesh = createSpirographMesh(figures[i]);
+                const mesh = new THREE.Mesh(); // Start with an empty mesh
                 figureObjects.push(mesh);
                 scene.add(mesh);
+                updateFigure(i); // Create and position the initial figure
             }
             
             setActiveFigure(0);
@@ -219,10 +206,9 @@
 
         // --- 3D Functies ---
         function createSpirographMesh(fig) {
-            const { R, r, d, rotation, color, mode } = fig;
-            
+            const { R, r, d, color, mode } = fig;
             const points = [];
-            if (r === 0) return new THREE.Mesh(); // Return empty mesh if r is zero
+            if (r === 0) return new THREE.Mesh();
 
             const commonDivisor = gcd(Math.abs(R), Math.abs(r));
             const revolutions = Math.abs(r) / commonDivisor;
@@ -234,7 +220,7 @@
                     const R_op_r = (R - r) / r;
                     x = (R - r) * Math.cos(t) + d * Math.cos(t * R_op_r);
                     y = (R - r) * Math.sin(t) - d * Math.sin(t * R_op_r);
-                } else { // 'outside'
+                } else {
                     const R_op_r = (R + r) / r;
                     x = (R + r) * Math.cos(t) - d * Math.cos(t * R_op_r);
                     y = (R + r) * Math.sin(t) - d * Math.sin(t * R_op_r);
@@ -246,9 +232,7 @@
             const curve = new THREE.CatmullRomCurve3(points);
             const geometry = new THREE.TubeGeometry(curve, 256, 0.3, 8, false);
             const material = new THREE.MeshStandardMaterial({ color: new THREE.Color(color), roughness: 0.5, metalness: 0.2 });
-            const mesh = new THREE.Mesh(geometry, material);
-            mesh.rotation.z = rotation * Math.PI / 180;
-            return mesh;
+            return new THREE.Mesh(geometry, material);
         }
 
         function updateFigure(index) {
@@ -260,6 +244,8 @@
             scene.remove(oldMesh);
 
             const newMesh = createSpirographMesh(fig);
+            newMesh.rotation.z = fig.rotation * Math.PI / 180;
+            newMesh.position.z = zPositions[index]; // Zet de diepte van de laag
             figureObjects[index] = newMesh;
             scene.add(newMesh);
         }
@@ -270,7 +256,7 @@
             renderer.render(scene, camera);
         }
 
-        // --- UI Functies ---
+        // --- UI & Event Handlers ---
         function setActiveFigure(index) {
             activeFigureIndex = index;
             tabs.forEach((tab, i) => tab.classList.toggle('active', i === index));
@@ -302,7 +288,6 @@
         
         function gcd(a, b) { return b ? gcd(b, a % b) : a; }
 
-        // --- Event Handlers ---
         function handleSliderChange(e) {
             const prop = e.target.id;
             figures[activeFigureIndex][prop] = parseFloat(e.target.value);
@@ -328,23 +313,25 @@
             renderer.setSize(container.clientWidth, container.clientHeight);
         }
 
+        const ZOOM_SPEED = 4;
+        function zoom(direction) {
+            camera.position.z += direction * ZOOM_SPEED;
+        }
+
         function addEventListeners() {
-            for (const key in sliders) {
-                sliders[key].addEventListener('input', handleSliderChange);
-            }
+            for (const key in sliders) { sliders[key].addEventListener('input', handleSliderChange); }
             tabs.forEach(tab => tab.addEventListener('click', () => setActiveFigure(parseInt(tab.dataset.index))));
             [modeInsideBtn, modeOutsideBtn].forEach(btn => btn.addEventListener('click', handleModeChange));
             clearBtn.addEventListener('click', () => {
                 figures = createResetFigures();
-                for(let i = 0; i < 3; i++) {
-                    updateFigure(i);
-                }
+                for(let i = 0; i < 3; i++) { updateFigure(i); }
                 setActiveFigure(0);
             });
+            zoomInBtn.addEventListener('click', () => zoom(-1));
+            zoomOutBtn.addEventListener('click', () => zoom(1));
             window.addEventListener('resize', handleResize);
         }
 
-        // --- Start ---
         init();
     </script>
 </body>
