@@ -1,94 +1,78 @@
-// server.js
-// VERSIE: Pad C V2 - Willekeurige prachtige afbeeldingen via Unsplash API
+// server.js - De juiste, veilige back-end voor de Poem Creator
 
 import express from 'express';
-import cors from 'cors';
-import { GoogleGenerativeAI } from '@google/generative-ai';
 import fetch from 'node-fetch';
+import dotenv from 'dotenv';
+import cors from 'cors';
+
+dotenv.config(); // Laad de variabelen uit het .env bestand
 
 const app = express();
+const port = process.env.PORT || 3000;
 
-const corsOptions = {
-  origin: 'https://eddiecool.nl',
-  methods: 'POST',
-  credentials: true,
-  optionsSuccessStatus: 204
-};
-app.use(cors(corsOptions));
+// Middleware
+app.use(cors()); 
 app.use(express.json());
 
-// Haal beide API-sleutels op uit de omgevingsvariabelen
-const GENERATIVE_API_KEY = process.env.GENERATIVE_API_KEY;
-const UNSPLASH_ACCESS_KEY = process.env.UNSPLASH_ACCESS_KEY;
+// Data: Categorieën
+const categories = {
+    spirituality: { name: 'Spiritualiteit', symbols: 'innerlijk licht, de adem als anker, de stilte tussen gedachten, de eenheid van alles, de ziel als reiziger' },
+    nature: { name: 'Gefluister van de Natuur', symbols: 'oude bomen, kosmisch stof in een zonnestraal, de stille taal van steen, seizoenscycli' },
+    philosophy: { name: 'Filosofie', symbols: 'doolhoven en spiegels, het schip van Theseus, schaduwen op een grotmuur, de paradox van tijd, de aard van het bewustzijn' },
+    melancholy: { name: 'Omhelzing van Melancholie', symbols: 'koude regen op glas, vergeten voorwerpen op zolder, het fysieke gewicht van herinnering, verre muziek' },
+    universe: { name: 'Universum', symbols: 'nevels van creatie, de echo van de oerknal, de dans van planeten, de donkere materie die ons bindt, sterrenlicht als oeroude herinnering' },
+    modern: { name: 'Het Moderne Labyrint', symbols: 'digitale geesten in de machine, de geometrie van betonnen jungles, de isolerende ruis van informatie' }
+};
 
-if (!GENERATIVE_API_KEY || !UNSPLASH_ACCESS_KEY) {
-  console.error('Fout: Zorg ervoor dat GENERATIVE_API_KEY en UNSPLASH_ACCESS_KEY zijn ingesteld.');
-  process.exit(1); 
+// Functie om de prompt te bouwen
+function constructPoemPrompt(category) {
+    return `Je bent een creatieve AI-persona, een fusie van een filosoof en een dichter. Je doel is om diepgaande, tot nadenken stemmende poëzie te genereren. **Regels:** 1. **Taal:** Schrijf in het Nederlands. 2. **Stijl:** Schrijf in verfijnd, elegant vrij vers. Vermijd simpele rijmschema's. 3. **Structuur:** 3 tot 5 strofen. 4. **Inhoud:** Bevat een centrale metafoor, rijke zintuiglijke beeldspraak en een "volta" (wending) in de laatste strofe. 5. **Thema:** Geïnspireerd op "${category.name}". 6. **Symboliek:** Verweef concepten gerelateerd aan: ${category.symbols}. 7. **Uitvoerformaat:** ALLEEN de tekst van het gedicht. Geen titel of inleiding.`;
 }
 
-// Initialiseer de Google AI Client
-const genAI = new GoogleGenerativeAI(GENERATIVE_API_KEY); 
-const textModel = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-
-app.post('/generate-wisdom', async (req, res) => {
-  try {
-    // Stap 1: Genereer de wijsheidstekst
-    const textPrompt = "Genereer één grappige, pseudo-wetenschappelijke of filosofische spreuk over AI. De spreuk moet kort en pakkend zijn, maximaal 10 woorden. Geef alleen de spreuk terug in een JSON-object met de sleutel 'saying'.";
-    
-    const textResult = await textModel.generateContent(textPrompt);
-    const responseText = textResult.response.text();
-    let generatedSaying = "De AI is even pauze aan het houden.";
-
+// API Route
+app.post('/generate-poem', async (req, res) => {
     try {
-      const cleanedJson = responseText.replace(/```json\n|\n```/g, '').trim();
-      const parsedJson = JSON.parse(cleanedJson);
-      generatedSaying = parsedJson.saying;
-    } catch (e) {
-      generatedSaying = responseText.trim();
-    }
+        const { categoryKey } = req.body;
+        const category = categories[categoryKey];
 
-    // Stap 2: *** DE WIJZIGING *** Haal nu een WILLEKEURIGE foto op van Unsplash
-    let imageUrl = `https://placehold.co/600x400/1a1a2e/f0f0f0?text=Geen+passende+foto+gevonden&font=inter`; // Fallback
-    
-    try {
-      const query = `technology,abstract,futuristic,nature`; // Zoek naar foto's met deze thema's
-      const encodedQuery = encodeURIComponent(query);
-      
-      // We gebruiken nu de /photos/random endpoint. Dit is de sleutel tot de oplossing.
-      const unsplashUrl = `https://api.unsplash.com/photos/random?query=${encodedQuery}&orientation=landscape`;
-
-      const unsplashResponse = await fetch(unsplashUrl, {
-        headers: {
-          'Authorization': `Client-ID ${UNSPLASH_ACCESS_KEY}`
+        if (!category) {
+            return res.status(400).json({ error: 'Ongeldige categorie.' });
         }
-      });
+        
+        const apiKey = process.env.POEM_API_KEY;
+        if (!apiKey) {
+            throw new Error('API sleutel niet gevonden. Zorg ervoor dat POEM_API_KEY is ingesteld in het .env bestand.');
+        }
 
-      const unsplashData = await unsplashResponse.json();
+        const prompt = constructPoemPrompt(category);
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
 
-      // De data structuur van de 'random' endpoint is iets anders
-      if (unsplashData && unsplashData.urls && unsplashData.urls.regular) {
-        imageUrl = unsplashData.urls.regular;
-        console.log('Willekeurige Unsplash foto gevonden:', imageUrl);
-      } else {
-        console.log('Kon geen willekeurige foto van Unsplash ontvangen.');
-      }
-    } catch (unsplashError) {
-      console.error('Fout bij het ophalen van Unsplash foto:', unsplashError);
+        const payload = { contents: [{ role: "user", parts: [{ text: prompt }] }] };
+
+        const apiResponse = await fetch(apiUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+
+        if (!apiResponse.ok) {
+            const errorText = await apiResponse.text();
+            console.error('Google API Error:', errorText);
+            throw new Error(`Fout bij Google API: ${apiResponse.status}`);
+        }
+
+        const result = await apiResponse.json();
+        const poemText = result.candidates[0].content.parts[0].text;
+
+        res.json({ poem: poemText });
+
+    } catch (error) {
+        console.error('Server Fout:', error.message);
+        res.status(500).json({ error: 'Er is een interne serverfout opgetreden.' });
     }
-
-    // Stap 3: Stuur alles terug naar de frontend
-    res.json({
-      saying: generatedSaying,
-      imageUrl: imageUrl
-    });
-
-  } catch (error) {
-    console.error("Fout in /generate-wisdom route:", error);
-    res.status(500).json({ error: "Serverfout bij het genereren van wijsheid." });
-  }
 });
 
-const port = process.env.PORT || 3000;
+// Start de server
 app.listen(port, () => {
-  console.log(`Backend server (Random Unsplash Versie) luistert op poort ${port}`);
+    console.log(`Poem Creator backend draait op http://localhost:${port}`);
 });
