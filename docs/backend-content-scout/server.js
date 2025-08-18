@@ -1,10 +1,9 @@
-// server.js - De Creatieve Content Scout Agent (met Jager-functie)
+// server.js - De Creatieve Content Scout Agent (met Slimme RSS-Jager)
 
 import express from 'express';
 import dotenv from 'dotenv';
 import { GoogleGenerativeAI } from '@google/generative-ai';
-import axios from 'axios'; // Onze 'postbode' om webpagina's op te halen
-import * as cheerio from 'cheerio'; // Ons 'vergrootglas' om de HTML te lezen
+import Parser from 'rss-parser'; // Ons NIEUWE, betrouwbare gereedschap
 
 dotenv.config();
 
@@ -18,38 +17,36 @@ if (!GEMINI_API_KEY) {
   process.exit(1);
 }
 
-// --- Initialiseer de AI ---
+// --- Initialiseer de AI en de RSS-Parser ---
 const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+const parser = new Parser();
 
 // --- De Kernlogica van de Agent ---
 async function runContentScout() {
   console.log('--- De Content Scout wordt wakker! ---');
   
   try {
-    // --- STAP 2 (De Jager) ---
-    // We jagen op de voorpagina van een tech-website.
-    const targetUrl = 'https://tweakers.net/'; // De website waarop we jagen
-    console.log(`1. Op jacht naar nieuwe content op ${targetUrl}...`);
+    // --- STAP 2 (De Slimme Jager) ---
+    // We jagen nu op een betrouwbare RSS-feed in plaats van een website.
+    const targetFeedUrl = 'https://tweakers.net/feeds/nieuws.xml';
+    console.log(`1. Op jacht naar nieuwe content via de RSS-feed: ${targetFeedUrl}...`);
     
-    // Gebruik Axios om de HTML van de pagina op te halen
-    const response = await axios.get(targetUrl);
-    const html = response.data;
+    // Gebruik de parser om de feed op te halen en te lezen
+    const feed = await parser.parseURL(targetFeedUrl);
     
-    // Gebruik Cheerio om de titel van het eerste grote artikel te vinden
-    const $ = cheerio.load(html);
-    // AANGEPAST: We zoeken nu naar de eerste link in een H2-tag binnen een <article>, dit is specifieker.
-    const eersteTitel = $('article h2 a').first().text().trim(); 
+    // Pak de titel van het allernieuwste item in de feed
+    const nieuwsteTitel = feed.items[0].title;
 
-    if (!eersteTitel) {
-        throw new Error("Kon geen titel vinden op de website. De structuur is mogelijk veranderd.");
+    if (!nieuwsteTitel) {
+        throw new Error("Kon geen titel vinden in de RSS-feed.");
     }
     
-    console.log(`   -> Prooi gevonden: "${eersteTitel}"`);
+    console.log(`   -> Prooi gevonden: "${nieuwsteTitel}"`);
 
     // --- STAP 3 (De Analist) ---
     console.log('2. Gevonden content analyseren met AI...');
-    const prompt = `Analyseer de volgende nieuwstitel: "${eersteTitel}". Is dit interessant voor een creatieve tech YouTuber die video's maakt over AI en filmmaken? Geef een korte, pakkende samenvatting en een concreet, origineel video-idee.`;
+    const prompt = `Analyseer de volgende nieuwstitel: "${nieuwsteTitel}". Is dit interessant voor een creatieve tech YouTuber die video's maakt over AI en filmmaken? Geef een korte, pakkende samenvatting en een concreet, origineel video-idee.`;
     const result = await model.generateContent(prompt);
     const analyse = result.response.text();
     
