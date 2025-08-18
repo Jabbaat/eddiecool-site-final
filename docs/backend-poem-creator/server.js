@@ -1,20 +1,25 @@
-// server.js - De juiste, veilige back-end voor de Poem Creator
+// server.js - De juiste, veilige back-end voor de Poem Creator (met CORS Oplossing)
 
 import express from 'express';
 import fetch from 'node-fetch';
 import dotenv from 'dotenv';
 import cors from 'cors';
 
-dotenv.config(); // Laad de variabelen uit het .env bestand
+dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 3000;
 
-// Middleware
-app.use(cors()); 
+// --- Middleware ---
+// AANGEPAST: Geef je website expliciet toestemming om te praten met de server.
+const corsOptions = {
+  origin: 'https://eddiecool.nl', // Jouw live website
+  optionsSuccessStatus: 200
+};
+app.use(cors(corsOptions));
 app.use(express.json());
 
-// Data: Categorieën
+// --- Data: Categorieën (moet overeenkomen met je front-end) ---
 const categories = {
     spirituality: { name: 'Spiritualiteit', symbols: 'innerlijk licht, de adem als anker, de stilte tussen gedachten, de eenheid van alles, de ziel als reiziger' },
     nature: { name: 'Gefluister van de Natuur', symbols: 'oude bomen, kosmisch stof in een zonnestraal, de stille taal van steen, seizoenscycli' },
@@ -24,12 +29,12 @@ const categories = {
     modern: { name: 'Het Moderne Labyrint', symbols: 'digitale geesten in de machine, de geometrie van betonnen jungles, de isolerende ruis van informatie' }
 };
 
-// Functie om de prompt te bouwen
+// --- Functie om de prompt te bouwen ---
 function constructPoemPrompt(category) {
     return `Je bent een creatieve AI-persona, een fusie van een filosoof en een dichter. Je doel is om diepgaande, tot nadenken stemmende poëzie te genereren. **Regels:** 1. **Taal:** Schrijf in het Nederlands. 2. **Stijl:** Schrijf in verfijnd, elegant vrij vers. Vermijd simpele rijmschema's. 3. **Structuur:** 3 tot 5 strofen. 4. **Inhoud:** Bevat een centrale metafoor, rijke zintuiglijke beeldspraak en een "volta" (wending) in de laatste strofe. 5. **Thema:** Geïnspireerd op "${category.name}". 6. **Symboliek:** Verweef concepten gerelateerd aan: ${category.symbols}. 7. **Uitvoerformaat:** ALLEEN de tekst van het gedicht. Geen titel of inleiding.`;
 }
 
-// API Route
+// --- API Route ---
 app.post('/generate-poem', async (req, res) => {
     try {
         const { categoryKey } = req.body;
@@ -39,7 +44,7 @@ app.post('/generate-poem', async (req, res) => {
             return res.status(400).json({ error: 'Ongeldige categorie.' });
         }
         
-        const apiKey = process.env.POEM_API_KEY;
+        const apiKey = process.env.POEM_API_KEY; // Zorg dat dit overeenkomt met je .env bestand!
         if (!apiKey) {
             throw new Error('API sleutel niet gevonden. Zorg ervoor dat POEM_API_KEY is ingesteld in het .env bestand.');
         }
@@ -72,7 +77,7 @@ app.post('/generate-poem', async (req, res) => {
     }
 });
 
-// Start de server
+// --- Start de server ---
 app.listen(port, () => {
     console.log(`Poem Creator backend draait op http://localhost:${port}`);
 });
