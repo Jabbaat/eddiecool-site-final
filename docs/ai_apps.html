@@ -7,13 +7,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-SYG5T1Z0MV"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-
-      gtag('config', 'G-SYG5T1Z0MV'); // VERVANG DIT DOOR JOUW MEASUREMENT ID
+      gtag('config', 'G-SYG5T1Z0MV');
     </script>
 </head>
 
@@ -29,7 +28,7 @@
         <ul class="menu">
             <li><a href="index.html">🏠 Home</a></li>
             <li><a href="projects.html">✨ Projecten</a></li>
-            <li><a href="ai_apps.html">📱 AI Apps</a></li> <!-- NIEUWE PAGINA TOEVOEGING -->
+            <li><a href="ai_apps.html">📱 AI Apps</a></li>
             <li><a href="ai_gallery.html">🖼️ Galerij</a></li>
             <li><a href="video_ideas.html">🎬 Video Ideeën</a></li>
             <li><a href="ai_wisdom.html">🔮 AI Wijsheid</a></li>
@@ -42,59 +41,49 @@
         <h1>📱 Welkom bij AI Apps!</h1>
         <p>Hier vind je een verzameling interactieve AI-applicaties en tools die ik heb ontwikkeld of waar ik mee experimenteer. Duik in de wereld van praktische AI!</p>
 
-        <!-- VOEG HIER DE INHOUD VAN JE AI APPS PAGINA TOE -->
         <section class="ai-apps-list">
             <h2>Mijn AI App Collectie</h2>
+
+            <!-- NIEUW: De kaart voor de Content Scout -->
+            <div class="project-card" style="border: 1px solid #e5e7eb; border-radius: 12px; padding: 24px; text-align: left; margin: 20px; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);">
+                <h3 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 8px;">
+                    🤖 Creatieve Content Scout
+                </h3>
+                <p style="margin-bottom: 16px; color: #4b5563;">
+                    Deze AI-agent speurt elke ochtend het internet af naar het laatste tech-nieuws en genereert een uniek video-idee voor mijn YouTube-kanaal. Dit is zijn meest recente vondst:
+                </p>
+                <!-- Hier wordt het idee van de agent geladen -->
+                <div id="scout-output" style="background-color: #f3f4f6; border-radius: 8px; padding: 16px; min-height: 100px;">
+                    <p>De scout is op jacht...</p>
+                </div>
+            </div>
+
             <div class="project-card" style="border: 1px solid #e5e7eb; border-radius: 12px; padding: 24px; text-align: center; margin: 20px; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);">
-    
-        
-    <!-- De titel van je project -->
-    <h3 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 8px;">
-        3D Spirograaf Simulator
-    </h3>
-    
-    <!-- Een korte beschrijving -->
-    <p style="margin-bottom: 24px; color: #4b5563;">
-        Een interactieve 3D-tool om complexe spirografen te maken en te manipuleren met verschillende parameters.
-    </p>
-    
-    <!-- De knop die linkt naar je project -->
-    <a href="spirograaf.html" class="project-button" style="display: inline-block; background-color: #4f46e5; color: white; padding: 12px 24px; border-radius: 8px; font-weight: 600; text-decoration: none; transition: background-color 0.3s;">
-        ✨ Bekijk Project
-    </a>
+                <h3 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 8px;">
+                    Gedichten Generator
+                </h3>
+                <p style="margin-bottom: 24px; color: #4b5563;">
+                    Laat de AI een uniek gedicht voor je schrijven over diverse thema's.
+                </p>
+                <a href="poem_creator.html" class="project-button" style="display: inline-block; background-color: #4f46e5; color: white; padding: 12px 24px; border-radius: 8px; font-weight: 600; text-decoration: none; transition: background-color 0.3s;">
+                    ✨ Probeer het uit
+                </a>
+            </div>
 
-</div>
-            <div class="project-card" style="border: 1px solid #e5e7eb; border-radius: 12px; padding: 24px; text-align: center; margin: 20px; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);">
-    
-        
-    <!-- De titel van je project -->
-    <h3 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 8px;">
-        Gedichten generator
-    </h3>
-    
-    <!-- Een korte beschrijving -->
-    <p style="margin-bottom: 24px; color: #4b5563;">
-        Maak je eigen gedichten.
-    </p>
-    
-    <!-- De knop die linkt naar je project -->
-    <a href="poem_creator.html" class="project-button" style="display: inline-block; background-color: #4f46e5; color: white; padding: 12px 24px; border-radius: 8px; font-weight: 600; text-decoration: none; transition: background-color 0.3s;">
-        ✨ Bekijk Project
-    </a>
-
-</div>
-            <!-- HERHAAL DEZE DIV VOOR MEER APPS -->
+             <div class="project-card" style="border: 1px solid #e5e7eb; border-radius: 12px; padding: 24px; text-align: center; margin: 20px; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);">
+                <h3 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 8px;">
+                    3D Spirograaf Simulator
+                </h3>
+                <p style="margin-bottom: 24px; color: #4b5563;">
+                    Een interactieve 3D-tool om complexe spirografen te maken en te manipuleren.
+                </p>
+                <a href="spirograaf.html" class="project-button" style="display: inline-block; background-color: #4f46e5; color: white; padding: 12px 24px; border-radius: 8px; font-weight: 600; text-decoration: none; transition: background-color 0.3s;">
+                    ✨ Bekijk Project
+                </a>
+            </div>
         </section>
-
-        <section class="suggestions-section">
-            <h2>Heb je een idee voor een AI App?</h2>
-            <p>Laat het me weten! Ik ben altijd op zoek naar nieuwe projecten en uitdagingen.</p>
-            <a href="contact.html" class="button">Neem Contact Op</a>
-        </section>
-
     </main>
 
-    <!-- Optioneel: Voeg een footer toe als je die op andere pagina's hebt -->
     <footer>
         <p>&copy; 2025 Eddiecool AI Speelplaats. Alle rechten voorbehouden.</p>
     </footer>
@@ -105,7 +94,26 @@
             document.querySelector(".menu").classList.toggle("active");
         });
 
-        // Je kunt hier eventueel specifieke JavaScript voor de AI Apps pagina toevoegen
+        // NIEUW: JavaScript om het idee van de Content Scout op te halen
+        document.addEventListener('DOMContentLoaded', async () => {
+            const scoutOutputDiv = document.getElementById('scout-output');
+            
+            // --- BELANGRIJK! --- 
+            // Vervang de placeholder hieronder door de ECHTE live URL van je Content Scout backend op Render.
+            const backendUrl = 'https://jouw-content-scout-url.onrender.com/get-latest-ideas';
+
+            try {
+                const response = await fetch(backendUrl);
+                if (!response.ok) {
+                    throw new Error(`Kon de server niet bereiken: ${response.status}`);
+                }
+                const data = await response.json();
+                scoutOutputDiv.innerHTML = data.idea || '<p>Kon geen idee ophalen.</p>';
+            } catch (error) {
+                console.error('Fout bij ophalen van scout-idee:', error);
+                scoutOutputDiv.innerHTML = '<p>Kon geen verbinding maken met de Content Scout server.</p>';
+            }
+        });
     </script>
 
 </body>
