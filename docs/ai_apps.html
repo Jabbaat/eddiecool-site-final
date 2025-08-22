@@ -44,7 +44,7 @@
         <section class="ai-apps-list">
             <h2>Mijn AI App Collectie</h2>
 
-            <!-- NIEUW: De kaart voor de Content Scout -->
+            <!-- De kaart voor de Content Scout -->
             <div class="project-card" style="border: 1px solid #e5e7eb; border-radius: 12px; padding: 24px; text-align: left; margin: 20px; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);">
                 <h3 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 8px;">
                     🤖 Creatieve Content Scout
@@ -58,6 +58,7 @@
                 </div>
             </div>
 
+            <!-- De kaart voor de Gedichten Generator -->
             <div class="project-card" style="border: 1px solid #e5e7eb; border-radius: 12px; padding: 24px; text-align: center; margin: 20px; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);">
                 <h3 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 8px;">
                     Gedichten Generator
@@ -70,6 +71,7 @@
                 </a>
             </div>
 
+            <!-- De kaart voor de 3D Spirograaf Simulator -->
              <div class="project-card" style="border: 1px solid #e5e7eb; border-radius: 12px; padding: 24px; text-align: center; margin: 20px; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);">
                 <h3 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 8px;">
                     3D Spirograaf Simulator
@@ -81,6 +83,20 @@
                     ✨ Bekijk Project
                 </a>
             </div>
+
+            <!-- AANGEPAST: De kaart voor de 3D Zonnestelsel Simulator -->
+            <div class="project-card" style="border: 1px solid #e5e7eb; border-radius: 12px; padding: 24px; text-align: center; margin: 20px; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);">
+                <h3 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 8px;">
+                    3D Zonnestelsel Simulator
+                </h3>
+                <p style="margin-bottom: 24px; color: #4b5563;">
+                    Een interactieve 3D-simulatie van ons zonnestelsel, gebouwd met Three.js.
+                </p>
+                <a href="zonnestelsel.html" class="project-button" style="display: inline-block; background-color: #4f46e5; color: white; padding: 12px 24px; border-radius: 8px; font-weight: 600; text-decoration: none; transition: background-color 0.3s;">
+                    ✨ Bekijk Project
+                </a>
+            </div>
+
         </section>
     </main>
 
@@ -94,7 +110,7 @@
             document.querySelector(".menu").classList.toggle("active");
         });
 
-        // NIEUW: JavaScript om het idee van de Content Scout op te halen
+        // JavaScript om het idee van de Content Scout op te halen
         document.addEventListener('DOMContentLoaded', async () => {
             const scoutOutputDiv = document.getElementById('scout-output');
             
