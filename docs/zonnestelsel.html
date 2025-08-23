@@ -4,35 +4,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fotorealistisch 3D Zonnestelsel</title>
-    <!-- Importeer Three.js en OrbitControls -->
+    
+    <!-- Scripts voor de 3D simulatie -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/TextureLoader.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/objects/Lensflare.js"></script>
 
     <style>
+        /* Basis stijlen voor de simulatie */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { background: #000; overflow: hidden; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: white; }
-        #canvas-container { width: 100vw; height: 100vh; cursor: grab; }
+        #canvas-container { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; cursor: grab; z-index: 1; }
         #canvas-container:active { cursor: grabbing; }
+        
+        /* Stijlen voor de UI panelen */
         .ui-panel {
             position: absolute; z-index: 100; background: rgba(0, 0, 0, 0.8);
             padding: 20px; border-radius: 15px; backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 215, 0, 0.3); box-shadow: 0 0 25px rgba(255, 215, 0, 0.1);
         }
         .controls { top: 20px; left: 20px; }
-        .planet-info { top: 20px; right: 20px; max-width: 320px; max-height: calc(100vh - 40px); overflow-y: auto;}
         .navigation-help { bottom: 20px; left: 20px; padding: 15px; }
         .ui-panel h3, .ui-panel h4 { color: #ffd700; margin-bottom: 15px; font-weight: 600; }
         .control-group { margin: 15px 0; }
         .control-group label { display: block; margin-bottom: 8px; color: #ccc; font-size: 14px; }
         .control-group input[type="range"] { width: 220px; }
         .loading {
-            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
             color: #ffd700; font-size: 24px; z-index: 1000;
         }
-        #planetDetails h4 { margin: 0 0 10px 0; font-size: 20px; }
-        #planetDetails p { margin: 0; line-height: 1.5; font-size: 15px; }
         .label {
             position: absolute;
             top: 0;
@@ -42,9 +43,66 @@
             font-size: 16px;
             z-index: 101;
         }
+
+        /* --- Stijlen voor de Info Pop-up (Modal) --- */
+        #info-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 300;
+            display: none; /* Standaard verborgen */
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(5px);
+        }
+        .planet-info {
+            position: relative; /* Nodig voor de sluitknop */
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        #close-info-btn {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 2.5rem;
+            color: #fff;
+            cursor: pointer;
+            line-height: 1;
+        }
+        #planetDetails h4 { margin: 0 0 10px 0; font-size: 20px; padding-right: 30px; }
+        #planetDetails p { margin: 0; line-height: 1.5; font-size: 15px; }
+        
+        /* --- MOBIELVRIENDELIJKE STIJLEN --- */
+        @media (max-width: 768px) {
+            .controls {
+                top: 10px;
+                left: 10px;
+                right: 10px;
+                width: auto;
+                padding: 15px;
+            }
+            .navigation-help {
+                display: none; /* Verberg hulp op mobiel om ruimte te besparen */
+            }
+            .ui-panel h3 {
+                font-size: 1.1rem;
+            }
+            .control-group input[type="range"] {
+                width: 100%;
+            }
+            .label {
+                font-size: 12px;
+            }
+        }
     </style>
 </head>
 <body>
+    <!-- Elementen van de Zonnestelsel App -->
     <div class="loading" id="loading">Zonnestelsel wordt geladen...</div>
     <div id="canvas-container"></div>
     <div class="ui-panel controls">
@@ -60,10 +118,15 @@
             <label><input type="checkbox" id="showNames" checked> Toon namen</label>
         </div>
     </div>
-    <div class="ui-panel planet-info">
-        <h3>🪐 Hemellichaam Info</h3>
-        <div id="planetDetails">Klik op een hemellichaam voor leuke weetjes.</div>
+    
+    <!-- Info paneel zit nu in een overlay voor de pop-up -->
+    <div id="info-modal-overlay">
+        <div class="ui-panel planet-info">
+            <span id="close-info-btn">&times;</span>
+            <div id="planetDetails">Klik op een hemellichaam voor leuke weetjes.</div>
+        </div>
     </div>
+
     <div class="ui-panel navigation-help">
         <h4>⌨️ Navigatie</h4>
         <p>🖱️ Linkermuisknop: Roteer camera</p>
@@ -73,7 +136,7 @@
     </div>
 
     <script>
-        // Globale variabelen
+        // ----- BEGIN ZONNESTELSEL SCRIPT -----
         let scene, camera, renderer, controls;
         let sun, sunLight;
         let celestialObjects = [];
@@ -84,19 +147,18 @@
         let isPaused = false;
         const textureLoader = new THREE.TextureLoader();
 
-        // Data voor de hemellichamen met realistische texturen en uitgebreide info
         const celestialData = [
-            { name: 'Mercurius', distance: 15, size: 0.8, tilt: 0.03, color: 0x8C7853, texture: 'https://raw.githubusercontent.com/TW-Team/space-viewer/main/src/assets/textures/2k_mercury.jpg', speed: 4.74, rotationSpeed: 0.01, facts: 'Mercurius is de kleinste planeet en staat het dichtst bij de zon. Het oppervlak is bezaaid met kraters, vergelijkbaar met onze maan. Overdag kan de temperatuur oplopen tot een verzengende 430°C, terwijl het \'s nachts kan dalen tot -180°C. Een dag op Mercurius duurt langer dan een jaar!' },
-            { name: 'Venus', distance: 20, size: 1.2, tilt: 177.0, color: 0xFFB649, texture: 'https://raw.githubusercontent.com/TW-Team/space-viewer/main/src/assets/textures/2k_venus_surface.jpg', speed: 3.50, rotationSpeed: -0.007, facts: 'Venus wordt vaak de "zusterplaneet" van de Aarde genoemd vanwege haar vergelijkbare grootte. Het is echter een helse wereld met een extreem dichte atmosfeer van koolstofdioxide, wat leidt tot een op hol geslagen broeikaseffect. De oppervlaktetemperatuur is constant rond de 465°C, heet genoeg om lood te smelten.' },
-            { name: 'Aarde', distance: 25, size: 1.3, tilt: 23.44, color: 0x6B93D6, texture: 'https://raw.githubusercontent.com/TW-Team/space-viewer/main/src/assets/textures/2k_earth_daymap.jpg', speed: 2.98, rotationSpeed: 0.02, facts: 'Onze thuisplaneet, de Aarde, is de enige bekende plek in het universum met leven. Het is een unieke wereld met vloeibaar water, een zuurstofrijke atmosfeer en een beschermend magnetisch veld. De diversiteit van het leven en de geologische activiteit maken het een constant veranderende en dynamische planeet.', atmosphere: true },
-            { name: 'Mars', distance: 30, size: 1.0, tilt: 25.19, color: 0xCD5C5C, texture: 'https://raw.githubusercontent.com/TW-Team/space-viewer/main/src/assets/textures/2k_mars.jpg', speed: 2.41, rotationSpeed: 0.018, facts: 'De "Rode Planeet" dankt zijn kleur aan ijzeroxide (roest) in de bodem. Mars herbergt de hoogste vulkaan (Olympus Mons) en de diepste canyon (Valles Marineris) in het zonnestelsel. Er is sterk bewijs dat er ooit vloeibaar water op het oppervlak was, wat het een interessante kandidaat maakt in de zoektocht naar vroeger leven.' },
-            { name: 'Jupiter', distance: 45, size: 4.0, tilt: 3.13, color: 0xD2691E, texture: 'https://raw.githubusercontent.com/TW-Team/space-viewer/main/src/assets/textures/2k_jupiter.jpg', speed: 1.31, rotationSpeed: 0.04, facts: 'Jupiter is de onbetwiste koning van ons zonnestelsel; hij is groter dan alle andere planeten bij elkaar. Deze gasreus heeft geen vast oppervlak en is bekend om zijn Grote Rode Vlek, een gigantische storm die al eeuwen woedt. Jupiter heeft tientallen manen, waaronder de vier grote Galileïsche manen.' },
-            { name: 'Saturnus', distance: 60, size: 3.5, tilt: 26.73, color: 0xFAB552, texture: 'https://raw.githubusercontent.com/TW-Team/space-viewer/main/src/assets/textures/2k_saturn.jpg', speed: 0.97, rotationSpeed: 0.038, facts: 'Saturnus is het juweel van het zonnestelsel, beroemd om zijn spectaculaire ringenstelsel. Deze ringen bestaan uit miljarden stukjes ijs en rots. De planeet zelf is een gasreus en heeft de laagste dichtheid van alle planeten; hij zou op water drijven als je een badkuip groot genoeg kon vinden!' },
-            { name: 'Uranus', distance: 75, size: 2.5, tilt: 97.77, color: 0x4FD0E7, texture: 'https://raw.githubusercontent.com/TW-Team/space-viewer/main/src/assets/textures/2k_uranus.jpg', speed: 0.68, rotationSpeed: 0.03, facts: 'Uranus is een ijsreus en uniek omdat hij op zijn kant roteert, waarschijnlijk als gevolg van een enorme botsing in het verleden. Dit zorgt voor extreme seizoenen, waarbij elke pool 42 jaar lang in duisternis of zonlicht baadt. De blauwgroene kleur wordt veroorzaakt door methaan in de atmosfeer.' },
-            { name: 'Neptunus', distance: 90, size: 2.4, tilt: 28.32, color: 0x4169E1, texture: 'https://raw.githubusercontent.com/TW-Team/space-viewer/main/src/assets/textures/2k_neptune.jpg', speed: 0.54, rotationSpeed: 0.032, facts: 'Neptunus is de verste planeet van de zon en een donkere, koude wereld. Deze ijsreus heeft de snelste winden in het zonnestelsel, met snelheden tot wel 2.100 km/u. Hij werd in 1846 ontdekt, niet door observatie, maar door wiskundige voorspellingen gebaseerd op de baan van Uranus.' },
-            { name: 'Pluto', type: 'dwarf', distance: 105, size: 0.5, tilt: 122.53, color: 0xD3BBAF, texture: 'https://raw.githubusercontent.com/dev-SR/planets-3d/master/images/pluto.jpg', speed: 0.47, rotationSpeed: 0.005, facts: 'Eens de negende planeet, nu geclassificeerd als dwergplaneet. Pluto is een complexe en ijzige wereld in de Kuipergordel. Hij heeft bergen van waterijs, gletsjers van stikstof en een dunne atmosfeer. Zijn grootste maan, Charon, is zo groot dat ze samen een dubbel-planetenstelsel vormen.' }
+            { name: 'Mercurius', distance: 15, size: 0.8, tilt: 0.03, color: 0x8C7853, texture: 'https://raw.githubusercontent.com/jeromeetienne/threex.planets/master/images/mercurymap.jpg', speed: 4.74, rotationSpeed: 0.01, facts: ['Een dag duurt er langer dan een jaar.', 'Het is de kleinste planeet in ons zonnestelsel.', 'De temperatuurverschillen zijn extreem: van 430°C tot -180°C.', 'Mercurius heeft een verrassend sterk magnetisch veld.', 'De planeet krimpt langzaam maar zeker.', 'Het oppervlak lijkt sterk op dat van onze maan.', 'Er is ijs gevonden in kraters op de polen.', 'Mercurius heeft geen manen of ringen.', 'De ijzeren kern is relatief gezien enorm groot.', 'Vanaf Mercurius lijkt de zon drie keer zo groot als vanaf de Aarde.'] },
+            { name: 'Venus', distance: 20, size: 1.2, tilt: 177.0, color: 0xFFB649, texture: 'https://raw.githubusercontent.com/jeromeetienne/threex.planets/master/images/venusmap.jpg', speed: 3.50, rotationSpeed: -0.007, facts: ['Het is de heetste planeet, heter dan Mercurius.', 'De atmosferische druk is 92 keer zo hoog als op Aarde.', 'Venus draait achterstevoren in vergelijking met de meeste planeten.', 'Een dag op Venus duurt langer dan een jaar op Venus.', 'De lucht is er gevuld met wolken van zwavelzuur.', 'Het is het helderste object aan de hemel na de zon en de maan.', 'Er zijn duizenden vulkanen op het oppervlak.', 'Venus heeft geen manen.', 'De planeet wordt soms de "kwaadaardige tweeling" van de Aarde genoemd.', 'De eerste succesvolle landing op een andere planeet was op Venus.'] },
+            { name: 'Aarde', distance: 25, size: 1.3, tilt: 23.44, color: 0x6B93D6, texture: 'https://raw.githubusercontent.com/jeromeetienne/threex.planets/master/images/earthmap1k.jpg', speed: 2.98, rotationSpeed: 0.02, facts: ['De enige planeet met vloeibaar water op het oppervlak.', 'De atmosfeer beschermt ons tegen meteoren en straling.', 'De Aarde is de dichtste planeet in het zonnestelsel.', 'De rotatie van de Aarde vertraagt heel langzaam.', '70% van het oppervlak is bedekt met water.', 'De Aarde heeft een krachtig magnetisch veld.', 'De hoogste berg op Aarde is de Mount Everest.', 'De Aarde is niet perfect rond, maar een afgeplatte sferoïde.', 'Onze planeet is ongeveer 4,5 miljard jaar oud.', 'De naam "Aarde" is de enige die niet uit de Griekse/Romeinse mythologie komt.'], atmosphere: true },
+            { name: 'Mars', distance: 30, size: 1.0, tilt: 25.19, color: 0xCD5C5C, texture: 'https://raw.githubusercontent.com/jeromeetienne/threex.planets/master/images/marsmap1k.jpg', speed: 2.41, rotationSpeed: 0.018, facts: ['Mars heeft de hoogste vulkaan van het zonnestelsel: Olympus Mons.', 'De planeet heeft seizoenen, net als de Aarde.', 'Een dag op Mars duurt ongeveer 24,6 uur.', 'Stofstormen kunnen de hele planeet bedekken.', 'Mars heeft twee kleine manen: Phobos en Deimos.', 'De rode kleur komt door roest in de bodem.', 'Er zijn ijskappen op de polen van Mars.', 'In het verleden stroomde er vloeibaar water op Mars.', 'De zwaartekracht is er maar 38% van die op Aarde.', 'Er rijden momenteel meerdere robots rond op Mars.'] },
+            { name: 'Jupiter', distance: 45, size: 4.0, tilt: 3.13, color: 0xD2691E, texture: 'https://raw.githubusercontent.com/jeromeetienne/threex.planets/master/images/jupitermap.jpg', speed: 1.31, rotationSpeed: 0.04, facts: ['Jupiter is twee keer zo zwaar als alle andere planeten bij elkaar.', 'De Grote Rode Vlek is een storm die groter is dan de Aarde.', 'Een dag op Jupiter duurt minder dan 10 uur.', 'Jupiter heeft het sterkste magnetische veld van alle planeten.', 'De planeet heeft zwakke, nauwelijks zichtbare ringen.', 'Jupiter heeft minstens 79 manen.', 'De maan Ganymedes is groter dan de planeet Mercurius.', 'Jupiter beschermt de Aarde door kometen en asteroïden af te vangen.', 'De planeet straalt meer warmte uit dan hij van de zon ontvangt.', 'Jupiter is een gasreus, zonder vast oppervlak.'] },
+            { name: 'Saturnus', distance: 60, size: 3.5, tilt: 26.73, color: 0xFAB552, texture: 'https://raw.githubusercontent.com/jeromeetienne/threex.planets/master/images/saturnmap.jpg', speed: 0.97, rotationSpeed: 0.038, facts: ['De ringen van Saturnus zijn extreem dun, soms maar 10 meter dik.', 'Saturnus heeft de laagste dichtheid; hij zou op water drijven.', 'Een jaar op Saturnus duurt meer dan 29 aardse jaren.', 'De winden kunnen er snelheden van 1.800 km/u bereiken.', 'Op de noordpool bevindt zich een mysterieuze zeshoekige storm.', 'De maan Titan heeft een dichte atmosfeer en meren van vloeibaar methaan.', 'Saturnus heeft 82 bekende manen.', 'De ringen bestaan voornamelijk uit ijsdeeltjes.', 'De planeet is zichtbaar met het blote oog vanaf de Aarde.', 'De Cassini-ruimtesonde heeft de planeet 13 jaar lang bestudeerd.'] },
+            { name: 'Uranus', distance: 75, size: 2.5, tilt: 97.77, color: 0x4FD0E7, texture: 'https://raw.githubusercontent.com/jeromeetienne/threex.planets/master/images/uranusmap.jpg', speed: 0.68, rotationSpeed: 0.03, facts: ['Uranus draait op zijn kant, met zijn polen naar de zon gericht.', 'Het is de koudste planeet in het zonnestelsel.', 'Een jaar op Uranus duurt 84 aardse jaren.', 'De blauwe kleur komt door methaan in de atmosfeer.', 'Uranus heeft 13 bekende, donkere ringen.', 'De manen zijn vernoemd naar personages van Shakespeare en Alexander Pope.', 'Uranus was de eerste planeet die met een telescoop werd ontdekt.', 'De seizoenen zijn extreem, met 42 jaar daglicht gevolgd door 42 jaar duisternis.', 'De planeet is een "ijsreus", bestaande uit water, methaan en ammoniak.', 'Slechts één ruimtesonde heeft Uranus ooit bezocht: Voyager 2.'] },
+            { name: 'Neptunus', distance: 90, size: 2.4, tilt: 28.32, color: 0x4169E1, texture: 'https://raw.githubusercontent.com/jeromeetienne/threex.planets/master/images/neptunemap.jpg', speed: 0.54, rotationSpeed: 0.032, facts: ['Neptunus heeft de snelste winden in het zonnestelsel, tot 2.100 km/u.', 'De planeet werd ontdekt door wiskundige berekeningen.', 'Een jaar op Neptunus duurt bijna 165 aardse jaren.', 'De grootste maan, Triton, draait in de verkeerde richting.', 'Neptunus is de kleinste van de gasreuzen.', 'De Grote Donkere Vlek was een storm vergelijkbaar met die van Jupiter.', 'De planeet is vernoemd naar de Romeinse god van de zee.', 'Het duurt 12 jaar voor een ruimtesonde om Neptunus te bereiken.', 'De blauwe kleur komt, net als bij Uranus, door methaan.', 'Neptunus heeft vijf zwakke ringen.'] },
+            { name: 'Pluto', type: 'dwarf', distance: 105, size: 0.5, tilt: 122.53, color: 0xD3BBAF, texture: 'https://raw.githubusercontent.com/jeromeetienne/threex.planets/master/images/plutomap1k.jpg', speed: 0.47, rotationSpeed: 0.005, facts: ['Pluto is kleiner dan onze eigen maan.', 'Het heeft een hartvormig gletsjergebied op zijn oppervlak.', 'Een jaar op Pluto duurt 248 aardse jaren.', 'Pluto heeft vijf manen.', 'De atmosfeer is alleen aanwezig als Pluto dicht bij de zon staat.', 'Zijn baan is zo excentriek dat hij soms dichter bij de zon staat dan Neptunus.', 'Pluto wordt nu geclassificeerd als een dwergplaneet.', 'De New Horizons-sonde deed er 9,5 jaar over om Pluto te bereiken.', 'De grootste maan, Charon, is bijna half zo groot als Pluto zelf.', 'De temperatuur op Pluto kan dalen tot -240°C.'] }
         ];
-        const sunFacts = 'De Zon is het hart van ons zonnestelsel. Deze gele dwergster bevat 99,8% van alle massa. In haar kern zet kernfusie waterstof om in helium, waarbij een onvoorstelbare hoeveelheid energie vrijkomt die licht en warmte door het hele zonnestelsel stuurt.';
+        const sunFacts = ['De zon bevat 99,86% van alle massa in het zonnestelsel.', 'Elke seconde zet de zon 600 miljoen ton waterstof om in helium.', 'Het licht van de zon doet er 8 minuten en 20 seconden over om de aarde te bereiken.', 'De kern van de zon is 15 miljoen graden Celsius.', 'De zon is een middelgrote ster, een zogenaamde "gele dwerg".', 'Een miljoen aardes zouden in de zon passen.', 'De zon draait eens in de 25-35 dagen om zijn as.', 'De zon genereert een constante stroom van deeltjes, de zonnewind.', 'Zonnevlammen kunnen communicatie op Aarde verstoren.', 'Over 5 miljard jaar zal de zon opzwellen tot een rode reus.'];
 
         function init() {
             scene = new THREE.Scene();
@@ -139,21 +201,14 @@
             scene.add(new THREE.Points(starsGeometry, starsMaterial));
         }
 
-        // GECORRIGEERD: Robuustere manier om de zon textuur te laden
         function createSun() {
             const sunMaterial = new THREE.MeshBasicMaterial({ color: 0xFFD700 });
             
             textureLoader.load(
-                'https://raw.githubusercontent.com/TW-Team/space-viewer/main/src/assets/textures/2k_sun.jpg',
-                (texture) => { // onSuccess
-                    sunMaterial.map = texture;
-                    sunMaterial.color.set(0xffffff);
-                    sunMaterial.needsUpdate = true;
-                },
-                undefined, // onProgress
-                (err) => { // onError
-                    console.error('Kon zon textuur niet laden, fallback naar kleur.', err);
-                }
+                'https://raw.githubusercontent.com/jeromeetienne/threex.planets/master/images/sunmap.jpg',
+                (texture) => { sunMaterial.map = texture; sunMaterial.color.set(0xffffff); sunMaterial.needsUpdate = true; },
+                undefined,
+                (err) => { console.error('Kon zon textuur niet laden, fallback naar kleur.', err); }
             );
 
             sun = new THREE.Mesh(new THREE.SphereGeometry(7, 64, 64), sunMaterial);
@@ -175,15 +230,9 @@
                 const planet = new THREE.Mesh(new THREE.SphereGeometry(data.size, 32, 32), material);
                 
                 textureLoader.load(data.texture,
-                    (texture) => { // onSuccess
-                        planet.material.map = texture;
-                        planet.material.color.set(0xffffff);
-                        planet.material.needsUpdate = true;
-                    },
-                    undefined, // onProgress
-                    (err) => { // onError
-                        console.error(`Kon textuur niet laden voor ${data.name}:`, err);
-                    }
+                    (texture) => { planet.material.map = texture; planet.material.color.set(0xffffff); planet.material.needsUpdate = true; },
+                    undefined,
+                    (err) => { console.error(`Kon textuur niet laden voor ${data.name}:`, err); }
                 );
                 
                 planet.rotation.z = THREE.MathUtils.degToRad(data.tilt);
@@ -197,7 +246,7 @@
 
                 if (data.name === 'Saturnus') createSaturnRings(planet, data.size);
                 if (data.name === 'Aarde') {
-                    createMoon(planet, 3, 0.3, 'https://raw.githubusercontent.com/TW-Team/space-viewer/main/src/assets/textures/2k_moon.jpg', 20);
+                    createMoon(planet, 3, 0.3, 'https://raw.githubusercontent.com/jeromeetienne/threex.planets/master/images/moonmap1k.jpg', 20);
                     createAtmosphere(planet, data.size);
                 }
                 if (data.name === 'Mars') {
@@ -262,8 +311,13 @@
         }
 
         function createSaturnRings(planet, planetSize) {
-            const ringTexture = textureLoader.load('https://raw.githubusercontent.com/TW-Team/space-viewer/main/src/assets/textures/2k_saturn_ring_alpha.png');
-            const ringMaterial = new THREE.MeshBasicMaterial({ map: ringTexture, side: THREE.DoubleSide, transparent: true, opacity: 0.8 });
+            const ringTexture = textureLoader.load('https://raw.githubusercontent.com/jeromeetienne/threex.planets/master/images/saturnring.png');
+            const ringMaterial = new THREE.MeshBasicMaterial({
+                map: ringTexture,
+                side: THREE.DoubleSide,
+                transparent: true,
+                opacity: 0.8
+            });
             const rings = new THREE.Mesh(new THREE.RingGeometry(planetSize + 0.5, planetSize + 3.5, 64), ringMaterial);
             rings.rotation.x = -Math.PI / 2;
             planet.add(rings);
@@ -297,6 +351,16 @@
                 if (intersects.length > 0) showPlanetInfo(intersects[0].object);
             });
 
+            const modalOverlay = document.getElementById('info-modal-overlay');
+            document.getElementById('close-info-btn').addEventListener('click', () => {
+                modalOverlay.style.display = 'none';
+            });
+            modalOverlay.addEventListener('click', (e) => {
+                if (e.target === modalOverlay) {
+                    modalOverlay.style.display = 'none';
+                }
+            });
+
             window.addEventListener('resize', () => {
                 camera.aspect = window.innerWidth / window.innerHeight;
                 camera.updateProjectionMatrix();
@@ -305,17 +369,29 @@
         }
 
         function showPlanetInfo(planet) {
+            const modalOverlay = document.getElementById('info-modal-overlay');
             const infoDiv = document.getElementById('planetDetails');
             let html = 'Selecteer een object.';
+            let factsArray = [];
 
             if (planet === sun) {
-                html = `<h4>☀️ Zon</h4><p>${sunFacts}</p>`;
+                factsArray = sunFacts;
             } else if (planet.userData && planet.userData.facts) {
-                const data = planet.userData;
-                const emoji = data.type === 'dwarf' ? '☄️' : '🪐';
-                html = `<h4 style="color:#${data.color.toString(16)}">${emoji} ${data.name}</h4><p>${data.facts}</p>`;
+                factsArray = planet.userData.facts;
             }
+
+            if (factsArray.length > 0) {
+                const randomFact = factsArray[Math.floor(Math.random() * factsArray.length)];
+                const data = planet.userData;
+                const emoji = (planet === sun) ? '☀️' : (data.type === 'dwarf' ? '☄️' : '🪐');
+                const name = (planet === sun) ? 'Zon' : data.name;
+                const color = (planet === sun) ? 'FFD700' : data.color.toString(16);
+
+                html = `<h4 style="color:#${color}">${emoji} ${name}</h4><p>${randomFact}</p>`;
+            }
+            
             infoDiv.innerHTML = html;
+            modalOverlay.style.display = 'flex';
         }
 
         function updateLabels() {
@@ -326,7 +402,6 @@
                 pos.project(camera);
                 const x = (pos.x * 0.5 + 0.5) * window.innerWidth;
                 const y = (pos.y * -0.5 + 0.5) * window.innerHeight;
-                // Verberg label als het achter de camera is
                 div.style.display = (pos.z < 1 && document.getElementById('showNames').checked) ? 'block' : 'none';
                 div.style.transform = `translate(-50%, -150%) translate(${x}px, ${y}px)`;
             });
@@ -370,6 +445,7 @@
         }
 
         window.addEventListener('load', init);
+        // ----- EINDE ZONNESTELSEL SCRIPT -----
     </script>
 </body>
 </html>
