@@ -1,10 +1,11 @@
-// server.js - De Creatieve Content Scout Agent (met Planner en Geheugen)
+// server.js - De Creatieve Content Scout Agent (met Planner en CORS Oplossing)
 
 import express from 'express';
 import dotenv from 'dotenv';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import Parser from 'rss-parser';
 import cron from 'node-cron';
+import cors from 'cors'; // Importeer CORS
 
 dotenv.config();
 
@@ -12,6 +13,16 @@ dotenv.config();
 const app = express();
 const port = process.env.PORT || 3000;
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
+
+// --- Middleware ---
+// AANGEPAST: Geef je website expliciet toestemming om te praten met de server.
+const corsOptions = {
+  origin: 'https://eddiecool.nl', // Jouw live website
+  optionsSuccessStatus: 200 
+};
+app.use(cors(corsOptions));
+app.use(express.json());
+
 
 // --- HET GEHEUGEN VAN DE AGENT ---
 let laatsteAnalyse = "De scout is op zijn eerste jacht. Kom straks terug voor de buit!";
@@ -61,7 +72,6 @@ async function runContentScout() {
 }
 
 // --- Endpoints ---
-// AANGEPAST: Deze link deelt nu de inhoud van het geheugen.
 app.get('/get-latest-ideas', (req, res) => {
   res.json({ idea: laatsteAnalyse });
 });
