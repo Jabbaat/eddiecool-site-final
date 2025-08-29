@@ -1,4 +1,4 @@
-// server.js - De Creatieve Content Scout Agent (Definitieve Fix met Veiligheidsnet)
+// server.js - De Creatieve Content Scout Agent (Super Robuuste Fix)
 
 import express from 'express';
 import dotenv from 'dotenv';
@@ -6,6 +6,7 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 import Parser from 'rss-parser';
 import cron from 'node-cron';
 import cors from 'cors';
+import axios from 'axios'; // NIEUW: Importeer de robuuste 'postbode'
 
 dotenv.config();
 
@@ -44,15 +45,18 @@ async function runContentScout() {
     const targetFeedUrl = 'https://tweakers.net/feeds/nieuws.xml';
     console.log(`1. Op jacht naar nieuwe content via de RSS-feed: ${targetFeedUrl}...`);
     
-    // FIX 1: Een stopwatch (timeout) en vermomming (User-Agent)
-    const feed = await parser.parseURL(targetFeedUrl, {
+    // AANGEPAST: Gebruik nu Axios om de data eerst op te halen
+    const response = await axios.get(targetFeedUrl, {
         headers: {
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
         },
-        timeout: 10000 // Wacht maximaal 10 seconden
+        timeout: 15000 // Geef het 15 seconden de tijd
     });
 
-    // FIX 2: Controleer of de jachtzak niet leeg is
+    // Geef de opgehaalde data aan de parser om te lezen
+    const feedXml = response.data;
+    const feed = await parser.parseString(feedXml);
+
     if (!feed || !feed.items || feed.items.length === 0) {
         throw new Error("Kon geen items vinden in de RSS-feed. De feed is mogelijk leeg of onbereikbaar.");
     }
