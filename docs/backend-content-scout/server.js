@@ -1,4 +1,4 @@
-// server.js - De Creatieve Content Scout Agent (Definitieve Fix)
+// server.js - De Creatieve Content Scout Agent (Definitieve Fix met Veiligheidsnet)
 
 import express from 'express';
 import dotenv from 'dotenv';
@@ -15,9 +15,8 @@ const port = process.env.PORT || 3000;
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 
 // --- Middleware ---
-// FIX 1: Een robuustere gastenlijst voor de 'uitsmijter' (CORS)
 const corsOptions = {
-  origin: ['https://eddiecool.nl', 'http://localhost:3000'], // Sta zowel je live site als lokale tests toe
+  origin: ['https://eddiecool.nl', 'http://localhost:3000'],
   optionsSuccessStatus: 200 
 };
 app.use(cors(corsOptions));
@@ -45,18 +44,20 @@ async function runContentScout() {
     const targetFeedUrl = 'https://tweakers.net/feeds/nieuws.xml';
     console.log(`1. Op jacht naar nieuwe content via de RSS-feed: ${targetFeedUrl}...`);
     
-    // FIX 2: Een 'vermomming' voor de jager (User-Agent header)
+    // FIX 1: Een stopwatch (timeout) en vermomming (User-Agent)
     const feed = await parser.parseURL(targetFeedUrl, {
         headers: {
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
-        }
+        },
+        timeout: 10000 // Wacht maximaal 10 seconden
     });
-    const nieuwsteTitel = feed.items[0].title;
 
-    if (!nieuwsteTitel) {
-        throw new Error("Kon geen titel vinden in de RSS-feed.");
+    // FIX 2: Controleer of de jachtzak niet leeg is
+    if (!feed || !feed.items || feed.items.length === 0) {
+        throw new Error("Kon geen items vinden in de RSS-feed. De feed is mogelijk leeg of onbereikbaar.");
     }
     
+    const nieuwsteTitel = feed.items[0].title;
     console.log(`   -> Prooi gevonden: "${nieuwsteTitel}"`);
 
     console.log('2. Gevonden content analyseren met AI...');
