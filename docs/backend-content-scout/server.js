@@ -1,11 +1,11 @@
-// server.js - De Creatieve Content Scout Agent (met Planner en CORS Oplossing)
+// server.js - De Creatieve Content Scout Agent (Definitieve Fix)
 
 import express from 'express';
 import dotenv from 'dotenv';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import Parser from 'rss-parser';
 import cron from 'node-cron';
-import cors from 'cors'; // Importeer CORS
+import cors from 'cors';
 
 dotenv.config();
 
@@ -15,9 +15,9 @@ const port = process.env.PORT || 3000;
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 
 // --- Middleware ---
-// AANGEPAST: Geef je website expliciet toestemming om te praten met de server.
+// FIX 1: Een robuustere gastenlijst voor de 'uitsmijter' (CORS)
 const corsOptions = {
-  origin: 'https://eddiecool.nl', // Jouw live website
+  origin: ['https://eddiecool.nl', 'http://localhost:3000'], // Sta zowel je live site als lokale tests toe
   optionsSuccessStatus: 200 
 };
 app.use(cors(corsOptions));
@@ -45,7 +45,12 @@ async function runContentScout() {
     const targetFeedUrl = 'https://tweakers.net/feeds/nieuws.xml';
     console.log(`1. Op jacht naar nieuwe content via de RSS-feed: ${targetFeedUrl}...`);
     
-    const feed = await parser.parseURL(targetFeedUrl);
+    // FIX 2: Een 'vermomming' voor de jager (User-Agent header)
+    const feed = await parser.parseURL(targetFeedUrl, {
+        headers: {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+        }
+    });
     const nieuwsteTitel = feed.items[0].title;
 
     if (!nieuwsteTitel) {
@@ -59,7 +64,6 @@ async function runContentScout() {
     const result = await model.generateContent(prompt);
     const analyse = result.response.text();
     
-    // Sla het resultaat op in het geheugen
     laatsteAnalyse = analyse; 
     console.log('3. Resultaat opgeslagen in het geheugen.');
 
@@ -80,7 +84,6 @@ app.get('/get-latest-ideas', (req, res) => {
 app.listen(port, () => {
   console.log(`Content Scout server draait op http://localhost:${port}`);
   
-  // Plan de agent om elke dag om 9:00 's ochtends te draaien.
   cron.schedule('0 9 * * *', () => {
     console.log('Het is 9:00 uur, tijd voor de dagelijkse jacht!');
     runContentScout();
@@ -91,7 +94,6 @@ app.listen(port, () => {
 
   console.log('De agent is ingepland en wacht op het juiste moment om te jagen...');
   
-  // Voer de jacht één keer uit bij het opstarten.
   runContentScout();
 });
 
