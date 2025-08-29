@@ -1,4 +1,4 @@
-// server.js - De Creatieve Content Scout Agent (Super Robuuste Fix)
+// server.js - De Creatieve Content Scout Agent (De Ultieme Test)
 
 import express from 'express';
 import dotenv from 'dotenv';
@@ -6,7 +6,7 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 import Parser from 'rss-parser';
 import cron from 'node-cron';
 import cors from 'cors';
-import axios from 'axios'; // NIEUW: Importeer de robuuste 'postbode'
+import axios from 'axios';
 
 dotenv.config();
 
@@ -42,18 +42,17 @@ async function runContentScout() {
   console.log(`[${new Date().toLocaleString()}] --- De Content Scout wordt wakker! ---`);
   
   try {
-    const targetFeedUrl = 'https://tweakers.net/feeds/nieuws.xml';
+    // AANGEPAST: We jagen nu op de NOS-feed als de ultieme test.
+    const targetFeedUrl = 'https://feeds.nos.nl/nosnieuwsalgemeen';
     console.log(`1. Op jacht naar nieuwe content via de RSS-feed: ${targetFeedUrl}...`);
     
-    // AANGEPAST: Gebruik nu Axios om de data eerst op te halen
     const response = await axios.get(targetFeedUrl, {
         headers: {
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
         },
-        timeout: 15000 // Geef het 15 seconden de tijd
+        timeout: 15000
     });
 
-    // Geef de opgehaalde data aan de parser om te lezen
     const feedXml = response.data;
     const feed = await parser.parseString(feedXml);
 
