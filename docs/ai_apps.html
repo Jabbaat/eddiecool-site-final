@@ -18,9 +18,10 @@
     <style>
         /* Gecentraliseerde stijlen voor de AI Apps pagina */
         .ai-apps-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            display: flex; /* Veranderd van grid naar flex */
+            flex-direction: column; /* Stapel de kaarten verticaal */
             gap: 2rem;
+            align-items: center; /* Centreer de stapel */
         }
 
         .project-card {
@@ -28,7 +29,6 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 12px;
             padding: 24px;
-            text-align: center;
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
             backdrop-filter: blur(4px);
             -webkit-backdrop-filter: blur(4px);
@@ -36,6 +36,9 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+            width: 100%;
+            max-width: 800px; /* Voorkomt dat de kaarten te breed worden */
+            text-align: center;
         }
         
         .project-card:hover {
@@ -128,7 +131,7 @@
             <!-- De kaart voor de Gedichten Generator -->
             <div class="project-card">
                 <div>
-                    <h3>Gedichten Generator</h3>
+                    <h3>📜 Gedichten Generator</h3>
                     <p>Laat de AI een uniek gedicht voor je schrijven over diverse thema's.</p>
                 </div>
                 <a href="poem_creator.html" class="project-button">✨ Probeer het uit</a>
@@ -137,19 +140,19 @@
             <!-- De kaart voor de 3D Spirograaf Simulator -->
              <div class="project-card">
                 <div>
-                    <h3>3D Spirograaf Simulator</h3>
+                    <h3>🌀 3D Spirograaf Simulator</h3>
                     <p>Een interactieve 3D-tool om complexe spirografen te maken en te manipuleren.</p>
                 </div>
-                <a href="spirograaf.html" class="project-button">✨ Probeer het uit</a>
+                <a href="spirograaf.html" class="project-button">✨ Bekijk Project</a>
             </div>
             
             <!-- De kaart voor de 3D Zonnestelsel Simulator -->
             <div class="project-card">
                 <div>
-                    <h3>3D Zonnestelsel Simulator</h3>
+                    <h3>🪐 3D Zonnestelsel Simulator</h3>
                     <p>Een interactieve 3D-simulatie van ons zonnestelsel, gebouwd met Three.js.</p>
                 </div>
-                <a href="zonnestelsel.html" class="project-button">✨ Probeer het uit</a>
+                <a href="zonnestelsel.html" class="project-button">✨ Bekijk Project</a>
             </div>
 
         </section>
