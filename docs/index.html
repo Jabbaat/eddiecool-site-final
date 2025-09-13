@@ -53,7 +53,17 @@
     <div class="main-intro-content">
         <h2>Welkom bij de AI Speelplaats!</h2>
         <p>Hier komen creativiteit en kunstmatige intelligentie samen. Ik experimenteer met de nieuwste AI-tools, deel inspirerende ontdekkingen en help jou om nieuwe creatieve mogelijkheden te ontsluiten. Of je nu op zoek bent naar frisse ideeën, je workflow wilt stroomlijnen of gewoon nieuwsgierig bent naar wat er mogelijk is met AI – dit is jouw plek om te ontdekken, leren en geïnspireerd te raken.</p>
-
+        
+        <!-- NIEUWE GOOGLE WORKFLOW SECTIE -->
+        <div class="ai-workflow-section">
+            <h3>Maak Consistente Karakters met Google's AI</h3>
+            <p>Leer hoe je met Google's "nano-banana" (Gemini 1.5 Flash) en Veo 3 via Flow een karakter creëert en animeert, terwijl het uiterlijk perfect consistent blijft.</p>
+            <ul class="workflow-list">
+                <li><span class="workflow-icon">🎨</span> <strong>Stap 1: Creëer je Karakter</strong><br>Gebruik een gedetailleerde prompt in "nano-banana" om je karakter te ontwerpen. Hoe specifieker je bent over uiterlijk, kleding en stijl, hoe beter de consistentie.</li>
+                <li><span class="workflow-icon">🎬</span> <strong>Stap 2: Animeer met een Beginframe</strong><br>Importeer je gemaakte afbeelding in Google Flow. Dit beeld dient als "beginning frame" voor Veo 3. Geef daarna een simpele actie op.</li>
+            </ul>
+        </div>
+        
         <div class="ai-workflow-section">
             <h3>"Van Idee tot Video in Minuten – Gesteund door AI"</h3>
             <p>Ooit afgevraagd hoe je een simpel concept omzet in een verbluffende video? Dit is mijn AI-gedreven workflow:</p>
@@ -81,7 +91,7 @@
                 <h3>💬 AI Assistenten</h3>
                 <ul>
                     <li><a href="https://chat.openai.com" target="_blank" rel="noopener noreferrer">**ChatGPT**</a> - Mijn favoriet voor brainstormen, scripts schrijven en problemen oplossen</li>
-                    <li><a href="https://gemini.google.com" target="_blank" rel="noopener noreferrer">**Gemini**</a> - Google's krachtige AI die uitblinkt in onderzoek en analyse</li>    
+                    <li><a href="https://gemini.google.com" target="_blank" rel="noopener noreferrer">**Gemini**</a> - Google's krachtige AI die uitblinkt in onderzoek en analyse</li>     
                     <li><a href="https://claude.ai" target="_blank" rel="noopener noreferrer">**Claude**</a> - Uitstekend voor gedetailleerde feedback en creatief schrijven</li>
                 </ul>
             </div>
@@ -129,23 +139,24 @@
             const thumbnailPromo = document.getElementById("promo-video-thumbnail");
             const videoPromo = document.getElementById("promo-video-player");
 
-            if (playBtnPromo && thumbnailPromo && videoPromo) {
-                playBtnPromo.addEventListener("click", function () {
-                    thumbnailPromo.style.display = "none";
-                    playBtnPromo.style.display = "none";
+            function playVideo() {
+                if (thumbnailPromo) thumbnailPromo.style.display = "none";
+                if (playBtnPromo) playBtnPromo.style.display = "none";
+                if (videoPromo) {
                     videoPromo.style.display = "block";
                     videoPromo.play();
-                });
+                }
+            }
 
-                thumbnailPromo.addEventListener("click", function () {
-                    thumbnailPromo.style.display = "none";
-                    playBtnPromo.style.display = "none";
-                    videoPromo.style.display = "block";
-                    videoPromo.play();
-                });
+            if (playBtnPromo) {
+                playBtnPromo.addEventListener("click", playVideo);
+            }
+            if (thumbnailPromo) {
+                thumbnailPromo.addEventListener("click", playVideo);
             }
         });
     </script>
 
 </body>
 </html>
+
