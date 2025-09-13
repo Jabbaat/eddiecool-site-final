@@ -15,6 +15,50 @@
 
       gtag('config', 'G-SYG5T1Z0MV'); // VERVANG DIT DOOR JOUW MEASUREMENT ID
     </script>
+    <style>
+        .google-workflow-section {
+            background-color: #2c3e50; /* Donkerblauw */
+            color: #ffffff;
+            border-radius: 12px;
+            padding: 30px;
+            margin: 30px 0;
+        }
+        .google-workflow-section h3 {
+            color: #ffffff;
+            margin-top: 0;
+        }
+        .google-workflow-section p {
+            color: #e0e0e0;
+            text-align: left;
+            max-width: 100%;
+        }
+        .workflow-step {
+            display: flex;
+            align-items: flex-start;
+            margin-top: 25px;
+        }
+        .workflow-step-icon {
+            font-size: 2.5rem;
+            margin-right: 20px;
+            margin-top: 5px;
+        }
+        .workflow-step-content h4 {
+            margin: 0 0 5px 0;
+            font-size: 1.2rem;
+            color: #f1c40f; /* Goudgele kleur voor titels */
+        }
+        .prompt-box {
+            background-color: rgba(0, 0, 0, 0.2);
+            border-radius: 6px;
+            padding: 15px;
+            margin-top: 10px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.95rem;
+            border-left: 4px solid #f1c40f;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+    </style>
 </head>
 
 <body>
@@ -54,19 +98,37 @@
         <h2>Welkom bij de AI Speelplaats!</h2>
         <p>Hier komen creativiteit en kunstmatige intelligentie samen. Ik experimenteer met de nieuwste AI-tools, deel inspirerende ontdekkingen en help jou om nieuwe creatieve mogelijkheden te ontsluiten. Of je nu op zoek bent naar frisse ideeën, je workflow wilt stroomlijnen of gewoon nieuwsgierig bent naar wat er mogelijk is met AI – dit is jouw plek om te ontdekken, leren en geïnspireerd te raken.</p>
         
-        <!-- NIEUWE GOOGLE WORKFLOW SECTIE -->
-        <div class="ai-workflow-section">
+        <!-- VERBETERDE GOOGLE WORKFLOW SECTIE -->
+        <div class="google-workflow-section">
             <h3>Maak Consistente Karakters met Google's AI</h3>
-            <p>Leer hoe je met Google's "nano-banana" (Gemini 1.5 Flash) en Veo 3 via Flow een karakter creëert en animeert, terwijl het uiterlijk perfect consistent blijft.</p>
-            <ul class="workflow-list">
-                <li><span class="workflow-icon">🎨</span> <strong>Stap 1: Creëer je Karakter</strong><br>Gebruik een gedetailleerde prompt in "nano-banana" om je karakter te ontwerpen. Hoe specifieker je bent over uiterlijk, kleding en stijl, hoe beter de consistentie.</li>
-                <li><span class="workflow-icon">🎬</span> <strong>Stap 2: Animeer met een Beginframe</strong><br>Importeer je gemaakte afbeelding in Google Flow. Dit beeld dient als "beginning frame" voor Veo 3. Geef daarna een simpele actie op.</li>
-            </ul>
+            <p>Leer hoe je met Google's "Nano Banana 🍌" (Gemini 1.5 Flash) en Veo 3 via Flow een karakter creëert en animeert, terwijl het uiterlijk perfect consistent blijft.</p>
+            <div class="workflow-step">
+                <div class="workflow-step-icon">🎨</div>
+                <div class="workflow-step-content">
+                    <h4>Stap 1: Creëer je Karakter met Nano Banana 🍌</h4>
+                    <p>Gebruik een gedetailleerde prompt in "Nano Banana 🍌" om je karakter te ontwerpen. Wees specifiek over uiterlijk, kleding, stijl en omgeving voor het beste resultaat.</p>
+                    <div class="prompt-box">
+                        <strong>Voorbeeldprompt:</strong><br>
+                        "A charismatic cartoon robot, friendly expression, glowing blue eyes, metallic silver body with orange accents, standing in a futuristic, minimalist white room. Pixar animation style, sharp focus, detailed."
+                    </div>
+                </div>
+            </div>
+            <div class="workflow-step">
+                <div class="workflow-step-icon">🎬</div>
+                <div class="workflow-step-content">
+                    <h4>Stap 2: Animeer met Flow en Veo 3</h4>
+                    <p>Importeer je gemaakte afbeelding in Google Flow. Dit beeld dient als "beginning frame" (beginframe) voor Veo 3, wat zorgt voor de consistentie. Geef daarna een simpele actie op om de animatie te starten.</p>
+                     <div class="prompt-box">
+                        <strong>Voorbeeldprompt voor video:</strong><br>
+                        "The robot waves happily at the camera and then gives a thumbs up."
+                    </div>
+                </div>
+            </div>
         </div>
         
         <div class="ai-workflow-section">
             <h3>"Van Idee tot Video in Minuten – Gesteund door AI"</h3>
-            <p>Ooit afgevraagd hoe je een simpel concept omzet in een verbluffende video? Dit is mijn AI-gedreven workflow:</p>
+            <p>Ooit afgevraagd hoe je een simpel concept omzet in een verbluffende video? Dit is mijn algemene AI-gedreven workflow:</p>
             
             <ul class="workflow-list">
                 <li><span class="workflow-icon">🎯</span> **Begin met een idee:** Inspiratie nodig? Probeer mijn <a href="video_ideas.html">AI video-ideeëngenerator</a></li>
@@ -90,9 +152,22 @@
             <div class="toolkit-category">
                 <h3>💬 AI Assistenten</h3>
                 <ul>
-                    <li><a href="https://chat.openai.com" target="_blank" rel="noopener noreferrer">**ChatGPT**</a> - Mijn favoriet voor brainstormen, scripts schrijven en problemen oplossen</li>
-                    <li><a href="https://gemini.google.com" target="_blank" rel="noopener noreferrer">**Gemini**</a> - Google's krachtige AI die uitblinkt in onderzoek en analyse</li>     
-                    <li><a href="https://claude.ai" target="_blank" rel="noopener noreferrer">**Claude**</a> - Uitstekend voor gedetailleerde feedback en creatief schrijven</li>
+                    <li><a href="https://chat.openai.com" target="_blank" rel="noopener noreferrer">**ChatGPT**</a> - Mijn favoriet voor brainstormen en scripts schrijven</li>
+                    <li><a href="https://gemini.google.com" target="_blank" rel="noopener noreferrer">**Gemini**</a> - Krachtig voor onderzoek en analyse</li>     
+                    <li><a href="https://claude.ai" target="_blank" rel="noopener noreferrer">**Claude**</a> - Uitstekend voor gedetailleerde feedback</li>
+                    <li><a href="https://www.perplexity.ai/" target="_blank" rel="noopener noreferrer">**Perplexity**</a> - Geweldig voor actuele, bron-gebaseerde antwoorden</li>
+                    <li><a href="https://www.mistral.ai/le-chat" target="_blank" rel="noopener noreferrer">**Le Chat**</a> - Sterk in meertalige en creatieve taken</li>
+                </ul>
+            </div>
+            
+            <!-- NIEUWE GOOGLE TOOLKIT CATEGORIE -->
+            <div class="toolkit-category">
+                <h3>🌐 Google AI Suite</h3>
+                <ul>
+                    <li><a href="#" target="_blank" rel="noopener noreferrer">**Nano Banana 🍌**</a> - (Gemini 1.5 Flash) Razendsnelle en efficiënte beeldgeneratie.</li>
+                    <li><a href="#" target="_blank" rel="noopener noreferrer">**Veo 3**</a> - Google's meest geavanceerde model voor hoge-kwaliteit videogeneratie.</li>
+                    <li><a href="#" target="_blank" rel="noopener noreferrer">**Flow**</a> - De creatieve interface om workflows te bouwen met tools zoals Veo en Nano Banana 🍌.</li>
+                    <li><a href="#" target="_blank" rel="noopener noreferrer">**Wisk**</a> - Een AI-tool gericht op het begrijpen en oplossen van wiskundige vraagstukken.</li>
                 </ul>
             </div>
 
@@ -101,7 +176,7 @@
                 <ul>
                     <li><a href="https://leonardo.ai" target="_blank" rel="noopener noreferrer">**Leonardo AI**</a> - Verbluffende, consistente beelden met geweldige stijlcontrole</li>
                     <li><a href="https://openai.com/dall-e-3" target="_blank" rel="noopener noreferrer">**DALL-E**</a> - OpenAI's creatieve krachtpatser voor unieke concepten</li>
-                    <li><a href="https://gencraft.com" target="_blank" rel="noopener noreferrer">**Gencraft**</a> - Grote variatie aan artistieke stijlen en eenvoudig in gebruik</li>
+                    <li><a href="https://gencraft.com" target="_blank" rel="noopener noreferrer">**Gencraft**</a> - Grote variatie aan artistieke stijlen</li>
                 </ul>
             </div>
 
@@ -110,7 +185,6 @@
                 <ul>
                     <li><a href="https://hailuoai.video" target="_blank" rel="noopener noreferrer">**Hailuo AI**</a> - Indrukwekkende videogeneratie vanuit tekst</li>
                     <li><a href="https://klingai.com" target="_blank" rel="noopener noreferrer">**Kling AI**</a> - Hoge kwaliteit video's met geweldige beweging</li>
-                    <li><a href="https://vivago.ai" target="_blank" rel="noopener noreferrer">**Vivago AI**</a> - Vloeiende animaties en overgangen</li>
                     <li><a href="https://pixverse.ai" target="_blank" rel="noopener noreferrer">**Pixverse**</a> - Perfect om afbeeldingen tot leven te wekken</li>
                     <li><a href="https://hedra.com" target="_blank" rel="noopener noreferrer">**Hedra**</a> - Gespecialiseerd in karakteranimatie en lip-sync</li>
                 </ul>
@@ -119,8 +193,8 @@
             <div class="toolkit-category">
                 <h3>🎵 Audio & Muziek</h3>
                 <ul>
-                    <li><a href="https://elevenlabs.io" target="_blank" rel="noopener noreferrer">**ElevenLabs**</a> - De meest natuurlijk klinkende AI-stemmen die er zijn</li>
-                    <li><a href="https://udio.com" target="_blank" rel="noopener noreferrer">**Udio**</a> - Creëer muziek op maat die bij elke sfeer past</li>
+                    <li><a href="https://elevenlabs.io" target="_blank" rel="noopener noreferrer">**ElevenLabs**</a> - De meest natuurlijk klinkende AI-stemmen</li>
+                    <li><a href="https://udio.com" target="_blank" noreferrer">**Udio**</a> - Creëer muziek op maat die bij elke sfeer past</li>
                     <li><a href="https://suno.ai" target="_blank" rel="noopener noreferrer">**Suno**</a> - AI-gegenereerde nummers met tekst en melodieën</li>
                 </ul>
             </div>
@@ -159,4 +233,3 @@
 
 </body>
 </html>
-
