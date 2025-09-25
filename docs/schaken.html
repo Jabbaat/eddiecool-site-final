@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zelflerende Schaak App</title>
+    <!-- CSS voor het schaakbord -->
+    <link rel="stylesheet" href="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css">
+    
+    <!-- Eigen styling voor een professionele look -->
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #2c3e50;
+            color: #ecf0f1;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 30px;
+            width: 100%;
+            max-width: 1000px;
+        }
+
+        .game-area {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #myBoard {
+            width: 90vw;
+            max-width: 500px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+        }
+
+        .info-panel {
+            background-color: #34495e;
+            padding: 20px;
+            border-radius: 8px;
+            width: 90vw;
+            max-width: 500px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+            min-height: 300px;
+        }
+        
+        @media (min-width: 800px) {
+           #myBoard {
+               width: 500px;
+           }
+           .info-panel {
+               width: 350px;
+           }
+        }
+
+
+        h1, h2 {
+            text-align: center;
+            color: #ecf0f1;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+
+        #status, #pgn {
+            text-align: center;
+            font-size: 1.1em;
+            margin-top: 15px;
+            min-height: 24px;
+        }
+
+        .controls {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        button {
+            background-color: #8e44ad;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+        }
+
+        button:hover {
+            background-color: #9b59b6;
+            transform: translateY(-2px);
+        }
+        
+        button:disabled {
+            background-color: #7f8c8d;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        #analysis-output {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 5px;
+            white-space: pre-wrap;
+            font-family: 'Courier New', Courier, monospace;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="game-area">
+            <h1>Schaak App</h1>
+            <div id="myBoard"></div>
+            <div id="status">Speel een zet. Jij bent wit.</div>
+            <div class="controls">
+                <button id="resetBtn">Nieuw Spel</button>
+                <button id="undoBtn">Zet Terug</button>
+                <button id="analyzeBtn" disabled>Analyseer Partij</button>
+            </div>
+        </div>
+        <div class="info-panel">
+            <h2>Analyse & Feedback</h2>
+            <div id="analysis-output">De analyse verschijnt hier na afloop van het spel.</div>
+        </div>
+    </div>
+
+    <!-- JavaScript bibliotheken -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.2/chess.js"></script>
+
+    <script>
+    // --- Functie om KLASSIEKE SVG schaakstukken te genereren ---
+    // Dit zorgt ervoor dat we geen externe afbeeldingen hoeven te laden.
+    function classicPieceTheme(piece) {
+        const pieces = {
+            'wK': 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0NSIgaGVpZ2h0PSI0NSI+PGcgZmlsbD0iI2ZmZiIgZmlsbC1ydWxlPSJldmVub2RkIiBzdHJva2U9IiMwMDAiIHN0cm9rZS13aWR0aD0iMS41IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik0yMi41IDExLjYzOGMtMi41IDAtMi41IDQtMi41IDR2M2gtNmwtMy41IDVWMzdoMjVsMy41LTUgMS05VjE1LjYzOGMwLTIuNS0xLTMuNS0yLjUtNGgtMTZ6TTE4IDEyLjEzOGg5TTIwLjUgMTUuMTM4aDRtLTIgMHY0bS0zLjUgNGg4Ii8+PHBhdGggZD0iTTIyLjUgMzFjNS41MjMgMCAxMCA0LjQ3NyAxMCAxMCAwIDUuNTIzLTEwIDEwLTEwIDEwcy0xMC00LjQ3Ny0xMC0xMC00LjQ3Ny0xMC0xMC0xMHoiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDAgLTgpIi8+PHBhdGggZD0iTTExLjUgMzZoMjJNMTEuNSAzMy41aDIyTTExIDMyaDIzIi8+PC9nPjwvc3ZnPg==',
+            'wQ': 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0NSIgaGVpZ2h0PSI0NSI+PGcgZmlsbD0iI2ZmZiIgZmlsbC1ydWxlPSJldmVub2RkIiBzdHJva2U9IiMwMDAiIHN0cm9rZS13aWR0aD0iMS41IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik0xMS41IDE2TDYgMTMuNSA0LjUgMTYgMyAyMC41bDEuNSAzLjUgMy41IDEtMi41IDItMi41IDcgNy41IDUgNy41LTUgMi41LTcgMi41LTItMi41LTEgMy41LTEgMS41LTMuNS0xLjUtNC41LTUuNS0yLjV6Ii8+PHBhdGggZD0iTTIyLjUgMzFjNS41MjMgMCAxMCA0LjQ3NyAxMCAxMCAwIDUuNTIzLTEwIDEwLTEwIDEwcy0xMC00LjQ3Ny0xMC0xMC00LjQ3Ny0xMC0xMC0xMHoiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDAgLTgpIi8+PHBhdGggZD0iTTExLjUgMzZoMjJNMTEuNSAzMy41aDIyTTExIDMyaDIzIi8+PC9nPjwvc3ZnPg==',
+            'wR': 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0NSIgaGVpZ2h0PSI0NSI+PGcgZmlsbD0iI2ZmZiIgZmlsbC1ydWxlPSJldmVub2RkIiBzdHJva2U9IiMwMDAiIHN0cm9rZS13aWR0aD0iMS41IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik05IDM5aDI3di0zSDl2M3ptMy05aDIxdi0zSDI3djNoLTV2LTNoLTl2M2gzdjN6bTAtM2g5djNoOVYyN0gxMnYzek0xNCA5aDV2NWg3di01aDV2MThIMTRWOXptMyAyM2g5djNoOVYyN0gxN3Y1em0wIDNoOVYyN0gxN3YzIi8+PHBhdGggZD0iTTIyLjUgMzFjNS41MjMgMCAxMCA0LjQ3NyAxMCAxMCAwIDUuNTIzLTEwIDEwLTEwIDEwcy0xMC00LjQ3Ny0xMC0xMC00LjQ3Ny0xMC0xMC0xMHoiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDAgLTgpIi8+PHBhdGggZD0iTTExLjUgMzZoMjJNMTEuNSAzMy41aDIyTTExIDMyaDIzIi8+PC9nPjwvc3ZnPg==',
+            'wB': 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0NSIgaGVpZ2h0PSI0NSI+PGcgZmlsbD0iI2ZmZiIgZmlsbC1ydWxlPSJldmVub2RkIiBzdHJva2U9IiMwMDAiIHN0cm9rZS13aWR0aD0iMS41IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik0xOC41IDEyYy0xLjUgMi0yLjUgNS41LTIuNSA4LjVzMSAxMS41IDUgMTQuNWMyLjUgMCAxLjUtMi41IDEtNC41LTIuNS0yLjUtNC41LTQtMi41LTctLjUtMi41IDAtNC41IDEtNi41LTIuNSAyLjUtNC41IDYtMy41IDcuNS0uNSAxLTEuNSAyLjUtMS41IDIgLjUtNS41IDMtMTEgMy0xMy41bDEtMS41LTEtLjV6Ii8+PHBhdGggZD0iTTI0LjUgMTAuNWMtMi41LTIuNS04IDAtNS41IDUgMi41LTIuNSA2LTIuNSA1LjUgLTV6Ii8+PHBhdGggZD0iTTIyLjUgMzFjNS41MjMgMCAxMCA0LjQ3NyAxMCAxMCAwIDUuNTIzLTEwIDEwLTEwIDEwcy0xMC00LjQ3Ny0xMC0xMC00LjQ3Ny0xMC0xMC0xMHoiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDAgLTgpIi8+PHBhdGggZD0iTTExLjUgMzZoMjJNMTEuNSAzMy41aDIyTTExIDMyaDIzIi8+PC9nPjwvc3ZnPg==',
+            'wN': 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0NSIgaGVpZ2h0PSI0NSI+PGcgZmlsbD0iI2ZmZiIgZmlsbC1ydWxlPSJldmVub2RkIiBzdHJva2U9IiMwMDAiIHN0cm9rZS13aWR0aD0iMS41IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik0yMi41IDkuNWMzIDAgNS41IDItNS41IDQuNS0xMSAxLjUtOCAxMC41LTE1IDEwLjUgMCAwIDMuNS0xIDMuNS00LjUgMi41LTEuNSA0LjUtMS41IDctMS41YTkgOSAwIDAgMSAxLjUgMiA5IDkgMCAwIDEgMS41IDIgOSA5IDAgMCAxIDEuNSAyIi8+PHBhdGggZD0iTTI0IDIwLjVjLTEuNS0yLjUtNS0yLTUgM3MyLjUgNSA1IDMtMi41IDQtNS41IDYiLz48cGF0aCBkPSJNMjIuNSAzMWM1LjUyMyAwIDEwIDQuNDc3IDEwIDEwIDAgNS41MjMtMTAgMTAtMTAgMTBzLTEwLTQuNDc3LTEwLTEwLTQuNDc3LTEwLTEwLTEweiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMCAtOCkiLz48cGF0aCBkPSJNMTEuNSAzNmgyMk0xMS41IDMzLjVoMjJNMTEgMzJoMjMiLz48L2c+PC9zdmc+',
+            'wP': 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0NSIgaGVpZ2h0PSI0NSI+PGcgZmlsbD0iI2ZmZiIgZmlsbC1ydWxlPSJldmVub2RkIiBzdHJva2U9IiMwMDAiIHN0cm9rZS13aWR0aD0iMS41IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik0yMi41IDljLTIuMjEgMC00IDEuNzktNCA0IDAgMi4yMSAxLjc5IDQgNCA0czQtMS43OSA0LTQtMS43OS00LTQtNHptMCA5Yy0yLjQ4NSAwLTQuNSAyLjAxNS00LjUgNC41djNoOXYtM2MwLTIuNDg1LTIuMDE1LTQuNS00LjUtNC41em0tNC41IDcuNXYzaDl2LTN6bS0yIDN2M2gxM3YtM3oiLz48cGF0aCBkPSJNMjIuNSAzMWM1LjUyMyAwIDEwIDQuNDc3IDEwIDEwIDAgNS41MjMtMTAgMTAtMTAgMTBzLTEwLTQuNDc3LTEwLTEwLTQuNDc3LTEwLTEwLTEweiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMCAtOCkiLz48cGF0aCBkPSJNMTEuNSAzNmgyMk0xMS41IDMzLjVoMjJNMTEgMzJoMjMiLz48L2c+PC9zdmc+',
+            'bK': 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0NSIgaGVpZ2h0PSI0NSI+PGcgZmlsbD0iIzAwMCIgZmlsbC1ydWxlPSJldmVub2RkIiBzdHJva2U9IiMwMDAiIHN0cm9rZS13aWR0aD0iMS41IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik0yMi41IDExLjYzOGMtMi41IDAtMi41IDQtMi41IDR2M2gtNmwtMy41IDVWMzdoMjVsMy41LTUgMS05VjE1LjYzOGMwLTIuNS0xLTMuNS0yLjUtNGgtMTZ6TTE4IDEyLjEzOGg5TTIwLjUgMTUuMTM4aDRtLTIgMHY0bS0zLjUgNGg4Ii8+PHBhdGggZD0iTTIyLjUgMzFjNS41MjMgMCAxMCA0LjQ3NyAxMCAxMCAwIDUuNTIzLTEwIDEwLTEwIDEwcy0xMC00LjQ3Ny0xMC0xMC00LjQ3Ny0xMC0xMC0xMHoiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDAgLTgpIi8+PHBhdGggZD0iTTExLjUgMzZoMjJNMTEuNSAzMy41aDIyTTExIDMyaDIzIi8+PC9nPjwvc3ZnPg==',
+            'bQ': 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0NSIgaGVpZ2h0PSI0NSI+PGcgZmlsbD0iIzAwMCIgZmlsbC1ydWxlPSJldmVub2RkIiBzdHJva2U9IiMwMDAiIHN0cm9rZS13aWR0aD0iMS41IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik0xMS41IDE2TDYgMTMuNSA0LjUgMTYgMyAyMC41bDEuNSAzLjUgMy41IDEtMi41IDItMi41IDcgNy41IDUgNy41LTUgMi41LTcgMi41LTItMi41LTEgMy41LTEgMS41LTMuNS0xLjUtNC41LTUuNS0yLjV6Ii8+PHBhdGggZD0iTTIyLjUgMzFjNS41MjMgMCAxMCA0LjQ7NyAxMCAxMCAwIDUuNTIzLTEwIDEwLTEwIDEwcy0xMC00LjQ3Ny0xMC0xMC00LjQ3Ny0xMC0xMC0xMHoiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDAgLTgpIi8+PHBhdGggZD0iTTExLjUgMzZoMjJNMTEuNSAzMy41aDIyTTExIDMyaDIzIi8+PC9nPjwvc3ZnPg==',
+            'bR': 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0NSIgaGVpZ2h0PSI0NSI+PGcgZmlsbD0iIzAwMCIgZmlsbC1ydWxlPSJldmVub2RkIiBzdHJva2U9IiMwMDAiIHN0cm9rZS13aWR0aD0iMS41IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik05IDM5aDI3di0zSDl2M3ptMy05aDIxdi0zSDI3djNoLTV2LTNoLTl2M2gzdjN6bTAtM2g5djNoOVYyN0gxMnYzek0xNCA5aDV2NWg3di01aDV2MThIMTRWOXptMyAyM2g5djNoOVYyN0gxN3Y1em0wIDNoOVYyN0gxN3YzIi8+PHBhdGggZD0iTTIyLjUgMzFjNS41MjMgMCAxMCA0LjQ3NyAxMCAxMCAwIDUuNTIzLTEwIDEwLTEwIDEwcy0xMC00LjQ3Ny0xMC0xMC00LjQ3Ny0xMC0xMC0xMHoiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDAgLTgpIi8+PHBhdGggZD0iTTExLjUgMzZoMjJNMTEuNSAzMy41aDIyTTExIDMyaDIzIi8+PC9nPjwvc3ZnPg==',
+            'bB': 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0NSIgaGVpZ2h0PSI0NSI+PGcgZmlsbD0iIzAwMCIgZmlsbC1ydWxlPSJldmVub2RkIiBzdHJva2U9IiMwMDAiIHN0cm9rZS13aWR0aD0iMS41IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik0xOC41IDEyYy0xLjUgMi0yLjUgNS41LTIuNSA4LjVzMSAxMS41IDUgMTQuNWMyLjUgMCAxLjUtMi41IDEtNC41LTIuNS0yLjUtNC41LTQtMi41LTctLjUtMi41IDAtNC41IDEtNi41LTIuNSAyLjUtNC41IDYtMy41IDcuNS0uNSAxLTEuNSAyLjUtMS41IDIgLjUtNS41IDMtMTEgMy0xMy41bDEtMS41LTEtLjV6Ii8+PHBhdGggZD0iTTI0LjUgMTAuNWMtMi41LTIuNS04IDAtNS41IDUgMi41LTIuNSA2LTIuNSA1LjUgLTV6Ii8+PHBhdGggZD0iTTIyLjUgMzFjNS41MjMgMCAxMCA0LjQ3NyAxMCAxMCAwIDUuNTIzLTEwIDEwLTEwIDEwcy0xMC00LjQ3Ny0xMC0xMC00LjQ3Ny0xMC0xMC0xMHoiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDAgLTgpIi8+PHBhdGggZD0iTTExLjUgMzZoMjJNMTEuNSAzMy41aDIyTTExIDMyaDIzIi8+PC9nPjwvc3ZnPg==',
+            'bN': 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0NSIgaGVpZ2h0PSI0NSI+PGcgZmlsbD0iIzAwMCIgZmlsbC1ydWxlPSJldmVub2RkIiBzdHJva2U9IiMwMDAiIHN0cm9rZS13aWR0aD0iMS41IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik0yMi41IDkuNWMzIDAgNS41IDItNS41IDQuNS0xMSAxLjUtOCAxMC41LTE1IDEwLjUgMCAwIDMuNS0xIDMuNS00LjUgMi41LTEuNSA0LjUtMS41IDctMS41YTkgOSAwIDAgMSAxLjUgMiA5IDkgMCAwIDEgMS41IDIgOSA5IDAgMCAxIDEuNSAyIi8+PHBhdGggZD0iTTI0IDIwLjVjLTEuNS0yLjUtNS0yLTUgM3MyLjUgNSA1IDMtMi41IDQtNS41IDYiLz48cGF0aCBkPSJNMjIuNSAzMWM1LjUyMyAwIDEwIDQuNDc3IDEwIDEwIDAgNS41MjMtMTAgMTAtMTAgMTBzLTEwLTQuNDc3LTEwLTEwLTQuNDc3LTEwLTEwLTEweiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMCAtOCkiLz48cGF0aCBkPSJNMTEuNSAzNmgyMk0xMS41IDMzLjVoMjJNMTEgMzJoMjMiLz48L2c+PC9zdmc+',
+            'bP': 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0NSIgaGVpZ2h0PSI0NSI+PGcgZmlsbD0iIzAwMCIgZmlsbC1ydWxlPSJldmVub2RkIiBzdHJva2U9IiMwMDAiIHN0cm9rZS13aWR0aD0iMS41IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik0yMi45IDljLTIuMjEgMC00IDEuNzktNCA0IDAgMi4yMSAxLjc5IDQgNCA0czQtMS43OSA0LTQtMS43OS00LTQtNHptMCA5Yy0yLjQ4NSAwLTQuNSAyLjAxNS00LjUgNC41djNoOXYtM2MwLTIuNDg1LTIuMDE1LTQuNS00LjUtNC41em0tNC41IDcuNXYzaDl2LTN6bS0yIDN2M2gxM3YtM3oiLz48cGF0aCBkPSJNMjIuNSAzMWM1LjUyMyAwIDEwIDQuNDc3IDEwIDEwIDAgNS41MjMtMTAgMTAtMTAgMTBzLTEwLTQuNDc3LTEwLTEwLTQuNDc3LTEwLTEwLTEweiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMCAtOCkiLz48cGF0aCBkPSJNMTEuNSAzNmgyMk0xMS41IDMzLjVoMjJNMTEgMzJoMjMiLz48L2c+PC9zdmc+'
+        };
+        return pieces[piece];
+    }
+    
+    // --- Configuratie en Initialisatie ---
+    let board = null;
+    const game = new Chess();
+    const $status = $('#status');
+    const $pgn = $('#pgn');
+    const $analysisOutput = $('#analysis-output');
+    let engine = null;
+    let engineStatus = {};
+    let playerColor = 'white'; // Speler is altijd wit
+
+    // --- Stockfish Engine via Web Worker ---
+    const workerCode = `
+        importScripts('https://cdnjs.cloudflare.com/ajax/libs/stockfish.js/10.0.2/stockfish.js');
+    `;
+    const blob = new Blob([workerCode], { type: 'application/javascript' });
+    const workerUrl = URL.createObjectURL(blob);
+    engine = new Worker(workerUrl);
+
+    engine.onmessage = function(event) {
+        let line = event.data;
+
+        if (line === 'uciok') {
+            engineStatus.engineLoaded = true;
+        } else if (line === 'readyok') {
+            engineStatus.engineReady = true;
+        } else {
+            let match = line.match(/^bestmove ([a-h][1-8])([a-h][1-8])([qrbn])?/);
+            if (match) {
+                // De engine doet een zet
+                game.move({ from: match[1], to: match[2], promotion: match[3] });
+                board.position(game.fen());
+                updateStatus();
+            }
+        }
+    };
+
+    engine.postMessage('uci');
+
+    // --- Game Logic Functies ---
+
+    function onDragStart (source, piece, position, orientation) {
+        if (game.game_over()) return false;
+        if (piece.search(/^b/) !== -1) return false;
+    }
+
+    function onDrop (source, target) {
+        const move = game.move({
+            from: source,
+            to: target,
+            promotion: 'q'
+        });
+
+        if (move === null) return 'snapback';
+
+        updateStatus();
+        window.setTimeout(getEngineMove, 250);
+    }
+    
+    function onSnapEnd () {
+        board.position(game.fen());
+    }
+
+    function getEngineMove() {
+        if (!game.game_over()) {
+            engine.postMessage('position fen ' + game.fen());
+            engine.postMessage('go depth 10'); 
+        }
+    }
+
+    function updateStatus () {
+        let status = '';
+        const moveColor = game.turn() === 'w' ? 'Wit' : 'Zwart';
+
+        if (game.in_checkmate()) {
+            status = `Spel voorbij, ${moveColor} staat schaakmat.`;
+            $('#analyzeBtn').prop('disabled', false);
+        } else if (game.in_draw()) {
+            status = 'Spel voorbij, remise.';
+            $('#analyzeBtn').prop('disabled', false);
+        } else {
+            status = `${moveColor} is aan zet.`;
+            if (game.in_check()) {
+                status += `, ${moveColor} staat schaak.`;
+            }
+        }
+        $status.html(status);
+    }
+    
+    function resetGame() {
+        game.reset();
+        board.start();
+        updateStatus();
+        $analysisOutput.html('De analyse verschijnt hier na afloop van het spel.');
+        $('#analyzeBtn').prop('disabled', true);
+    }
+    
+    function undoMove() {
+        game.undo();
+        game.undo();
+        board.position(game.fen());
+        updateStatus();
+    }
+    
+    // --- Analyse Functie ---
+    async function analyzeGame() {
+        $analysisOutput.html('Analyse gestart... Dit kan even duren.');
+        
+        const history = game.history({ verbose: true });
+        const analysisResults = [];
+        const tempGame = new Chess();
+        
+        for (let i = 0; i < history.length; i++) {
+            const move = history[i];
+            
+            if (move.color === 'w') {
+                const fen = tempGame.fen();
+                const evaluation = await getEvaluation(fen);
+                analysisResults.push({
+                    moveNumber: Math.floor(i / 2) + 1,
+                    move: move.san,
+                    evaluation: evaluation,
+                });
+            }
+            tempGame.move(move.san);
+        }
+        
+        displayAnalysis(analysisResults);
+    }
+
+    function getEvaluation(fen) {
+        return new Promise((resolve) => {
+            let evalData = null;
+            
+            const onEvalMessage = function(event) {
+                let line = event.data;
+                if (line.includes('score cp')) {
+                    const match = line.match(/score cp (-?\d+)/);
+                    if (match) {
+                        evalData = parseInt(match[1], 10) / 100.0;
+                    }
+                }
+                if (line.startsWith('bestmove')) {
+                    engine.removeEventListener('message', onEvalMessage);
+                    resolve(evalData);
+                }
+            };
+            
+            engine.addEventListener('message', onEvalMessage);
+            engine.postMessage('position fen ' + fen);
+            engine.postMessage('go depth 12');
+        });
+    }
+
+    function displayAnalysis(results) {
+        let html = '<h3>Analyse van jouw zetten (Wit):</h3><ul>';
+        let totalCentipawnLoss = 0;
+        let moveCount = 0;
+
+        for (let i = 0; i < results.length - 1; i++) {
+            const currentEval = results[i].evaluation;
+            const nextEval = results[i+1].evaluation * -1;
+            const centipawnLoss = Math.max(0, currentEval - nextEval);
+            
+            let moveQuality = "Goed";
+            if (centipawnLoss > 1) moveQuality = "Fout";
+            if (centipawnLoss > 2.5) moveQuality = "Blunder!";
+
+            html += `<li>Zet ${results[i].moveNumber}. ${results[i].move}: Kwaliteit: ${moveQuality} (Scoreverlies: ${centipawnLoss.toFixed(2)})</li>`;
+            totalCentipawnLoss += centipawnLoss;
+            moveCount++;
+        }
+        
+        if(moveCount > 0){
+            const averageLoss = (totalCentipawnLoss / moveCount).toFixed(2);
+            html += '</ul>';
+            html += `<hr><h4>Samenvatting:</h4><p>Gemiddeld scoreverlies per zet: <strong>${averageLoss}</strong></p>`;
+            html += `<p>Dit is een maat voor hoe accuraat je speelt. Hoe lager, hoe beter. Een score onder de 0.5 is erg sterk!</p>`;
+        } else {
+            html += '</ul><p>Er zijn niet genoeg zetten gespeeld voor een analyse.</p>'
+        }
+
+
+        $analysisOutput.html(html);
+    }
+
+    // --- Bord Configuratie ---
+    const config = {
+        draggable: true,
+        position: 'start',
+        pieceTheme: classicPieceTheme,
+        onDragStart: onDragStart,
+        onDrop: onDrop,
+        onSnapEnd: onSnapEnd
+    };
+    board = Chessboard('myBoard', config);
+
+    // --- Knoppen koppelen ---
+    $('#resetBtn').on('click', resetGame);
+    $('#undoBtn').on('click', undoMove);
+    $('#analyzeBtn').on('click', analyzeGame);
+
+    updateStatus();
+
+    </script>
+
+</body>
+</html>
