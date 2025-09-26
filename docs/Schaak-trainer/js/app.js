@@ -1,9 +1,10 @@
-// ===== HOOFD APPLICATIE LOGICA =====
+// ===== HOOFD APPLICATIE LOGICA (met Click-to-Move) =====
 document.addEventListener('DOMContentLoaded', () => {
     const ChessApp = {
         board: null,
         game: new Chess(),
         playerColor: 'w',
+        selectedSquare: null,
 
         init() {
             this.setupBoard();
@@ -14,75 +15,124 @@ document.addEventListener('DOMContentLoaded', () => {
         // Schaakbord initialiseren
         setupBoard() {
             const config = {
-                draggable: true,
+                // Drag and drop is nu definitief uitgeschakeld
+                draggable: false, 
                 position: 'start',
-                onDragStart: this.onDragStart.bind(this),
-                onDrop: this.onDrop.bind(this),
-                onSnapEnd: this.onSnapEnd.bind(this),
                 pieceTheme: 'assets/pieces/{piece}.png'
             };
             this.board = Chessboard('chessboard', config);
             $(window).resize(this.board.resize);
         },
 
-        // Event listeners voor knoppen instellen
+        // Event listeners instellen
         setupEventListeners() {
+            // Knoppen
             $('#new-game-btn').on('click', this.startNewGame.bind(this));
             $('#undo-btn').on('click', this.undoMove.bind(this));
             $('#hint-btn').on('click', this.showHint.bind(this));
+            
+            // Modal
             $('.close').on('click', FeedbackGenerator.closeFeedback);
             $('#continue-btn').on('click', () => {
                 FeedbackGenerator.closeFeedback();
                 this.startNewGame();
             });
+
+            // Click handler voor de velden op het bord
+            $('#chessboard').on('click', '.square-55d63', this.handleSquareClick.bind(this));
+        },
+        
+        // Verwerkt een klik op een veld
+        handleSquareClick(e) {
+            if (this.game.game_over()) return;
+
+            const square = $(e.currentTarget).data('square');
+
+            // Als er al een stuk geselecteerd is
+            if (this.selectedSquare) {
+                const move = {
+                    from: this.selectedSquare,
+                    to: square,
+                    promotion: 'q' // Altijd promoveren naar dame voor eenvoud
+                };
+
+                const result = this.game.move(move);
+
+                // Als de zet geldig is
+                if (result) {
+                    this.board.position(this.game.fen());
+                    this.clearHighlights();
+                    this.selectedSquare = null;
+                    this.updateGameInfo();
+                    window.setTimeout(this.makeAIMove.bind(this), 250);
+                }
+                // Als de zet ongeldig is, deselecteer of selecteer een ander stuk
+                else {
+                    this.clearHighlights();
+                    // Als er op een ander eigen stuk is geklikt, selecteer dat
+                    if (this.isPlayerPiece(square)) {
+                        this.selectSquare(square);
+                    } else {
+                        this.selectedSquare = null;
+                    }
+                }
+            } 
+            // Als er nog geen stuk geselecteerd is
+            else {
+                if (this.isPlayerPiece(square)) {
+                    this.selectSquare(square);
+                }
+            }
+        },
+
+        isPlayerPiece(square) {
+            const piece = this.game.get(square);
+            return piece && piece.color === this.playerColor && piece.color === this.game.turn();
+        },
+
+        // Selecteert een veld en toont legale zetten
+        selectSquare(square) {
+            this.selectedSquare = square;
+            this.highlightLegalMoves(square);
+        },
+
+        // Markeer het geselecteerde veld en de mogelijke zetten
+        highlightLegalMoves(square) {
+            this.clearHighlights();
+            const moves = this.game.moves({
+                square: square,
+                verbose: true
+            });
+
+            if (moves.length === 0) return;
+
+            // Markeer geselecteerd veld
+            $(`.square-${square}`).addClass('highlight-selected');
+
+            // Markeer mogelijke zetten
+            moves.forEach(move => {
+                $(`.square-${move.to}`).addClass('highlight-legal');
+            });
+        },
+        
+        // Verwijder alle markeringen
+        clearHighlights() {
+            $('#chessboard .square-55d63').removeClass('highlight-selected highlight-legal');
         },
 
         // Start een nieuwe partij
         startNewGame() {
             this.game.reset();
             this.board.position(this.game.fen());
+            this.clearHighlights();
+            this.selectedSquare = null;
             window.chessAI.setLevel(window.playerProfile.profile.elo_rating);
             this.updateGameInfo();
-        },
-
-        // Bij het oppakken van een stuk
-        onDragStart(source, piece) {
-            // Niet verplaatsen als het spel voorbij is of als het niet jouw beurt is
-            if (this.game.game_over() || this.game.turn() !== this.playerColor) {
-                return false;
-            }
-            // Alleen stukken van de juiste kleur oppakken
-            if (piece.search(new RegExp(`^${this.playerColor}`)) === -1) {
-                return false;
-            }
-        },
-
-        // Bij het loslaten van een stuk
-        onDrop(source, target) {
-            const move = this.game.move({
-                from: source,
-                to: target,
-                promotion: 'q' // Altijd promoveren naar dame voor eenvoud
-            });
-
-            // Ongeldige zet
-            if (move === null) return 'snapback';
-
-            this.updateGameInfo();
-            
-            // Wacht even en laat de AI een zet doen
-            window.setTimeout(this.makeAIMove.bind(this), 250);
-        },
-
-        // Na het animeren van een zet
-        onSnapEnd() {
-            this.board.position(this.game.fen());
         },
 
         // AI een zet laten doen
         async makeAIMove() {
             if (this.game.game_over()) return;
-
             const move = await window.chessAI.getBestMove(this.game.fen());
             if (move) {
                 this.game.move(move);
@@ -93,9 +143,11 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Een zet ongedaan maken
         undoMove() {
-            this.game.undo(); // Speler zet
             this.game.undo(); // AI zet
+            this.game.undo(); // Speler zet
             this.board.position(this.game.fen());
+            this.clearHighlights();
+            this.selectedSquare = null;
             this.updateGameInfo();
         },
 
@@ -129,28 +181,22 @@ document.addEventListener('DOMContentLoaded', () => {
             // Live evaluatie
             const evaluation = window.chessAI.evaluatePosition(this.game.fen());
             $('#eval-score').text(evaluation.toFixed(1));
-            const evalPercent = 50 + (evaluation * 10); // Simpele conversie naar percentage
+            const evalPercent = 50 + (evaluation * 10);
             $('#eval-indicator').css('width', `${Math.max(0, Math.min(100, evalPercent))}%`);
         },
         
         // Partij beëindigen en analyse starten
         async endGame(result) {
             console.log('Partij beëindigd. Resultaat:', result);
-
             const analysis = new GameAnalysis(this.game.history({ verbose: true }));
             const analysisResult = await analysis.analyze();
-            
             const gameData = {
                 result: result,
                 moveCount: this.game.history().length,
                 pgn: this.game.pgn(),
                 analysis: analysisResult
             };
-            
-            // Profiel bijwerken
             window.playerProfile.processGameResult(gameData);
-            
-            // Feedback tonen
             const feedback = new FeedbackGenerator(analysisResult, window.playerProfile.profile);
             feedback.showFeedback();
         }
