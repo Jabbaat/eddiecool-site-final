@@ -1,109 +1,83 @@
-// ===== SPEL ANALYSE MODULE =====
+// ===== PARTIJ ANALYSE =====
 class GameAnalysis {
-    constructor(gameHistory) {
-        this.history = gameHistory;
-        this.analysisResult = {
-            blunders: 0,
-            mistakes: 0,
-            inaccuracies: 0,
-            good_moves: 0,
-            brilliant_moves: 0,
-            key_moments: [],
-            opening: "Onbekend",
-            accuracy: { white: 100, black: 100 },
-            tactics_found: 0,
-            positional_mistakes: 0,
-            reached_endgame: false,
-            endgame_accuracy: 0,
-            time_pressure: false,
+    constructor() {
+        // In een echte app zou je hier een web worker met een schaakengine initialiseren.
+        // Voor nu simuleren we de analyse om het eenvoudig te houden.
+    }
+
+    // Analyseert een complete partij
+    async analyze(gameHistory) {
+        if (!gameHistory || gameHistory.length === 0) {
+            return { blunders: 0, mistakes: 0, goodMoves: 0, accuracy: 0 };
+        }
+
+        let blunders = 0;
+        let mistakes = 0;
+        let goodMoves = 0;
+
+        const game = new Chess();
+        
+        // Loop door de zetten van de speler
+        for (let i = 0; i < gameHistory.length; i++) {
+            const move = gameHistory[i];
+            
+            // Analyseer alleen de zetten van de speler (wit, dus de even zetten)
+            if (i % 2 === 0) {
+                const fenBeforeMove = game.fen();
+                const playerMoveEvaluation = this.evaluateMove(fenBeforeMove, move);
+
+                if (playerMoveEvaluation < -1.5) {
+                    blunders++;
+                } else if (playerMoveEvaluation < -0.7) {
+                    mistakes++;
+                } else {
+                    goodMoves++;
+                }
+            }
+            game.move(move);
+        }
+
+        const totalMoves = goodMoves + mistakes + blunders;
+        const accuracy = totalMoves > 0 ? Math.round((goodMoves / totalMoves) * 100) : 0;
+
+        return {
+            blunders,
+            mistakes,
+            goodMoves,
+            accuracy
         };
     }
 
-    // Voert de volledige analyse uit
-    async analyze() {
-        if (!this.history || this.history.length === 0) {
-            return this.analysisResult;
-        }
-
-        const tempGame = new Chess();
-        let prevEval = 0;
-
-        for (let i = 0; i < this.history.length; i++) {
-            const move = this.history[i];
-            const fenBefore = tempGame.fen();
-            
-            // Zet uitvoeren om de nieuwe positie te krijgen
-            tempGame.move(move.san);
-            const fenAfter = tempGame.fen();
-
-            // Evalueer de positie voor en na de zet
-            const currentEval = window.chessAI.evaluatePosition(fenAfter);
-            const evalChange = currentEval - prevEval;
-
-            // Bepaal de zetkwaliteit
-            this.classifyMove(move, prevEval, currentEval, tempGame.turn());
-
-            prevEval = currentEval;
-        }
+    // Evalueert een enkele zet door deze te vergelijken met de "beste" zet
+    evaluateMove(fen, playerMove) {
+        const game = new Chess(fen);
+        const bestAIMove = this.getBestMoveForAnalysis(game);
         
-        // Bepaal de openingsnaam (vereenvoudigd)
-        this.identifyOpening(tempGame.pgn());
+        const evalBefore = window.chessAI.evaluatePosition(fen);
 
-        // Controleer of het eindspel is bereikt
-        this.analysisResult.reached_endgame = this.isEndgame(tempGame);
+        // Evaluatie na de zet van de speler
+        game.move(playerMove);
+        const evalAfterPlayerMove = -window.chessAI.evaluatePosition(game.fen()); // Negatief, want het is de beurt van de tegenstander
+        game.undo();
 
-        console.log("Analyse voltooid:", this.analysisResult);
-        return this.analysisResult;
+        // Evaluatie na de "beste" zet
+        game.move(bestAIMove);
+        const evalAfterBestMove = -window.chessAI.evaluatePosition(game.fen());
+        game.undo();
+
+        // Het verschil in evaluatie is hoe "slecht" de zet van de speler was
+        return evalAfterPlayerMove - evalAfterBestMove;
     }
 
-    // Classificeert een zet op basis van evaluatieverandering
-    classifyMove(move, evalBefore, evalAfter, turn) {
-        // De evaluatieverandering is vanuit het perspectief van de speler die de zet deed.
-        // Als wit aan de beurt was, is een positieve verandering goed voor wit.
-        // Als zwart aan de beurt was, is een negatieve verandering goed voor zwart.
-        const delta = (turn === 'b') ? (evalAfter - evalBefore) : -(evalAfter - evalBefore);
-
-        if (delta > 2.0) {
-            this.analysisResult.blunders++;
-            move.classification = 'blunder';
-            this.analysisResult.key_moments.push({ move: move.san, type: 'Blunder', description: 'Groot nadeel verkregen.' });
-        } else if (delta > 0.8) {
-            this.analysisResult.mistakes++;
-            move.classification = 'mistake';
-        } else if (delta > 0.4) {
-            this.analysisResult.inaccuracies++;
-            move.classification = 'inaccuracy';
-        } else if (delta < -0.5) {
-            this.analysisResult.good_moves++;
-            move.classification = 'good';
-        } else {
-             move.classification = 'normal';
-        }
-    }
-
-    // Identificeert de opening (simpele versie)
-    identifyOpening(pgn) {
-        if (pgn.startsWith('1. e4 e5 2. Nf3 Nc6 3. Bb5')) {
-            this.analysisResult.opening = 'Ruy Lopez';
-        } else if (pgn.startsWith('1. e4 c5')) {
-            this.analysisResult.opening = 'Sicilian Defense';
-        } else if (pgn.startsWith('1. d4 d5 2. c4')) {
-            this.analysisResult.opening = "Queen's Gambit";
-        }
-    }
-
-    // Bepaalt of de positie een eindspel is
-    isEndgame(game) {
-        // Een simpele definitie: minder dan 10 stukken op het bord (exclusief koningen en pionnen)
-        const board = game.board();
-        let pieceCount = 0;
-        board.forEach(row => {
-            row.forEach(square => {
-                if (square && square.type !== 'p' && square.type !== 'k') {
-                    pieceCount++;
-                }
-            });
-        });
-        return pieceCount < 10;
+    // Krijgt de beste zet (volgens onze simpele AI) voor een positie
+    getBestMoveForAnalysis(gameInstance) {
+        const moves = gameInstance.moves({ verbose: true });
+        const goodMoves = window.chessAI.findGoodMoves(moves, gameInstance);
+        return goodMoves.length > 0 ? goodMoves[0].san : moves[0].san;
     }
 }
+
+// Maak een globale instantie
+window.gameAnalysis = new GameAnalysis();
+
+
