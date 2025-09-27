@@ -18,14 +18,14 @@
     <style>
         /* Gecentraliseerde stijlen voor de AI Apps pagina */
         .ai-apps-list {
-            display: flex;
-            flex-direction: column;
+            display: flex; /* Veranderd van grid naar flex */
+            flex-direction: column; /* Stapel de kaarten verticaal */
             gap: 2rem;
-            align-items: center;
+            align-items: center; /* Centreer de stapel */
         }
 
         .project-card {
-            background-color: rgba(255, 255, 255, 0.05);
+            background-color: rgba(255, 255, 255, 0.05); /* Lichte glans */
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 12px;
             padding: 24px;
@@ -37,7 +37,7 @@
             flex-direction: column;
             justify-content: space-between;
             width: 100%;
-            max-width: 800px;
+            max-width: 800px; /* Voorkomt dat de kaarten te breed worden */
             text-align: center;
         }
         
@@ -50,12 +50,12 @@
             font-size: 1.5rem;
             font-weight: 700;
             margin-bottom: 8px;
-            color: #ffffff;
+            color: #ffffff; /* Witte titel voor contrast */
         }
 
         .project-card p {
             margin-bottom: 24px;
-            color: #d1d5db;
+            color: #d1d5db; /* Lichter grijs voor betere leesbaarheid */
             flex-grow: 1;
         }
 
@@ -76,11 +76,11 @@
 
         /* Speciale stijlen voor de Content Scout */
         #scout-output {
-            background-color: rgba(0, 0, 0, 0.3);
+            background-color: rgba(0, 0, 0, 0.3); /* Donker, semi-transparant */
             border-radius: 8px;
             padding: 16px;
             min-height: 150px;
-            color: #e5e7eb;
+            color: #e5e7eb; /* Lichte tekst voor contrast */
             text-align: left;
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
@@ -116,6 +116,7 @@
         <p>Hier vind je een verzameling interactieve AI-applicaties en tools die ik heb ontwikkeld. Duik in de wereld van praktische AI!</p>
 
         <section class="ai-apps-list">
+            
             <!-- De kaart voor de Content Scout -->
             <div class="project-card">
                 <div>
@@ -137,22 +138,14 @@
             </div>
 
             <!-- De kaart voor de 3D Spirograaf Simulator -->
-            <div class="project-card">
+             <div class="project-card">
                 <div>
                     <h3>🌀 3D Spirograaf Simulator</h3>
                     <p>Een interactieve 3D-tool om complexe spirografen te maken en te manipuleren.</p>
                 </div>
                 <a href="spirograaf.html" class="project-button">✨ Bekijk Project</a>
             </div>
-
-            <!-- Schaak Trainer (iframe buiten project-card) -->
-            <div class="iframe-container">
-                <div class="page-header">
-                    <h1>Schaak Trainer &nbsp;&nbsp; | &nbsp;&nbsp; <a href="https://eddiecool.nl/projects.html">Terug naar Projecten</a></h1>
-                </div>
-                <iframe src="https://schaak-trainer.onrender.com" title="Schaak Trainer Spel"></iframe>
-            </div>
-
+            
             <!-- De kaart voor de 3D Zonnestelsel Simulator -->
             <div class="project-card">
                 <div>
@@ -161,9 +154,7 @@
                 </div>
                 <a href="zonnestelsel.html" class="project-button">✨ Bekijk Project</a>
             </div>
-
-            <!-- De kaart voor de Feitjes & Filosofie Generator -->
-            <div class="project-card">
+<div class="project-card">
                 <div>
                     <h3>🤔 Feitjes & Filosofie Generator</h3>
                     <p>Genereer een willekeurig feitje of een filosofische quote met één klik op de knop.</p>
@@ -186,11 +177,15 @@
         // JavaScript om het idee van de Content Scout op te halen
         document.addEventListener('DOMContentLoaded', async () => {
             const scoutOutputDiv = document.getElementById('scout-output');
+            
+            // Zorg ervoor dat dit de live URL is van je Content Scout backend op Render.
             const backendUrl = 'https://content-scout-backend.onrender.com/get-latest-ideas';
 
             try {
                 const response = await fetch(backendUrl);
-                if (!response.ok) throw new Error(`Status code ${response.status}`);
+                if (!response.ok) {
+                    throw new Error(`Status code ${response.status}`);
+                }
                 const data = await response.json();
                 scoutOutputDiv.innerHTML = data.idea || '<p>Kon geen idee ophalen.</p>';
             } catch (error) {
@@ -207,4 +202,3 @@
     </script>
 </body>
 </html>
-
