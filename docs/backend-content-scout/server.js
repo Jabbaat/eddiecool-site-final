@@ -1,4 +1,4 @@
-// server.js - De Creatieve Content Scout Agent (De Ultieme Test)
+// server.js - De Creatieve Content Scout Agent
 
 import express from 'express';
 import dotenv from 'dotenv';
@@ -16,8 +16,27 @@ const port = process.env.PORT || 3000;
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 
 // --- Middleware ---
+// VERBETERING: De CORS-instellingen zijn flexibeler gemaakt.
+// Dit staat nu verzoeken toe van je live website, localhost, en andere subdomeinen,
+// wat 'Failed to fetch' fouten door CORS-problemen zou moeten oplossen.
+const allowedOrigins = ['https://eddiecool.nl', 'http://localhost:3000'];
 const corsOptions = {
-  origin: ['https://eddiecool.nl', 'http://localhost:3000'],
+  origin: (origin, callback) => {
+    // Toestaan van verzoeken zonder 'origin' (zoals mobiele apps of Postman)
+    if (!origin) return callback(null, true);
+
+    // Toestaan van alle subdomeinen van eddiecool.nl
+    if (allowedOrigins.includes(origin) || new RegExp(`^https?:\/\/.*\.eddiecool\.nl$`).test(origin)) {
+      return callback(null, true);
+    }
+    
+    // Toestaan van Render.com preview URLs
+    if (new RegExp(`^https?:\/\/.*\.onrender\.com$`).test(origin)) {
+        return callback(null, true);
+    }
+
+    return callback(new Error('Niet toegestaan door CORS'));
+  },
   optionsSuccessStatus: 200 
 };
 app.use(cors(corsOptions));
@@ -34,8 +53,9 @@ if (!GEMINI_API_KEY) {
 
 // --- Initialiseer de AI en de RSS-Parser ---
 const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
-// CORRECTIE: De modelnaam is aangepast van "gemini-1.5-flash-latest" naar "gemini-1.5-flash".
-const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+// **BELANGRIJKE FIX**: De modelnaam moet 'gemini-1.5-flash-latest' zijn. 
+// De naam 'gemini-1.5-flash' zonder '-latest' wordt niet herkend door de API en veroorzaakte de 404-fout.
+const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash-latest" });
 const parser = new Parser();
 
 // --- De Kernlogica van de Agent ---
@@ -43,7 +63,6 @@ async function runContentScout() {
   console.log(`[${new Date().toLocaleString()}] --- De Content Scout wordt wakker! ---`);
   
   try {
-    // AANGEPAST: We jagen nu op de NOS-feed als de ultieme test.
     const targetFeedUrl = 'https://feeds.nos.nl/nosnieuwsalgemeen';
     console.log(`1. Op jacht naar nieuwe content via de RSS-feed: ${targetFeedUrl}...`);
     
@@ -66,6 +85,7 @@ async function runContentScout() {
 
     console.log('2. Gevonden content analyseren met AI...');
     const prompt = `Analyseer de volgende nieuwstitel: "${nieuwsteTitel}". Is dit interessant voor een creatieve tech YouTuber die video's maakt over AI en filmmaken? Geef een korte, pakkende samenvatting en een concreet, origineel video-idee. Formatteer je antwoord in simpele HTML, gebruik <h3> voor titels en <p> voor tekst.`;
+    
     const result = await model.generateContent(prompt);
     const analyse = result.response.text();
     
@@ -73,7 +93,8 @@ async function runContentScout() {
     console.log('3. Resultaat opgeslagen in het geheugen.');
 
   } catch (error) {
-    console.error('Er ging iets mis tijdens de jacht:', error.message);
+    // VERBETERING: Log de volledige error stack voor betere debugging.
+    console.error('Er ging iets mis tijdens de jacht:', error);
     laatsteAnalyse = `<p>De scout stuitte op een probleem tijdens de jacht. Probeer het later opnieuw.</p><p><small>Fout: ${error.message}</small></p>`;
   } finally {
     console.log(`[${new Date().toLocaleString()}] --- De Content Scout gaat weer slapen. ---`);
@@ -99,6 +120,7 @@ app.listen(port, () => {
 
   console.log('De agent is ingepland en wacht op het juiste moment om te jagen...');
   
+  // Start de scout direct bij het opstarten van de server.
   runContentScout();
 });
 
