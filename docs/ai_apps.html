@@ -1,209 +1,169 @@
-<!DOCTYPE html>
-<html lang="nl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Apps - Eddiecool AI Speelplaats</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+ <!DOCTYPE html> 
+ <html lang="nl"> 
+ <head> 
+ 	<meta charset="UTF-8"> 
+ 	<meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+ 	<title>AI Apps - Eddiecool AI Speelplaats</title> 
+ 	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet"> 
+ 	<link rel="stylesheet" href="style.css"> 
 
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-SYG5T1Z0MV"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-SYG5T1Z0MV');
-    </script>
+ 	<script async src="https://www.googletagmanager.com/gtag/js?id=G-SYG5T1Z0MV"></script> 
+ 	<script> 
+ 	 	window.dataLayer = window.dataLayer || []; 
+ 	 	function gtag(){dataLayer.push(arguments);} 
+ 	 	gtag('js', new Date()); 
+ 	 	gtag('config', 'G-SYG5T1Z0MV'); 
+ 	</script> 
 
-    <style>
-        /* Gecentraliseerde stijlen voor de AI Apps pagina */
-        .ai-apps-list {
-            display: flex; /* Veranderd van grid naar flex */
-            flex-direction: column; /* Stapel de kaarten verticaal */
-            gap: 2rem;
-            align-items: center; /* Centreer de stapel */
-        }
+ 	<style> 
+ 		/* Gecentraliseerde stijlen voor de AI Apps pagina */ 
+ 		.ai-apps-list { 
+ 			display: grid; /* Veranderd naar grid */
+ 			grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); /* Responsive grid */
+ 			gap: 2rem; 
+ 		} 
 
-        .project-card {
-            background-color: rgba(255, 255, 255, 0.05); /* Lichte glans */
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            padding: 24px;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-            backdrop-filter: blur(4px);
-            -webkit-backdrop-filter: blur(4px);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            width: 100%;
-            max-width: 800px; /* Voorkomt dat de kaarten te breed worden */
-            text-align: center;
-        }
-        
-        .project-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.5);
-        }
+ 		.project-card { 
+ 			background-color: rgba(255, 255, 255, 0.05); /* Lichte glans */ 
+ 			border: 1px solid rgba(255, 255, 255, 0.1); 
+ 			border-radius: 12px; 
+ 			padding: 24px; 
+ 			box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37); 
+ 			backdrop-filter: blur(4px); 
+ 			-webkit-backdrop-filter: blur(4px); 
+ 			transition: transform 0.3s ease, box-shadow 0.3s ease; 
+ 			display: flex; 
+ 			flex-direction: column; 
+ 			justify-content: space-between; 
+ 			width: 100%; 
+ 			max-width: 800px; /* Voorkomt dat de kaarten te breed worden */ 
+ 			text-align: center; 
+ 		} 
+ 		 
+ 		.project-card:hover { 
+ 			transform: translateY(-5px); 
+ 			box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.5); 
+ 		} 
 
-        .project-card h3 {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 8px;
-            color: #ffffff; /* Witte titel voor contrast */
-        }
+ 		.project-card h3 { 
+ 			font-size: 1.5rem; 
+ 			font-weight: 700; 
+ 			margin-bottom: 8px; 
+ 			color: #ffffff; /* Witte titel voor contrast */ 
+ 		} 
 
-        .project-card p {
-            margin-bottom: 24px;
-            color: #d1d5db; /* Lichter grijs voor betere leesbaarheid */
-            flex-grow: 1;
-        }
+ 		.project-card p { 
+ 			margin-bottom: 24px; 
+ 			color: #d1d5db; /* Lichter grijs voor betere leesbaarheid */ 
+ 			flex-grow: 1; 
+ 		} 
 
-        .project-button {
-            display: inline-block;
-            background-color: #4f46e5;
-            color: white;
-            padding: 12px 24px;
-            border-radius: 8px;
-            font-weight: 600;
-            text-decoration: none;
-            transition: background-color 0.3s;
-        }
+ 		.project-button { 
+ 			display: inline-block; 
+ 			background-color: #4f46e5; 
+ 			color: white; 
+ 			padding: 12px 24px; 
+ 			border-radius: 8px; 
+ 			font-weight: 600; 
+ 			text-decoration: none; 
+ 			transition: background-color 0.3s; 
+ 		} 
 
-        .project-button:hover {
-            background-color: #6366f1;
-        }
+ 		.project-button:hover { 
+ 			background-color: #6366f1; 
+ 		} 
+ 		 
+ 	</style> 
+ </head> 
 
-        /* Speciale stijlen voor de Content Scout */
-        #scout-output {
-            background-color: rgba(0, 0, 0, 0.3); /* Donker, semi-transparant */
-            border-radius: 8px;
-            padding: 16px;
-            min-height: 150px;
-            color: #e5e7eb; /* Lichte tekst voor contrast */
-            text-align: left;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        #scout-output h3 {
-             font-size: 1.2rem;
-             color: #ffffff;
-        }
-    </style>
-</head>
+ <body> 
+ 	<nav> 
+ 		<div class="logo"> 
+ 			<a href="index.html"> 
+ 				<img src="images/logo.png" alt="Eddiecool Logo" class="logo-img"> 
+ 			</a> 
+ 		</div> 
+ 		<span class="hamburger" id="hamburger-menu">&#9776;</span> 
+ 		<ul class="menu"> 
+ 			<li><a href="index.html">🏠 Home</a></li> 
+ 			<li><a href="projects.html">✨ Projecten</a></li> 
+ 			<li><a href="ai_apps.html">📱 AI Apps</a></li> 
+ 			<li><a href="ai_gallery.html">🖼️ Galerij</a></li> 
+ 			<li><a href="video_ideas.html">🎬 Video Ideeën</a></li> 
+ 			<li><a href="ai_wisdom.html">🔮 AI Wijsheid</a></li> 
+ 			<li><a href="about.html">ℹ️ Over Mij</a></li> 
+ 			<li><a href="contact.html">📧 Contact</a></li> 
+ 		</ul> 
+ 	</nav> 
 
-<body>
-    <nav>
-        <div class="logo">
-            <a href="index.html">
-                <img src="images/logo.png" alt="Eddiecool Logo" class="logo-img">
-            </a>
-        </div>
-        <span class="hamburger" id="hamburger-menu">&#9776;</span>
-        <ul class="menu">
-            <li><a href="index.html">🏠 Home</a></li>
-            <li><a href="projects.html">✨ Projecten</a></li>
-            <li><a href="ai_apps.html">📱 AI Apps</a></li>
-            <li><a href="ai_gallery.html">🖼️ Galerij</a></li>
-            <li><a href="video_ideas.html">🎬 Video Ideeën</a></li>
-            <li><a href="ai_wisdom.html">🔮 AI Wijsheid</a></li>
-            <li><a href="about.html">ℹ️ Over Mij</a></li>
-            <li><a href="contact.html">📧 Contact</a></li>
-        </ul>
-    </nav>
+ 	<main> 
+ 		<h1>📱 Welkom bij AI Apps!</h1> 
+ 		<p>Hier vind je een verzameling interactieve AI-applicaties en tools die ik heb ontwikkeld. Duik in de wereld van praktische AI!</p> 
 
-    <main>
-        <h1>📱 Welkom bij AI Apps!</h1>
-        <p>Hier vind je een verzameling interactieve AI-applicaties en tools die ik heb ontwikkeld. Duik in de wereld van praktische AI!</p>
+ 		<section class="ai-apps-list"> 
 
-        <section class="ai-apps-list">
-            
-            <div class="project-card">
-                <div>
-                    <h3>🤖 Creatieve Content Scout</h3>
-                    <p>Deze AI-agent speurt elke ochtend het internet af naar het laatste tech-nieuws en genereert een uniek video-idee. Dit is zijn meest recente vondst:</p>
-                </div>
-                <div id="scout-output">
-                    <p>De scout wordt wakker, dit kan tot 50 seconden duren...</p>
-                </div>
-            </div>
+ 			<div class="project-card"> 
+ 				<div> 
+ 					<h3>🗞️ Dagelijks AI Nieuws</h3> 
+ 					<p>Blijf op de hoogte van de laatste ontwikkelingen in de AI-wereld. Deze app cureert en vat dagelijks het belangrijkste AI-nieuws voor je samen.</p> 
+ 				</div> 
+ 				<a href="https://v0-daily-ai-news-app.vercel.app/" class="project-button" target="_blank" rel="noopener noreferrer">✨ Lees het Nieuws</a> 
+ 			</div> 
 
-            <div class="project-card">
-                <div>
-                    <h3>📜 Gedichten Generator</h3>
-                    <p>Laat de AI een uniek gedicht voor je schrijven over diverse thema's.</p>
-                </div>
-                <a href="poem_creator.html" class="project-button">✨ Probeer het uit</a>
-            </div>
+ 			<div class="project-card"> 
+ 				<div> 
+ 					<h3>📜 Gedichten Generator</h3> 
+ 					<p>Laat de AI een uniek gedicht voor je schrijven over diverse thema's.</p> 
+ 				</div> 
+ 				<a href="poem_creator.html" class="project-button">✨ Probeer het uit</a> 
+ 			</div> 
 
-            <div class="project-card">
-                <div>
-                    <h3>🌀 3D Spirograaf Simulator</h3>
-                    <p>Een interactieve 3D-tool om complexe spirografen te maken en te manipuleren.</p>
-                </div>
-                <a href="spirograaf.html" class="project-button">✨ Bekijk Project</a>
-            </div>
-            
-            <div class="project-card">
-                <div>
-                    <h3>🪐 3D Zonnestelsel Simulator</h3>
-                    <p>Een interactieve 3D-simulatie van ons zonnestelsel, gebouwd met Three.js.</p>
-                </div>
-                <a href="zonnestelsel.html" class="project-button">✨ Bekijk Project</a>
-            </div>
-<div class="project-card">
-                <div>
-                    <h3>🤔 Feitjes & Filosofie Generator</h3>
-                    <p>Genereer een willekeurig feitje of een filosofische quote met één klik op de knop.</p>
-                </div>
-                <a href="https://v0-random-fact-generator-xi.vercel.app/" class="project-button" target="_blank" rel="noopener noreferrer">✨ Probeer het uit</a>
-            </div>
+ 			<div class="project-card"> 
+ 				<div> 
+ 					<h3>🌀 3D Spirograaf Simulator</h3> 
+ 					<p>Een interactieve 3D-tool om complexe spirografen te maken en te manipuleren.</p> 
+ 				</div> 
+ 				<a href="spirograaf.html" class="project-button">✨ Bekijk Project</a> 
+ 			</div> 
+ 			 
+ 			<div class="project-card"> 
+ 				<div> 
+ 					<h3>🪐 3D Zonnestelsel Simulator</h3> 
+ 					<p>Een interactieve 3D-simulatie van ons zonnestelsel, gebouwd met Three.js.</p> 
+ 				</div> 
+ 				<a href="zonnestelsel.html" class="project-button">✨ Bekijk Project</a> 
+ 			</div> 
+ <div class="project-card"> 
+ 				<div> 
+ 					<h3>🤔 Feitjes & Filosofie Generator</h3> 
+ 					<p>Genereer een willekeurig feitje of een filosofische quote met één klik op de knop.</p> 
+ 				</div> 
+ 				<a href="https://v0-random-fact-generator-xi.vercel.app/" class="project-button" target="_blank" rel="noopener noreferrer">✨ Probeer het uit</a> 
+ 			</div> 
 
-            <div class="project-card">
-                <div>
-                    <h3>♛ Schaak Training App</h3>
-                    <p>Train je schaakvaardigheden tegen een AI. Verbeter je ELO en leer van je zetten met de hint-functie.</p>
-                </div>
-                <a href="schaken.html" class="project-button">✨ Speel het Spel</a>
-            </div>
-            
-        </section>
-    </main>
+ 			<div class="project-card"> 
+ 				<div> 
+ 					<h3>♛ Schaak Training App</h3> 
+ 					<p>Train je schaakvaardigheden tegen een AI. Verbeter je ELO en leer van je zetten met de hint-functie.</p> 
+ 				</div> 
+ 				<a href="schaken.html" class="project-button">✨ Speel het Spel</a> 
+ 			</div> 
+ 			 
+ 		</section> 
+ 	</main> 
 
-    <footer>
-        <p>&copy; 2025 Eddiecool AI Speelplaats. Alle rechten voorbehouden.</p>
-    </footer>
+ 	<footer> 
+ 		<p>&copy; 2025 Eddiecool AI Speelplaats. Alle rechten voorbehouden.</p> 
+ 	</footer> 
 
-    <script>
-        // Hamburger menu
-        document.getElementById("hamburger-menu").addEventListener("click", function() {
-            document.querySelector(".menu").classList.toggle("active");
-        });
+ 	<script> 
+ 		// Hamburger menu 
+ 		document.getElementById("hamburger-menu").addEventListener("click", function() { 
+ 			document.querySelector(".menu").classList.toggle("active"); 
+ 		}); 
+ 	</script> 
+ </body> 
+ </html>
 
-        // JavaScript om het idee van de Content Scout op te halen
-        document.addEventListener('DOMContentLoaded', async () => {
-            const scoutOutputDiv = document.getElementById('scout-output');
-            
-            // Zorg ervoor dat dit de live URL is van je Content Scout backend op Render.
-            const backendUrl = 'https://content-scout-backend.onrender.com/get-latest-ideas';
 
-            try {
-                const response = await fetch(backendUrl);
-                if (!response.ok) {
-                    throw new Error(`Status code ${response.status}`);
-                }
-                const data = await response.json();
-                scoutOutputDiv.innerHTML = data.idea || '<p>Kon geen idee ophalen.</p>';
-            } catch (error) {
-                console.error('Fout bij ophalen van scout-idee:', error);
-                scoutOutputDiv.innerHTML = `<p>Kon geen verbinding maken met de Content Scout server.</p>
-                                            <p style="font-size: 0.8rem; opacity: 0.8; margin-top: 1rem;">
-                                                Tip: Omdat dit een gratis project is, gaat de server soms slapen. Het kan tot 50 seconden duren voordat hij wakker wordt. Probeer de pagina over een minuut opnieuw te laden.
-                                            </p>
-                                            <p style="font-size: 0.8rem; opacity: 0.6; margin-top: 1rem;">
-                                                Technische fout: ${error.message}
-                                            </p>`;
-            }
-        });
-    </script>
-</body>
-</html>
+
