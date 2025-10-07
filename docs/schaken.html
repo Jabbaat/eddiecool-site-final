@@ -363,16 +363,19 @@
                 this.cacheDOMElements();
                 
                 this.initializeConstants();
+                // FIX: Initialize the squareElements array here, only once.
+                this.squareElements = [];
                 this.initializeState();
                 
-                this.renderBoard();
+                this.createBoardDOM();
+                this.updateBoard();
+
                 this.updateGameStatus();
                 this.setupEventListeners();
                 this.updateEloDisplay();
             }
 
             initializeConstants() {
-                // --- NIEUW: Waardes en positietabellen voor de AI-evaluatiefunctie ---
                 this.pieceValues = { 'p': 100, 'n': 320, 'b': 330, 'r': 500, 'q': 900, 'k': 20000 };
 
                 const pawnPST = [
@@ -436,7 +439,6 @@
                     [20, 30, 10, 0, 0, 10, 30, 20]
                 ];
                 
-                // Flip tables for black pieces
                 this.pieceSquareTables = {
                     'P': pawnPST, 'p': this.flipPST(pawnPST),
                     'N': knightPST, 'n': this.flipPST(knightPST),
@@ -481,6 +483,7 @@
                 };
                 
                 this.enPassantTarget = null;
+                // FIX: Do not clear the squareElements array here.
             }
 
             cacheDOMElements() {
@@ -523,7 +526,7 @@
             
             newGame() {
                 this.initializeState();
-                this.renderBoard();
+                this.updateBoard();
                 this.updateMovesList();
                 this.updateGameStatus();
                 this.updateEloDisplay();
@@ -533,10 +536,8 @@
                 this.undoBtn.disabled = false;
             }
 
-            // --- NIEUW: AI Logica ---
+            // --- AI Logic ---
 
-            // Evaluatiefunctie: Bepaalt hoe goed een positie is.
-            // Positieve score = voordeel voor wit, Negatieve score = voordeel voor zwart.
             evaluateBoard(board) {
                 let totalEvaluation = 0;
                 for (let row = 0; row < 8; row++) {
@@ -551,15 +552,12 @@
                     }
                 }
                 
-                // Mobiliteitsbonus (simpel): +1 punt per mogelijke zet
                 totalEvaluation += this.getAllPossibleMoves('white', board).length;
                 totalEvaluation -= this.getAllPossibleMoves('black', board).length;
                 
                 return totalEvaluation;
             }
             
-            // Minimax met Alpha-Beta Pruning: De kern van de AI.
-            // Zoekt naar de beste zet door de boom van mogelijke zetten te doorlopen.
             minimax(board, depth, alpha, beta, maximizingPlayer, currentCastlingRights, currentEnPassantTarget) {
                 if (depth === 0 || this.isGameOver(board, maximizingPlayer ? 'black' : 'white', currentCastlingRights, currentEnPassantTarget)) {
                     return this.evaluateBoard(board);
@@ -567,32 +565,31 @@
 
                 const moves = this.getAllPossibleMoves(maximizingPlayer ? 'black' : 'white', board, currentCastlingRights, currentEnPassantTarget);
                 
-                if (maximizingPlayer) { // Zwart (AI) maximaliseert de score
+                if (maximizingPlayer) {
                     let maxEval = -Infinity;
                     for (const move of moves) {
                         const { newBoard, newCastlingRights, newEnPassantTarget } = this.getNewBoardState(board, move, currentCastlingRights, currentEnPassantTarget);
                         const evaluation = this.minimax(newBoard, depth - 1, alpha, beta, false, newCastlingRights, newEnPassantTarget);
                         maxEval = Math.max(maxEval, evaluation);
                         alpha = Math.max(alpha, evaluation);
-                        if (beta <= alpha) break; // Alpha-beta pruning
+                        if (beta <= alpha) break;
                     }
                     return maxEval;
-                } else { // Wit (Speler) minimaliseert de score
+                } else {
                     let minEval = Infinity;
                     for (const move of moves) {
                         const { newBoard, newCastlingRights, newEnPassantTarget } = this.getNewBoardState(board, move, currentCastlingRights, currentEnPassantTarget);
                         const evaluation = this.minimax(newBoard, depth - 1, alpha, beta, true, newCastlingRights, newEnPassantTarget);
                         minEval = Math.min(minEval, evaluation);
                         beta = Math.min(beta, evaluation);
-                        if (beta <= alpha) break; // Alpha-beta pruning
+                        if (beta <= alpha) break;
                     }
                     return minEval;
                 }
             }
             
-            // Vind de beste zet voor de huidige speler
             findBestMove(player) {
-                const depthMap = { 1000: 1, 1200: 2, 1400: 3, 1600: 4, 1800: 4 }; // Expert krijgt iets meer tijd
+                const depthMap = { 1000: 1, 1200: 2, 1400: 3, 1600: 4, 1800: 4 };
                 const depth = depthMap[this.difficulty] || 2;
                 
                 let bestMove = null;
@@ -601,16 +598,14 @@
                 
                 for (const move of possibleMoves) {
                     const { newBoard, newCastlingRights, newEnPassantTarget } = this.getNewBoardState(this.board, move, this.castlingRights, this.enPassantTarget);
-                    
-                    // Roep minimax aan voor de *tegenstander*
                     const boardValue = this.minimax(newBoard, depth - 1, -Infinity, Infinity, player !== 'black', newCastlingRights, newEnPassantTarget);
 
-                    if (player === 'black') { // AI zoekt hoogste score
+                    if (player === 'black') {
                         if (boardValue > bestValue) {
                             bestValue = boardValue;
                             bestMove = move;
                         }
-                    } else { // Hint voor speler zoekt laagste score
+                    } else {
                         if (boardValue < bestValue) {
                             bestValue = boardValue;
                             bestMove = move;
@@ -620,11 +615,9 @@
                 return bestMove;
             }
 
-            // Aangepaste makeAIMove die de minimax-functie gebruikt
             makeAIMove() {
                 if (this.gameOver) return;
                 
-                // Beginner level heeft 40% kans op een willekeurige zet
                 if (this.difficulty === 1000 && Math.random() < 0.4) {
                     const possibleMoves = this.getAllPossibleMoves('black');
                     if (possibleMoves.length > 0) {
@@ -642,29 +635,15 @@
                     this.endGame();
                 }
             }
-
-            // --- EINDE AI Logica ---
-
-
-            // --- VERBETERD: ELO-systeem ---
+            
+            // --- ELO System ---
             updateElo(playerWon) {
-                const K = 32; // K-factor
+                const K = 32;
                 const opponentElo = this.difficulty;
-                
                 const expectedScore = 1 / (1 + Math.pow(10, (opponentElo - this.playerElo) / 400));
-                
-                let actualScore;
-                if (playerWon === true) actualScore = 1;      // Win
-                else if (playerWon === false) actualScore = 0; // Loss
-                else actualScore = 0.5;                      // Draw
-                
+                let actualScore = (playerWon === true) ? 1 : (playerWon === false) ? 0 : 0.5;
                 const eloChange = Math.round(K * (actualScore - expectedScore));
-                
-                this.playerElo += eloChange;
-                
-                // Begrens de ELO tussen 800 en 2200
-                this.playerElo = Math.max(800, Math.min(2200, this.playerElo));
-                
+                this.playerElo = Math.max(800, Math.min(2200, this.playerElo + eloChange));
                 this.showEloChange(eloChange);
                 this.updateEloDisplay();
             }
@@ -677,32 +656,21 @@
             showEloChange(change) {
                 this.eloChangeEl.textContent = (change > 0 ? '+' : '') + change;
                 this.eloChangeEl.className = `elo-change ${change >= 0 ? 'gain' : 'loss'}`;
-                
-                setTimeout(() => {
-                    this.eloChangeEl.classList.add('show');
-                }, 100);
-
-                setTimeout(() => {
-                    this.eloChangeEl.classList.remove('show');
-                }, 4000);
+                setTimeout(() => this.eloChangeEl.classList.add('show'), 100);
+                setTimeout(() => this.eloChangeEl.classList.remove('show'), 4000);
             }
             
-            // --- VERBETERD: Hint-functie ---
+            // --- Hint Function ---
             showHint() {
                 if (this.gameOver || this.currentPlayer !== 'white') return;
-                
                 const hintMove = this.findBestMove('white');
                 if (!hintMove) return;
-
                 this.clearHighlights();
                 const squares = this.chessboardEl.querySelectorAll('.square');
                 squares[hintMove.fromRow * 8 + hintMove.fromCol].classList.add('hint');
                 squares[hintMove.toRow * 8 + hintMove.toCol].classList.add('hint');
-                
                 this.feedbackEl.textContent = 'Hint: De AI suggereert de gemarkeerde zet.';
                 this.feedbackEl.className = 'feedback';
-                
-                // Hint blijft nu 4 seconden zichtbaar
                 setTimeout(() => this.clearHighlights(), 4000);
             }
             
@@ -710,23 +678,17 @@
                 let msg = '', cls = 'feedback', playerWon = null;
                 if (this.isCheckmate()) {
                     if (this.currentPlayer === 'white') {
-                        msg = 'Schaakmat! Je hebt verloren.';
-                        cls += ' error';
-                        playerWon = false;
+                        msg = 'Schaakmat! Je hebt verloren.'; cls += ' error'; playerWon = false;
                     } else {
-                        msg = 'Schaakmat! Je hebt gewonnen!';
-                        this.gamesWon++;
-                        playerWon = true;
+                        msg = 'Schaakmat! Je hebt gewonnen!'; this.gamesWon++; playerWon = true;
                     }
                 } else if (this.isStalemate()) {
-                    msg = 'Pat! Gelijkspel.';
-                    cls += ' warning';
-                    playerWon = 'draw';
+                    msg = 'Pat! Gelijkspel.'; cls += ' warning'; playerWon = 'draw';
                 }
                 
                 if (playerWon !== null) {
                     this.gamesPlayed++;
-                    this.updateElo(playerWon); // ELO bijwerken
+                    this.updateElo(playerWon);
                     this.updateStats();
                 }
 
@@ -745,34 +707,45 @@
                 this.winRateEl.textContent = this.gamesPlayed > 0 ? `${Math.round(this.gamesWon / this.gamesPlayed * 100)}%` : '0%';
             }
 
+            // --- Core Game Logic ---
 
-            // --- HULPFUNCTIES & BESTAANDE LOGICA ---
-            // De onderstaande code bevat de kernfunctionaliteit van het schaakspel.
-            // Deze is grotendeels ongewijzigd gebleven, maar geoptimaliseerd voor de nieuwe AI.
-
-            renderBoard() {
+            createBoardDOM() {
                 this.chessboardEl.innerHTML = '';
+                // FIX: Clear the array before repopulating, only if it's necessary to recreate the DOM.
+                // In this setup, it's only called once, so this is safe.
+                this.squareElements = []; 
                 for (let row = 0; row < 8; row++) {
                     for (let col = 0; col < 8; col++) {
                         const square = document.createElement('div');
-                        square.className = `square ${(row + col) % 2 === 0 ? 'light' : 'dark'}`;
-                        const piece = this.board[row][col];
-                        if (piece) square.textContent = this.getPieceSymbol(piece);
-                        if (this.lastMove && ((row === this.lastMove.fromRow && col === this.lastMove.fromCol) || (row === this.lastMove.toRow && col === this.lastMove.toCol))) {
-                            square.classList.add('last-move');
-                        }
                         square.dataset.row = row;
                         square.dataset.col = col;
                         this.chessboardEl.appendChild(square);
+                        this.squareElements.push(square);
+                    }
+                }
+            }
+
+            updateBoard() {
+                for (let row = 0; row < 8; row++) {
+                    for (let col = 0; col < 8; col++) {
+                        const square = this.squareElements[row * 8 + col];
+                        
+                        const colorClass = (row + col) % 2 === 0 ? 'light' : 'dark';
+                        let classes = `square ${colorClass}`;
+                        
+                        if (this.lastMove && ((row === this.lastMove.fromRow && col === this.lastMove.fromCol) || (row === this.lastMove.toRow && col === this.lastMove.toCol))) {
+                           classes += ' last-move';
+                        }
+                        square.className = classes;
+            
+                        const piece = this.board[row][col];
+                        square.textContent = piece ? this.getPieceSymbol(piece) : '';
                     }
                 }
             }
             
             getPieceSymbol(piece) {
-                const symbols = {
-                    'K': '♔', 'Q': '♕', 'R': '♖', 'B': '♗', 'N': '♘', 'P': '♙',
-                    'k': '♚', 'q': '♛', 'r': '♜', 'b': '♝', 'n': '♞', 'p': '♟'
-                };
+                const symbols = {'K':'♔','Q':'♕','R':'♖','B':'♗','N':'♘','P':'♙','k':'♚','q':'♛','r':'♜','b':'♝','n':'➞','p':'♟'};
                 return symbols[piece] || '';
             }
             
@@ -785,7 +758,6 @@
                         this.makeMove(this.selectedSquare.row, this.selectedSquare.col, row, col);
                         this.selectedSquare = null;
                         this.clearHighlights();
-                        
                         if (!this.gameOver) {
                             setTimeout(() => this.makeAIMove(), 500);
                         }
@@ -805,18 +777,15 @@
             isWhitePiece(piece) { return piece && piece === piece.toUpperCase(); }
 
             clearHighlights() {
-                this.chessboardEl.querySelectorAll('.square').forEach(s => {
-                    s.classList.remove('selected', 'possible-move', 'hint');
-                });
+                this.squareElements.forEach(s => s.classList.remove('selected', 'possible-move', 'hint'));
             }
 
             highlightPossibleMoves(row, col) {
                 this.clearHighlights();
-                const squares = this.chessboardEl.querySelectorAll('.square');
-                squares[row * 8 + col].classList.add('selected');
+                this.squareElements[row * 8 + col].classList.add('selected');
                 const moves = this.getAllPossibleMovesForPiece(row, col, this.board, this.castlingRights, this.enPassantTarget);
                 moves.forEach(move => {
-                    squares[move.toRow * 8 + move.toCol].classList.add('possible-move');
+                    this.squareElements[move.toRow * 8 + move.toCol].classList.add('possible-move');
                 });
             }
             
@@ -825,7 +794,6 @@
                 
                 this.moveHistory.push(moveData);
                 this.board = newBoard;
-
                 const piece = moveData.from.piece;
                 const capturedPiece = moveData.to.piece;
                 const moveNotation = this.getMoveNotation(fromRow, fromCol, toRow, toCol, piece, capturedPiece, moveData.special.isEnPassant, moveData.special.isCastling, moveData.special.isPromotion);
@@ -837,7 +805,7 @@
                 this.lastMove = { fromRow, fromCol, toRow, toCol };
                 this.currentPlayer = this.currentPlayer === 'white' ? 'black' : 'white';
                 
-                this.renderBoard();
+                this.updateBoard();
                 this.updateMovesList();
                 this.updateGameStatus();
                 this.provideFeedback(piece, capturedPiece);
@@ -856,10 +824,8 @@
                     return;
                 }
                 
-                // Zet van AI en speler terugdraaien
                 for (let i = 0; i < 2; i++) {
                     if (this.moveHistory.length === 0) break;
-                    
                     const lastMove = this.moveHistory.pop();
                     const { from, to, special, castlingRights, enPassantTarget } = lastMove;
                     
@@ -876,7 +842,6 @@
                         this.board[from.row][rookToCol] = this.board[from.row][rookFromCol];
                         this.board[from.row][rookFromCol] = '';
                     }
-                    
                     this.castlingRights = castlingRights;
                     this.enPassantTarget = enPassantTarget;
                     this.moves.pop();
@@ -886,15 +851,12 @@
                 this.lastMove = null;
                 this.gameOver = false;
                 
-                this.renderBoard();
+                this.updateBoard();
                 this.updateMovesList();
                 this.updateGameStatus();
                 this.feedbackEl.textContent = 'Zetten teruggedraaid. Probeer iets anders!';
                 this.feedbackEl.className = 'feedback';
             }
-            
-            // --- Hulpfuncties voor AI & Zetvalidatie ---
-            // Deze functies zijn nodig voor de AI om zetten te simuleren zonder het hoofdbord te wijzigen.
             
             getNewBoardState(board, move, castlingRights, enPassantTarget) {
                 const { newBoard, moveData } = this.performMove(board, move, castlingRights, enPassantTarget);
@@ -904,40 +866,19 @@
             }
 
             performMove(board, move, castlingRights, enPassantTarget) {
-                let newBoard = board.map(r => r.slice()); // Maak een diepe kopie
+                let newBoard = board.map(r => r.slice());
                 const { fromRow, fromCol, toRow, toCol } = move;
-                
                 const piece = newBoard[fromRow][fromCol];
                 const capturedPiece = newBoard[toRow][toCol];
                 const pieceType = piece.toLowerCase();
-
                 let isEnPassant = pieceType === 'p' && !capturedPiece && Math.abs(fromCol - toCol) === 1;
                 let isCastling = pieceType === 'k' && Math.abs(fromCol - toCol) === 2;
                 let isPromotion = pieceType === 'p' && (toRow === 0 || toRow === 7);
-
-                const moveData = {
-                    from: { row: fromRow, col: fromCol, piece },
-                    to: { row: toRow, col: toCol, piece: capturedPiece },
-                    special: { isEnPassant, isCastling, isPromotion },
-                    castlingRights: { ...castlingRights },
-                    enPassantTarget: enPassantTarget
-                };
-
-                if (isEnPassant) {
-                    const capturedPawnRow = this.isWhitePiece(piece) ? toRow + 1 : toRow - 1;
-                    moveData.to.piece = newBoard[capturedPawnRow][toCol];
-                    newBoard[capturedPawnRow][toCol] = '';
-                }
-                if (isCastling) {
-                    const rookFromCol = toCol > fromCol ? 7 : 0;
-                    const rookToCol = toCol > fromCol ? 5 : 3;
-                    newBoard[toRow][rookToCol] = newBoard[toRow][rookFromCol];
-                    newBoard[toRow][rookFromCol] = '';
-                }
-
+                const moveData = {from:{row:fromRow,col:fromCol,piece}, to:{row:toRow,col:toCol,piece:capturedPiece}, special:{isEnPassant,isCastling,isPromotion}, castlingRights:{...castlingRights}, enPassantTarget:enPassantTarget};
+                if (isEnPassant) { const capturedPawnRow = this.isWhitePiece(piece) ? toRow + 1 : toRow - 1; moveData.to.piece = newBoard[capturedPawnRow][toCol]; newBoard[capturedPawnRow][toCol] = ''; }
+                if (isCastling) { const rookFromCol = toCol > fromCol ? 7 : 0; const rookToCol = toCol > fromCol ? 5 : 3; newBoard[toRow][rookToCol] = newBoard[toRow][rookFromCol]; newBoard[toRow][rookFromCol] = ''; }
                 newBoard[toRow][toCol] = isPromotion ? (this.isWhitePiece(piece) ? 'Q' : 'q') : piece;
                 newBoard[fromRow][fromCol] = '';
-
                 return { newBoard, moveData };
             }
             
@@ -956,16 +897,10 @@
                 const piece = board[fromRow][fromCol];
                 const targetPiece = board[toRow][toCol];
                 const isWhite = this.isWhitePiece(piece);
-
                 if (!piece) return false;
                 if (targetPiece && this.isWhitePiece(targetPiece) === isWhite) return false;
                 if (!this.isValidPieceMove(fromRow, fromCol, toRow, toCol, piece, board, enPassantTarget, castlingRights)) return false;
-                
-                // Simuleren om te checken of koning schaak komt te staan
-                let tempBoard = board.map(r => r.slice());
-                tempBoard[toRow][toCol] = piece;
-                tempBoard[fromRow][fromCol] = '';
-
+                let tempBoard = board.map(r => r.slice()); tempBoard[toRow][toCol] = piece; tempBoard[fromRow][fromCol] = '';
                 return !this.isInCheck(isWhite ? 'white' : 'black', tempBoard);
             }
             
@@ -988,15 +923,8 @@
                 const direction = this.isWhitePiece(piece) ? -1 : 1;
                 const startRow = this.isWhitePiece(piece) ? 6 : 1;
                 const targetPiece = board[toRow][toCol];
-
-                if (fromCol === toCol && !targetPiece) { // Vooruit bewegen
-                    if (toRow === fromRow + direction) return true;
-                    if (fromRow === startRow && toRow === fromRow + 2 * direction && !board[fromRow + direction][fromCol]) return true;
-                }
-                if (Math.abs(fromCol - toCol) === 1 && toRow === fromRow + direction) { // Slaan
-                    if (targetPiece) return true;
-                    if (enPassantTarget && toRow === enPassantTarget.row && toCol === enPassantTarget.col) return true;
-                }
+                if (fromCol === toCol && !targetPiece) { if (toRow === fromRow + direction) return true; if (fromRow === startRow && toRow === fromRow + 2 * direction && !board[fromRow + direction][fromCol]) return true; }
+                if (Math.abs(fromCol - toCol) === 1 && toRow === fromRow + direction) { if (targetPiece) return true; if (enPassantTarget && toRow === enPassantTarget.row && toCol === enPassantTarget.col) return true; }
                 return false;
             }
             
@@ -1012,7 +940,6 @@
                 const isWhite = this.isWhitePiece(piece);
                 const backRank = isWhite ? 7 : 0;
                 if (fromRow !== backRank || toRow !== backRank || this.isInCheck(isWhite ? 'white' : 'black', board)) return false;
-
                 const kingSide = toCol > fromCol;
                 if (kingSide) {
                     if (!castlingRights[isWhite ? 'whiteKingSide' : 'blackKingSide']) return false;
@@ -1030,64 +957,26 @@
                 const rowStep = Math.sign(toRow - fromRow);
                 const colStep = Math.sign(toCol - fromCol);
                 let r = fromRow + rowStep, c = fromCol + colStep;
-                while (r !== toRow || c !== toCol) {
-                    if (board[r][c] !== '') return false;
-                    r += rowStep; c += colStep;
-                }
+                while (r !== toRow || c !== toCol) { if (board[r][c] !== '') return false; r += rowStep; c += colStep; }
                 return true;
             }
-
-            // NIEUW: Robuuste functie om te bepalen of een stuk een veld aanvalt.
-            // Deze functie kijkt alleen naar de aanvalspatronen, en negeert regels zoals schaak staan.
+            
             isAttacking(fromRow, fromCol, toRow, toCol, piece, board) {
                 const pieceType = piece.toLowerCase();
                 const rowDiff = Math.abs(toRow - fromRow);
                 const colDiff = Math.abs(toCol - fromCol);
-
-                if (pieceType === 'p') {
-                    const direction = this.isWhitePiece(piece) ? -1 : 1;
-                    return toRow === fromRow + direction && colDiff === 1;
-                }
-                
-                if (pieceType === 'n') {
-                    return (rowDiff === 2 && colDiff === 1) || (rowDiff === 1 && colDiff === 2);
-                }
-                
-                if (pieceType === 'k') {
-                    return rowDiff <= 1 && colDiff <= 1;
-                }
-
-                if (pieceType === 'r' && (rowDiff === 0 || colDiff === 0)) {
-                    return this.isPathClear(fromRow, fromCol, toRow, toCol, board);
-                }
-
-                if (pieceType === 'b' && rowDiff === colDiff) {
-                    return this.isPathClear(fromRow, fromCol, toRow, toCol, board);
-                }
-
-                if (pieceType === 'q' && ((rowDiff === 0 || colDiff === 0) || rowDiff === colDiff)) {
-                    return this.isPathClear(fromRow, fromCol, toRow, toCol, board);
-                }
-
+                if (pieceType === 'p') { const direction = this.isWhitePiece(piece) ? -1 : 1; return toRow === fromRow + direction && colDiff === 1; }
+                if (pieceType === 'n') { return (rowDiff === 2 && colDiff === 1) || (rowDiff === 1 && colDiff === 2); }
+                if (pieceType === 'k') { return rowDiff <= 1 && colDiff <= 1; }
+                if (pieceType === 'r' && (rowDiff === 0 || colDiff === 0)) { return this.isPathClear(fromRow, fromCol, toRow, toCol, board); }
+                if (pieceType === 'b' && rowDiff === colDiff) { return this.isPathClear(fromRow, fromCol, toRow, toCol, board); }
+                if (pieceType === 'q' && ((rowDiff === 0 || colDiff === 0) || rowDiff === colDiff)) { return this.isPathClear(fromRow, fromCol, toRow, toCol, board); }
                 return false;
             }
             
-            // VERBETERD: Gebruikt de nieuwe isAttacking functie om oneindige lussen te voorkomen.
             isSquareUnderAttack(row, col, color, board) {
                 const opponentColor = color === 'white' ? 'black' : 'white';
-                for (let r = 0; r < 8; r++) {
-                    for (let c = 0; c < 8; c++) {
-                        const piece = board[r][c];
-                        if (!piece) continue;
-
-                        const isOpponent = (opponentColor === 'white' && this.isWhitePiece(piece)) || (opponentColor === 'black' && !this.isWhitePiece(piece));
-                        if (!isOpponent) continue;
-
-                        if (this.isAttacking(r, c, row, col, piece, board)) {
-                            return true;
-                        }
-                    }
-                }
+                for (let r = 0; r < 8; r++) { for (let c = 0; c < 8; c++) { const piece = board[r][c]; if (!piece) continue; const isOpponent = (opponentColor === 'white' && this.isWhitePiece(piece)) || (opponentColor === 'black' && !this.isWhitePiece(piece)); if (!isOpponent) continue; if (this.isAttacking(r, c, row, col, piece, board)) { return true; } } }
                 return false;
             }
             
@@ -1099,8 +988,7 @@
             }
             
             isGameOver(board, player, castlingRights, enPassantTarget) {
-                const possibleMoves = this.getAllPossibleMoves(player, board, castlingRights, enPassantTarget);
-                return possibleMoves.length === 0;
+                return this.getAllPossibleMoves(player, board, castlingRights, enPassantTarget).length === 0;
             }
             
             isCheckmate() { return this.getAllPossibleMoves(this.currentPlayer).length === 0 && this.isInCheck(this.currentPlayer, this.board); }
@@ -1108,39 +996,21 @@
 
             getAllPossibleMoves(color, board = this.board, castlingRights = this.castlingRights, enPassantTarget = this.enPassantTarget) {
                 const moves = [];
-                for (let r = 0; r < 8; r++) {
-                    for (let c = 0; c < 8; c++) {
-                        const piece = board[r][c];
-                        if (piece && ((color === 'white' && this.isWhitePiece(piece)) || (color === 'black' && !this.isWhitePiece(piece)))) {
-                            moves.push(...this.getAllPossibleMovesForPiece(r, c, board, castlingRights, enPassantTarget));
-                        }
-                    }
-                }
+                for (let r = 0; r < 8; r++) { for (let c = 0; c < 8; c++) { const piece = board[r][c]; if (piece && ((color === 'white' && this.isWhitePiece(piece)) || (color === 'black' && !this.isWhitePiece(piece)))) { moves.push(...this.getAllPossibleMovesForPiece(r, c, board, castlingRights, enPassantTarget)); } } }
                 return moves;
             }
             
             getAllPossibleMovesForPiece(r, c, board, castlingRights, enPassantTarget) {
                 const moves = [];
                 const piece = board[r][c];
-                for (let toR = 0; toR < 8; toR++) {
-                    for (let toC = 0; toC < 8; toC++) {
-                        if (this.isValidMove(r, c, toR, toC, board, castlingRights, enPassantTarget)) {
-                            moves.push({ fromRow: r, fromCol: c, toRow: toR, toCol: toC, piece });
-                        }
-                    }
-                }
+                for (let toR = 0; toR < 8; toR++) { for (let toC = 0; toC < 8; toC++) { if (this.isValidMove(r, c, toR, toC, board, castlingRights, enPassantTarget)) { moves.push({ fromRow: r, fromCol: c, toRow: toR, toCol: toC, piece }); } } }
                 return moves;
             }
 
             updateMovesList() {
-                if (this.moves.length === 0) {
-                    this.movesListEl.innerHTML = '<div style="text-align: center; color: #666; font-style: italic;">Nog geen zetten gespeeld</div>';
-                    return;
-                }
+                if (this.moves.length === 0) { this.movesListEl.innerHTML = '<div style="text-align: center; color: #666; font-style: italic;">Nog geen zetten gespeeld</div>'; return; }
                 let html = '';
-                for (let i = 0; i < this.moves.length; i += 2) {
-                    html += `<div class="move-pair">${Math.floor(i / 2) + 1}. ${this.moves[i] || ''} ${this.moves[i + 1] || ''}</div>`;
-                }
+                for (let i = 0; i < this.moves.length; i += 2) { html += `<div class="move-pair">${Math.floor(i / 2) + 1}. ${this.moves[i] || ''} ${this.moves[i + 1] || ''}</div>`; }
                 this.movesListEl.innerHTML = html;
                 this.movesListEl.scrollTop = this.movesListEl.scrollHeight;
             }
@@ -1149,7 +1019,6 @@
                 let msg = 'Goede zet.';
                 if (capturedPiece) { msg = `Goed! Je hebt een ${this.getPieceName(capturedPiece)} geslagen.`; }
                 else if (this.isInCheck(this.currentPlayer, this.board)) { msg = 'Schaak! De koning wordt aangevallen.'; }
-                
                 this.feedbackEl.textContent = msg;
                 this.feedbackEl.className = 'feedback';
             }
@@ -1175,15 +1044,13 @@
                 let notation = `${pieceSymbol}${capture}${toSquare}`;
                 if (isPromotion) notation += '=Q';
                 
-                // Voeg schaak/schaakmat symbool toe
                 const tempBoard = this.getNewBoardState(this.board, {fromRow, fromCol, toRow, toCol}, this.castlingRights, this.enPassantTarget).newBoard;
                 const opponent = this.isWhitePiece(piece) ? 'black' : 'white';
                 if (this.getAllPossibleMoves(opponent, tempBoard).length === 0) {
-                     if (this.isInCheck(opponent, tempBoard)) notation += '#'; // Schaakmat
+                     if (this.isInCheck(opponent, tempBoard)) notation += '#';
                 } else if (this.isInCheck(opponent, tempBoard)) {
-                    notation += '+'; // Schaak
+                    notation += '+';
                 }
-
                 return notation;
             }
         }
@@ -1194,5 +1061,7 @@
     </script>
 </body>
 </html>
+
+
 
 
