@@ -1,198 +1,122 @@
 <!DOCTYPE html>
-<html lang="nl" class="h-full">
+<html lang="nl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Wijsheid Generator - Eddie Cool</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>AI Wijsheid Generator - Eddiecool</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-        }
-        /* Eenvoudige loading spinner */
-        .spinner {
-            border: 4px solid rgba(0, 0, 0, 0.1);
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            border-left-color: #09f;
-            animation: spin 1s ease infinite;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-    </style>
-</head>
-<body class="bg-gray-900 text-white h-full flex flex-col antialiased">
+    <link rel="stylesheet" href="style.css">
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
 
-    <!-- Navigatiebalk (blijft hetzelfde) -->
-    <nav class="bg-gray-800 shadow-lg">
-        <!-- ... bestaande navigatiecode ... -->
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16">
-                <div class="flex-shrink-0 flex items-center">
-                    <a href="index.html" class="text-2xl font-bold text-white">Eddie Cool</a>
-                </div>
-                <div class="hidden sm:ml-6 sm:flex sm:items-center">
-                    <a href="index.html" class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700">Home</a>
-                    <a href="projects.html" class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700">Projects</a>
-                    <a href="aigallery.html" class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700">AI Gallery</a>
-                    <a href="videoideas.html" class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700">Video Ideas</a>
-                    <a href="ai_wisdom.html" class="px-3 py-2 rounded-md text-sm font-medium text-white bg-gray-900">AI Wisdom</a>
-                    <a href="about.html" class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700">About</a>
-                    <a href="contact.html" class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700">Contact</a>
-                </div>
-                <!-- Mobiel menu knop -->
-                <div class="sm:hidden flex items-center">
-                    <button id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
-                        <span class="sr-only">Open hoofdmenu</span>
-                        <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                        </svg>
-                        <svg class="hidden h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                    </button>
-                </div>
-            </div>
+      gtag('config', 'G-SYG5T1Z0MV'); // VERVANG DIT DOOR JOUW MEASUREMENT ID
+    </script>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">
+            <a href="index.html">
+                <img src="images/logo.png" alt="Eddiecool Logo" class="logo-img">
+            </a>
         </div>
-        <!-- Mobiel menu (verborgen standaard) -->
-        <div class="sm:hidden hidden" id="mobile-menu">
-            <div class="px-2 pt-2 pb-3 space-y-1">
-                <a href="index.html" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700">Home</a>
-                <a href="projects.html" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700">Projects</a>
-                <a href="aigallery.html" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700">AI Gallery</a>
-                <a href="videoideas.html" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700">Video Ideas</a>
-                <a href="ai_wisdom.html" class="block px-3 py-2 rounded-md text-base font-medium text-white bg-gray-900">AI Wisdom</a>
-                <a href="about.html" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700">About</a>
-                <a href="contact.html" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700">Contact</a>
-            </div>
-        </div>
+        <span class="hamburger" id="hamburger-menu">&#9776;</span>
+        <ul class="menu">
+            <li><a href="index.html">🏠 Home</a></li>
+            <li><a href="projects.html">✨ Projecten</a></li>
+            <li><a href="ai_apps.html">📱 AI Apps</a></li>
+            <li><a href="ai_gallery.html">🖼️ Galerij</a></li>
+            <li><a href="video_ideas.html">🎬 Video Ideeën</a></li>
+            <li><a href="ai_wisdom.html">🔮 AI Wijsheid</a></li>
+            <li><a href="about.html">ℹ️ Over Mij</a></li>
+            <li><a href="contact.html">📧 Contact</a></li>
+        </ul>
     </nav>
 
-    <!-- Hoofdinhoud -->
-    <main class="flex-grow">
-        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
-            <div class="text-center">
-                <h1 class="text-4xl font-extrabold text-white sm:text-5xl md:text-6xl">AI Wijsheid Generator</h1>
-                <!-- Deze tekst komt overeen met je screenshot -->
-                <p class="mt-4 text-xl text-gray-400">Druk op de knop voor een diepzinnige (en grappige) pseudo-wijsheid over AI, compleet met een unieke afbeelding.</p>
-                
-                <button id="generate-button" class="mt-10 inline-flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50">
-                    Genereer Wijsheid
-                </button>
+    <h1>🔮 AI Wijsheid Generator</h1>
+    <p class="page-description">Druk op de knop voor een diepzinnige (en grappige!) pseudo-wijsheid over AI, compleet met een unieke afbeelding.</p>
 
-                <!-- AANGEPASTE Zone voor resultaat -->
-                <div id="result-container" class="mt-10 min-h-[300px] bg-gray-800 rounded-lg shadow-xl p-6 sm:p-8 flex items-center justify-center">
-                    <!-- Loading spinner -->
-                    <div id="loader" class="spinner hidden"></div>
-                    
-                    <!-- Resultaat Groep (verborgen standaard) -->
-                    <figure id="result-group" class="hidden w-full">
-                        <img id="wisdom-image" src="" alt="AI-gegenereerde afbeelding" class="w-full max-w-md h-auto rounded-lg shadow-md mb-6 mx-auto aspect-video object-cover">
-                        <figcaption id="wisdom-text" class="text-2xl font-medium text-gray-300"></figcaption>
-                    </figure>
-
-                    <!-- Initieel bericht -->
-                    <p id="initial-message" class="text-2xl font-medium text-gray-300">Klik op de knop om een nieuwe wijsheid te ontvangen...</p>
-                    
-                    <!-- Foutmelding -->
-                    <p id="error-message" class="text-2xl font-medium text-red-400 hidden"></p>
-                </div>
-            </div>
+    <div class="wisdom-generator-container">
+        <button id="generateWisdomBtn" class="generate-button">Genereer Nieuwe Wijsheid</button>
+        
+        <div id="loadingIndicator" class="loading-spinner hidden">
+            <div class="spinner"></div>
+            <p>AI aan het filosoferen...</p>
         </div>
-    </main>
 
-    <!-- Footer -->
-    <footer class="bg-gray-800 mt-auto">
-        <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 text-center text-gray-400 text-sm">
-            &copy; 2025 Eddie Cool. Alle rechten voorbehouden.
+        <div id="wisdomOutput" class="wisdom-output hidden">
+            <img id="wisdomImage" src="" alt="Gegenereerde AI Wijsheid Afbeelding" class="wisdom-image">
+            <p id="wisdomText" class="wisdom-text"></p>
         </div>
-    </footer>
+    </div>
 
     <script>
-        // Mobiel menu toggle
-        const menuButton = document.getElementById('mobile-menu-button');
-        const mobileMenu = document.getElementById('mobile-menu');
-        menuButton.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-            menuButton.querySelectorAll('svg').forEach(svg => svg.classList.toggle('hidden'));
+        // Hamburger menu functionaliteit
+        document.getElementById("hamburger-menu").addEventListener("click", function() {
+            document.querySelector(".menu").classList.toggle("active");
         });
 
-        // AI Wijsheid Generator Logica
-        const generateButton = document.getElementById('generate-button');
-        const loader = document.getElementById('loader');
-        
-        // Nieuwe elementen
-        const initialMessage = document.getElementById('initial-message');
-        const resultGroup = document.getElementById('result-group');
-        const wisdomImage = document.getElementById('wisdom-image');
-        const wisdomText = document.getElementById('wisdom-text');
-        const errorMessage = document.getElementById('error-message');
+        // AI Wijsheid Generator functionaliteit
+        document.addEventListener('DOMContentLoaded', function() {
+            const generateBtn = document.getElementById('generateWisdomBtn');
+            const loadingIndicator = document.getElementById('loadingIndicator');
+            const wisdomOutput = document.getElementById('wisdomOutput');
+            const wisdomImage = document.getElementById('wisdomImage');
+            const wisdomText = document.getElementById('wisdomText');
 
-        generateButton.addEventListener('click', generateWisdom);
+            generateBtn.addEventListener('click', generateAIWisdom);
 
-        // --- AANGEPASTE FUNCTIE DIE DE BACKEND AANROEPT ---
-        async function generateWisdom() {
-            // 1. UI voorbereiden
-            generateButton.disabled = true;
-            initialMessage.classList.add('hidden'); // Verberg starttekst
-            resultGroup.classList.add('hidden'); // Verberg vorig resultaat
-            errorMessage.classList.add('hidden');
-            loader.classList.remove('hidden');
+            async function generateAIWisdom() {
+                // Verberg vorige output, toon loading indicator
+                wisdomOutput.classList.add('hidden');
+                loadingIndicator.classList.remove('hidden');
+                generateBtn.disabled = true; // Schakel knop uit tijdens generatie
 
-            const backendUrl = '/generate-wisdom'; // Je backend eindpunt
+                try {
+                    // *** BELANGRIJKE WIJZIGING HIER: Roep nu de EIGEN BACKEND aan! ***
+                    // Deze URL MOET je later aanpassen naar de URL van je Render backend service.
+                    // Voor nu gebruiken we 'http://localhost:3000' als je lokaal test.
+                    // Bijv. "https://ai-wisdom-backend-xyz.render.com/generate-wisdom"
+                    const backendUrl = "https://ai-wisdom-backend.onrender.com/generate-wisdom";
 
-            try {
-                // We roepen nu de backend aan met POST
-                const response = await fetch(backendUrl, {
-                    method: 'POST', // FIX 1: Veranderd van GET naar POST
-                    headers: {
-                        'Content-Type': 'application/json',
+                    const response = await fetch(backendUrl, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        // We sturen geen specifieke data mee, de backend genereert alles
+                        body: JSON.stringify({}) 
+                    });
+
+                    // Controleer of de response van de backend succesvol was
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        throw new Error(errorData.error || `Backend error: ${response.status}`);
                     }
-                });
 
-                if (!response.ok) {
-                    throw new Error(`Serverfout: ${response.status} (${response.statusText})`);
-                }
+                    const data = await response.json(); // Ontvang de tekst en afbeelding URL van de backend
 
-                const data = await response.json();
-
-                // FIX 2: We zoeken naar 'saying' en 'imageUrl', niet 'wisdom'
-                if (data.saying && data.imageUrl) {
-                    // FIX 3: Vul de nieuwe elementen
                     wisdomText.textContent = data.saying;
-                    wisdomImage.src = data.imageUrl;
-                    
-                    resultGroup.classList.remove('hidden'); // Toon het resultaat
-                } else {
-                    console.error("Backend response bevatte geen 'saying' or 'imageUrl':", data);
-                    showError("De backend gaf een onverwacht antwoord.");
+                    wisdomImage.src = data.imageUrl; // De backend stuurt de base64 data-URL terug
+
+                } catch (error) {
+                    console.error("Fout bij het genereren van wijsheid via backend:", error);
+                    wisdomText.textContent = "Er ging iets mis bij het genereren. Probeer opnieuw.";
+                    // Toon een standaard fallback afbeelding bij een fout
+                    wisdomImage.src = "https://placehold.co/400x300/333/FFF?text=Fout";
+                    wisdomImage.alt = "Fout bij genereren.";
+                } finally {
+                    // Verberg loading indicator, toon output, schakel knop weer in
+                    loadingIndicator.classList.add('hidden');
+                    wisdomOutput.classList.remove('hidden');
+                    generateBtn.disabled = false;
                 }
-
-            } catch (error) {
-                // 4. Foutafhandeling
-                console.error('Fout bij het ophalen van wijsheid:', error);
-                // Dit zal nu "Serverfout: 500" tonen als je backend crasht
-                showError(`Fout bij aanroep backend: ${error.message}`);
-                
-            } finally {
-                // 5. UI opruimen
-                loader.classList.add('hidden');
-                generateButton.disabled = false;
             }
-        }
-
-        function showError(message) {
-            errorMessage.textContent = message;
-            errorMessage.classList.remove('hidden');
-            // Zorg ervoor dat al het andere verborgen is
-            initialMessage.classList.add('hidden');
-            resultGroup.classList.add('hidden');
-            loader.classList.add('hidden');
-        }
+        });
     </script>
 
 </body>
