@@ -163,9 +163,18 @@
                 const currentCategory = categories[currentCategoryKey];
                 poemOutput.innerHTML = `<div class="loader ${currentCategory.font}">De muze overdenkt...</div>`;
                 
-                // URL naar je backend. Voor lokaal testen is dit meestal http://localhost:3000
-                // Pas dit aan naar je Render URL als je het online zet.
-                const backendUrl = 'https://poem-creator-backend.onrender.com/generate-poem';
+                // Backend URL handling:
+                // - If you pass ?backend=<url> in the page URL, that is used (handy for local testing).
+                // - If served from localhost or file:// we default to a local backend at port 3000.
+                // - Otherwise we use the hosted Render URL.
+                const remoteBackend = 'https://poem-creator-backend.onrender.com/generate-poem';
+                const localBackend = 'http://localhost:3000/generate-poem';
+                const urlParams = new URLSearchParams(location.search);
+                let backendUrl = urlParams.get('backend') || (location.hostname === 'localhost' || location.protocol === 'file:' ? localBackend : remoteBackend);
+
+                // Show the backend being used (helps debugging CORS/network problems)
+                poemOutput.innerHTML = `<div class="loader ${currentCategory.font}">De muze overdenkt...</div>` +
+                                       `<div style="margin-top:12px;font-size:0.9rem;opacity:0.85">Backend: ${backendUrl}</div>`;
 
                 try {
                     const response = await fetch(backendUrl, {
@@ -175,16 +184,28 @@
                     });
                     
                     if (!response.ok) {
-                        const errorBody = await response.json();
-                        throw new Error(errorBody.error || `Backend Fout: ${response.status}`);
+                        // Try to parse JSON error, otherwise include status
+                        let errorBodyText = '';
+                        try { errorBodyText = JSON.stringify(await response.json()); } catch (e) { errorBodyText = await response.text(); }
+                        throw new Error(`Backend Fout: ${response.status} - ${errorBodyText}`);
                     }
 
                     const result = await response.json();
+                    if (!result || !result.poem) throw new Error('Ongeldig antwoord van backend');
                     displayPoem(result.poem);
 
                 } catch (error) {
                     console.error("Fout bij het ophalen van gedicht via backend:", error);
-                    poemOutput.innerHTML = `<p class="text-red-400">De muze zwijgt. Fout: ${error.message}. Probeer het later opnieuw.</p>`;
+                    // Show more actionable guidance for common issues (CORS, backend down, wrong URL)
+                    let helpMsg = '';
+                    if (error.message && error.message.toLowerCase().includes('cors')) {
+                        helpMsg = ' (Mogelijk CORS-probleem: controleer backend CORS-instellingen en of de frontend-origin is toegestaan)';
+                    } else if (error.message && error.message.toLowerCase().includes('failed to fetch')) {
+                        helpMsg = ' (Netwerkfout: controleer of de backend draait op de opgegeven URL en of er geen firewall of browser-extensie blokkeert)';
+                    }
+                    poemOutput.innerHTML = `<div class="text-red-400">De muze zwijgt. Fout: ${error.message}.${helpMsg}</div>`;
+                    // Also add a small 'debug' hint with the backend URL used
+                    poemOutput.innerHTML += `<div style="margin-top:8px;font-size:0.85rem;color:#fca5a5">Gepoogde backend: ${backendUrl}</div>`;
                 } finally {
                     isGenerating = false;
                 }
