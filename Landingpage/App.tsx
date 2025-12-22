@@ -5,9 +5,11 @@ import Features from './components/Features';
 import Courses from './components/Courses';
 import Marquee from './components/Marquee';
 import Footer from './components/Footer';
+import VibeAssistant from './components/VibeAssistant';
 
 const App: React.FC = () => {
   const [darkMode, setDarkMode] = useState<boolean>(false);
+  const [showAssistant, setShowAssistant] = useState(false);
 
   useEffect(() => {
     if (darkMode) {
@@ -25,7 +27,11 @@ const App: React.FC = () => {
     <div className={`min-h-screen w-full transition-colors duration-300 ${darkMode ? 'dark bg-cool-dark' : 'bg-cool-bg'}`}>
       <div className="relative overflow-hidden">
         {/* Decorative background elements can go here */}
-        <Navbar darkMode={darkMode} toggleTheme={toggleTheme} />
+        <Navbar 
+          darkMode={darkMode} 
+          toggleTheme={toggleTheme} 
+          onOpenAssistant={() => setShowAssistant(true)}
+        />
         
         <main className="flex flex-col gap-0">
           <Hero />
@@ -35,6 +41,11 @@ const App: React.FC = () => {
         </main>
 
         <Footer />
+        
+        <VibeAssistant 
+          isOpen={showAssistant} 
+          onClose={() => setShowAssistant(false)} 
+        />
       </div>
     </div>
   );

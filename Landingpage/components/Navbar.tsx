@@ -1,21 +1,22 @@
 import React, { useState } from 'react';
-import { Menu, X, Sun, Moon, Zap } from 'lucide-react';
+import { Menu, X, Sun, Moon, Layers } from 'lucide-react';
 import Button from './Button';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface NavbarProps {
   darkMode: boolean;
   toggleTheme: () => void;
+  onOpenAssistant: () => void;
 }
 
-const Navbar: React.FC<NavbarProps> = ({ darkMode, toggleTheme }) => {
+const Navbar: React.FC<NavbarProps> = ({ darkMode, toggleTheme, onOpenAssistant }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const navLinks = [
-    { name: 'Cursussen', href: '#courses' },
-    { name: 'De Vibe Methode', href: '#features' },
-    { name: 'Prijzen', href: '#pricing' },
-    { name: 'FAQ', href: '#faq' },
+    { name: 'Courses', href: '#courses' },
+    { name: 'Manifesto', href: '#features' },
+    { name: 'Pricing', href: '#pricing' },
+    { name: 'Community', href: '#community' },
   ];
 
   return (
@@ -26,10 +27,10 @@ const Navbar: React.FC<NavbarProps> = ({ darkMode, toggleTheme }) => {
           {/* Logo */}
           <div className="flex-shrink-0 flex items-center gap-2 cursor-pointer group">
             <div className="bg-gblue p-2 border-2 border-black dark:border-white shadow-neo-sm dark:shadow-neo-sm-dark transition-transform group-hover:rotate-12">
-              <Zap className="h-6 w-6 text-white" />
+              <Layers className="h-6 w-6 text-white" />
             </div>
             <span className="font-bold text-xl md:text-2xl tracking-tighter uppercase text-black dark:text-white">
-              EddieCool<span className="text-gblue">.nl</span>
+              The Hidden<span className="text-gblue">_Layer</span>
             </span>
           </div>
 
@@ -52,7 +53,7 @@ const Navbar: React.FC<NavbarProps> = ({ darkMode, toggleTheme }) => {
               {darkMode ? <Sun size={20} /> : <Moon size={20} />}
             </button>
             
-            <Button size="sm" color="gblue">Start Met Viben</Button>
+            <Button size="sm" color="gblue" onClick={onOpenAssistant}>Join Beta</Button>
           </div>
 
           {/* Mobile Menu Button */}
@@ -94,8 +95,8 @@ const Navbar: React.FC<NavbarProps> = ({ darkMode, toggleTheme }) => {
                 </a>
               ))}
               <div className="pt-4">
-                <Button onClick={() => setIsOpen(false)} color="gblue" size="lg" className="w-full">
-                  Word Lid
+                <Button onClick={() => { setIsOpen(false); onOpenAssistant(); }} color="gblue" size="lg" className="w-full">
+                  Access Neural Net
                 </Button>
               </div>
             </div>
