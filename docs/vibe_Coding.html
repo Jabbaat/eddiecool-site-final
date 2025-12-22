@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vibe Coding - Eddiecool</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-SYG5T1Z0MV"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-SYG5T1Z0MV');
+    </script>
+
+    <style>
+        :root {
+            /* Googley Neobrutalism Colors */
+            --blue: #4285F4;
+            --red: #EA4335;
+            --yellow: #FBBC05;
+            --green: #34A853;
+            --black: #1a1a1a;
+            --white: #ffffff;
+            --bg: #ffffff;
+            --text: #1a1a1a;
+            --border: 3px solid var(--black);
+            --shadow: 5px 5px 0px 0px var(--black);
+            --shadow-hover: 8px 8px 0px 0px var(--black);
+            --nav-bg: #fff;
+        }
+
+        .dark-mode {
+            --bg: #1a1a1a;
+            --text: #ffffff;
+            --nav-bg: #2d2d2d;
+            --border: 3px solid #ffffff;
+            --shadow: 5px 5px 0px 0px #ffffff;
+            --shadow-hover: 8px 8px 0px 0px #ffffff;
+            --black: #ffffff; /* Invert borders for dark mode logic */
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            transition: background-color 0.3s, color 0.3s;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        /* --- Navigation (Structure Preserved) --- */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            background-color: var(--nav-bg);
+            border-bottom: var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            transition: background-color 0.3s;
+        }
+
+        .logo a {
+            display: block;
+            transition: transform 0.2s;
+        }
+        
+        .logo a:hover {
+            transform: scale(1.05) rotate(-2deg);
+        }
+
+        .logo-img {
+            height: 50px;
+            /* Optional: Add border/shadow to logo if image allows */
+        }
+
+        .hamburger {
+            display: none;
+            font-size: 2rem;
+            cursor: pointer;
+        }
+
+        .menu {
+            display: flex;
+            list-style: none;
+            gap: 1.5rem;
+        }
+
+        .menu li a {
+            text-decoration: none;
+            color: var(--text);
+            font-weight: 700;
+            font-size: 1.1rem;
+            padding: 0.5rem 1rem;
+            border: 2px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .menu li a:hover {
+            background-color: var(--yellow);
+            color: #1a1a1a;
+            border: 2px solid var(--black);
+            box-shadow: 3px 3px 0px var(--black);
+            transform: translate(-2px, -2px);
+        }
+
+        /* Highlight current page */
+        .menu li a[href="ai_wisdom.html"] {
+            background-color: var(--blue);
+            color: white;
+            border: 2px solid var(--black);
+            box-shadow: 3px 3px 0px var(--black);
+        }
+
+        /* --- Theme Toggle --- */
+        .theme-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--red);
+            border: var(--border);
+            box-shadow: var(--shadow);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            cursor: pointer;
+            z-index: 999;
+            transition: all 0.2s;
+        }
+
+        .theme-toggle:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: var(--shadow-hover);
+            background: var(--yellow);
+        }
+
+        /* --- Hero Section --- */
+        .hero {
+            padding: 4rem 2rem;
+            text-align: center;
+            min-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-image: radial-gradient(var(--black) 1px, transparent 1px);
+            background-size: 20px 20px;
+            opacity: 1;
+        }
+
+        .hero h1 {
+            font-size: clamp(3rem, 8vw, 6rem);
+            line-height: 1;
+            margin-bottom: 1rem;
+            color: var(--text);
+            text-shadow: 4px 4px 0px var(--yellow);
+            -webkit-text-stroke: 1px var(--text);
+        }
+
+        .hero-badge {
+            background-color: var(--green);
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border: var(--border);
+            box-shadow: var(--shadow);
+            font-weight: bold;
+            transform: rotate(-3deg);
+            margin-bottom: 2rem;
+            display: inline-block;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            background-color: var(--bg);
+            padding: 10px;
+            border: 1px solid var(--text);
+        }
+
+        .btn-main {
+            display: inline-block;
+            background-color: var(--blue);
+            color: white;
+            padding: 1rem 3rem;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-decoration: none;
+            border: var(--border);
+            box-shadow: var(--shadow);
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .btn-main:hover {
+            background-color: var(--red);
+            transform: translate(-4px, -4px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        /* --- Marquee --- */
+        .marquee-container {
+            background: var(--yellow);
+            border-top: var(--border);
+            border-bottom: var(--border);
+            overflow: hidden;
+            white-space: nowrap;
+            padding: 1rem 0;
+            color: #1a1a1a; /* Always black text on yellow */
+        }
+
+        .marquee-content {
+            display: inline-block;
+            animation: marquee 20s linear infinite;
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* --- Features Grid --- */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        .section-title {
+            font-size: 3rem;
+            margin-bottom: 3rem;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 5px;
+            left: -10px;
+            width: 110%;
+            height: 15px;
+            background-color: var(--red);
+            z-index: -1;
+            opacity: 0.7;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .card {
+            background-color: var(--bg);
+            border: var(--border);
+            box-shadow: var(--shadow);
+            padding: 2rem;
+            transition: all 0.2s;
+        }
+
+        .card:hover {
+            transform: translate(-4px, -4px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .card-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .card.blue { border-top: 10px solid var(--blue); }
+        .card.red { border-top: 10px solid var(--red); }
+        .card.green { border-top: 10px solid var(--green); }
+
+        /* --- Footer --- */
+        footer {
+            background-color: var(--black);
+            color: var(--bg); /* Inverted */
+            text-align: center;
+            padding: 2rem;
+            border-top: 3px solid var(--text);
+            margin-top: 4rem;
+        }
+
+        /* --- Mobile Responsive --- */
+        @media (max-width: 768px) {
+            .menu {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background-color: var(--nav-bg);
+                border-bottom: var(--border);
+                padding: 1rem 0;
+            }
+
+            .menu.active {
+                display: flex;
+            }
+            
+            .menu li {
+                text-align: center;
+                margin-bottom: 0.5rem;
+            }
+
+            .hamburger {
+                display: block;
+            }
+
+            .hero h1 {
+                font-size: 3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigatie (Structuur behouden) -->
+    <nav>
+        <div class="logo">
+            <a href="index.html">
+                <img src="images/logo.png" alt="Eddiecool Logo" class="logo-img">
+            </a>
+        </div>
+        <span class="hamburger" id="hamburger-menu">&#9776;</span>
+        <ul class="menu">
+            <li><a href="index.html">🏠 Home</a></li>
+            <li><a href="projects.html">✨ Projecten</a></li>
+            <li><a href="ai_apps.html">📱 AI Apps</a></li>
+            <li><a href="ai_gallery.html">🖼️ Galerij</a></li>
+            <li><a href="video_ideas.html">🎬 Video Ideeën</a></li>
+            <li><a href="ai_wisdom.html">⚡ Vibe Coding</a></li>
+            <li><a href="about.html">ℹ️ Over Mij</a></li>
+            <li><a href="contact.html">📧 Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- Theme Switcher -->
+    <div class="theme-toggle" id="themeToggle">
+        🌙
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-badge">NIEUW: AI CURSUS</div>
+        <h1>VIBE CODING</h1>
+        <p>Programmeren zonder syntax-hoofdpijn. Gebruik AI om jouw gekste ideeën tot leven te wekken. Geen codeerervaring nodig, alleen goede vibes.</p>
+        <a href="#cursus" class="btn-main">START DE VIBE 🚀</a>
+    </section>
+
+    <!-- Infinite Marquee -->
+    <div class="marquee-container">
+        <div class="marquee-content">
+            // AI POWERED // NO SYNTAX ERROR // PURE CREATIVITY // BOUW WEBSITES // MAAK GAMES // EDDIECOOL STYLE // VIBE CODING // 
+            // AI POWERED // NO SYNTAX ERROR // PURE CREATIVITY // BOUW WEBSITES // MAAK GAMES // EDDIECOOL STYLE // VIBE CODING //
+        </div>
+    </div>
+
+    <!-- Features Section -->
+    <div class="container" id="cursus">
+        <h2 class="section-title">Hoe werkt het?</h2>
+        
+        <div class="grid">
+            <div class="card blue">
+                <div class="card-icon">🗣️</div>
+                <h3>Natural Language</h3>
+                <p>Vergeet ingewikkelde functies. Vertel de AI gewoon wat je wilt in normaal Nederlands. "Maak een rode knop die stuitert." Klaar.</p>
+            </div>
+            
+            <div class="card red">
+                <div class="card-icon">⚡</div>
+                <h3>Snelheid x100</h3>
+                <p>Wat vroeger uren duurde, doe je nu in minuten. Bouw een landingspagina of een tool tijdens je lunchpauze.</p>
+            </div>
+            
+            <div class="card green">
+                <div class="card-icon">🎨</div>
+                <h3>Creatieve Vrijheid</h3>
+                <p>Focus op design en functionaliteit. Laat de technische implementatie over aan de slimme algoritmes.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pricing / CTA -->
+    <div class="container" style="text-align: center; margin-bottom: 4rem;">
+        <div class="card" style="background-color: var(--yellow); color: #000; display: inline-block; max-width: 600px;">
+            <h2 style="font-size: 2.5rem; margin-bottom: 1rem;">Klaar om te beginnen?</h2>
+            <p style="font-size: 1.2rem; margin-bottom: 2rem;">Sluit je aan bij de Vibe Coding revolutie en bouw vandaag nog je eerste app.</p>
+            <a href="contact.html" class="btn-main" style="background-color: var(--black); color: var(--white);">Meld je aan</a>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Eddiecool. Vibe Coding Edition.</p>
+        <p style="font-size: 0.8rem; margin-top: 1rem;">Gemaakt met ☕ en AI.</p>
+    </footer>
+
+    <script>
+        // Hamburger menu functionaliteit (Behouden)
+        document.getElementById("hamburger-menu").addEventListener("click", function() {
+            document.querySelector(".menu").classList.toggle("active");
+        });
+
+        // Dark Mode Logic
+        const themeToggle = document.getElementById('themeToggle');
+        const body = document.body;
+
+        // Check local storage
+        if (localStorage.getItem('theme') === 'dark') {
+            body.classList.add('dark-mode');
+            themeToggle.textContent = '☀️';
+        }
+
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            
+            if (body.classList.contains('dark-mode')) {
+                themeToggle.textContent = '☀️';
+                localStorage.setItem('theme', 'dark');
+            } else {
+                themeToggle.textContent = '🌙';
+                localStorage.setItem('theme', 'light');
+            }
+        });
+    </script>
+
+</body>
+</html>
