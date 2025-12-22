@@ -394,6 +394,18 @@
             resize: vertical;
         }
 
+        .api-key-input {
+             width: 100%;
+            padding: 0.8rem;
+            font-size: 1rem;
+            font-family: 'Inter', sans-serif;
+            border: 2px solid var(--text);
+            margin-bottom: 1rem;
+            border-radius: 0;
+            background-color: var(--white);
+            color: var(--text);
+        }
+
         .result-box {
             margin-top: 1.5rem;
             padding: 1.5rem;
@@ -585,10 +597,15 @@
         <h2 class="section-title">Vibe Prompt Generator ✨</h2>
         <div class="generator-box">
             <h3 style="color: var(--pink);">Van Saai naar Vibe</h3>
-            <p>Heb je een idee, maar weet je niet hoe je het aan de AI moet vragen? Typ je simpele idee hieronder, en Gemini maakt er een perfecte, gedetailleerde prompt van die je direct in Cursor of V0 kunt plakken!</p>
+            <p>Heb je een idee, maar weet je niet hoe je het aan de AI moet vragen? Typ je simpele idee hieronder.</p>
             
             <textarea id="ideaInput" class="generator-input" placeholder="Bijv: Ik wil een simpele to-do app waar de taken ontploffen als je ze afvinkt..."></textarea>
             
+            <!-- SECURE API KEY INPUT -->
+            <label for="apiKeyInput" style="font-weight: bold; display: block; margin-bottom: 0.5rem;">Jouw Gemini API Key:</label>
+            <input type="password" id="apiKeyInput" class="api-key-input" placeholder="Plak hier je API key (wordt alleen lokaal opgeslagen)">
+            <p style="font-size: 0.8rem; margin-bottom: 1rem; color: var(--text);">⚠️ Je sleutel wordt veilig in je browser opgeslagen en nooit gedeeld.</p>
+
             <button id="generateBtn" class="btn-main" style="width: 100%;">✨ Genereer Vibe Prompt</button>
             
             <div id="loadingIndicator" class="loading-spinner">
@@ -647,22 +664,33 @@
         // --- GEMINI API INTEGRATION ---
         const generateBtn = document.getElementById('generateBtn');
         const ideaInput = document.getElementById('ideaInput');
+        const apiKeyInput = document.getElementById('apiKeyInput');
         const loadingIndicator = document.getElementById('loadingIndicator');
         const resultBox = document.getElementById('resultBox');
         const resultContent = document.getElementById('resultContent');
         const copyBtn = document.getElementById('copyBtn');
 
-        // Note: API key is injected by the environment. 
-        // If testing locally, you'd need to insert your own key here temporarily.
-        const apiKey = ""; 
+        // Check for saved API key on load
+        if (localStorage.getItem('gemini_api_key')) {
+            apiKeyInput.value = localStorage.getItem('gemini_api_key');
+        }
 
         generateBtn.addEventListener('click', async () => {
             const userIdea = ideaInput.value.trim();
+            const apiKey = apiKeyInput.value.trim();
             
             if (!userIdea) {
                 alert("Typ eerst een idee in!");
                 return;
             }
+
+            if (!apiKey) {
+                alert("Vul je Gemini API Key in om te starten!");
+                return;
+            }
+
+            // Save Key Locally
+            localStorage.setItem('gemini_api_key', apiKey);
 
             // UI Updates
             generateBtn.disabled = true;
@@ -698,7 +726,8 @@
                 });
 
                 if (!response.ok) {
-                    throw new Error(`API Error: ${response.status}`);
+                    const errorData = await response.json();
+                    throw new Error(`API Error: ${errorData.error?.message || response.status}`);
                 }
 
                 const data = await response.json();
@@ -711,7 +740,7 @@
 
             } catch (error) {
                 console.error("Gemini Error:", error);
-                resultContent.innerHTML = `<p style="color:red;">Oeps! Er ging iets mis met de AI vibes. Probeer het later opnieuw. (${error.message})</p>`;
+                resultContent.innerHTML = `<p style="color:red;">Oeps! Er ging iets mis. Check je API key. (${error.message})</p>`;
                 resultBox.style.display = 'block';
             } finally {
                 generateBtn.disabled = false;
