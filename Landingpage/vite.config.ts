@@ -5,7 +5,6 @@ import react from '@vitejs/plugin-react';
 export default defineConfig({
   plugins: [react()],
   resolve: {
-    // Dit helpt Vercel om imports zonder extensie (zoals './components/Navbar') te snappen
     extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json']
   }
 });

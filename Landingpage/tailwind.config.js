@@ -17,9 +17,9 @@ export default {
         ggreen: '#0F9D58',
         offwhite: '#F0F0F0',
         offblack: '#121212',
-        'cool-bg': '#60A5FA', // Vibrant Blue for Light Mode
-        'cool-bg-light': '#BFDBFE', // Softer Blue for cards/sections if needed
-        'cool-dark': '#1e3a8a', // Deep Blue for Dark Mode
+        'cool-bg': '#60A5FA',
+        'cool-bg-light': '#BFDBFE',
+        'cool-dark': '#1e3a8a',
       },
       boxShadow: {
         'neo': '5px 5px 0px 0px rgba(0,0,0,1)',
