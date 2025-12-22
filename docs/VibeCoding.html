@@ -603,8 +603,24 @@
             
             <!-- SECURE API KEY INPUT -->
             <label for="apiKeyInput" style="font-weight: bold; display: block; margin-bottom: 0.5rem;">Jouw Gemini API Key:</label>
+            
+            <!-- Instructies voor API Key -->
+            <details style="margin-bottom: 1rem; font-size: 0.9rem; color: var(--text); border: 1px solid var(--text); padding: 0.5rem; background: var(--white);">
+                <summary style="cursor: pointer; font-weight: bold; color: var(--accent);">🔑 Hoe kom ik aan een API Key?</summary>
+                <ol style="margin-left: 1.5rem; margin-top: 0.5rem; line-height: 1.6;">
+                    <li>Ga naar <a href="https://aistudio.google.com/app/apikey" target="_blank" style="color: var(--pink); font-weight: bold;">Google AI Studio</a>.</li>
+                    <li>Log in met je Google-account.</li>
+                    <li>Klik op de blauwe knop <strong>"Create API key"</strong>.</li>
+                    <li>Kopieer de lange code en plak hem in het veld hieronder.</li>
+                    <li><em>(Gratis tip: Kies 'Create key in new project').</em></li>
+                </ol>
+            </details>
+
             <input type="password" id="apiKeyInput" class="api-key-input" placeholder="Plak hier je API key (wordt alleen lokaal opgeslagen)">
-            <p style="font-size: 0.8rem; margin-bottom: 1rem; color: var(--text);">⚠️ Je sleutel wordt veilig in je browser opgeslagen en nooit gedeeld.</p>
+            <p style="font-size: 0.8rem; margin-bottom: 1rem; color: var(--text);">
+                ⚠️ Je sleutel wordt veilig in je browser opgeslagen en nooit gedeeld. <br>
+                🔒 <strong>Tip:</strong> Gebruik een gratis/tijdelijke API-key. Deel nooit productiesleutels.
+            </p>
 
             <button id="generateBtn" class="btn-main" style="width: 100%;">✨ Genereer Vibe Prompt</button>
             
