@@ -7,74 +7,22 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-      tailwind.config = {
-        darkMode: 'class',
-        theme: {
-          extend: {
-            fontFamily: {
-              sans: ['Space Grotesk', 'sans-serif'],
-            },
-            colors: {
-              gblue: '#4285F4',
-              gred: '#DB4437',
-              gyellow: '#F4B400',
-              ggreen: '#0F9D58',
-              offwhite: '#F0F0F0',
-              offblack: '#121212',
-              'cool-bg': '#60A5FA', // Vibrant Blue for Light Mode
-              'cool-bg-light': '#BFDBFE', // Softer Blue for cards/sections if needed
-              'cool-dark': '#1e3a8a', // Deep Blue for Dark Mode
-            },
-            boxShadow: {
-              'neo': '5px 5px 0px 0px rgba(0,0,0,1)',
-              'neo-dark': '5px 5px 0px 0px rgba(255,255,255,1)',
-              'neo-sm': '3px 3px 0px 0px rgba(0,0,0,1)',
-              'neo-sm-dark': '3px 3px 0px 0px rgba(255,255,255,1)',
-              'neo-lg': '8px 8px 0px 0px rgba(0,0,0,1)',
-              'neo-lg-dark': '8px 8px 0px 0px rgba(255,255,255,1)',
-            }
-          }
-        }
-      }
-    </script>
-    <style>
-      /* Hide scrollbar for Chrome, Safari and Opera */
-      .no-scrollbar::-webkit-scrollbar {
-          display: none;
-      }
-      /* Hide scrollbar for IE, Edge and Firefox */
-      .no-scrollbar {
-          -ms-overflow-style: none;  /* IE and Edge */
-          scrollbar-width: none;  /* Firefox */
-      }
-      
-      body {
-        background-color: #60A5FA; /* cool-bg */
-        color: #121212;
-        transition: background-color 0.3s ease, color 0.3s ease;
-      }
-      .dark body {
-        background-color: #1e3a8a; /* cool-dark */
-        color: #F0F0F0;
-      }
-    </style>
   <script type="importmap">
 {
   "imports": {
+    "react": "https://esm.sh/react@^19.2.3",
     "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
-    "lucide-react": "https://esm.sh/lucide-react@^0.562.0",
-    "framer-motion": "https://esm.sh/framer-motion@^12.23.26",
     "react/": "https://esm.sh/react@^19.2.3/",
-    "react": "https://esm.sh/react@^19.2.3"
+    "framer-motion": "https://esm.sh/framer-motion@^12.23.26",
+    "lucide-react": "https://esm.sh/lucide-react@^0.562.0",
+    "vite": "https://esm.sh/vite@^7.3.0",
+    "@vitejs/plugin-react": "https://esm.sh/@vitejs/plugin-react@^5.1.2"
   }
 }
 </script>
-<link rel="stylesheet" href="/index.css">
 </head>
   <body>
     <div id="root"></div>
-  <script type="module" src="/index.tsx"></script>
-</body>
+    <script type="module" src="/index.tsx"></script>
+  </body>
 </html>
