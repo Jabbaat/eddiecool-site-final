@@ -36,6 +36,10 @@
             --shadow: 5px 5px 0px 0px var(--primary);
             --shadow-hover: 8px 8px 0px 0px var(--primary);
             --nav-bg: #ffffff;
+            
+            /* Input specifieke variabelen voor de dark mode fix */
+            --input-bg: #ffffff;
+            --input-text: #0F172A;
         }
 
         .dark-mode {
@@ -47,6 +51,10 @@
             --shadow: 5px 5px 0px 0px #ffffff;
             --shadow-hover: 8px 8px 0px 0px #ffffff;
             --accent: #60A5FA;
+            
+            /* Dark mode input fix: donkere achtergrond, lichte tekst */
+            --input-bg: #1E293B;
+            --input-text: #ffffff;
         }
 
         * {
@@ -262,7 +270,7 @@
 
         .marquee-content {
             display: inline-block;
-            animation: marquee 20s linear infinite;
+            animation: marquee 40s linear infinite; /* Iets trager voor meer leesbaarheid */
             font-family: 'Space Grotesk', sans-serif;
             font-weight: bold;
             font-size: 1.5rem;
@@ -339,6 +347,31 @@
             border: 2px solid var(--text);
         }
 
+        .step-content h3 {
+            margin-bottom: 0.5rem;
+        }
+        
+        .step-content p {
+            margin-bottom: 0.5rem;
+        }
+        
+        .step-tags {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+        
+        .tag {
+            background-color: var(--text);
+            color: var(--bg);
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            font-family: monospace;
+        }
+
         /* SPEELSE KLEUREN LOGICA */
         .step-card.intro { background-color: var(--cyan); color: #000; }
         .step-card.intro .step-number { background-color: #000; color: var(--cyan); }
@@ -388,8 +421,8 @@
             border: 2px solid var(--text);
             margin: 1rem 0;
             border-radius: 0;
-            background-color: var(--white);
-            color: var(--text);
+            background-color: var(--input-bg); /* FIX voor Dark Mode */
+            color: var(--input-text);       /* FIX voor Dark Mode */
             min-height: 100px;
             resize: vertical;
         }
@@ -402,8 +435,8 @@
             border: 2px solid var(--text);
             margin-bottom: 1rem;
             border-radius: 0;
-            background-color: var(--white);
-            color: var(--text);
+            background-color: var(--input-bg); /* FIX voor Dark Mode */
+            color: var(--input-text);       /* FIX voor Dark Mode */
         }
 
         .result-box {
@@ -412,7 +445,7 @@
             background-color: var(--white);
             border: 2px solid var(--text);
             display: none; /* Hidden by default */
-            color: #000;
+            color: #000; /* Altijd zwart voor leesbaarheid in box */
         }
         
         .result-box h3 {
@@ -526,7 +559,7 @@
     <!-- Infinite Marquee -->
     <div class="marquee-container">
         <div class="marquee-content">
-            // DARK MODE // VIBE CODING // EDDIECOOL // AI TOOLS // NO CODE // JUST VIBES // BUILD FAST // DARK MODE // VIBE CODING //
+            // VIBE CODING // GOOGLE CANVAS // CLAUDE ARTIFACTS // CURSOR // WINDSURF // GITHUB // VERCEL // NETLIFY // NO CODE REQUIRED // PURE CREATIVITY // AI POWERED // EDDIECOOL // VIBE CODING //
         </div>
     </div>
 
@@ -539,54 +572,76 @@
             <!-- Stap 0: Introductie (Cyan) -->
             <div class="step-card intro">
                 <div class="step-number">?</div>
-                <div>
+                <div class="step-content">
                     <h3>Wat is Vibe Coding?</h3>
-                    <p>Simpel gezegd: <strong>Jij bent de regisseur, AI is je team.</strong> Je hoeft geen puntkomma's te checken of syntax te leren. Je focust puur op het idee en de "vibe". De AI doet het zware tilwerk.</p>
+                    <p>Het is een revolutie in hoe we bouwen. In plaats van syntax te leren, leer je AI aan te sturen. Jij bent de <strong>Creative Director</strong>, AI is je development team dat 24/7 voor je klaarstaat. Het gaat niet om code, het gaat om het realiseren van jouw ideeën.</p>
                 </div>
             </div>
 
             <!-- Stap 1 (Pink) -->
             <div class="step-card">
                 <div class="step-number">1</div>
-                <div>
+                <div class="step-content">
                     <h3>Kies je Wapens</h3>
-                    <p>Vergeet traditionele editors. Voor Vibe Coding gebruiken we <strong>Google AI Studio</strong> en <strong>V0.dev</strong>. Deze powerhouses begrijpen direct wat jij bedoelt.</p>
+                    <p>Vergeet traditionele editors. We gebruiken tools die 'meedenken' en hele interfaces kunnen genereren.</p>
+                    <p>Voor snelle prototypes en visuele ideeën gebruik je <strong>Google Canvas</strong> of <strong>Claude Artifacts</strong>. Deze tools laten je direct zien wat je maakt.</p>
+                    <p>Voor het echte bouwwerk schakel je over naar <strong>Cursor</strong> of <strong>Windsurf</strong>. Deze AI-editors begrijpen je hele project en kunnen complexe aanpassingen doen over meerdere bestanden.</p>
+                    <div class="step-tags">
+                        <span class="tag">Google Canvas</span>
+                        <span class="tag">Claude Artifacts</span>
+                        <span class="tag">Cursor</span>
+                        <span class="tag">Windsurf</span>
+                    </div>
                 </div>
             </div>
 
             <!-- Stap 2 (Purple) -->
             <div class="step-card">
                 <div class="step-number">2</div>
-                <div>
+                <div class="step-content">
                     <h3>Prompt als een Regisseur</h3>
-                    <p>Je schrijft geen code, je geeft instructies. Wees specifiek. <br><em>"Maak een blauwe knop die stuitert als je eroverheen gaat."</em></p>
+                    <p>Je schrijft geen code, je geeft instructies. Dit is je belangrijkste skill. Wees specifiek over de <strong>rol</strong> (bijv. "Je bent een senior frontend developer"), de <strong>context</strong> en de gewenste <strong>stijl</strong>.</p>
+                    <p>Gebruik natuurlijke taal: <em>"Maak een dashboard in Neobrutalism stijl met felle kleuren en dikke randen. Voeg een grafiek toe die data inlaadt als je eroverheen hovert."</em></p>
                 </div>
             </div>
 
             <!-- Stap 3 (Green) -->
             <div class="step-card">
                 <div class="step-number">3</div>
-                <div>
+                <div class="step-content">
                     <h3>Iterate & Chat</h3>
-                    <p>Is het niet perfect? Geen stress. Chat met de AI: <em>"Maak de tekst iets groter"</em> of <em>"Verander de achtergrond naar donkerblauw"</em>.</p>
+                    <p>De eerste versie is zelden perfect. Dat is normaal. Nu begint het gesprek. Je "chat" met je code om het te finetunen.</p>
+                    <p>Vraag om aanpassingen: <em>"Maak de tekst groter"</em>, <em>"Verander de kleur naar donkerblauw"</em> of <em>"Fix de bug in de mobiele weergave"</em>. Zie het als samenwerken met een collega die razendsnel werkt.</p>
                 </div>
             </div>
 
              <!-- Stap 4: GitHub (Orange) -->
              <div class="step-card">
                 <div class="step-number">4</div>
-                <div>
-                    <h3>Secure the Goods</h3>
-                    <p>Tevreden met je code? Upload het naar <strong>GitHub</strong>. Zo staat je project veilig in de cloud, kun je versies beheren en makkelijk delen met anderen.</p>
+                <div class="step-content">
+                    <h3>Secure the Goods (GitHub)</h3>
+                    <p>Tevreden met je code? Upload het naar <strong>GitHub</strong>. Dit is je veilige kluis in de cloud.</p>
+                    <p>Hiermee heb je <strong>versiebeheer</strong> (je kunt altijd terug als je iets breekt) en kun je jouw project makkelijk delen met hostingplatforms. Het is de ruggengraat van elk serieus project.</p>
+                    <div class="step-tags">
+                        <span class="tag">Git</span>
+                        <span class="tag">Versiebeheer</span>
+                        <span class="tag">Backup</span>
+                    </div>
                 </div>
             </div>
 
             <!-- Stap 5: Launch (Yellow) -->
             <div class="step-card">
                 <div class="step-number">5</div>
-                <div>
+                <div class="step-content">
                     <h3>Launch & Show off</h3>
-                    <p>Tevreden? Zet je project online via tools als Vercel of Netlify (vaak 1 klik via GitHub) en deel je creatie met de wereld!</p>
+                    <p>Tijd om live te gaan! Koppel je GitHub aan <strong>Vercel</strong> of <strong>Netlify</strong>. Met één klik staat je site online voor de hele wereld.</p>
+                    <p>Elke keer als je nu een update naar GitHub stuurt, wordt je live site automatisch bijgewerkt. Zo snel kan het gaan.</p>
+                    <div class="step-tags">
+                        <span class="tag">Vercel</span>
+                        <span class="tag">Netlify</span>
+                        <span class="tag">Deployment</span>
+                    </div>
                 </div>
             </div>
         </div>
