@@ -319,6 +319,63 @@
             box-shadow: 0 0 5px #00FF00;
         }
 
+        /* Enemy Type 2 - Fast Scout */
+        .enemy-type2 .enemy-body::before {
+            background: #00FFFF;
+            clip-path: polygon(50% 10%, 90% 40%, 80% 90%, 20% 90%, 10% 40%);
+            box-shadow: 0 0 15px #00FFFF;
+        }
+
+        .enemy-type2 .enemy-body::after {
+            background: #FFFF00;
+            box-shadow: 0 0 8px #FFFF00;
+        }
+
+        .enemy-type2 .enemy-tentacle-left,
+        .enemy-type2 .enemy-tentacle-right {
+            background: #00FFFF;
+            box-shadow: 0 0 5px #00FFFF;
+            height: 6px;
+        }
+
+        /* Enemy Type 3 - Heavy Tank */
+        .enemy-type3 {
+            width: 36px;
+            height: 36px;
+        }
+
+        .enemy-type3 .enemy-body {
+            width: 36px;
+            height: 36px;
+        }
+
+        .enemy-type3 .enemy-body::before {
+            background: #FF00A6;
+            width: 28px;
+            height: 28px;
+            left: 4px;
+            top: 4px;
+            clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
+            box-shadow: 0 0 20px #FF00A6;
+        }
+
+        .enemy-type3 .enemy-body::after {
+            background: #FFFF00;
+            width: 8px;
+            height: 8px;
+            left: 14px;
+            top: 14px;
+            box-shadow: 0 0 10px #FFFF00;
+        }
+
+        .enemy-type3 .enemy-tentacle-left,
+        .enemy-type3 .enemy-tentacle-right {
+            background: #FF00A6;
+            box-shadow: 0 0 8px #FF00A6;
+            height: 10px;
+            width: 3px;
+        }
+
         .game-hud {
             position: absolute;
             top: 1rem;
@@ -343,6 +400,110 @@
 
         .game-controls div {
             margin-bottom: 0.25rem;
+        }
+
+        /* Mobile Controls */
+        .mobile-controls {
+            position: absolute;
+            bottom: 2rem;
+            left: 0;
+            right: 0;
+            display: none;
+            justify-content: space-between;
+            padding: 0 2rem;
+            z-index: 100;
+        }
+
+        .mobile-joystick {
+            position: relative;
+            width: 140px;
+            height: 140px;
+        }
+
+        .joystick-base {
+            position: absolute;
+            width: 140px;
+            height: 140px;
+            background: rgba(0, 255, 255, 0.2);
+            border: 3px solid #00FFFF;
+            border-radius: 50%;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.4);
+        }
+
+        .joystick-stick {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background: rgba(0, 255, 255, 0.6);
+            border: 3px solid #00FFFF;
+            border-radius: 50%;
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.8);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            transition: none;
+            touch-action: none;
+        }
+
+        .mobile-shoot {
+            width: 100px;
+            height: 100px;
+            background: rgba(255, 0, 166, 0.3);
+            border: 4px solid #FF00A6;
+            border-radius: 50%;
+            box-shadow: 0 0 20px rgba(255, 0, 166, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #FF00A6;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            user-select: none;
+            touch-action: none;
+            margin-top: 20px;
+        }
+
+        .mobile-shoot:active {
+            background: rgba(255, 0, 166, 0.7);
+            box-shadow: 0 0 30px rgba(255, 0, 166, 1);
+            transform: scale(0.95);
+        }
+
+        .mobile-shoot-auto {
+            margin-top: 0.5rem;
+            font-size: 0.7rem;
+            color: #00FF00;
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .mobile-controls {
+                display: flex;
+            }
+            
+            .game-controls {
+                display: none;
+            }
+
+            .game-hud {
+                font-size: 1rem;
+            }
+
+            .hud-sidebar {
+                display: none;
+            }
+
+            .mobile-joystick {
+                margin-left: 1rem;
+            }
+
+            .mobile-shoot-container {
+                margin-right: 1rem;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
         }
 
         .game-over-screen {
@@ -484,6 +645,17 @@
                 <div>SPACE: SHOOT</div>
                 <div>ESC: MENU</div>
             </div>
+
+            <!-- Mobile Controls -->
+            <div class="mobile-controls" id="mobileControls">
+                <div class="mobile-dpad">
+                    <div class="mobile-btn mobile-btn-up" id="btnUp"></div>
+                    <div class="mobile-btn mobile-btn-down" id="btnDown"></div>
+                    <div class="mobile-btn mobile-btn-left" id="btnLeft"></div>
+                    <div class="mobile-btn mobile-btn-right" id="btnRight"></div>
+                </div>
+                <div class="mobile-shoot" id="btnShoot">FIRE</div>
+            </div>
         </div>
     </div>
 
@@ -498,6 +670,7 @@
             lives: 3,
             gameOver: false,
             keysPressed: {},
+            mobileControls: { up: false, down: false, left: false, right: false },
             lastTime: Date.now(),
             fps: 60,
             parallaxOffset: 0
@@ -603,6 +776,37 @@
             state.keysPressed[e.key] = false;
         });
 
+        // Mobile Controls
+        function setupMobileControls() {
+            const btnUp = document.getElementById('btnUp');
+            const btnDown = document.getElementById('btnDown');
+            const btnLeft = document.getElementById('btnLeft');
+            const btnRight = document.getElementById('btnRight');
+            const btnShoot = document.getElementById('btnShoot');
+
+            const addTouchControls = (btn, direction) => {
+                btn.addEventListener('touchstart', (e) => {
+                    e.preventDefault();
+                    if (direction) state.mobileControls[direction] = true;
+                    else shootBullet();
+                });
+                btn.addEventListener('touchend', (e) => {
+                    e.preventDefault();
+                    if (direction) state.mobileControls[direction] = false;
+                });
+                btn.addEventListener('touchcancel', (e) => {
+                    e.preventDefault();
+                    if (direction) state.mobileControls[direction] = false;
+                });
+            };
+
+            addTouchControls(btnUp, 'up');
+            addTouchControls(btnDown, 'down');
+            addTouchControls(btnLeft, 'left');
+            addTouchControls(btnRight, 'right');
+            addTouchControls(btnShoot, null);
+        }
+
         // Shoot Bullet
         function shootBullet() {
             state.bullets.push({
@@ -616,11 +820,17 @@
         function gameLoop() {
             if (state.screen !== 'game' || state.gameOver) return;
 
-            // Move Player
+            // Move Player (Keyboard)
             if (state.keysPressed['ArrowLeft'] || state.keysPressed['a']) state.player.x -= 2;
             if (state.keysPressed['ArrowRight'] || state.keysPressed['d']) state.player.x += 2;
             if (state.keysPressed['ArrowUp'] || state.keysPressed['w']) state.player.y -= 2;
             if (state.keysPressed['ArrowDown'] || state.keysPressed['s']) state.player.y += 2;
+
+            // Move Player (Mobile)
+            if (state.mobileControls.left) state.player.x -= 2;
+            if (state.mobileControls.right) state.player.x += 2;
+            if (state.mobileControls.up) state.player.y -= 2;
+            if (state.mobileControls.down) state.player.y += 2;
 
             state.player.x = Math.max(5, Math.min(95, state.player.x));
             state.player.y = Math.max(5, Math.min(95, state.player.y));
@@ -632,19 +842,30 @@
 
             // Move Enemies
             state.enemies = state.enemies
-                .map(e => ({ ...e, y: e.y + 0.5 }))
+                .map(e => {
+                    let speed = 0.5;
+                    if (e.type === 2) speed = 1.2; // Fast scout
+                    if (e.type === 3) speed = 0.3; // Slow tank
+                    return { ...e, y: e.y + speed };
+                })
                 .filter(e => e.y < 100);
 
             // Check Bullet-Enemy Collisions
             state.bullets = state.bullets.filter(bullet => {
-                const hitIndex = state.enemies.findIndex(enemy =>
-                    Math.abs(bullet.x - enemy.x) < 3 &&
-                    Math.abs(bullet.y - enemy.y) < 3
-                );
+                const hitIndex = state.enemies.findIndex(enemy => {
+                    const hitboxSize = enemy.type === 3 ? 4 : 3;
+                    return Math.abs(bullet.x - enemy.x) < hitboxSize &&
+                           Math.abs(bullet.y - enemy.y) < hitboxSize;
+                });
 
                 if (hitIndex !== -1) {
+                    const enemy = state.enemies[hitIndex];
+                    let points = 100;
+                    if (enemy.type === 2) points = 150; // Fast scout worth more
+                    if (enemy.type === 3) points = 250; // Tank worth most
+                    
                     state.enemies.splice(hitIndex, 1);
-                    state.score += 100;
+                    state.score += points;
                     updateGameHUD();
                     return false;
                 }
@@ -652,10 +873,11 @@
             });
 
             // Check Player-Enemy Collisions
-            const hitEnemyIndex = state.enemies.findIndex(enemy =>
-                Math.abs(state.player.x - enemy.x) < 4 &&
-                Math.abs(state.player.y - enemy.y) < 4
-            );
+            const hitEnemyIndex = state.enemies.findIndex(enemy => {
+                const hitboxSize = enemy.type === 3 ? 5 : 4;
+                return Math.abs(state.player.x - enemy.x) < hitboxSize &&
+                       Math.abs(state.player.y - enemy.y) < hitboxSize;
+            });
 
             if (hitEnemyIndex !== -1) {
                 state.enemies.splice(hitEnemyIndex, 1);
@@ -670,10 +892,17 @@
 
             // Spawn Enemies
             if (Math.random() > 0.97) {
+                const rand = Math.random();
+                let type = 1; // Default: Basic alien
+                
+                if (rand > 0.7) type = 2; // 30% chance: Fast scout
+                if (rand > 0.9) type = 3; // 10% chance: Heavy tank
+                
                 state.enemies.push({
                     x: Math.random() * 90 + 5,
                     y: 0,
-                    id: Date.now()
+                    id: Date.now(),
+                    type: type
                 });
             }
 
@@ -705,7 +934,7 @@
             // Render Enemies
             state.enemies.forEach(enemy => {
                 const enemyEl = document.createElement('div');
-                enemyEl.className = 'enemy';
+                enemyEl.className = `enemy enemy-type${enemy.type}`;
                 enemyEl.style.left = `${enemy.x}%`;
                 enemyEl.style.top = `${enemy.y}%`;
                 enemyEl.innerHTML = `
@@ -787,6 +1016,7 @@
         // Initialize
         initParallax();
         initEnergyBars();
+        setupMobileControls();
         startBoot();
     </script>
 </body>
