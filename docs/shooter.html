@@ -418,6 +418,7 @@
             position: relative;
             width: 140px;
             height: 140px;
+            touch-action: none;
         }
 
         .joystick-base {
@@ -428,6 +429,7 @@
             border: 3px solid #00FFFF;
             border-radius: 50%;
             box-shadow: 0 0 20px rgba(0, 255, 255, 0.4);
+            pointer-events: none;
         }
 
         .joystick-stick {
@@ -442,7 +444,7 @@
             left: 50%;
             transform: translate(-50%, -50%);
             transition: none;
-            touch-action: none;
+            pointer-events: none;
         }
 
         .mobile-shoot {
@@ -648,13 +650,14 @@
 
             <!-- Mobile Controls -->
             <div class="mobile-controls" id="mobileControls">
-                <div class="mobile-dpad">
-                    <div class="mobile-btn mobile-btn-up" id="btnUp"></div>
-                    <div class="mobile-btn mobile-btn-down" id="btnDown"></div>
-                    <div class="mobile-btn mobile-btn-left" id="btnLeft"></div>
-                    <div class="mobile-btn mobile-btn-right" id="btnRight"></div>
+                <div class="mobile-joystick" id="joystickContainer">
+                    <div class="joystick-base"></div>
+                    <div class="joystick-stick" id="joystickStick"></div>
                 </div>
-                <div class="mobile-shoot" id="btnShoot">FIRE</div>
+                <div class="mobile-shoot-container">
+                    <div class="mobile-shoot" id="btnShoot">FIRE</div>
+                    <div class="mobile-shoot-auto">Auto-fire: <span id="autoFireStatus">OFF</span></div>
+                </div>
             </div>
         </div>
     </div>
@@ -670,7 +673,8 @@
             lives: 3,
             gameOver: false,
             keysPressed: {},
-            mobileControls: { up: false, down: false, left: false, right: false },
+            joystick: { active: false, x: 0, y: 0, centerX: 0, centerY: 0 },
+            autoFire: false,
             lastTime: Date.now(),
             fps: 60,
             parallaxOffset: 0
@@ -778,33 +782,90 @@
 
         // Mobile Controls
         function setupMobileControls() {
-            const btnUp = document.getElementById('btnUp');
-            const btnDown = document.getElementById('btnDown');
-            const btnLeft = document.getElementById('btnLeft');
-            const btnRight = document.getElementById('btnRight');
+            const joystickContainer = document.getElementById('joystickContainer');
+            const joystickStick = document.getElementById('joystickStick');
             const btnShoot = document.getElementById('btnShoot');
+            const autoFireStatus = document.getElementById('autoFireStatus');
 
-            const addTouchControls = (btn, direction) => {
-                btn.addEventListener('touchstart', (e) => {
-                    e.preventDefault();
-                    if (direction) state.mobileControls[direction] = true;
-                    else shootBullet();
-                });
-                btn.addEventListener('touchend', (e) => {
-                    e.preventDefault();
-                    if (direction) state.mobileControls[direction] = false;
-                });
-                btn.addEventListener('touchcancel', (e) => {
-                    e.preventDefault();
-                    if (direction) state.mobileControls[direction] = false;
-                });
+            // Joystick Controls
+            const maxDistance = 40; // Maximum distance from center
+
+            const handleJoystickStart = (e) => {
+                e.preventDefault();
+                state.joystick.active = true;
+                
+                const rect = joystickContainer.getBoundingClientRect();
+                state.joystick.centerX = rect.left + rect.width / 2;
+                state.joystick.centerY = rect.top + rect.height / 2;
             };
 
-            addTouchControls(btnUp, 'up');
-            addTouchControls(btnDown, 'down');
-            addTouchControls(btnLeft, 'left');
-            addTouchControls(btnRight, 'right');
-            addTouchControls(btnShoot, null);
+            const handleJoystickMove = (e) => {
+                if (!state.joystick.active) return;
+                e.preventDefault();
+
+                const touch = e.touches ? e.touches[0] : e;
+                const deltaX = touch.clientX - state.joystick.centerX;
+                const deltaY = touch.clientY - state.joystick.centerY;
+
+                // Calculate distance from center
+                const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+                
+                // Limit to max distance
+                const limitedDistance = Math.min(distance, maxDistance);
+                const angle = Math.atan2(deltaY, deltaX);
+                
+                const x = Math.cos(angle) * limitedDistance;
+                const y = Math.sin(angle) * limitedDistance;
+
+                // Update stick position
+                joystickStick.style.transform = `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))`;
+
+                // Normalize to -1 to 1 range
+                state.joystick.x = x / maxDistance;
+                state.joystick.y = y / maxDistance;
+            };
+
+            const handleJoystickEnd = (e) => {
+                e.preventDefault();
+                state.joystick.active = false;
+                state.joystick.x = 0;
+                state.joystick.y = 0;
+                
+                // Reset stick position
+                joystickStick.style.transform = 'translate(-50%, -50%)';
+            };
+
+            joystickContainer.addEventListener('touchstart', handleJoystickStart);
+            joystickContainer.addEventListener('touchmove', handleJoystickMove);
+            joystickContainer.addEventListener('touchend', handleJoystickEnd);
+            joystickContainer.addEventListener('touchcancel', handleJoystickEnd);
+
+            // Mouse support for testing
+            joystickContainer.addEventListener('mousedown', handleJoystickStart);
+            document.addEventListener('mousemove', handleJoystickMove);
+            document.addEventListener('mouseup', handleJoystickEnd);
+
+            // Shoot Button - Manual Fire
+            btnShoot.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                shootBullet();
+            });
+
+            // Double tap to toggle auto-fire
+            let lastTap = 0;
+            btnShoot.addEventListener('touchend', (e) => {
+                e.preventDefault();
+                const currentTime = new Date().getTime();
+                const tapLength = currentTime - lastTap;
+                
+                if (tapLength < 300 && tapLength > 0) {
+                    // Double tap detected
+                    state.autoFire = !state.autoFire;
+                    autoFireStatus.textContent = state.autoFire ? 'ON' : 'OFF';
+                    autoFireStatus.style.color = state.autoFire ? '#00FF00' : '#FF00A6';
+                }
+                lastTap = currentTime;
+            });
         }
 
         // Shoot Bullet
@@ -820,20 +881,27 @@
         function gameLoop() {
             if (state.screen !== 'game' || state.gameOver) return;
 
-            // Move Player (Keyboard)
-            if (state.keysPressed['ArrowLeft'] || state.keysPressed['a']) state.player.x -= 2;
-            if (state.keysPressed['ArrowRight'] || state.keysPressed['d']) state.player.x += 2;
-            if (state.keysPressed['ArrowUp'] || state.keysPressed['w']) state.player.y -= 2;
-            if (state.keysPressed['ArrowDown'] || state.keysPressed['s']) state.player.y += 2;
+            const speed = 0.8; // Smooth, precise movement
 
-            // Move Player (Mobile)
-            if (state.mobileControls.left) state.player.x -= 2;
-            if (state.mobileControls.right) state.player.x += 2;
-            if (state.mobileControls.up) state.player.y -= 2;
-            if (state.mobileControls.down) state.player.y += 2;
+            // Move Player (Keyboard) - Smooth continuous movement
+            if (state.keysPressed['ArrowLeft'] || state.keysPressed['a']) state.player.x -= speed;
+            if (state.keysPressed['ArrowRight'] || state.keysPressed['d']) state.player.x += speed;
+            if (state.keysPressed['ArrowUp'] || state.keysPressed['w']) state.player.y -= speed;
+            if (state.keysPressed['ArrowDown'] || state.keysPressed['s']) state.player.y += speed;
+
+            // Move Player (Joystick) - Smooth analog movement
+            if (state.joystick.active || Math.abs(state.joystick.x) > 0.1 || Math.abs(state.joystick.y) > 0.1) {
+                state.player.x += state.joystick.x * speed * 3;
+                state.player.y += state.joystick.y * speed * 3;
+            }
 
             state.player.x = Math.max(5, Math.min(95, state.player.x));
             state.player.y = Math.max(5, Math.min(95, state.player.y));
+
+            // Auto-fire
+            if (state.autoFire && Math.random() > 0.85) {
+                shootBullet();
+            }
 
             // Move Bullets
             state.bullets = state.bullets
