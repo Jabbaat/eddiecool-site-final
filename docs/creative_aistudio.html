@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Steam Engine | Eddie Cool</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Markdown Parser -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Rye&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            /* Steampunk Palette */
+            --bg-paper: #f0e6d2;      /* Oud papier */
+            --bg-dark: #1a1510;       /* Roet / Olie */
+            --border-color: #1a1510;  /* Zwarte inkt randen */
+            
+            --accent-copper: #b87333; /* Koper */
+            --accent-brass: #e1c16e;  /* Messing */
+            --accent-rust: #8b3a3a;   /* Roest */
+            --accent-steam: #a8d5e2;  /* Stoom / Verdigris */
+            --accent-aether: #8b5cf6; /* Aether / Magie */
+
+            --font-display: 'Rye', serif;
+            --font-body: 'Courier Prime', monospace;
+            --font-ui: 'Space Mono', monospace;
+        }
+
+        /* --- Theme Modes (Neo-Brutalist Colors) --- */
+        body[data-mode="poem"] {
+            --primary: var(--accent-copper);
+            --secondary: #2d1b2e;
+            --bg-app: #e6e2dd;
+        }
+        
+        body[data-mode="fact"] {
+            --primary: var(--accent-steam);
+            --secondary: #0f2b26;
+            --bg-app: #dbece5;
+        }
+
+        body[data-mode="recipe"] {
+            --primary: var(--accent-rust);
+            --secondary: #3d1f1f;
+            --bg-app: #eed9d9;
+        }
+
+        body[data-mode="idea"] {
+            --primary: var(--accent-brass);
+            --secondary: #422006;
+            --bg-app: #fef3c7;
+        }
+
+        body[data-mode="adventure"] {
+            --primary: var(--accent-aether);
+            --secondary: #1e1b4b;
+            --bg-app: #e0e7ff;
+        }
+
+        body {
+            background-color: var(--bg-app);
+            color: var(--bg-dark);
+            font-family: var(--font-body);
+            transition: background-color 0.5s ease;
+            background-image: radial-gradient(var(--primary) 1px, transparent 1px);
+            background-size: 20px 20px; /* Dot pattern background */
+        }
+
+        /* --- Neo-Brutalist Steampunk Components --- */
+        
+        .neo-box {
+            background-color: var(--bg-paper);
+            border: 3px solid var(--border-color);
+            box-shadow: 6px 6px 0px 0px var(--border-color); /* Hard shadow */
+            transition: all 0.2s ease;
+        }
+
+        .neo-btn {
+            background-color: var(--primary);
+            color: var(--bg-dark);
+            border: 2px solid var(--border-color);
+            box-shadow: 4px 4px 0px 0px var(--border-color);
+            font-family: var(--font-ui);
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.1s;
+        }
+
+        .neo-btn:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0px 0px var(--border-color);
+            filter: brightness(1.1);
+        }
+
+        .neo-btn:active {
+            transform: translate(2px, 2px);
+            box-shadow: 0px 0px 0px 0px var(--border-color);
+        }
+
+        .neo-input {
+            width: 100%;
+            background: #fff;
+            border: 2px solid var(--border-color);
+            padding: 0.75rem;
+            font-family: var(--font-body);
+            color: var(--bg-dark);
+            box-shadow: 3px 3px 0px 0px rgba(0,0,0,0.1);
+            transition: all 0.2s;
+        }
+        
+        .neo-input:focus {
+            outline: none;
+            box-shadow: 5px 5px 0px 0px var(--primary);
+            transform: translate(-2px, -2px);
+        }
+
+        .mode-title { 
+            font-family: var(--font-display); 
+            text-shadow: 3px 3px 0px var(--primary);
+        }
+
+        /* Markdown Styles */
+        .prose h1, .prose h2 { 
+            font-family: var(--font-display);
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 0.2em;
+            margin-top: 1em;
+        }
+        .prose strong { 
+            background-color: var(--primary);
+            padding: 0 4px;
+        }
+        .prose ul { list-style-type: square; }
+
+        /* Loader: Cogwheel animation */
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        .cog-loader { animation: spin 4s linear infinite; }
+
+        .modal-hidden { display: none; }
+        .modal-flex { display: flex; }
+        
+        /* Nav selection state */
+        .nav-active {
+            background-color: var(--primary) !important;
+            transform: translate(-2px, -2px);
+            box-shadow: 4px 4px 0px 0px var(--border-color) !important;
+        }
+    </style>
+</head>
+<body data-mode="poem" class="min-h-screen flex flex-col md:flex-row overflow-hidden selection:bg-black selection:text-white">
+
+    <!-- SIDEBAR NAV -->
+    <nav class="w-full md:w-24 bg-[#1a1510] text-[#f0e6d2] z-20 flex md:flex-col justify-between items-center p-4 md:py-8 border-b-4 md:border-b-0 md:border-r-4 border-black">
+        <div class="mb-0 md:mb-8">
+            <div class="w-12 h-12 border-2 border-[#f0e6d2] flex items-center justify-center bg-[#b87333] shadow-[4px_4px_0px_0px_#f0e6d2]">
+                <i data-lucide="cog" class="text-black w-8 h-8 cog-loader"></i>
+            </div>
+        </div>
+
+        <div class="flex md:flex-col gap-6">
+            <button onclick="setMode('poem')" id="nav-poem" class="neo-btn bg-[#f0e6d2] p-3 rounded-none hover:bg-white transition-all group relative" title="Poëzie">
+                <i data-lucide="feather" class="w-6 h-6"></i>
+            </button>
+            <button onclick="setMode('fact')" id="nav-fact" class="neo-btn bg-[#f0e6d2] p-3 rounded-none hover:bg-white transition-all group relative" title="Feitjes">
+                <i data-lucide="zap" class="w-6 h-6"></i>
+            </button>
+            <button onclick="setMode('recipe')" id="nav-recipe" class="neo-btn bg-[#f0e6d2] p-3 rounded-none hover:bg-white transition-all group relative" title="Recepten">
+                <i data-lucide="utensils" class="w-6 h-6"></i>
+            </button>
+            <button onclick="setMode('idea')" id="nav-idea" class="neo-btn bg-[#f0e6d2] p-3 rounded-none hover:bg-white transition-all group relative" title="Uitvindingen">
+                <i data-lucide="lightbulb" class="w-6 h-6"></i>
+            </button>
+            <button onclick="setMode('adventure')" id="nav-adventure" class="neo-btn bg-[#f0e6d2] p-3 rounded-none hover:bg-white transition-all group relative" title="Avontuur">
+                <i data-lucide="map" class="w-6 h-6"></i>
+            </button>
+        </div>
+
+        <div class="mt-0 md:mt-auto">
+            <button onclick="toggleSettings()" class="neo-btn bg-[#555] text-white p-3 rounded-none hover:bg-[#666]">
+                <i data-lucide="wrench" class="w-6 h-6"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- MAIN CONTENT -->
+    <main class="flex-1 flex flex-col relative overflow-y-auto p-4 md:p-8 gap-8">
+        
+        <!-- Header Section -->
+        <header class="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 border-b-4 border-black pb-6 bg-[#f0e6d2] p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] border-2 border-black">
+            <div>
+                <div class="flex items-center gap-2 mb-2">
+                    <span class="bg-black text-white px-2 py-1 font-mono text-xs uppercase tracking-widest">System v2.5</span>
+                    <span id="api-indicator" class="border-2 border-black px-2 py-1 font-mono text-xs uppercase font-bold bg-red-400">Offline</span>
+                </div>
+                <h1 id="app-title" class="text-4xl md:text-6xl font-bold mode-title text-black">DE MUZE</h1>
+                <p id="app-subtitle" class="text-gray-700 font-mono mt-2 border-l-4 border-black pl-4">Initialiseren van creatieve matrix...</p>
+            </div>
+        </header>
+
+        <div class="flex flex-col lg:flex-row gap-8 items-start h-full">
+            
+            <!-- LEFT COLUMN: CONTROLS -->
+            <div class="w-full lg:w-1/3 flex flex-col gap-6">
+                <!-- Input Panel -->
+                <div class="neo-box p-6 relative">
+                    <div class="absolute -top-3 -left-3 bg-black text-white px-3 py-1 font-mono text-xs uppercase font-bold transform -rotate-2">Control Panel</div>
+                    
+                    <div id="input-container" class="space-y-6 mt-4">
+                        <!-- Inputs injected via JS -->
+                    </div>
+
+                    <div class="mt-8 pt-6 border-t-2 border-dashed border-black">
+                        <button onclick="generateContent()" class="neo-btn w-full py-4 text-lg flex items-center justify-center gap-3">
+                            <i data-lucide="play" class="fill-current"></i>
+                            ACTIVEREN
+                        </button>
+                    </div>
+                </div>
+
+                <!-- MANUAL / UITLEG SECTIE -->
+                <div class="neo-box p-6 bg-[#e6e2dd] border-black">
+                    <div class="flex items-center gap-2 mb-4 border-b-2 border-black pb-2">
+                        <i data-lucide="book-open" class="w-5 h-5"></i>
+                        <h3 class="font-bold font-mono uppercase">Handleiding</h3>
+                    </div>
+                    <div class="prose prose-sm font-mono leading-tight text-gray-800">
+                        <ul class="list-none pl-0 space-y-3">
+                            <li class="flex gap-3 items-start">
+                                <span class="bg-black text-white w-6 h-6 flex items-center justify-center text-xs font-bold shrink-0">1</span>
+                                <span><strong>Kies Module:</strong> Selecteer links een functie (Veer, Bliksem, Bestek, Lamp, Kaart).</span>
+                            </li>
+                            <li class="flex gap-3 items-start">
+                                <span class="bg-black text-white w-6 h-6 flex items-center justify-center text-xs font-bold shrink-0">2</span>
+                                <span><strong>Configuratie:</strong> Vul de parameters in het Control Panel in. Wees specifiek.</span>
+                            </li>
+                            <li class="flex gap-3 items-start">
+                                <span class="bg-black text-white w-6 h-6 flex items-center justify-center text-xs font-bold shrink-0">3</span>
+                                <span><strong>Stoomdruk:</strong> Druk op ACTIVEREN. De Gemini Engine genereert uw output.</span>
+                            </li>
+                            <li class="flex gap-3 items-start">
+                                <span class="bg-black text-white w-6 h-6 flex items-center justify-center text-xs font-bold shrink-0">!</span>
+                                <span class="text-xs text-gray-600">Vereist API-sleutel (Klik op de moersleutel linksonder).</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT COLUMN: OUTPUT -->
+            <div class="w-full lg:w-2/3 flex-1 min-h-[400px]">
+                <div class="neo-box h-full p-8 relative bg-white flex flex-col">
+                     <div class="absolute -top-3 -right-3 bg-black text-white px-3 py-1 font-mono text-xs uppercase font-bold transform rotate-1">Output Log</div>
+                    
+                    <!-- Decoratieve gaten (ponscard look) -->
+                    <div class="absolute top-4 left-4 flex gap-2">
+                        <div class="w-3 h-3 rounded-full bg-gray-300 border border-black"></div>
+                        <div class="w-3 h-3 rounded-full bg-gray-300 border border-black"></div>
+                        <div class="w-3 h-3 rounded-full bg-black border border-black"></div>
+                    </div>
+
+                    <div id="output-area" class="mt-8 flex-1 font-mono text-lg leading-relaxed relative opacity-50 transition-opacity duration-500 overflow-y-auto">
+                        <!-- Loader -->
+                        <div id="loader" class="hidden absolute inset-0 flex flex-col items-center justify-center gap-4">
+                            <i data-lucide="settings" class="w-16 h-16 cog-loader text-black"></i>
+                            <span class="bg-black text-white px-4 py-1 font-mono text-sm animate-pulse">GENERATING STEAM...</span>
+                        </div>
+                        
+                        <!-- Text Content -->
+                        <div id="result-content" class="prose max-w-none text-black">
+                            <p class="text-gray-400 italic text-center mt-20">// Wachten op input...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- SETTINGS MODAL (Steampunk Style) -->
+    <div id="settings-modal" class="fixed inset-0 z-50 modal-hidden items-center justify-center bg-black/80 backdrop-blur-sm p-4">
+        <div class="neo-box p-8 max-w-md w-full relative bg-[#f0e6d2]">
+            <button onclick="toggleSettings()" class="absolute top-2 right-2 p-2 hover:bg-black hover:text-white transition-colors border-2 border-transparent hover:border-black">
+                <i data-lucide="x" class="w-6 h-6"></i>
+            </button>
+            
+            <h2 class="text-2xl font-bold mb-6 font-display border-b-4 border-black pb-2 flex items-center gap-3">
+                <i data-lucide="key" class="w-6 h-6"></i> ENGINE ACCESS
+            </h2>
+            
+            <div class="mb-6">
+                <label class="block text-xs font-mono font-bold uppercase mb-2 bg-black text-white w-fit px-2">Gemini API Key</label>
+                <input type="password" id="api-key-input" class="neo-input font-mono text-sm bg-white" placeholder="AIzaSy...">
+                <p class="text-xs font-mono mt-3 border-l-2 border-black pl-2 text-gray-600">
+                    Sleutel wordt lokaal opgeslagen in de tandwielen van uw browser. Geen externe transmissie.
+                </p>
+            </div>
+            
+            <div class="flex gap-4 justify-end pt-4 border-t-2 border-black border-dashed">
+                <button onclick="toggleSettings()" class="neo-btn bg-white py-2 px-4 text-xs">Annuleren</button>
+                <button onclick="saveSettings()" class="neo-btn py-2 px-6 text-xs">Opslaan</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- CONFIG ---
+        lucide.createIcons();
+        let currentMode = 'poem';
+        let apiKey = localStorage.getItem('creative_api_key') || '';
+
+        // --- CONTENT MODES CONFIG ---
+        const modes = {
+            poem: {
+                title: "DE MUZE",
+                subtitle: "Poëtische fabricage module.",
+                inputs: `
+                    <div>
+                        <label class="block text-xs font-bold font-mono uppercase mb-2">Onderwerp</label>
+                        <input type="text" id="input-1" class="neo-input" placeholder="bv. Stoomtreinen in de mist...">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold font-mono uppercase mb-2">Stijl</label>
+                        <div class="relative">
+                            <select id="input-2" class="neo-input appearance-none cursor-pointer">
+                                <option value="melancholisch">Melancholisch & Diep</option>
+                                <option value="filosofisch">Filosofisch</option>
+                                <option value="vrolijk en rijmend">Vrolijk & Rijmend</option>
+                                <option value="haiku">Haiku</option>
+                                <option value="spoken word">Spoken Word</option>
+                            </select>
+                            <i data-lucide="chevron-down" class="absolute right-3 top-3 w-4 h-4 pointer-events-none"></i>
+                        </div>
+                    </div>
+                `,
+                systemPrompt: "Jij bent een wereldberoemde dichter uit het Victoriaanse tijdperk maar met een moderne twist. Schrijf een gedicht. Gebruik Markdown.",
+                userPrompt: (t, s) => `Schrijf een gedicht over: '${t}' in de stijl: '${s}'.`
+            },
+            fact: {
+                title: "FEITEN FABRIEK",
+                subtitle: "Kennis extractie protocol.",
+                inputs: `
+                    <div>
+                        <label class="block text-xs font-bold font-mono uppercase mb-2">Onderwerp</label>
+                        <input type="text" id="input-1" class="neo-input" placeholder="bv. Uurwerken, Chemie...">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold font-mono uppercase mb-2">Type</label>
+                        <div class="relative">
+                            <select id="input-2" class="neo-input appearance-none cursor-pointer">
+                                <option value="bizar">Bizar & Ongelooflijk</option>
+                                <option value="wetenschappelijk">Wetenschappelijk</option>
+                                <option value="grappig">Humoristisch</option>
+                                <option value="historisch">Historisch</option>
+                            </select>
+                            <i data-lucide="chevron-down" class="absolute right-3 top-3 w-4 h-4 pointer-events-none"></i>
+                        </div>
+                    </div>
+                `,
+                systemPrompt: "Jij bent een excentrieke professor. Geef EÉN uitgebreid feitje. Begin met 'Wist u dat...?' in dikgedrukte tekst.",
+                userPrompt: (t, s) => `Geef me een '${s}' feitje over: '${t || 'willekeurig'}'.`
+            },
+            recipe: {
+                title: "CHEF STEAM",
+                subtitle: "Culinair algoritme.",
+                inputs: `
+                    <div>
+                        <label class="block text-xs font-bold font-mono uppercase mb-2">Ingrediënten</label>
+                        <input type="text" id="input-1" class="neo-input" placeholder="bv. Aardappel, Worst, Kool...">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold font-mono uppercase mb-2">Keuken</label>
+                        <div class="relative">
+                            <select id="input-2" class="neo-input appearance-none cursor-pointer">
+                                <option value="creatief">Verrassing (Creatief)</option>
+                                <option value="snel">Industrieel Snel (15 min)</option>
+                                <option value="stew">Stoofpot (Slow)</option>
+                                <option value="fancy">Haute Cuisine</option>
+                            </select>
+                            <i data-lucide="chevron-down" class="absolute right-3 top-3 w-4 h-4 pointer-events-none"></i>
+                        </div>
+                    </div>
+                `,
+                systemPrompt: "Jij bent een chef in een steampunk luchtschip. Bedenk een recept. Gebruik termen die passen bij de sfeer maar houd het recept duidelijk.",
+                userPrompt: (t, s) => `Bedenk een '${s}' recept met deze ingrediënten: '${t}'.`
+            },
+            idea: {
+                title: "DE UITVINDER",
+                subtitle: "Brainstorm generator voor problemen.",
+                inputs: `
+                    <div>
+                        <label class="block text-xs font-bold font-mono uppercase mb-2">Probleem / Behoefte</label>
+                        <input type="text" id="input-1" class="neo-input" placeholder="bv. Ik ben altijd mijn sleutels kwijt...">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold font-mono uppercase mb-2">Complexiteit</label>
+                        <div class="relative">
+                            <select id="input-2" class="neo-input appearance-none cursor-pointer">
+                                <option value="praktisch">Praktisch & Uitvoerbaar</option>
+                                <option value="complex">Rube Goldberg (Over-engineered)</option>
+                                <option value="magisch">Aangedreven door Aether (Magisch)</option>
+                            </select>
+                            <i data-lucide="chevron-down" class="absolute right-3 top-3 w-4 h-4 pointer-events-none"></i>
+                        </div>
+                    </div>
+                `,
+                systemPrompt: "Jij bent een gestoorde Steampunk uitvinder. Bedenk een apparaat om het probleem van de gebruiker op te lossen. Beschrijf het apparaat in detail (gebruik termen als tandwielen, stoomdruk, koperen leidingen). Geef het een pakkende Victoriaanse naam.",
+                userPrompt: (t, s) => `Bedenk een '${s}' uitvinding voor dit probleem: '${t}'.`
+            },
+            adventure: {
+                title: "HET AVONTUUR",
+                subtitle: "Interactieve scenario generator.",
+                inputs: `
+                    <div>
+                        <label class="block text-xs font-bold font-mono uppercase mb-2">Setting</label>
+                        <input type="text" id="input-1" class="neo-input" placeholder="bv. Een verlaten luchtschip...">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold font-mono uppercase mb-2">Hoofdpersoon</label>
+                        <input type="text" id="input-2" class="neo-input" placeholder="bv. Kapitein Blackwood...">
+                    </div>
+                `,
+                systemPrompt: "Jij bent een Dungeon Master in een grimmige Steampunk wereld. Schrijf de introductie van een kort verhaal/scenario gebaseerd op de input. Eindig met 3 keuzes voor de speler om het verhaal voort te zetten (A, B, C).",
+                userPrompt: (t, s) => `Schrijf een avontuur introductie. Setting: '${t}', Hoofdpersoon: '${s}'.`
+            }
+        };
+
+        // --- INIT ---
+        function init() {
+            setMode('poem');
+            checkApiStatus();
+            if(apiKey) document.getElementById('api-key-input').value = apiKey;
+        }
+
+        // --- UI FUNCTIONS ---
+        function setMode(mode) {
+            currentMode = mode;
+            document.body.setAttribute('data-mode', mode);
+            
+            // Active State Nav
+            document.querySelectorAll('nav button').forEach(b => b.classList.remove('nav-active'));
+            document.getElementById(`nav-${mode}`).classList.add('nav-active');
+
+            // Update Content
+            document.getElementById('app-title').innerText = modes[mode].title;
+            document.getElementById('app-subtitle').innerText = modes[mode].subtitle;
+            document.getElementById('input-container').innerHTML = modes[mode].inputs;
+            lucide.createIcons();
+            
+            // Clear Output
+            const outArea = document.getElementById('output-area');
+            const resCont = document.getElementById('result-content');
+            resCont.innerHTML = '<p class="text-gray-400 italic text-center mt-20">// Systeem gereed voor input...</p>';
+            outArea.style.opacity = '1';
+        }
+
+        function toggleSettings() {
+            const modal = document.getElementById('settings-modal');
+            if (modal.classList.contains('modal-hidden')) {
+                modal.classList.remove('modal-hidden');
+                modal.classList.add('modal-flex');
+            } else {
+                modal.classList.add('modal-hidden');
+                modal.classList.remove('modal-flex');
+            }
+        }
+
+        function saveSettings() {
+            const input = document.getElementById('api-key-input').value;
+            localStorage.setItem('creative_api_key', input);
+            apiKey = input;
+            checkApiStatus();
+            toggleSettings();
+        }
+
+        function checkApiStatus() {
+            const indicator = document.getElementById('api-indicator');
+            if (apiKey) {
+                indicator.innerText = "ONLINE";
+                indicator.className = "border-2 border-black px-2 py-1 font-mono text-xs uppercase font-bold bg-[#86efac] text-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]";
+            } else {
+                indicator.innerText = "OFFLINE";
+                indicator.className = "border-2 border-black px-2 py-1 font-mono text-xs uppercase font-bold bg-[#fca5a5] text-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]";
+            }
+        }
+
+        // --- API LOGIC ---
+        async function generateContent() {
+            const loader = document.getElementById('loader');
+            const resultContent = document.getElementById('result-content');
+            
+            if (!apiKey) {
+                toggleSettings();
+                return;
+            }
+
+            // Get Inputs
+            const val1 = document.getElementById('input-1').value;
+            const val2 = document.getElementById('input-2').value;
+
+            // UI Loading State
+            resultContent.innerHTML = '';
+            loader.classList.remove('hidden');
+
+            const modeConfig = modes[currentMode];
+            const finalPrompt = modeConfig.userPrompt(val1, val2);
+
+            try {
+                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        contents: [{ parts: [{ text: finalPrompt }] }],
+                        systemInstruction: { parts: [{ text: modeConfig.systemPrompt }] }
+                    })
+                });
+
+                const data = await response.json();
+                
+                if (data.error) throw new Error(data.error.message);
+
+                const aiText = data.candidates[0].content.parts[0].text;
+                
+                // Parse markdown and display
+                resultContent.innerHTML = marked.parse(aiText);
+                
+            } catch (error) {
+                resultContent.innerHTML = `<div class="bg-red-100 border-2 border-red-500 p-4 font-mono text-red-700">
+                    <strong>CRITIEKE FOUT:</strong> ${error.message} <br>
+                    <span class="text-xs">Controleer de moersleutel instellingen.</span>
+                </div>`;
+            } finally {
+                loader.classList.add('hidden');
+            }
+        }
+
+        // Start
+        init();
+    </script>
+</body>
+</html>
