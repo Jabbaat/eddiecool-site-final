@@ -157,35 +157,41 @@
         }
     </style>
 </head>
-<body data-mode="poem" class="min-h-screen flex flex-col md:flex-row overflow-hidden selection:bg-black selection:text-white">
+<body data-mode="poem" class="min-h-screen flex flex-col md:flex-row md:overflow-hidden selection:bg-black selection:text-white">
 
     <!-- SIDEBAR NAV -->
-    <nav class="w-full md:w-24 bg-[#1a1510] text-[#f0e6d2] z-20 flex md:flex-col justify-between items-center p-4 md:py-8 border-b-4 md:border-b-0 md:border-r-4 border-black">
-        <div class="mb-0 md:mb-8">
+    <nav class="w-full md:w-24 bg-[#1a1510] text-[#f0e6d2] z-20 flex md:flex-col justify-between items-center p-4 md:py-8 border-b-4 md:border-b-0 md:border-r-4 border-black shrink-0">
+        <div class="mb-0 md:mb-8 hidden md:block">
             <div class="w-12 h-12 border-2 border-[#f0e6d2] flex items-center justify-center bg-[#b87333] shadow-[4px_4px_0px_0px_#f0e6d2]">
                 <i data-lucide="cog" class="text-black w-8 h-8 cog-loader"></i>
             </div>
         </div>
 
-        <div class="flex md:flex-col gap-6">
-            <button onclick="setMode('poem')" id="nav-poem" class="neo-btn bg-[#f0e6d2] p-3 rounded-none hover:bg-white transition-all group relative" title="Poëzie">
+        <!-- Scrollable container for icons on mobile -->
+        <div class="flex md:flex-col gap-6 overflow-x-auto md:overflow-visible w-full md:w-auto items-center md:items-stretch px-2 md:px-0">
+            <!-- Mobile Logo (Small) -->
+            <div class="md:hidden mr-4 shrink-0">
+                 <i data-lucide="cog" class="text-[#b87333] w-8 h-8 cog-loader"></i>
+            </div>
+
+            <button onclick="setMode('poem')" id="nav-poem" class="neo-btn bg-[#f0e6d2] p-3 rounded-none hover:bg-white transition-all group relative shrink-0" title="Poëzie">
                 <i data-lucide="feather" class="w-6 h-6"></i>
             </button>
-            <button onclick="setMode('fact')" id="nav-fact" class="neo-btn bg-[#f0e6d2] p-3 rounded-none hover:bg-white transition-all group relative" title="Feitjes">
+            <button onclick="setMode('fact')" id="nav-fact" class="neo-btn bg-[#f0e6d2] p-3 rounded-none hover:bg-white transition-all group relative shrink-0" title="Feitjes">
                 <i data-lucide="zap" class="w-6 h-6"></i>
             </button>
-            <button onclick="setMode('recipe')" id="nav-recipe" class="neo-btn bg-[#f0e6d2] p-3 rounded-none hover:bg-white transition-all group relative" title="Recepten">
+            <button onclick="setMode('recipe')" id="nav-recipe" class="neo-btn bg-[#f0e6d2] p-3 rounded-none hover:bg-white transition-all group relative shrink-0" title="Recepten">
                 <i data-lucide="utensils" class="w-6 h-6"></i>
             </button>
-            <button onclick="setMode('idea')" id="nav-idea" class="neo-btn bg-[#f0e6d2] p-3 rounded-none hover:bg-white transition-all group relative" title="Uitvindingen">
+            <button onclick="setMode('idea')" id="nav-idea" class="neo-btn bg-[#f0e6d2] p-3 rounded-none hover:bg-white transition-all group relative shrink-0" title="Uitvindingen">
                 <i data-lucide="lightbulb" class="w-6 h-6"></i>
             </button>
-            <button onclick="setMode('adventure')" id="nav-adventure" class="neo-btn bg-[#f0e6d2] p-3 rounded-none hover:bg-white transition-all group relative" title="Avontuur">
+            <button onclick="setMode('adventure')" id="nav-adventure" class="neo-btn bg-[#f0e6d2] p-3 rounded-none hover:bg-white transition-all group relative shrink-0" title="Avontuur">
                 <i data-lucide="map" class="w-6 h-6"></i>
             </button>
         </div>
 
-        <div class="mt-0 md:mt-auto">
+        <div class="mt-0 md:mt-auto ml-4 md:ml-0 shrink-0">
             <button onclick="toggleSettings()" class="neo-btn bg-[#555] text-white p-3 rounded-none hover:bg-[#666]">
                 <i data-lucide="wrench" class="w-6 h-6"></i>
             </button>
@@ -193,21 +199,21 @@
     </nav>
 
     <!-- MAIN CONTENT -->
-    <main class="flex-1 flex flex-col relative overflow-y-auto p-4 md:p-8 gap-8">
+    <main class="flex-1 flex flex-col relative md:overflow-y-auto p-4 md:p-8 gap-8">
         
         <!-- Header Section -->
         <header class="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 border-b-4 border-black pb-6 bg-[#f0e6d2] p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] border-2 border-black">
             <div>
                 <div class="flex items-center gap-2 mb-2">
-                    <span class="bg-black text-white px-2 py-1 font-mono text-xs uppercase tracking-widest">System v2.5</span>
+                    <span class="bg-black text-white px-2 py-1 font-mono text-xs uppercase tracking-widest">System v2.6 Mobile</span>
                     <span id="api-indicator" class="border-2 border-black px-2 py-1 font-mono text-xs uppercase font-bold bg-red-400">Offline</span>
                 </div>
-                <h1 id="app-title" class="text-4xl md:text-6xl font-bold mode-title text-black">DE MUZE</h1>
-                <p id="app-subtitle" class="text-gray-700 font-mono mt-2 border-l-4 border-black pl-4">Initialiseren van creatieve matrix...</p>
+                <h1 id="app-title" class="text-3xl md:text-6xl font-bold mode-title text-black leading-tight">DE MUZE</h1>
+                <p id="app-subtitle" class="text-gray-700 font-mono mt-2 border-l-4 border-black pl-4 text-sm md:text-base">Initialiseren van creatieve matrix...</p>
             </div>
         </header>
 
-        <div class="flex flex-col lg:flex-row gap-8 items-start h-full">
+        <div class="flex flex-col lg:flex-row gap-8 items-start h-full pb-8 md:pb-0">
             
             <!-- LEFT COLUMN: CONTROLS -->
             <div class="w-full lg:w-1/3 flex flex-col gap-6">
@@ -237,19 +243,15 @@
                         <ul class="list-none pl-0 space-y-3">
                             <li class="flex gap-3 items-start">
                                 <span class="bg-black text-white w-6 h-6 flex items-center justify-center text-xs font-bold shrink-0">1</span>
-                                <span><strong>Kies Module:</strong> Selecteer links een functie (Veer, Bliksem, Bestek, Lamp, Kaart).</span>
+                                <span><strong>Kies Module:</strong> Selecteer in het menu een functie (Veer, Bliksem, Bestek, Lamp, Kaart).</span>
                             </li>
                             <li class="flex gap-3 items-start">
                                 <span class="bg-black text-white w-6 h-6 flex items-center justify-center text-xs font-bold shrink-0">2</span>
-                                <span><strong>Configuratie:</strong> Vul de parameters in het Control Panel in. Wees specifiek.</span>
+                                <span><strong>Configuratie:</strong> Vul de parameters in.</span>
                             </li>
                             <li class="flex gap-3 items-start">
                                 <span class="bg-black text-white w-6 h-6 flex items-center justify-center text-xs font-bold shrink-0">3</span>
-                                <span><strong>Stoomdruk:</strong> Druk op ACTIVEREN. De Gemini Engine genereert uw output.</span>
-                            </li>
-                            <li class="flex gap-3 items-start">
-                                <span class="bg-black text-white w-6 h-6 flex items-center justify-center text-xs font-bold shrink-0">!</span>
-                                <span class="text-xs text-gray-600">Vereist API-sleutel (Klik op de moersleutel linksonder).</span>
+                                <span><strong>Stoomdruk:</strong> Druk op ACTIVEREN.</span>
                             </li>
                         </ul>
                     </div>
@@ -270,9 +272,9 @@
 
                     <div id="output-area" class="mt-8 flex-1 font-mono text-lg leading-relaxed relative opacity-50 transition-opacity duration-500 overflow-y-auto">
                         <!-- Loader -->
-                        <div id="loader" class="hidden absolute inset-0 flex flex-col items-center justify-center gap-4">
+                        <div id="loader" class="hidden absolute inset-0 flex flex-col items-center justify-center gap-4 bg-white/90 z-10">
                             <i data-lucide="settings" class="w-16 h-16 cog-loader text-black"></i>
-                            <span class="bg-black text-white px-4 py-1 font-mono text-sm animate-pulse">GENERATING STEAM...</span>
+                            <span id="loader-text" class="bg-black text-white px-4 py-2 font-mono text-sm uppercase font-bold animate-pulse text-center">GENERATING STEAM...</span>
                         </div>
                         
                         <!-- Text Content -->
@@ -301,7 +303,7 @@
                 <label class="block text-xs font-mono font-bold uppercase mb-2 bg-black text-white w-fit px-2">Gemini API Key</label>
                 <input type="password" id="api-key-input" class="neo-input font-mono text-sm bg-white" placeholder="AIzaSy...">
                 <p class="text-xs font-mono mt-3 border-l-2 border-black pl-2 text-gray-600">
-                    Sleutel wordt lokaal opgeslagen in de tandwielen van uw browser. Geen externe transmissie.
+                    Sleutel wordt lokaal opgeslagen in de tandwielen van uw browser.
                 </p>
             </div>
             
@@ -323,6 +325,7 @@
             poem: {
                 title: "DE MUZE",
                 subtitle: "Poëtische fabricage module.",
+                loadingMessage: "AI zoekt naar rijmwoorden...",
                 inputs: `
                     <div>
                         <label class="block text-xs font-bold font-mono uppercase mb-2">Onderwerp</label>
@@ -348,6 +351,7 @@
             fact: {
                 title: "FEITEN FABRIEK",
                 subtitle: "Kennis extractie protocol.",
+                loadingMessage: "AI filosofeert over de waarheid...",
                 inputs: `
                     <div>
                         <label class="block text-xs font-bold font-mono uppercase mb-2">Onderwerp</label>
@@ -372,6 +376,7 @@
             recipe: {
                 title: "CHEF STEAM",
                 subtitle: "Culinair algoritme.",
+                loadingMessage: "AI staat te koken...",
                 inputs: `
                     <div>
                         <label class="block text-xs font-bold font-mono uppercase mb-2">Ingrediënten</label>
@@ -396,6 +401,7 @@
             idea: {
                 title: "DE UITVINDER",
                 subtitle: "Brainstorm generator voor problemen.",
+                loadingMessage: "AI is aan het uitvinden...",
                 inputs: `
                     <div>
                         <label class="block text-xs font-bold font-mono uppercase mb-2">Probleem / Behoefte</label>
@@ -419,6 +425,7 @@
             adventure: {
                 title: "HET AVONTUUR",
                 subtitle: "Interactieve scenario generator.",
+                loadingMessage: "AI creëert een nieuwe wereld...",
                 inputs: `
                     <div>
                         <label class="block text-xs font-bold font-mono uppercase mb-2">Setting</label>
@@ -496,6 +503,7 @@
         // --- API LOGIC ---
         async function generateContent() {
             const loader = document.getElementById('loader');
+            const loaderText = document.getElementById('loader-text');
             const resultContent = document.getElementById('result-content');
             
             if (!apiKey) {
@@ -507,11 +515,15 @@
             const val1 = document.getElementById('input-1').value;
             const val2 = document.getElementById('input-2').value;
 
-            // UI Loading State
+            // UI Loading State with Custom Message
             resultContent.innerHTML = '';
+            
+            // Set dynamic loading message
+            const modeConfig = modes[currentMode];
+            loaderText.innerText = modeConfig.loadingMessage || "GENERATING STEAM...";
+            
             loader.classList.remove('hidden');
 
-            const modeConfig = modes[currentMode];
             const finalPrompt = modeConfig.userPrompt(val1, val2);
 
             try {
