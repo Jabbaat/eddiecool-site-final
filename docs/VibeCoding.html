@@ -40,6 +40,7 @@
             /* Input specifieke variabelen voor de dark mode fix */
             --input-bg: #ffffff;
             --input-text: #0F172A;
+            --danger: #ef4444; /* Rood voor gevaar */
         }
 
         .dark-mode {
@@ -429,17 +430,87 @@
             resize: vertical;
         }
 
+        /* --- EDDIECOOL API STANDARD STYLES --- */
+        .api-security-box {
+            background-color: var(--white);
+            border: 2px solid var(--text);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .api-input-wrapper {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            position: relative;
+        }
+
         .api-key-input {
              width: 100%;
             padding: 0.8rem;
             font-size: 1rem;
-            font-family: 'Inter', sans-serif;
+            font-family: monospace;
             border: 2px solid var(--text);
-            margin-bottom: 1rem;
             border-radius: 0;
-            background-color: var(--input-bg); /* FIX voor Dark Mode */
-            color: var(--input-text);       /* FIX voor Dark Mode */
+            background-color: var(--input-bg);
+            color: var(--input-text);
+            letter-spacing: 1px;
         }
+
+        .eye-icon {
+            background: var(--input-bg);
+            border: 2px solid var(--text);
+            cursor: pointer;
+            padding: 0 1rem;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .eye-icon:hover {
+            background-color: var(--yellow);
+        }
+
+        .warning-box {
+            background-color: #fff3cd; /* Lichtgeel voor warning */
+            color: #856404;
+            border-left: 5px solid #ffa000;
+            padding: 1rem;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+        
+        .dark-mode .warning-box {
+            background-color: #332b00;
+            color: #ffeeba;
+        }
+
+        .api-actions {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-small {
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+            font-weight: bold;
+            border: 2px solid var(--text);
+            cursor: pointer;
+            box-shadow: 3px 3px 0px var(--text);
+            transition: all 0.2s;
+        }
+
+        .btn-small:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 5px 5px 0px var(--text);
+        }
+
+        .btn-save { background-color: var(--green); color: white; }
+        .btn-delete { background-color: var(--danger); color: white; }
+        /* ------------------------------------- */
+
 
         .result-box {
             margin-top: 1.5rem;
@@ -660,26 +731,44 @@
             
             <textarea id="ideaInput" class="generator-input" placeholder="Bijv: Ik wil een simpele to-do app waar de taken ontploffen als je ze afvinkt..."></textarea>
             
-            <!-- SECURE API KEY INPUT -->
-            <label for="apiKeyInput" style="font-weight: bold; display: block; margin-bottom: 0.5rem;">Jouw Gemini API Key:</label>
-            
-            <!-- Instructies voor API Key -->
-            <details style="margin-bottom: 1rem; font-size: 0.9rem; color: var(--text); border: 1px solid var(--text); padding: 0.5rem; background: var(--white);">
-                <summary style="cursor: pointer; font-weight: bold; color: var(--accent);">🔑 Hoe kom ik aan een API Key?</summary>
-                <ol style="margin-left: 1.5rem; margin-top: 0.5rem; line-height: 1.6;">
-                    <li>Ga naar <a href="https://aistudio.google.com/app/apikey" target="_blank" style="color: var(--pink); font-weight: bold;">Google AI Studio</a>.</li>
-                    <li>Log in met je Google-account.</li>
-                    <li>Klik op de blauwe knop <strong>"Create API key"</strong>.</li>
-                    <li>Kopieer de lange code en plak hem in het veld hieronder.</li>
-                    <li><em>(Gratis tip: Kies 'Create key in new project').</em></li>
-                </ol>
-            </details>
+            <!-- === EDDIECOOL API STANDARD === -->
+            <div class="api-security-box">
+                <h4 style="margin-bottom: 0.5rem;">⚙️ ENGINE ACCESS (API Key)</h4>
+                
+                <!-- Instructie link -->
+                <details style="margin-bottom: 1rem; cursor: pointer;">
+                    <summary style="font-size: 0.9rem; font-weight: bold; color: var(--accent);">
+                        🔑 Nog geen sleutel? Klik hier voor instructies
+                    </summary>
+                    <div style="background: #f1f5f9; padding: 10px; margin-top: 5px; border: 1px solid var(--text); color: #000;">
+                        <ol style="margin-left: 1.5rem; line-height: 1.5;">
+                            <li>Ga naar <a href="https://aistudio.google.com/app/apikey" target="_blank" style="color: var(--pink); font-weight: bold;">Google AI Studio</a>.</li>
+                            <li>Klik op <strong>"Create API key"</strong>.</li>
+                            <li>Kopieer de key en plak hem hieronder.</li>
+                        </ol>
+                    </div>
+                </details>
 
-            <input type="password" id="apiKeyInput" class="api-key-input" placeholder="Plak hier je API key (wordt alleen lokaal opgeslagen)">
-            <p style="font-size: 0.8rem; margin-bottom: 1rem; color: var(--text);">
-                ⚠️ Je sleutel wordt veilig in je browser opgeslagen en nooit gedeeld. <br>
-                🔒 <strong>Tip:</strong> Gebruik een gratis/tijdelijke API-key. Deel nooit productiesleutels.
-            </p>
+                <!-- Input met oogje -->
+                <div class="api-input-wrapper">
+                    <input type="password" id="apiKeyInput" class="api-key-input" placeholder="plak-je-gemini-key-hier">
+                    <button id="toggleApiVisibility" class="eye-icon" title="Toon/Verberg">👁️</button>
+                </div>
+
+                <!-- Warning Box -->
+                <div class="warning-box">
+                    <p><strong>⚠️ Veiligheidscheck:</strong> Je sleutel wordt alléén in jouw eigen browser opgeslagen (Local Storage). Hij wordt nooit naar onze server verstuurd.</p>
+                    <p style="margin-top: 5px;"><strong>🛑 Openbare Computer?</strong> (School/Bieb): Klik na gebruik ALTIJD op de rode knop <strong>'Wissen'</strong>.</p>
+                    <p style="margin-top: 5px;"><strong>💡 Tip:</strong> Maak een aparte, gratis API key aan voor dit soort tests.</p>
+                </div>
+
+                <!-- Actie Knoppen -->
+                <div class="api-actions">
+                    <button id="saveKeyBtn" class="btn-small btn-save">💾 Sleutel Opslaan</button>
+                    <button id="deleteKeyBtn" class="btn-small btn-delete">🗑️ Wissen (Publiek)</button>
+                </div>
+            </div>
+            <!-- ============================== -->
 
             <button id="generateBtn" class="btn-main" style="width: 100%;">✨ Genereer Vibe Prompt</button>
             
@@ -736,23 +825,71 @@
             }
         });
 
-        // --- GEMINI API INTEGRATION ---
+        // --- GEMINI API & EDDIECOOL STANDARD LOGIC ---
         const generateBtn = document.getElementById('generateBtn');
         const ideaInput = document.getElementById('ideaInput');
         const apiKeyInput = document.getElementById('apiKeyInput');
+        
+        // Nieuwe Knoppen
+        const toggleApiVisibility = document.getElementById('toggleApiVisibility');
+        const saveKeyBtn = document.getElementById('saveKeyBtn');
+        const deleteKeyBtn = document.getElementById('deleteKeyBtn');
+
         const loadingIndicator = document.getElementById('loadingIndicator');
         const resultBox = document.getElementById('resultBox');
         const resultContent = document.getElementById('resultContent');
         const copyBtn = document.getElementById('copyBtn');
 
-        // Check for saved API key on load
-        if (localStorage.getItem('gemini_api_key')) {
-            apiKeyInput.value = localStorage.getItem('gemini_api_key');
+        // 1. Auto-Load Key on Start
+        function loadApiKey() {
+            const savedKey = localStorage.getItem('gemini_api_key');
+            if (savedKey) {
+                apiKeyInput.value = savedKey;
+                // Optioneel: visuele feedback dat hij geladen is?
+            }
         }
+        loadApiKey();
 
+        // 2. Toggle Visibility (Oogje)
+        toggleApiVisibility.addEventListener('click', () => {
+            if (apiKeyInput.type === "password") {
+                apiKeyInput.type = "text";
+                toggleApiVisibility.textContent = "🙈"; // Aapje die ogen bedekt
+            } else {
+                apiKeyInput.type = "password";
+                toggleApiVisibility.textContent = "👁️";
+            }
+        });
+
+        // 3. Save Key Logic
+        saveKeyBtn.addEventListener('click', () => {
+            const key = apiKeyInput.value.trim();
+            if (key) {
+                localStorage.setItem('gemini_api_key', key);
+                alert("✅ Sleutel veilig lokaal opgeslagen!");
+            } else {
+                alert("⚠️ Vul eerst een sleutel in.");
+            }
+        });
+
+        // 4. Delete Key Logic (Danger)
+        deleteKeyBtn.addEventListener('click', () => {
+            if(confirm("Weet je zeker dat je de sleutel wilt verwijderen van dit apparaat?")) {
+                localStorage.removeItem('gemini_api_key');
+                apiKeyInput.value = "";
+                alert("🗑️ Sleutel verwijderd.");
+            }
+        });
+
+        // 5. Generate Logic (Existing)
         generateBtn.addEventListener('click', async () => {
             const userIdea = ideaInput.value.trim();
-            const apiKey = apiKeyInput.value.trim();
+            let apiKey = apiKeyInput.value.trim();
+
+            // Fallback: check localStorage if input is empty but logic knows it exists
+            if (!apiKey) {
+                apiKey = localStorage.getItem('gemini_api_key');
+            }
             
             if (!userIdea) {
                 alert("Typ eerst een idee in!");
@@ -761,11 +898,9 @@
 
             if (!apiKey) {
                 alert("Vul je Gemini API Key in om te starten!");
+                apiKeyInput.focus();
                 return;
             }
-
-            // Save Key Locally
-            localStorage.setItem('gemini_api_key', apiKey);
 
             // UI Updates
             generateBtn.disabled = true;
