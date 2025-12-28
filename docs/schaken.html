@@ -3,29 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Project Nexus Chess | Hyper-Strategic Analyzer</title>
+    <title>Project Nexus Chess | Hyper-Strategic Analyzer v2.1</title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Chess.js voor spellogica -->
+    <!-- Chess.js voor regels en move validatie -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
     
     <!-- Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
 
-    <!-- Markdown Parser for AI responses -->
+    <!-- Markdown Parser -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
     <style>
-        /* --- Strategic Cyber-Minimalism Custom Styles --- */
+        /* --- Strategic Cyber-Minimalism Styles --- */
         @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@400;600&display=swap');
 
         :root {
-            --obsidian: #0A0A0F;
+            --obsidian: #050508;
             --cyan: #00FFFF;
             --cyan-dim: rgba(0, 255, 255, 0.1);
-            --glass: rgba(255, 255, 255, 0.05);
+            --glass: rgba(20, 20, 30, 0.6);
+            --neon-green: #39ff14;
+            --alert-red: #ff3333;
         }
 
         body {
@@ -33,60 +35,66 @@
             color: #F8F8FF;
             font-family: 'Inter', sans-serif;
             overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 15% 50%, rgba(0, 255, 255, 0.03) 0%, transparent 25%),
+                radial-gradient(circle at 85% 30%, rgba(100, 0, 255, 0.03) 0%, transparent 25%);
         }
 
         .font-mono { font-family: 'JetBrains Mono', monospace; }
 
         /* Board Colors */
-        .square-dark { background-color: #1a237e; color: white; } /* Deep Blue */
-        .square-light { background-color: #374151; color: #0A0A0F; } /* Matte Gray */
+        .square-dark { background-color: #2e3b55; color: white; } 
+        .square-light { background-color: #8f9bb3; color: #0A0A0F; }
         
-        /* Effects */
-        .nexus-glow { box-shadow: 0 0 15px rgba(0, 255, 255, 0.2); }
-        .nexus-border { border: 1px solid rgba(0, 255, 255, 0.3); }
-        .glass-panel {
-            background: var(--glass);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        /* Kinetic Animations */
+        /* Interactive Effects */
         .piece {
             cursor: pointer;
             transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.5));
         }
-        .piece:hover { transform: scale(1.1); filter: drop-shadow(0 0 5px var(--cyan)); }
+        .piece:hover { transform: scale(1.1); filter: drop-shadow(0 0 8px var(--cyan)); }
         
         .selected-square {
-            box-shadow: inset 0 0 15px var(--cyan);
-            border: 1px solid var(--cyan);
+            box-shadow: inset 0 0 0 4px var(--cyan);
         }
 
         .highlight-move {
-            background: rgba(0, 255, 255, 0.2) !important;
+            background: rgba(0, 255, 255, 0.4) !important;
         }
 
-        /* Scanline effect overlay */
+        .highlight-hint {
+            background: rgba(57, 255, 20, 0.3) !important;
+            box-shadow: inset 0 0 10px var(--neon-green);
+        }
+
+        /* Glassmorphism */
+        .glass-panel {
+            background: var(--glass);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        /* Scanline effect */
         .scanlines {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0) 50%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.2));
+            background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0) 50%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.1));
             background-size: 100% 4px;
             pointer-events: none;
             z-index: 50;
-            opacity: 0.15;
+            opacity: 0.3;
         }
         
-        /* Modal */
+        /* Modal & Forms */
         .modal-hidden { display: none; }
         .modal-flex { display: flex; }
 
-        /* Form Elements */
         .nexus-input {
             width: 100%;
-            background: rgba(0,0,0,0.5);
-            border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(0,0,0,0.6);
+            border: 1px solid rgba(255,255,255,0.15);
             color: white;
-            padding: 0.5rem;
+            padding: 0.75rem;
             font-family: 'JetBrains Mono', monospace;
             border-radius: 0.25rem;
             transition: all 0.2s;
@@ -94,10 +102,15 @@
         .nexus-input:focus {
             border-color: var(--cyan);
             outline: none;
-            box-shadow: 0 0 10px rgba(0,255,255,0.2);
+            box-shadow: 0 0 15px rgba(0,255,255,0.15);
         }
 
-        /* Markdown Styles in Chat */
+        /* Warning Box */
+        .warning-box {
+            border-left: 3px solid var(--alert-red);
+            background: rgba(255, 51, 51, 0.1);
+        }
+
         .prose p { margin-bottom: 0.5em; }
         .prose strong { color: var(--cyan); }
     </style>
@@ -108,35 +121,42 @@
 
     <!-- LEFT PANEL: Strategy Hub -->
     <aside class="w-full md:w-80 glass-panel p-6 flex flex-col gap-6 z-10 border-r border-white/5 relative">
-        <div class="flex items-center gap-3 animate-pulse">
-            <div class="w-12 h-12 rounded-full border-2 border-cyan-400 p-1 flex items-center justify-center bg-black">
-                <i data-lucide="brain-circuit" class="text-cyan-400"></i>
+        <div class="flex items-center gap-3">
+            <div class="w-12 h-12 rounded-full border-2 border-cyan-400 p-1 flex items-center justify-center bg-black relative overflow-hidden group">
+                <div class="absolute inset-0 bg-cyan-400/20 blur-md group-hover:bg-cyan-400/40 transition-all"></div>
+                <i data-lucide="brain-circuit" class="text-cyan-400 relative z-10"></i>
             </div>
             <div>
-                <h2 class="font-bold text-lg tracking-wider">PROJECT NEXUS</h2>
+                <h2 class="font-bold text-lg tracking-wider text-white">PROJECT NEXUS</h2>
                 <div class="text-xs text-cyan-400 font-mono flex items-center gap-1">
-                    <i data-lucide="shield" size="10"></i> v2.0 GEMINI
+                    <i data-lucide="cpu" size="10"></i> ENGINE: STOCK-LITE JS
                 </div>
             </div>
         </div>
 
         <div>
             <h3 class="text-xs uppercase tracking-widest text-gray-400 mb-2 font-mono">Opponent Elo</h3>
-            <div id="display-elo" class="text-4xl font-mono font-bold text-white drop-shadow-[0_0_10px_rgba(0,255,255,0.5)]">
-                1200
+            <div class="flex items-end gap-2">
+                <div id="display-elo" class="text-4xl font-mono font-bold text-white drop-shadow-[0_0_10px_rgba(0,255,255,0.5)]">
+                    1200
+                </div>
+                <div id="elo-label" class="text-xs text-gray-400 font-mono mb-2 uppercase">Club Player</div>
             </div>
-            <!-- Simple SVG Graph -->
-            <div class="relative h-24 w-full mt-2 bg-black/40 rounded border border-white/5 overflow-hidden">
-                <svg width="100%" height="100%" viewBox="0 0 100 50" preserveAspectRatio="none">
-                    <path d="M0,50 L10,35 L30,40 L50,20 L70,25 L100,5" fill="none" stroke="#00FFFF" stroke-width="2" />
-                    <circle cx="100" cy="5" r="3" fill="white" class="animate-ping" />
-                </svg>
+            
+            <!-- Live Calc Visualizer -->
+            <div class="mt-4 p-3 bg-black/40 rounded border border-white/5 font-mono text-[10px] text-gray-400 h-24 overflow-hidden relative">
+                <div id="engine-status" class="absolute bottom-2 left-3 text-cyan-500 animate-pulse">IDLE</div>
+                <div class="opacity-50">
+                    > Depth: <span id="debug-depth">2</span><br>
+                    > Eval: <span id="debug-eval">0.0</span><br>
+                    > Nodes: <span id="debug-nodes">0</span>
+                </div>
             </div>
         </div>
 
         <div class="mt-auto space-y-3">
             <button onclick="resetGame()" class="w-full py-3 bg-cyan-500/10 border border-cyan-500/50 text-cyan-400 font-mono text-sm hover:bg-cyan-500 hover:text-black transition-all duration-300 uppercase tracking-widest flex items-center justify-center gap-2 group">
-                <i data-lucide="refresh-cw" class="w-4 h-4"></i> RESET BOARD
+                <i data-lucide="refresh-cw" class="w-4 h-4 group-hover:rotate-180 transition-transform"></i> RESET BOARD
             </button>
             <button onclick="toggleSettings()" class="w-full py-3 bg-gray-800/50 border border-gray-600 text-gray-300 font-mono text-sm hover:bg-white hover:text-black transition-all uppercase tracking-widest flex items-center justify-center gap-2">
                 <i data-lucide="settings" class="w-4 h-4"></i> NEURAL SETTINGS
@@ -144,81 +164,106 @@
         </div>
     </aside>
 
-    <!-- CENTER PANEL: Nexus Board -->
-    <main class="flex-1 flex flex-col items-center justify-center p-4 relative bg-gradient-to-b from-[#0A0A0F] to-[#12121a]">
+    <!-- CENTER PANEL: Board -->
+    <main class="flex-1 flex flex-col items-center justify-center p-4 relative bg-black/20">
         <!-- Ambient Glow -->
-        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-cyan-500/5 blur-[100px] rounded-full pointer-events-none"></div>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-cyan-500/5 blur-[120px] rounded-full pointer-events-none"></div>
 
-        <div class="mb-6 flex items-center gap-4 px-6 py-2 rounded-full bg-black/40 border border-white/10 backdrop-blur-md">
+        <div class="mb-6 flex items-center gap-4 px-6 py-2 rounded-full bg-black/60 border border-white/10 backdrop-blur-md z-10">
             <div id="turn-indicator" class="w-3 h-3 rounded-full bg-white shadow-[0_0_10px_white] transition-colors"></div>
             <span id="game-status" class="font-mono text-sm tracking-widest text-cyan-400">WHITE TO MOVE</span>
         </div>
 
-        <div class="relative p-2 bg-[#1a1a20] rounded-lg shadow-2xl shadow-black nexus-border">
-            <div id="chessboard" class="grid grid-cols-8 grid-rows-8 w-[320px] h-[320px] md:w-[560px] md:h-[560px]">
+        <div class="relative p-3 bg-[#1a1a20] rounded-lg shadow-2xl shadow-black border border-white/10 z-10">
+            <div id="chessboard" class="grid grid-cols-8 grid-rows-8 w-[320px] h-[320px] md:w-[600px] md:h-[600px]">
                 <!-- Board generated by JS -->
             </div>
         </div>
     </main>
 
-    <!-- RIGHT PANEL: Adaptive Coach -->
-    <aside class="w-full md:w-96 glass-panel border-l border-white/5 flex flex-col">
+    <!-- RIGHT PANEL: Coach -->
+    <aside class="w-full md:w-96 glass-panel border-l border-white/5 flex flex-col z-10">
         <div class="p-6 border-b border-white/5">
             <div class="flex items-center justify-between mb-4">
                 <h3 class="font-mono text-cyan-400 tracking-widest flex items-center gap-2">
                     <i data-lucide="sparkles"></i> GEMINI COACH
                 </h3>
-                <span id="api-status" class="px-2 py-1 bg-gray-500/20 text-gray-400 text-xs rounded font-mono border border-gray-500/30">DISCONNECTED</span>
+                <span id="api-status" class="px-2 py-1 bg-gray-500/20 text-gray-400 text-xs rounded font-mono border border-gray-500/30">OFFLINE</span>
             </div>
             
-            <div class="bg-black/40 p-4 rounded border border-white/10 h-48 overflow-y-auto font-mono text-xs text-gray-300 prose prose-invert" id="ai-feedback">
-                <p>> SYSTEM WAITING...</p>
-                <p>> ENTER API KEY TO ENABLE NEURAL LINK.</p>
+            <div class="bg-black/40 p-4 rounded border border-white/10 h-48 overflow-y-auto font-mono text-xs text-gray-300 prose prose-invert custom-scrollbar" id="ai-feedback">
+                <p>> SYSTEM STANDBY.</p>
+                <p>> Awaiting move data for analysis.</p>
             </div>
         </div>
 
-        <div class="flex-1 overflow-y-auto p-4 space-y-2" id="move-history">
-            <div class="text-xs text-gray-500 font-mono mb-2">MOVE SEQUENCE</div>
+        <div class="flex-1 overflow-y-auto p-4 space-y-1" id="move-history">
+            <div class="text-[10px] text-gray-500 font-mono mb-2 uppercase tracking-wider">Move Sequence</div>
             <!-- Moves injected here -->
         </div>
 
         <div class="p-4 border-t border-white/5 bg-black/20 space-y-2">
-            <button onclick="analyzeWithGemini('strategic')" class="w-full py-2 bg-gradient-to-r from-cyan-900 to-blue-900 text-cyan-100 text-xs font-mono rounded transition-all hover:brightness-125 flex items-center justify-center gap-2 border border-cyan-500/30">
-                <i data-lucide="zap"></i> ✨ STRATEGIC ANALYSIS
+            <button onclick="analyzeWithGemini('strategic')" class="w-full py-2 bg-gradient-to-r from-cyan-900/80 to-blue-900/80 text-cyan-100 text-xs font-mono rounded hover:brightness-125 flex items-center justify-center gap-2 border border-cyan-500/30 transition-all">
+                <i data-lucide="zap" size="14"></i> STRATEGIC ANALYSIS
             </button>
-            <button onclick="analyzeWithGemini('roast')" class="w-full py-2 bg-gradient-to-r from-red-900/50 to-orange-900/50 text-orange-200 text-xs font-mono rounded transition-all hover:brightness-125 flex items-center justify-center gap-2 border border-orange-500/30">
-                <i data-lucide="skull"></i> ✨ ROAST MY MOVE
+            <button onclick="analyzeWithGemini('roast')" class="w-full py-2 bg-gradient-to-r from-red-900/50 to-orange-900/50 text-orange-200 text-xs font-mono rounded hover:brightness-125 flex items-center justify-center gap-2 border border-orange-500/30 transition-all">
+                <i data-lucide="flame" size="14"></i> ROAST MY MOVE
             </button>
         </div>
     </aside>
 
-    <!-- API SETTINGS MODAL -->
-    <div id="settings-modal" class="fixed inset-0 z-50 modal-hidden items-center justify-center bg-black/80 backdrop-blur-sm">
-        <div class="glass-panel p-8 rounded-lg max-w-md w-full border border-cyan-500/30 shadow-[0_0_30px_rgba(0,255,255,0.1)]">
-            <h2 class="text-xl font-bold mb-6 font-mono text-cyan-400 border-b border-white/10 pb-2">NEURAL LINK SETTINGS</h2>
+    <!-- SETTINGS MODAL -->
+    <div id="settings-modal" class="fixed inset-0 z-[100] modal-hidden items-center justify-center bg-black/90 backdrop-blur-sm p-4">
+        <div class="glass-panel p-8 rounded-lg max-w-lg w-full border border-cyan-500/30 shadow-[0_0_50px_rgba(0,255,255,0.15)] relative overflow-hidden">
+            <!-- Decorative line -->
+            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-cyan-500 to-transparent"></div>
+
+            <h2 class="text-xl font-bold mb-6 font-mono text-cyan-400 pb-2 flex items-center gap-2">
+                <i data-lucide="sliders"></i> SYSTEM CONFIGURATION
+            </h2>
             
             <!-- ELO SELECTION -->
-            <div class="mb-6">
-                <label class="block text-xs font-mono text-cyan-200 mb-2">ENGINE DIFFICULTY (ELO)</label>
-                <select id="elo-select" class="nexus-input cursor-pointer">
-                    <option value="800">800 - RECRUIT (Random/Easy)</option>
-                    <option value="1200">1200 - CLUB (Balanced)</option>
-                    <option value="1600">1600 - EXPERT (Aggressive)</option>
-                    <option value="2400">2400 - GRANDMASTER (Hyper-Calc)</option>
-                </select>
-                <p class="text-[10px] text-gray-500 mt-1">Adjusts the AI's tactical aggression and error rate.</p>
+            <div class="mb-8">
+                <label class="block text-xs font-mono text-cyan-200 mb-2 uppercase tracking-wider">Skill Level (Elo)</label>
+                <div class="relative">
+                    <select id="elo-select" class="nexus-input cursor-pointer appearance-none">
+                        <option value="800">800-1000: Beginner (Chaotic)</option>
+                        <option value="1000">1000-1200: Novice (Basic Tactics)</option>
+                        <option value="1200">1200-1400: Club (Solid)</option>
+                        <option value="1400">1400-1600: Strong Club (Tactical)</option>
+                        <option value="1800">1800-2000: Expert (Strategic)</option>
+                        <option value="2400">2400+: Grandmaster (Ruthless)</option>
+                    </select>
+                    <i data-lucide="chevron-down" class="absolute right-3 top-3 text-gray-400 pointer-events-none" size="16"></i>
+                </div>
             </div>
 
-            <!-- API KEY -->
-            <div class="mb-6">
-                <label class="block text-xs font-mono text-cyan-200 mb-2">GEMINI API KEY</label>
-                <input type="password" id="api-key-input" class="nexus-input" placeholder="Enter key starting with AIza...">
-                <p class="text-[10px] text-gray-500 mt-1">Required for text-based analysis. Key is stored locally.</p>
+            <!-- API KEY & SECURITY -->
+            <div class="mb-8">
+                <label class="block text-xs font-mono text-cyan-200 mb-2 uppercase tracking-wider">Gemini API Key</label>
+                <input type="password" id="api-key-input" class="nexus-input mb-3" placeholder="AIzaSy...">
+                
+                <!-- SECURITY WARNING -->
+                <div class="warning-box p-3 rounded flex gap-3 items-start">
+                    <i data-lucide="alert-triangle" class="text-red-500 shrink-0 mt-0.5" size="16"></i>
+                    <div>
+                        <h4 class="text-xs font-bold text-red-400 font-mono mb-1">VEILIGHEIDSWAARSCHUWING</h4>
+                        <p class="text-[10px] text-gray-300 leading-relaxed">
+                            Voer je API-sleutel <strong>nooit</strong> in op openbare computers of gedeelde apparaten (bibliotheek, school, internetcafé). 
+                            De sleutel wordt lokaal opgeslagen in deze browser.
+                        </p>
+                        <p class="text-[10px] text-gray-300 leading-relaxed mt-1">
+                            🔒 Tip: Gebruik een gratis/tijdelijke API-key. Deel nooit productiesleutels.
+                        </p>
+                    </div>
+                </div>
             </div>
             
-            <div class="flex gap-2 justify-end pt-4">
-                <button onclick="toggleSettings()" class="px-4 py-2 text-xs font-mono text-gray-400 hover:text-white transition-colors">CANCEL</button>
-                <button onclick="saveSettings()" class="px-4 py-2 bg-cyan-600 text-white text-xs font-mono rounded hover:bg-cyan-500 shadow-[0_0_10px_rgba(0,255,255,0.3)] transition-all">SAVE & SYNC</button>
+            <div class="flex gap-3 justify-end pt-4 border-t border-white/10">
+                <button onclick="toggleSettings()" class="px-6 py-2 text-xs font-mono text-gray-400 hover:text-white transition-colors uppercase">Cancel</button>
+                <button onclick="saveSettings()" class="px-6 py-2 bg-cyan-600 text-white text-xs font-mono rounded hover:bg-cyan-500 shadow-[0_0_15px_rgba(0,255,255,0.4)] transition-all uppercase flex items-center gap-2">
+                    <i data-lucide="save" size="14"></i> Save & Sync
+                </button>
             </div>
         </div>
     </div>
@@ -229,42 +274,177 @@
         const game = new Chess();
         let boardEl = document.getElementById('chessboard');
         let selectedSquare = null;
-        let aiEnabled = true;
+        let aiProcessing = false;
         
-        // Load settings
+        // Persistent Settings
         let apiKey = localStorage.getItem('nexus_api_key') || '';
-        let currentElo = localStorage.getItem('nexus_elo') || '1200';
+        let currentElo = parseInt(localStorage.getItem('nexus_elo')) || 1200;
 
-        // Init Form Values
+        // --- 2. ENGINE LOGIC (MiniMax + PST) ---
+        // Piece Square Tables (Positional understanding)
+        const pst_w = {
+            p: [
+                [100, 100, 100, 100, 105, 100, 100, 100],
+                [78, 83, 86, 73, 102, 82, 85, 90],
+                [7, 29, 21, 44, 40, 31, 44, 7],
+                [-17, 16, -2, 15, 14, 0, 15, -13],
+                [-26, 3, 10, 9, 6, 1, 0, -23],
+                [-22, 9, 5, -11, -10, -2, 3, -19],
+                [-31, 8, -7, -37, -36, -14, 3, -31],
+                [0, 0, 0, 0, 0, 0, 0, 0]
+            ],
+            n: [ 
+                [-66, -53, -75, -75, -10, -55, -58, -70],
+                [-3, -6, 100, -36, 4, 62, -4, -14],
+                [10, 67, 1, 74, 73, 27, 62, -2],
+                [24, 24, 45, 37, 33, 41, 25, 17],
+                [-1, 5, 31, 21, 22, 35, 2, 0],
+                [-18, 10, 13, 22, 18, 15, 11, -14],
+                [-23, -15, 2, 0, 2, 0, -23, -20],
+                [-74, -23, -26, -24, -19, -35, -22, -69]
+            ]
+            // (Simplified tables for brevity, full engine usually has all pieces)
+        };
+        const pst_b = {
+            p: pst_w.p.slice().reverse(),
+            n: pst_w.n.slice().reverse()
+        };
+
+        const pieceValues = { p: 100, n: 320, b: 330, r: 500, q: 900, k: 20000 };
+
+        function evaluateBoard(fen) {
+            // Simplified Evaluation Function
+            let score = 0;
+            const tempGame = new Chess(fen);
+            const board = tempGame.board();
+
+            for(let r=0; r<8; r++){
+                for(let c=0; c<8; c++){
+                    const piece = board[r][c];
+                    if(piece){
+                        let val = pieceValues[piece.type];
+                        // Add simplistic position bonus (center control)
+                        if((r===3||r===4) && (c===3||c===4)) val += 10; 
+                        
+                        if(piece.color === 'w') score += val;
+                        else score -= val;
+                    }
+                }
+            }
+            return score;
+        }
+
+        // Minimax with Alpha-Beta Pruning
+        function minimax(depth, game, alpha, beta, isMaximizingPlayer) {
+            document.getElementById('debug-nodes').innerText = parseInt(document.getElementById('debug-nodes').innerText) + 1;
+            
+            if (depth === 0) return -evaluateBoard(game.fen());
+
+            const newGameMoves = game.moves();
+            if (newGameMoves.length === 0) {
+                if(game.in_checkmate()) return isMaximizingPlayer ? -99999 : 99999;
+                return 0; // Stalemate
+            }
+
+            if (isMaximizingPlayer) {
+                let bestMove = -99999;
+                for (let i = 0; i < newGameMoves.length; i++) {
+                    game.move(newGameMoves[i]);
+                    bestMove = Math.max(bestMove, minimax(depth - 1, game, alpha, beta, !isMaximizingPlayer));
+                    game.undo();
+                    alpha = Math.max(alpha, bestMove);
+                    if (beta <= alpha) return bestMove;
+                }
+                return bestMove;
+            } else {
+                let bestMove = 99999;
+                for (let i = 0; i < newGameMoves.length; i++) {
+                    game.move(newGameMoves[i]);
+                    bestMove = Math.min(bestMove, minimax(depth - 1, game, alpha, beta, !isMaximizingPlayer));
+                    game.undo();
+                    beta = Math.min(beta, bestMove);
+                    if (beta <= alpha) return bestMove;
+                }
+                return bestMove;
+            }
+        }
+
+        function getBestMove(elo) {
+            const moves = game.moves();
+            if(moves.length === 0) return null;
+
+            // --- DIFFICULTY LOGIC ---
+            let depth = 1;
+            let blunderChance = 0; // 0.0 to 1.0
+
+            if(elo < 1000) { depth = 1; blunderChance = 0.4; }
+            else if(elo < 1200) { depth = 2; blunderChance = 0.25; }
+            else if(elo < 1400) { depth = 2; blunderChance = 0.1; }
+            else if(elo < 1600) { depth = 3; blunderChance = 0.05; }
+            else { depth = 3; blunderChance = 0; } // 1800+ 
+
+            document.getElementById('debug-depth').innerText = depth;
+            document.getElementById('debug-nodes').innerText = "0";
+
+            let bestMove = null;
+            let bestValue = -99999;
+
+            // Randomize move order to vary gameplay
+            moves.sort(() => Math.random() - 0.5);
+
+            for(let i = 0; i < moves.length; i++) {
+                game.move(moves[i]);
+                // AI plays Black usually, so it wants to Minimize white's score
+                // But from its perspective, it wants the best outcome. 
+                // Simple implementation: Minimize opponent's best response
+                let boardValue = -minimax(depth - 1, game, -100000, 100000, false); 
+                game.undo();
+
+                if(boardValue > bestValue) {
+                    bestValue = boardValue;
+                    bestMove = moves[i];
+                }
+            }
+
+            document.getElementById('debug-eval').innerText = (bestValue / 100).toFixed(2);
+
+            // Blunder Logic: Sometimes just pick a random valid move instead of the calculated one
+            if(Math.random() < blunderChance) {
+                const randomIdx = Math.floor(Math.random() * moves.length);
+                console.log("Simulated Blunder");
+                return moves[randomIdx];
+            }
+
+            return bestMove;
+        }
+
+
+        // --- 3. GAMEPLAY & UI ---
+        // Init Settings UI
         if(apiKey) {
             document.getElementById('api-key-input').value = apiKey;
             updateApiStatus(true);
         }
         document.getElementById('elo-select').value = currentElo;
-        document.getElementById('display-elo').innerText = currentElo;
+        updateEloLabels();
 
         // Piece Unicode Mapping
         const PIECES = {
             'p': '♟', 'r': '♜', 'n': '♞', 'b': '♝', 'q': '♛', 'k': '♚',
             'P': '♙', 'R': '♖', 'N': '♘', 'B': '♗', 'Q': '♕', 'K': '♔'
         };
-        
-        const PIECE_VALUES = {
-            'p': 1, 'n': 3, 'b': 3, 'r': 5, 'q': 9, 'k': 0
-        };
 
         function updateApiStatus(connected) {
             const el = document.getElementById('api-status');
             if(connected) {
-                el.innerText = "CONNECTED";
-                el.className = "px-2 py-1 bg-green-500/20 text-green-400 text-xs rounded font-mono border border-green-500/30";
+                el.innerText = "ONLINE";
+                el.className = "px-2 py-1 bg-green-500/20 text-green-400 text-xs rounded font-mono border border-green-500/30 shadow-[0_0_10px_rgba(0,255,0,0.2)]";
             } else {
-                el.innerText = "DISCONNECTED";
+                el.innerText = "OFFLINE";
                 el.className = "px-2 py-1 bg-red-500/20 text-red-400 text-xs rounded font-mono border border-red-500/30";
             }
         }
 
-        // --- 2. RENDER ENGINE ---
         function drawBoard() {
             boardEl.innerHTML = '';
             const board = game.board();
@@ -276,7 +456,7 @@
                     const isDark = (row + col) % 2 === 1;
                     
                     const cell = document.createElement('div');
-                    cell.className = `relative flex items-center justify-center text-4xl select-none 
+                    cell.className = `relative flex items-center justify-center text-3xl md:text-5xl select-none 
                         ${isDark ? 'square-dark' : 'square-light'} 
                         ${selectedSquare === square ? 'selected-square' : ''}`;
                     
@@ -289,39 +469,44 @@
                         }
                     }
 
-                    // Labels
-                    if (col === 0) cell.innerHTML += `<span class="absolute left-1 top-1 text-[10px] opacity-50 font-mono">${8 - row}</span>`;
-                    if (row === 7) cell.innerHTML += `<span class="absolute right-1 bottom-0 text-[10px] opacity-50 font-mono">${String.fromCharCode(97 + col)}</span>`;
+                    // Notation Labels
+                    if (col === 0) cell.innerHTML += `<span class="absolute left-1 top-1 text-[8px] md:text-[10px] opacity-50 font-mono">${8 - row}</span>`;
+                    if (row === 7) cell.innerHTML += `<span class="absolute right-1 bottom-0 text-[8px] md:text-[10px] opacity-50 font-mono">${String.fromCharCode(97 + col)}</span>`;
 
-                    // Piece
+                    // Render Piece
                     if (piece) {
                         const span = document.createElement('span');
-                        span.className = `piece transition-transform ${piece.color === 'w' ? 'text-gray-100 drop-shadow-md' : 'text-black drop-shadow-sm'}`;
+                        span.className = `piece transition-transform z-10 ${piece.color === 'w' ? 'text-[#f0f0f0]' : 'text-[#0a0a0f]'}`;
                         span.innerText = PIECES[piece.color === 'w' ? piece.type.toUpperCase() : piece.type];
+                        // Subtle stroke for black pieces to pop on dark squares
+                        if(piece.color === 'b') span.style.textShadow = '0 0 1px rgba(255,255,255,0.5)';
                         cell.appendChild(span);
-                    } else if (selectedSquare) {
+                    } 
+                    
+                    // Move hints
+                    if (selectedSquare) {
                         const moves = game.moves({ square: selectedSquare, verbose: true });
                         if (moves.find(m => m.to === square)) {
                             const dot = document.createElement('div');
-                            dot.className = 'w-3 h-3 bg-cyan-400/50 rounded-full animate-pulse cursor-pointer';
-                            dot.onclick = (e) => {
+                            dot.className = 'w-3 h-3 md:w-4 md:h-4 bg-green-400/50 rounded-full animate-pulse cursor-pointer absolute z-20';
+                            cell.appendChild(dot);
+                            cell.classList.add('cursor-pointer');
+                            cell.onclick = (e) => {
                                 e.stopPropagation();
                                 handleMove(selectedSquare, square);
                             };
-                            cell.appendChild(dot);
                         }
                     }
 
-                    cell.onclick = () => handleSquareClick(square);
+                    if(!cell.onclick) cell.onclick = () => handleSquareClick(square);
                     boardEl.appendChild(cell);
                 }
             }
             updateStatus();
         }
 
-        // --- 3. GAME LOGIC ---
         function handleSquareClick(square) {
-            if (game.game_over()) return;
+            if (game.game_over() || aiProcessing) return;
 
             if (selectedSquare === square) {
                 selectedSquare = null;
@@ -329,124 +514,54 @@
                 return;
             }
 
-            if (selectedSquare) {
-                const move = game.move({
-                    from: selectedSquare,
-                    to: square,
-                    promotion: 'q'
-                });
-
-                if (move) {
-                    selectedSquare = null;
-                    drawBoard();
-                    addMoveToHistory(move);
-                    
-                    if (!game.game_over()) {
-                        document.getElementById('game-status').innerText = `CALCULATING (${currentElo})...`;
-                        const delay = currentElo > 1600 ? 1000 : 500;
-                        setTimeout(makeAIMove, delay);
-                    }
-                } else {
-                    const piece = game.get(square);
-                    if (piece && piece.color === game.turn()) {
-                        selectedSquare = square;
-                        drawBoard();
-                    } else {
-                        selectedSquare = null;
-                        drawBoard();
-                    }
-                }
+            const piece = game.get(square);
+            if (piece && piece.color === game.turn()) {
+                selectedSquare = square;
+                drawBoard();
             } else {
-                const piece = game.get(square);
-                if (piece && piece.color === game.turn()) {
-                    selectedSquare = square;
-                    drawBoard();
-                }
+                selectedSquare = null;
+                drawBoard();
             }
         }
 
         function handleMove(from, to) {
-            game.move({ from, to, promotion: 'q' });
-            selectedSquare = null;
-            drawBoard();
-            addMoveToHistory(game.history({ verbose: true }).pop());
-            const delay = currentElo > 1600 ? 1000 : 500;
-            setTimeout(makeAIMove, delay);
+            const move = game.move({ from, to, promotion: 'q' });
+            if(move) {
+                selectedSquare = null;
+                drawBoard();
+                addMoveToHistory(move);
+                
+                if (!game.game_over()) {
+                    aiProcessing = true;
+                    document.getElementById('engine-status').innerText = "CALCULATING...";
+                    
+                    // Delay for "Thinking" feel
+                    setTimeout(() => {
+                        makeAIMove();
+                    }, 250);
+                }
+            }
         }
 
-        // --- 4. SCALABLE AI (ELO BASED) ---
         function makeAIMove() {
-            if (game.game_over()) return;
+            // Check if game ended during delay
+            if(game.game_over()) return;
 
-            const moves = game.moves({ verbose: true });
-            if (moves.length === 0) return;
-
-            let chosenMove = null;
-            const elo = parseInt(currentElo);
-
-            const captures = moves.filter(m => m.flags.includes('c') || m.flags.includes('e'));
+            const bestMove = getBestMove(currentElo);
             
-            captures.sort((a, b) => {
-                const valA = PIECE_VALUES[a.captured] || 0;
-                const valB = PIECE_VALUES[b.captured] || 0;
-                return valB - valA;
-            });
-
-            if (elo === 800) {
-                if (Math.random() < 0.2 && captures.length > 0) {
-                    chosenMove = captures[Math.floor(Math.random() * captures.length)];
-                } else {
-                    chosenMove = moves[Math.floor(Math.random() * moves.length)];
+            if(bestMove) {
+                const move = game.move(bestMove); // Accepts SAN or move object
+                aiProcessing = false;
+                document.getElementById('engine-status').innerText = "IDLE";
+                drawBoard();
+                addMoveToHistory(move);
+                
+                if (game.in_checkmate()) {
+                    setTimeout(() => alert(`CHECKMATE! Nexus (${currentElo}) Wins.`), 100);
                 }
-            } 
-            else if (elo === 1200) {
-                if (Math.random() < 0.5 && captures.length > 0) {
-                    chosenMove = captures[0];
-                } else {
-                    chosenMove = moves[Math.floor(Math.random() * moves.length)];
-                }
-            }
-            else if (elo === 1600) {
-                if (captures.length > 0) {
-                    chosenMove = captures[0];
-                } else {
-                    const centerMoves = moves.filter(m => m.to.includes('d4') || m.to.includes('e4') || m.to.includes('d5') || m.to.includes('e5'));
-                    if (centerMoves.length > 0 && Math.random() < 0.6) {
-                        chosenMove = centerMoves[0];
-                    } else {
-                        chosenMove = moves[Math.floor(Math.random() * moves.length)];
-                    }
-                }
-            }
-            else if (elo >= 2400) {
-                const mates = moves.filter(m => {
-                    game.move(m.san);
-                    const isMate = game.in_checkmate();
-                    game.undo();
-                    return isMate;
-                });
-
-                if (mates.length > 0) {
-                    chosenMove = mates[0];
-                } else if (captures.length > 0) {
-                     chosenMove = captures[0];
-                } else {
-                     chosenMove = moves[Math.floor(Math.random() * moves.length)];
-                }
-            }
-
-            if (!chosenMove) chosenMove = moves[Math.floor(Math.random() * moves.length)];
-
-            game.move(chosenMove.san);
-            drawBoard();
-            addMoveToHistory(game.history({ verbose: true }).pop());
-            
-            if (game.in_checkmate()) {
-                alert(`CHECKMATE! Nexus (${currentElo}) Wins.`);
             }
         }
 
-        // --- 5. UI UPDATES ---
         function updateStatus() {
             const statusEl = document.getElementById('game-status');
             const indicator = document.getElementById('turn-indicator');
@@ -456,13 +571,13 @@
                 statusEl.className = "font-mono text-sm tracking-widest text-red-500 animate-pulse";
             } else {
                 if (game.turn() === 'w') {
-                    statusEl.innerText = "WHITE TO MOVE";
+                    statusEl.innerText = "YOUR TURN";
                     statusEl.className = "font-mono text-sm tracking-widest text-cyan-400";
-                    indicator.className = "w-3 h-3 rounded-full bg-white shadow-[0_0_10px_white]";
+                    indicator.className = "w-3 h-3 rounded-full bg-cyan-400 shadow-[0_0_10px_cyan]";
                 } else {
-                    statusEl.innerText = `NEXUS (${currentElo}) THINKING`;
+                    statusEl.innerText = "NEXUS THINKING...";
                     statusEl.className = "font-mono text-sm tracking-widest text-gray-400";
-                    indicator.className = "w-3 h-3 rounded-full bg-gray-500";
+                    indicator.className = "w-3 h-3 rounded-full bg-gray-500 animate-pulse";
                 }
             }
         }
@@ -472,11 +587,14 @@
             const moveNum = Math.ceil(game.history().length / 2);
             
             const div = document.createElement('div');
-            div.className = "flex items-center justify-between p-2 rounded bg-white/5 border border-transparent hover:border-cyan-500/30 transition-all font-mono text-xs";
+            div.className = "flex items-center justify-between p-2 rounded bg-white/5 border border-transparent hover:border-cyan-500/30 transition-all font-mono text-xs animate-in slide-in-from-left duration-300";
+            
+            const colorClass = move.color === 'w' ? 'text-cyan-200' : 'text-orange-200';
+            
             div.innerHTML = `
-                <span class="text-gray-500">${game.turn() === 'b' ? moveNum + '.' : '...'}</span>
-                <span class="text-white">${move.san}</span>
-                <span class="text-cyan-400 opacity-50">+0.${Math.floor(Math.random()*9)}</span>
+                <span class="text-gray-500 w-8">${game.turn() === 'b' ? moveNum + '.' : '...'}</span>
+                <span class="${colorClass} font-bold">${move.san}</span>
+                <span class="text-xs text-gray-600">${document.getElementById('debug-eval').innerText}</span>
             `;
             list.prepend(div);
         }
@@ -484,12 +602,13 @@
         function resetGame() {
             game.reset();
             selectedSquare = null;
-            document.getElementById('move-history').innerHTML = '<div class="text-xs text-gray-500 font-mono mb-2">MOVE SEQUENCE</div>';
+            aiProcessing = false;
+            document.getElementById('move-history').innerHTML = '<div class="text-[10px] text-gray-500 font-mono mb-2 uppercase tracking-wider">Move Sequence</div>';
             document.getElementById('ai-feedback').innerHTML = '<p>> SYSTEM RESET.</p><p>> READY.</p>';
             drawBoard();
         }
 
-        // --- 6. GEMINI API INTEGRATION ---
+        // --- 4. GEMINI INTEGRATION ---
         async function analyzeWithGemini(mode) {
             const feedbackEl = document.getElementById('ai-feedback');
             
@@ -498,31 +617,28 @@
                 return;
             }
 
-            feedbackEl.innerHTML = '<p class="animate-pulse text-cyan-400">> ESTABLISHING UPLINK...</p>';
+            feedbackEl.innerHTML = '<p class="animate-pulse text-cyan-400">> UPLINKING TO GEMINI 2.5...</p>';
 
             const pgn = game.pgn();
             const fen = game.fen();
             const turn = game.turn() === 'w' ? 'White' : 'Black';
-            const history = game.history().slice(-4).join(', ');
+            const history = game.history().slice(-6).join(', ');
             
             let systemPrompt = "";
             let userPrompt = "";
 
             if (mode === 'strategic') {
-                systemPrompt = `You are Nexus, a hyper-advanced chess AI from a cyberpunk future. Your analysis is cold, precise, and strategic.
-                Current Elo context: ${currentElo}. 
-                Analyze the current position briefly.
-                1. Assessment (Who is winning?)
-                2. Key Threat (What should I watch out for?)
-                3. Best Plan (One sentence strategy).
-                Keep it under 60 words. Use formatting like **bold** for emphasis.`;
-                
-                userPrompt = `Current FEN: ${fen}. Last moves: ${history}. It is ${turn}'s turn to move.`;
+                systemPrompt = `You are Nexus, a futuristic chess coach.
+                Analyze the position briefly for a ${currentElo} Elo player.
+                Structure:
+                1. **Evaluation**: Who is winning?
+                2. **Plan**: 1 sentence strategy.
+                3. **Threat**: What is the opponent threatening?
+                Keep it cyber-minimalist and under 80 words.`;
+                userPrompt = `FEN: ${fen}. Last moves: ${history}. Turn: ${turn}.`;
             } else if (mode === 'roast') {
-                systemPrompt = `You are Nexus, a trash-talking chess AI.
-                Roast the player's last move or current position. Be sarcastic, futuristic, and slightly arrogant. 
-                Keep it under 40 words.`;
-                userPrompt = `Current FEN: ${fen}. Last moves: ${history}. Roast the situation.`;
+                systemPrompt = `You are a sarcastic, trash-talking AI. Roast the user's play style based on the board. Be funny but helpful.`;
+                userPrompt = `FEN: ${fen}. Last moves: ${history}. Roast this.`;
             }
 
             try {
@@ -536,14 +652,9 @@
                 });
 
                 const data = await response.json();
-                
-                if (data.error) {
-                    throw new Error(data.error.message);
-                }
+                if (data.error) throw new Error(data.error.message);
 
                 const aiText = data.candidates[0].content.parts[0].text;
-                
-                // Parse markdown and display
                 feedbackEl.innerHTML = marked.parse(aiText);
                 
             } catch (error) {
@@ -552,7 +663,7 @@
             }
         }
 
-        // --- 7. MODAL LOGIC & SETTINGS ---
+        // --- 5. MODAL & SETTINGS ---
         function toggleSettings() {
             const modal = document.getElementById('settings-modal');
             if (modal.classList.contains('modal-hidden')) {
@@ -563,6 +674,15 @@
                 modal.classList.remove('modal-flex');
             }
         }
+
+        function updateEloLabels() {
+            const el = document.getElementById('elo-select');
+            const label = el.options[el.selectedIndex].text.split(':')[1].trim();
+            document.getElementById('elo-label').innerText = label;
+            document.getElementById('display-elo').innerText = el.value;
+        }
+
+        document.getElementById('elo-select').addEventListener('change', updateEloLabels);
 
         function saveSettings() {
             const keyInput = document.getElementById('api-key-input').value;
@@ -575,20 +695,16 @@
             }
             
             localStorage.setItem('nexus_elo', eloInput);
-            currentElo = eloInput;
-            
-            // Update UI
-            document.getElementById('display-elo').innerText = currentElo;
+            currentElo = parseInt(eloInput);
             
             toggleSettings();
             
             const feedback = document.getElementById('ai-feedback');
-            feedback.innerHTML = `<p>> SETTINGS SYNCED.</p><p>> ELO: ${currentElo}</p><p>> NEURAL LINK: ACTIVE</p>`;
+            feedback.innerHTML = `<p>> SETTINGS SYNCED.</p><p>> ENGINE RECALIBRATED TO ${currentElo}.</p>`;
         }
 
         // Init
         drawBoard();
-
     </script>
 </body>
 </html>

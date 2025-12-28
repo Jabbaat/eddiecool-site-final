@@ -197,7 +197,7 @@
 
         .hero-badge {
             background-color: var(--primary);
-            color: var(--white);
+            color: var(--bg); /* Aangepast naar bg voor consistentie */
             padding: 0.5rem 1.5rem;
             border: var(--border);
             box-shadow: var(--shadow);
@@ -265,7 +265,9 @@
             overflow: hidden;
             white-space: nowrap;
             padding: 1rem 0;
-            color: var(--white);
+            /* FIX: kleur veranderd van var(--white) naar var(--bg) 
+               Dit zorgt voor contrast in beide modi */
+            color: var(--bg); 
         }
 
         .marquee-content {
@@ -333,7 +335,7 @@
 
         .step-number {
             background-color: var(--primary);
-            color: var(--white);
+            color: var(--bg); /* Aangepast naar bg */
             font-family: 'Space Grotesk', sans-serif;
             font-size: 2rem;
             font-weight: bold;
@@ -470,7 +472,7 @@
         /* --- Footer --- */
         footer {
             background-color: var(--primary);
-            color: var(--white);
+            color: var(--bg); /* Aangepast naar bg */
             text-align: center;
             padding: 2rem;
             border-top: 3px solid var(--text);

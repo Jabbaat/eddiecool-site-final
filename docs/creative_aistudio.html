@@ -36,35 +36,11 @@
         }
 
         /* --- Theme Modes (Neo-Brutalist Colors) --- */
-        body[data-mode="poem"] {
-            --primary: var(--accent-copper);
-            --secondary: #2d1b2e;
-            --bg-app: #e6e2dd;
-        }
-        
-        body[data-mode="fact"] {
-            --primary: var(--accent-steam);
-            --secondary: #0f2b26;
-            --bg-app: #dbece5;
-        }
-
-        body[data-mode="recipe"] {
-            --primary: var(--accent-rust);
-            --secondary: #3d1f1f;
-            --bg-app: #eed9d9;
-        }
-
-        body[data-mode="idea"] {
-            --primary: var(--accent-brass);
-            --secondary: #422006;
-            --bg-app: #fef3c7;
-        }
-
-        body[data-mode="adventure"] {
-            --primary: var(--accent-aether);
-            --secondary: #1e1b4b;
-            --bg-app: #e0e7ff;
-        }
+        body[data-mode="poem"] { --primary: var(--accent-copper); --bg-app: #e6e2dd; }
+        body[data-mode="fact"] { --primary: var(--accent-steam); --bg-app: #dbece5; }
+        body[data-mode="recipe"] { --primary: var(--accent-rust); --bg-app: #eed9d9; }
+        body[data-mode="idea"] { --primary: var(--accent-brass); --bg-app: #fef3c7; }
+        body[data-mode="adventure"] { --primary: var(--accent-aether); --bg-app: #e0e7ff; }
 
         body {
             background-color: var(--bg-app);
@@ -72,15 +48,14 @@
             font-family: var(--font-body);
             transition: background-color 0.5s ease;
             background-image: radial-gradient(var(--primary) 1px, transparent 1px);
-            background-size: 20px 20px; /* Dot pattern background */
+            background-size: 20px 20px;
         }
 
-        /* --- Neo-Brutalist Steampunk Components --- */
-        
+        /* --- Components --- */
         .neo-box {
             background-color: var(--bg-paper);
             border: 3px solid var(--border-color);
-            box-shadow: 6px 6px 0px 0px var(--border-color); /* Hard shadow */
+            box-shadow: 6px 6px 0px 0px var(--border-color);
             transition: all 0.2s ease;
         }
 
@@ -142,14 +117,22 @@
         }
         .prose ul { list-style-type: square; }
 
-        /* Loader: Cogwheel animation */
+        /* --- ANIMATIONS --- */
         @keyframes spin { 100% { transform: rotate(360deg); } }
         .cog-loader { animation: spin 4s linear infinite; }
+
+        /* Steam effect for results */
+        @keyframes steam-in {
+            0% { opacity: 0; filter: blur(5px); transform: translateY(10px); }
+            100% { opacity: 1; filter: blur(0); transform: translateY(0); }
+        }
+        .steam-reveal {
+            animation: steam-in 1s ease-out forwards;
+        }
 
         .modal-hidden { display: none; }
         .modal-flex { display: flex; }
         
-        /* Nav selection state */
         .nav-active {
             background-color: var(--primary) !important;
             transform: translate(-2px, -2px);
@@ -167,9 +150,8 @@
             </div>
         </div>
 
-        <!-- Scrollable container for icons on mobile -->
         <div class="flex md:flex-col gap-6 overflow-x-auto md:overflow-visible w-full md:w-auto items-center md:items-stretch px-2 md:px-0">
-            <!-- Mobile Logo (Small) -->
+            <!-- Mobile Logo -->
             <div class="md:hidden mr-4 shrink-0">
                  <i data-lucide="cog" class="text-[#b87333] w-8 h-8 cog-loader"></i>
             </div>
@@ -205,7 +187,7 @@
         <header class="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 border-b-4 border-black pb-6 bg-[#f0e6d2] p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] border-2 border-black">
             <div>
                 <div class="flex items-center gap-2 mb-2">
-                    <span class="bg-black text-white px-2 py-1 font-mono text-xs uppercase tracking-widest">System v2.6 Mobile</span>
+                    <span class="bg-black text-white px-2 py-1 font-mono text-xs uppercase tracking-widest">System v3.0</span>
                     <span id="api-indicator" class="border-2 border-black px-2 py-1 font-mono text-xs uppercase font-bold bg-red-400">Offline</span>
                 </div>
                 <h1 id="app-title" class="text-3xl md:text-6xl font-bold mode-title text-black leading-tight">DE MUZE</h1>
@@ -233,7 +215,7 @@
                     </div>
                 </div>
 
-                <!-- MANUAL / UITLEG SECTIE -->
+                <!-- MANUAL -->
                 <div class="neo-box p-6 bg-[#e6e2dd] border-black">
                     <div class="flex items-center gap-2 mb-4 border-b-2 border-black pb-2">
                         <i data-lucide="book-open" class="w-5 h-5"></i>
@@ -243,15 +225,15 @@
                         <ul class="list-none pl-0 space-y-3">
                             <li class="flex gap-3 items-start">
                                 <span class="bg-black text-white w-6 h-6 flex items-center justify-center text-xs font-bold shrink-0">1</span>
-                                <span><strong>Kies Module:</strong> Selecteer in het menu een functie (Veer, Bliksem, Bestek, Lamp, Kaart).</span>
+                                <span>Kies een module in het menu (links/boven).</span>
                             </li>
                             <li class="flex gap-3 items-start">
                                 <span class="bg-black text-white w-6 h-6 flex items-center justify-center text-xs font-bold shrink-0">2</span>
-                                <span><strong>Configuratie:</strong> Vul de parameters in.</span>
+                                <span>Vul de parameters in en druk op ACTIVEREN.</span>
                             </li>
                             <li class="flex gap-3 items-start">
-                                <span class="bg-black text-white w-6 h-6 flex items-center justify-center text-xs font-bold shrink-0">3</span>
-                                <span><strong>Stoomdruk:</strong> Druk op ACTIVEREN.</span>
+                                <span class="bg-black text-white w-6 h-6 flex items-center justify-center text-xs font-bold shrink-0">!</span>
+                                <span><strong>Let op:</strong> Gebruikers op openbare PC's dienen hun API-sleutel na gebruik te wissen via het instellingen menu (<i data-lucide="wrench" class="inline w-3 h-3"></i>).</span>
                             </li>
                         </ul>
                     </div>
@@ -263,23 +245,34 @@
                 <div class="neo-box h-full p-8 relative bg-white flex flex-col">
                      <div class="absolute -top-3 -right-3 bg-black text-white px-3 py-1 font-mono text-xs uppercase font-bold transform rotate-1">Output Log</div>
                     
-                    <!-- Decoratieve gaten (ponscard look) -->
+                    <!-- Decorative Holes -->
                     <div class="absolute top-4 left-4 flex gap-2">
                         <div class="w-3 h-3 rounded-full bg-gray-300 border border-black"></div>
                         <div class="w-3 h-3 rounded-full bg-gray-300 border border-black"></div>
                         <div class="w-3 h-3 rounded-full bg-black border border-black"></div>
                     </div>
 
-                    <div id="output-area" class="mt-8 flex-1 font-mono text-lg leading-relaxed relative opacity-50 transition-opacity duration-500 overflow-y-auto">
-                        <!-- Loader -->
-                        <div id="loader" class="hidden absolute inset-0 flex flex-col items-center justify-center gap-4 bg-white/90 z-10">
-                            <i data-lucide="settings" class="w-16 h-16 cog-loader text-black"></i>
-                            <span id="loader-text" class="bg-black text-white px-4 py-2 font-mono text-sm uppercase font-bold animate-pulse text-center">GENERATING STEAM...</span>
+                    <div id="output-area" class="mt-8 flex-1 font-mono text-lg leading-relaxed relative overflow-y-auto">
+                        <!-- Loader Overlay -->
+                        <div id="loader" class="hidden absolute inset-0 flex flex-col items-center justify-center gap-6 bg-white/95 z-10 transition-all">
+                            <!-- Animated Gears -->
+                            <div class="relative w-24 h-24">
+                                <i data-lucide="settings" class="absolute top-0 left-0 w-16 h-16 cog-loader text-black"></i>
+                                <i data-lucide="cog" class="absolute bottom-0 right-0 w-12 h-12 cog-loader text-[#b87333]" style="animation-direction: reverse; animation-duration: 3s;"></i>
+                            </div>
+                            
+                            <!-- Dynamic Text Container -->
+                            <div class="text-center space-y-2">
+                                <span id="loader-text" class="block bg-black text-white px-4 py-2 font-mono text-sm uppercase font-bold">
+                                    INITIALISATIE...
+                                </span>
+                                <p id="loader-subtext" class="text-xs font-mono text-gray-500 animate-pulse">Even geduld a.u.b.</p>
+                            </div>
                         </div>
                         
                         <!-- Text Content -->
                         <div id="result-content" class="prose max-w-none text-black">
-                            <p class="text-gray-400 italic text-center mt-20">// Wachten op input...</p>
+                            <p class="text-gray-400 italic text-center mt-20">// Systeem gereed voor input...</p>
                         </div>
                     </div>
                 </div>
@@ -288,7 +281,7 @@
 
     </main>
 
-    <!-- SETTINGS MODAL (Steampunk Style) -->
+    <!-- SETTINGS MODAL (Security Update) -->
     <div id="settings-modal" class="fixed inset-0 z-50 modal-hidden items-center justify-center bg-black/80 backdrop-blur-sm p-4">
         <div class="neo-box p-8 max-w-md w-full relative bg-[#f0e6d2]">
             <button onclick="toggleSettings()" class="absolute top-2 right-2 p-2 hover:bg-black hover:text-white transition-colors border-2 border-transparent hover:border-black">
@@ -296,20 +289,28 @@
             </button>
             
             <h2 class="text-2xl font-bold mb-6 font-display border-b-4 border-black pb-2 flex items-center gap-3">
-                <i data-lucide="key" class="w-6 h-6"></i> ENGINE ACCESS
+                <i data-lucide="shield-alert" class="w-6 h-6"></i> ENGINE ACCESS
             </h2>
             
             <div class="mb-6">
+                <!-- Warning Block -->
+                <div class="bg-yellow-100 border-2 border-yellow-600 p-3 mb-4 flex gap-3 text-sm font-mono text-yellow-900">
+                    <i data-lucide="alert-triangle" class="w-10 h-10 shrink-0"></i>
+                    <p><strong>VEILIGHEIDSWAARSCHUWING:</strong> Uw API-sleutel wordt opgeslagen in deze browser. Gebruikt u een openbare computer (bibliotheek, school)? Verwijder uw sleutel na gebruik met de rode knop hieronder!</p>
+                </div>
+
                 <label class="block text-xs font-mono font-bold uppercase mb-2 bg-black text-white w-fit px-2">Gemini API Key</label>
-                <input type="password" id="api-key-input" class="neo-input font-mono text-sm bg-white" placeholder="AIzaSy...">
-                <p class="text-xs font-mono mt-3 border-l-2 border-black pl-2 text-gray-600">
-                    Sleutel wordt lokaal opgeslagen in de tandwielen van uw browser.
-                </p>
+                <div class="flex gap-2">
+                    <input type="password" id="api-key-input" class="neo-input font-mono text-sm bg-white" placeholder="Plak hier uw sleutel (AIzaSy...)">
+                </div>
             </div>
             
-            <div class="flex gap-4 justify-end pt-4 border-t-2 border-black border-dashed">
-                <button onclick="toggleSettings()" class="neo-btn bg-white py-2 px-4 text-xs">Annuleren</button>
-                <button onclick="saveSettings()" class="neo-btn py-2 px-6 text-xs">Opslaan</button>
+            <div class="flex flex-col gap-3 pt-4 border-t-2 border-black border-dashed">
+                <button onclick="saveSettings()" class="neo-btn py-2 px-6 text-xs bg-[#86efac]">SLEUTEL OPSLAAN</button>
+                <button onclick="clearSettings()" class="neo-btn py-2 px-6 text-xs bg-[#fca5a5] border-red-900 text-red-900 hover:bg-red-400">
+                    <i data-lucide="trash-2" class="inline w-3 h-3 mr-1"></i>
+                    SLEUTEL WISSEN (OPENBARE PC)
+                </button>
             </div>
         </div>
     </div>
@@ -319,13 +320,27 @@
         lucide.createIcons();
         let currentMode = 'poem';
         let apiKey = localStorage.getItem('creative_api_key') || '';
+        let loaderInterval;
+
+        // --- FUNNY LOADING MESSAGES ---
+        const loadingMessages = [
+            "Stoomdruk opvoeren naar 120%...",
+            "Tandwielen smeren met walvisolie...",
+            "Contact leggen met de mechanische geest...",
+            "Kolenschep hanteren...",
+            "Aether frequenties afstellen...",
+            "Koper poetsen voor betere geleiding...",
+            "Rooksignalen ontcijferen...",
+            "De stoomfluit stemmen...",
+            "Vacuümbuizen opwarmen...",
+            "Data door de koperen leidingen persen..."
+        ];
 
         // --- CONTENT MODES CONFIG ---
         const modes = {
             poem: {
                 title: "DE MUZE",
                 subtitle: "Poëtische fabricage module.",
-                loadingMessage: "AI zoekt naar rijmwoorden...",
                 inputs: `
                     <div>
                         <label class="block text-xs font-bold font-mono uppercase mb-2">Onderwerp</label>
@@ -351,7 +366,6 @@
             fact: {
                 title: "FEITEN FABRIEK",
                 subtitle: "Kennis extractie protocol.",
-                loadingMessage: "AI filosofeert over de waarheid...",
                 inputs: `
                     <div>
                         <label class="block text-xs font-bold font-mono uppercase mb-2">Onderwerp</label>
@@ -376,7 +390,6 @@
             recipe: {
                 title: "CHEF STEAM",
                 subtitle: "Culinair algoritme.",
-                loadingMessage: "AI staat te koken...",
                 inputs: `
                     <div>
                         <label class="block text-xs font-bold font-mono uppercase mb-2">Ingrediënten</label>
@@ -401,7 +414,6 @@
             idea: {
                 title: "DE UITVINDER",
                 subtitle: "Brainstorm generator voor problemen.",
-                loadingMessage: "AI is aan het uitvinden...",
                 inputs: `
                     <div>
                         <label class="block text-xs font-bold font-mono uppercase mb-2">Probleem / Behoefte</label>
@@ -425,7 +437,6 @@
             adventure: {
                 title: "HET AVONTUUR",
                 subtitle: "Interactieve scenario generator.",
-                loadingMessage: "AI creëert een nieuwe wereld...",
                 inputs: `
                     <div>
                         <label class="block text-xs font-bold font-mono uppercase mb-2">Setting</label>
@@ -464,10 +475,9 @@
             lucide.createIcons();
             
             // Clear Output
-            const outArea = document.getElementById('output-area');
             const resCont = document.getElementById('result-content');
             resCont.innerHTML = '<p class="text-gray-400 italic text-center mt-20">// Systeem gereed voor input...</p>';
-            outArea.style.opacity = '1';
+            resCont.classList.remove('steam-reveal');
         }
 
         function toggleSettings() {
@@ -489,6 +499,17 @@
             toggleSettings();
         }
 
+        function clearSettings() {
+            if(confirm("Weet u het zeker? Dit wist de sleutel van deze computer.")) {
+                localStorage.removeItem('creative_api_key');
+                apiKey = '';
+                document.getElementById('api-key-input').value = '';
+                checkApiStatus();
+                alert("Sleutel gewist. Veilig om te vertrekken.");
+                toggleSettings();
+            }
+        }
+
         function checkApiStatus() {
             const indicator = document.getElementById('api-indicator');
             if (apiKey) {
@@ -500,10 +521,31 @@
             }
         }
 
-        // --- API LOGIC ---
-        async function generateContent() {
+        // --- CREATIVE LOADER LOGIC ---
+        function startCreativeLoading() {
             const loader = document.getElementById('loader');
             const loaderText = document.getElementById('loader-text');
+            loader.classList.remove('hidden');
+            
+            let counter = 0;
+            // Set initial message
+            loaderText.innerText = loadingMessages[0];
+            
+            // Cycle through messages every 2 seconds
+            loaderInterval = setInterval(() => {
+                counter = (counter + 1) % loadingMessages.length;
+                loaderText.innerText = loadingMessages[counter];
+            }, 1800);
+        }
+
+        function stopCreativeLoading() {
+            const loader = document.getElementById('loader');
+            clearInterval(loaderInterval);
+            loader.classList.add('hidden');
+        }
+
+        // --- API LOGIC ---
+        async function generateContent() {
             const resultContent = document.getElementById('result-content');
             
             if (!apiKey) {
@@ -513,17 +555,14 @@
 
             // Get Inputs
             const val1 = document.getElementById('input-1').value;
-            const val2 = document.getElementById('input-2').value;
+            const val2 = document.getElementById('input-2') ? document.getElementById('input-2').value : '';
 
-            // UI Loading State with Custom Message
+            // START LOADING ANIMATION
             resultContent.innerHTML = '';
-            
-            // Set dynamic loading message
-            const modeConfig = modes[currentMode];
-            loaderText.innerText = modeConfig.loadingMessage || "GENERATING STEAM...";
-            
-            loader.classList.remove('hidden');
+            resultContent.classList.remove('steam-reveal'); // Reset animation
+            startCreativeLoading();
 
+            const modeConfig = modes[currentMode];
             const finalPrompt = modeConfig.userPrompt(val1, val2);
 
             try {
@@ -542,16 +581,17 @@
 
                 const aiText = data.candidates[0].content.parts[0].text;
                 
-                // Parse markdown and display
+                // Parse markdown and display with STEAM ANIMATION
                 resultContent.innerHTML = marked.parse(aiText);
+                resultContent.classList.add('steam-reveal');
                 
             } catch (error) {
                 resultContent.innerHTML = `<div class="bg-red-100 border-2 border-red-500 p-4 font-mono text-red-700">
-                    <strong>CRITIEKE FOUT:</strong> ${error.message} <br>
+                    <strong>KETELBARST (ERROR):</strong> ${error.message} <br>
                     <span class="text-xs">Controleer de moersleutel instellingen.</span>
                 </div>`;
             } finally {
-                loader.classList.add('hidden');
+                stopCreativeLoading();
             }
         }
 
