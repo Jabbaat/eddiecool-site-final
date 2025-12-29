@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Project Nexus Chess | Hyper-Strategic Analyzer v2.1</title>
+    <title>Project Nexus Chess | Hyper-Strategic Analyzer v2.3</title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -113,6 +113,14 @@
 
         .prose p { margin-bottom: 0.5em; }
         .prose strong { color: var(--cyan); }
+        
+        /* Details summary marker customization */
+        details > summary {
+            list-style: none;
+        }
+        details > summary::-webkit-details-marker {
+            display: none;
+        }
     </style>
 </head>
 <body class="min-h-screen flex flex-col md:flex-row selection:bg-cyan-500/30">
@@ -239,21 +247,44 @@
             </div>
 
             <!-- API KEY & SECURITY -->
-            <div class="mb-8">
+            <div class="mb-6">
                 <label class="block text-xs font-mono text-cyan-200 mb-2 uppercase tracking-wider">Gemini API Key</label>
-                <input type="password" id="api-key-input" class="nexus-input mb-3" placeholder="AIzaSy...">
+                
+                <!-- Instructions Expandable Menu -->
+                <details class="mb-3 group">
+                    <summary class="text-[10px] font-mono text-cyan-400 cursor-pointer list-none flex items-center gap-2 hover:text-cyan-300 transition-colors bg-cyan-900/20 p-2 rounded border border-cyan-500/20">
+                        <i data-lucide="key" size="12"></i> 
+                        <span>Klik hier: Hoe kom je aan een API key?</span>
+                        <i data-lucide="chevron-down" size="12" class="ml-auto group-open:rotate-180 transition-transform"></i>
+                    </summary>
+                    <div class="mt-2 p-3 bg-black/60 border-l border-cyan-500/50 text-[10px] text-gray-300 space-y-2 font-mono">
+                        <p class="flex items-center gap-2"><span class="text-cyan-400">1.</span> Ga naar <a href="https://aistudio.google.com/" target="_blank" class="text-cyan-400 hover:underline underline-offset-2">Google AI Studio</a>.</p>
+                        <p class="flex items-center gap-2"><span class="text-cyan-400">2.</span> Klik op "Create API key".</p>
+                        <p class="flex items-center gap-2"><span class="text-cyan-400">3.</span> Kopieer de key en plak hem hieronder.</p>
+                    </div>
+                </details>
+
+                <!-- NEW: Input Group with Clear Button -->
+                <div class="flex gap-2 mb-4">
+                    <input type="password" id="api-key-input" class="nexus-input flex-1" placeholder="AIzaSy... (Paste Key Here)">
+                    <button onclick="clearKey()" class="px-3 border border-red-500/30 text-red-400 hover:bg-red-500 hover:text-white transition-colors rounded bg-red-500/10 flex items-center justify-center" title="Wissen & Uitloggen">
+                        <i data-lucide="trash-2" size="18"></i>
+                    </button>
+                </div>
                 
                 <!-- SECURITY WARNING -->
                 <div class="warning-box p-3 rounded flex gap-3 items-start">
-                    <i data-lucide="alert-triangle" class="text-red-500 shrink-0 mt-0.5" size="16"></i>
-                    <div>
-                        <h4 class="text-xs font-bold text-red-400 font-mono mb-1">VEILIGHEIDSWAARSCHUWING</h4>
+                    <i data-lucide="shield-alert" class="text-red-500 shrink-0 mt-0.5" size="16"></i>
+                    <div class="space-y-2">
+                        <h4 class="text-xs font-bold text-red-400 font-mono">VEILIGHEIDSCHECK</h4>
                         <p class="text-[10px] text-gray-300 leading-relaxed">
-                            Voer je API-sleutel <strong>nooit</strong> in op openbare computers of gedeelde apparaten (bibliotheek, school, internetcafé). 
-                            De sleutel wordt lokaal opgeslagen in deze browser.
+                            ⚠️ <strong>Prive Opslag:</strong> Je sleutel wordt alléén in jouw eigen browser opgeslagen (Local Storage). Hij wordt nooit naar onze server verstuurd.
                         </p>
-                        <p class="text-[10px] text-gray-300 leading-relaxed mt-1">
-                            🔒 Tip: Gebruik een gratis/tijdelijke API-key. Deel nooit productiesleutels.
+                        <p class="text-[10px] text-gray-300 leading-relaxed">
+                            🛑 <strong>Openbare Computer?</strong> (School/Bieb): Klik na gebruik ALTIJD op de rode prullenbak hierboven.
+                        </p>
+                        <p class="text-[10px] text-gray-300 leading-relaxed text-yellow-100/80">
+                            💡 <strong>Tip:</strong> Maak een aparte, gratis API key aan voor dit soort tests.
                         </p>
                     </div>
                 </div>
@@ -703,12 +734,30 @@
             feedback.innerHTML = `<p>> SETTINGS SYNCED.</p><p>> ENGINE RECALIBRATED TO ${currentElo}.</p>`;
         }
 
+        // NEW FUNCTION: Clear API Key safely
+        function clearKey() {
+            localStorage.removeItem('nexus_api_key');
+            document.getElementById('api-key-input').value = '';
+            apiKey = '';
+            updateApiStatus(false);
+            
+            // Visual feedback
+            const btn = document.querySelector('button[onclick="clearKey()"]');
+            const originalIcon = btn.innerHTML;
+            
+            btn.innerHTML = `<i data-lucide="check" size="18"></i>`;
+            btn.classList.add('bg-green-500/20', 'text-green-400', 'border-green-500/50');
+            
+            setTimeout(() => {
+                btn.innerHTML = originalIcon;
+                btn.classList.remove('bg-green-500/20', 'text-green-400', 'border-green-500/50');
+                lucide.createIcons(); // Re-render icon
+            }, 2000);
+        }
+
         // Init
         drawBoard();
     </script>
 </body>
 </html>
-
-
-
 

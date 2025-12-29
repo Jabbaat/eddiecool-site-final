@@ -71,13 +71,20 @@
             transition: all 0.1s;
         }
 
-        .neo-btn:hover {
+        .neo-btn:hover:not(:disabled) {
             transform: translate(-2px, -2px);
             box-shadow: 6px 6px 0px 0px var(--border-color);
             filter: brightness(1.1);
         }
 
-        .neo-btn:active {
+        .neo-btn:active:not(:disabled) {
+            transform: translate(2px, 2px);
+            box-shadow: 0px 0px 0px 0px var(--border-color);
+        }
+
+        .neo-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
             transform: translate(2px, 2px);
             box-shadow: 0px 0px 0px 0px var(--border-color);
         }
@@ -120,6 +127,7 @@
         /* --- ANIMATIONS --- */
         @keyframes spin { 100% { transform: rotate(360deg); } }
         .cog-loader { animation: spin 4s linear infinite; }
+        .spin-fast { animation: spin 1s linear infinite; }
 
         /* Steam effect for results */
         @keyframes steam-in {
@@ -187,7 +195,7 @@
         <header class="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 border-b-4 border-black pb-6 bg-[#f0e6d2] p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] border-2 border-black">
             <div>
                 <div class="flex items-center gap-2 mb-2">
-                    <span class="bg-black text-white px-2 py-1 font-mono text-xs uppercase tracking-widest">System v3.0</span>
+                    <span class="bg-black text-white px-2 py-1 font-mono text-xs uppercase tracking-widest">System v3.1</span>
                     <span id="api-indicator" class="border-2 border-black px-2 py-1 font-mono text-xs uppercase font-bold bg-red-400">Offline</span>
                 </div>
                 <h1 id="app-title" class="text-3xl md:text-6xl font-bold mode-title text-black leading-tight">DE MUZE</h1>
@@ -208,7 +216,7 @@
                     </div>
 
                     <div class="mt-8 pt-6 border-t-2 border-dashed border-black">
-                        <button onclick="generateContent()" class="neo-btn w-full py-4 text-lg flex items-center justify-center gap-3">
+                        <button id="generate-btn" onclick="generateContent()" class="neo-btn w-full py-4 text-lg flex items-center justify-center gap-3">
                             <i data-lucide="play" class="fill-current"></i>
                             ACTIVEREN
                         </button>
@@ -283,7 +291,7 @@
 
     <!-- SETTINGS MODAL (Security Update) -->
     <div id="settings-modal" class="fixed inset-0 z-50 modal-hidden items-center justify-center bg-black/80 backdrop-blur-sm p-4">
-        <div class="neo-box p-8 max-w-md w-full relative bg-[#f0e6d2]">
+        <div class="neo-box p-8 max-w-xl w-full relative bg-[#f0e6d2] max-h-[90vh] overflow-y-auto">
             <button onclick="toggleSettings()" class="absolute top-2 right-2 p-2 hover:bg-black hover:text-white transition-colors border-2 border-transparent hover:border-black">
                 <i data-lucide="x" class="w-6 h-6"></i>
             </button>
@@ -292,24 +300,52 @@
                 <i data-lucide="shield-alert" class="w-6 h-6"></i> ENGINE ACCESS
             </h2>
             
-            <div class="mb-6">
-                <!-- Warning Block -->
-                <div class="bg-yellow-100 border-2 border-yellow-600 p-3 mb-4 flex gap-3 text-sm font-mono text-yellow-900">
-                    <i data-lucide="alert-triangle" class="w-10 h-10 shrink-0"></i>
-                    <p><strong>VEILIGHEIDSWAARSCHUWING:</strong> Uw API-sleutel wordt opgeslagen in deze browser. Gebruikt u een openbare computer (bibliotheek, school)? Verwijder uw sleutel na gebruik met de rode knop hieronder!</p>
+            <div class="mb-6 space-y-4">
+                
+                <!-- Step 1: Guide -->
+                <div class="bg-white border-2 border-black p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,0.1)]">
+                    <h3 class="font-bold font-mono text-sm border-b-2 border-black mb-3 pb-1 uppercase">Hoe kom je aan een API Key?</h3>
+                    <ol class="list-decimal list-inside font-mono text-sm space-y-2">
+                        <li>Ga naar <a href="https://aistudio.google.com/" target="_blank" class="text-blue-700 underline font-bold hover:bg-yellow-200">Google AI Studio</a>.</li>
+                        <li>Klik op de blauwe knop <strong>"Get API key"</strong>.</li>
+                        <li>Klik op <strong>"Create API key"</strong>.</li>
+                        <li>Kopieer de code en plak hem hieronder.</li>
+                    </ol>
                 </div>
 
-                <label class="block text-xs font-mono font-bold uppercase mb-2 bg-black text-white w-fit px-2">Gemini API Key</label>
-                <div class="flex gap-2">
-                    <input type="password" id="api-key-input" class="neo-input font-mono text-sm bg-white" placeholder="Plak hier uw sleutel (AIzaSy...)">
+                <!-- Step 2: Input -->
+                <div>
+                    <label class="block text-xs font-mono font-bold uppercase mb-2 bg-black text-white w-fit px-2">Gemini API Key</label>
+                    <div class="flex gap-2">
+                        <input type="password" id="api-key-input" class="neo-input font-mono text-sm bg-white" placeholder="Plak hier uw sleutel (AIzaSy...)">
+                    </div>
+                </div>
+
+                <!-- Step 3: Warnings -->
+                <div class="space-y-3 font-mono text-xs">
+                    <div class="flex gap-2 items-start text-green-800 bg-green-100 p-2 border border-green-800">
+                        <span class="text-lg">⚠️</span>
+                        <p><strong>Veiligheidscheck:</strong> Je sleutel wordt alléén in jouw eigen browser opgeslagen (Local Storage). Hij wordt nooit naar onze server verstuurd.</p>
+                    </div>
+                    
+                    <div class="flex gap-2 items-start text-red-900 bg-red-100 p-2 border border-red-800">
+                        <span class="text-lg">🛑</span>
+                        <p><strong>Openbare Computer? (School/Bieb):</strong> Klik na gebruik ALTIJD op de rode knop 'Wissen' hieronder.</p>
+                    </div>
+
+                    <div class="flex gap-2 items-start text-blue-900 bg-blue-100 p-2 border border-blue-800">
+                        <span class="text-lg">💡</span>
+                        <p><strong>Tip:</strong> Maak een aparte, gratis API key aan voor dit soort tests.</p>
+                    </div>
                 </div>
             </div>
             
-            <div class="flex flex-col gap-3 pt-4 border-t-2 border-black border-dashed">
-                <button onclick="saveSettings()" class="neo-btn py-2 px-6 text-xs bg-[#86efac]">SLEUTEL OPSLAAN</button>
-                <button onclick="clearSettings()" class="neo-btn py-2 px-6 text-xs bg-[#fca5a5] border-red-900 text-red-900 hover:bg-red-400">
-                    <i data-lucide="trash-2" class="inline w-3 h-3 mr-1"></i>
-                    SLEUTEL WISSEN (OPENBARE PC)
+            <div class="flex flex-col md:flex-row gap-3 pt-4 border-t-2 border-black border-dashed">
+                <button onclick="saveSettings()" class="neo-btn py-3 px-6 text-sm bg-[#86efac] flex-1">
+                    <i data-lucide="save" class="inline w-4 h-4 mr-2"></i> SLEUTEL OPSLAAN
+                </button>
+                <button onclick="clearSettings()" class="neo-btn py-3 px-6 text-sm bg-[#fca5a5] border-red-900 text-red-900 hover:bg-red-400 flex-1">
+                    <i data-lucide="trash-2" class="inline w-4 h-4 mr-2"></i> WISSEN (OPENBAAR)
                 </button>
             </div>
         </div>
@@ -525,13 +561,21 @@
         function startCreativeLoading() {
             const loader = document.getElementById('loader');
             const loaderText = document.getElementById('loader-text');
+            const btn = document.getElementById('generate-btn');
+            
+            // 1. Overlay Show
             loader.classList.remove('hidden');
             
+            // 2. Button State Change (Visual Feedback)
+            btn.disabled = true;
+            btn.innerHTML = `<i data-lucide="loader-2" class="spin-fast w-5 h-5"></i> MACHINE DRAAIT...`;
+            lucide.createIcons();
+
             let counter = 0;
             // Set initial message
             loaderText.innerText = loadingMessages[0];
             
-            // Cycle through messages every 2 seconds
+            // Cycle through messages every 1.8 seconds
             loaderInterval = setInterval(() => {
                 counter = (counter + 1) % loadingMessages.length;
                 loaderText.innerText = loadingMessages[counter];
@@ -540,8 +584,16 @@
 
         function stopCreativeLoading() {
             const loader = document.getElementById('loader');
+            const btn = document.getElementById('generate-btn');
+
+            // 1. Stop Loop & Hide Overlay
             clearInterval(loaderInterval);
             loader.classList.add('hidden');
+
+            // 2. Reset Button
+            btn.disabled = false;
+            btn.innerHTML = `<i data-lucide="play" class="fill-current"></i> ACTIVEREN`;
+            lucide.createIcons();
         }
 
         // --- API LOGIC ---
