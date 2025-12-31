@@ -17,51 +17,59 @@
     </script> 
 
     <style>
-        /* --- NEO-BRUTALISM STIJLEN --- */
+        /* --- NEO-BRUTALISM HIGH CONTRAST STIJLEN --- */
         
         :root {
-            --bg-color: #f0f0eb; /* Off-white achtergrond */
+            --bg-color: #eeeeee; /* Neutraal beton-grijs voor contrast */
             --card-bg: #ffffff;
-            --main-accent: #8b5cf6; /* Fel paars */
-            --secondary-accent: #ff6b6b; /* Fel rood/roze */
-            --third-accent: #facc15; /* Fel geel */
+            
+            /* AANGEPASTE KLEUREN: */
+            --main-accent: #ff3300; /* Signaal Rood/Oranje (Actie) */
+            --secondary-accent: #0055ff; /* Electrisch Blauw (Tech/Koel) */
+            --third-accent: #ffee00; /* Markeerstift Geel (Aandacht) */
+            
             --border-color: #000000;
-            --shadow-offset: 6px;
+            --shadow-offset: 8px; /* Iets dikkere schaduw voor meer diepte */
         }
 
         body {
             background-color: var(--bg-color);
-            color: var(--border-color);
+            color: #000000; /* Expliciet ZWART */
             font-family: 'Inter', sans-serif;
-            overflow-x: hidden; /* Belangrijk voor de ticker */
+            overflow-x: hidden; 
         }
 
-        /* Navigatie aanpassing voor de brute look */
         nav {
-            border-bottom: 3px solid var(--border-color);
+            border-bottom: 4px solid var(--border-color); /* Dikkere lijn */
             background: #fff;
             padding: 1rem;
         }
 
+        /* --- MENU STYLING (FORCE BLACK) --- */
         .menu a {
-            font-weight: 700;
+            font-weight: 900; /* Dikker font */
             text-transform: uppercase;
             letter-spacing: -0.5px;
-            color: #000;
+            color: #000000 !important; /* FORCEER ZWART (overschrijft style.css) */
             text-decoration: none;
-            padding: 5px 10px;
-            border: 2px solid transparent;
-            transition: all 0.2s;
+            padding: 8px 12px;
+            border: 3px solid transparent;
+            transition: all 0.1s;
         }
 
         .menu a:hover {
             background-color: var(--third-accent);
-            border: 2px solid var(--border-color);
+            border: 3px solid var(--border-color);
             box-shadow: 4px 4px 0 0 var(--border-color);
             transform: translate(-2px, -2px);
+            color: #000 !important;
         }
 
-        /* Main Content */
+        /* Hamburger menu kleur fix */
+        .hamburger {
+            color: #000000 !important;
+        }
+
         main {
             max-width: 1200px;
             margin: 0 auto;
@@ -70,151 +78,182 @@
 
         h1 {
             font-weight: 900;
-            font-size: 3rem;
+            font-size: 3.5rem; /* Groter */
             text-transform: uppercase;
             margin-bottom: 1rem;
-            text-shadow: 4px 4px 0px rgba(0,0,0,0.1);
-            letter-spacing: -1px;
+            color: #000000; /* Expliciet ZWART */
+            -webkit-text-stroke: 1px var(--border-color); /* Extra randje */
+            letter-spacing: -2px;
         }
 
+        /* AANGEPASTE INTRO TEKST */
         main > p {
-            font-size: 1.2rem;
-            max-width: 700px;
+            font-size: 1.5rem; /* Groter gemaakt voor duidelijkheid */
+            font-weight: 800; /* Extra dikgedrukt (Bold) */
+            color: #000000; /* Diep Zwart */
+            max-width: 750px;
             margin-bottom: 3rem;
-            border-left: 5px solid var(--main-accent);
-            padding-left: 1rem;
+            background: #fff;
+            border: 4px solid var(--border-color); /* Iets dikkere rand */
+            padding: 1.5rem; /* Ruimere padding */
+            box-shadow: 6px 6px 0 0 var(--border-color); /* Iets hardere schaduw */
+            line-height: 1.4;
         }
 
-        /* --- TICKER TAPE STIJLEN --- */
+        /* --- TICKER TAPE --- */
         .ticker-wrap {
-            width: 100vw; /* Volledige breedte van scherm */
-            margin-left: calc(-50vw + 50%); /* Forceer buiten container marges */
+            width: 100vw; 
+            margin-left: calc(-50vw + 50%); 
             overflow: hidden;
-            background-color: var(--third-accent); /* Fel Geel */
-            border-top: 3px solid var(--border-color);
-            border-bottom: 3px solid var(--border-color);
-            margin-bottom: 3rem;
-            box-shadow: 0 4px 0 rgba(0,0,0,0.1);
-            transform: rotate(-1deg); /* Klein beetje scheef voor extra chaos vibe */
+            background-color: var(--third-accent); /* Blijft geel want dat valt het best op */
+            border-top: 4px solid var(--border-color);
+            border-bottom: 4px solid var(--border-color);
+            margin-bottom: 4rem;
+            transform: rotate(-2deg); /* Iets schuiner voor meer effect */
+            z-index: 10;
+            position: relative;
         }
 
         .ticker {
             display: flex;
             white-space: nowrap;
-            /* Duur van animatie aanpassen voor snelheid */
-            animation: ticker 25s linear infinite; 
+            animation: ticker 20s linear infinite; /* Iets sneller */
         }
 
         .ticker-item {
-            font-size: 1.5rem;
+            font-size: 2rem; /* Groter */
             font-weight: 900;
             text-transform: uppercase;
-            padding: 1rem 0;
-            color: var(--border-color);
+            padding: 0.8rem 0;
+            color: #000000; /* Expliciet ZWART */
             display: inline-block;
         }
         
-        /* Scheidingsteken tussen items */
         .ticker-item::after {
             content: "⚡";
             margin: 0 2rem;
-            color: var(--main-accent); /* Paarse bliksem */
+            color: var(--main-accent); /* Rood/Oranje bliksem */
         }
 
         @keyframes ticker {
             0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); } /* Schuif de helft op (de kopie) */
+            100% { transform: translateX(-50%); } 
         }
 
-        /* Het Grid */
+        /* Grid */
         .ai-apps-list { 
             display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); 
-            gap: 2.5rem; 
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); 
+            gap: 3rem; 
         } 
 
-        /* De Brutalist Cards */
+        /* Cards */
         .project-card { 
             background-color: var(--card-bg); 
-            border: 3px solid var(--border-color); 
-            border-radius: 8px; /* Klein beetje ronding, niet te veel */
+            border: 4px solid var(--border-color); /* Dikkere randen */
+            border-radius: 0; /* Geen ronde hoeken meer, echt bruut */
             padding: 24px; 
-            /* De harde schaduw is kenmerkend voor Neo-Brutalism */
             box-shadow: var(--shadow-offset) var(--shadow-offset) 0 0 var(--border-color); 
-            transition: all 0.2s ease-in-out; 
+            transition: all 0.1s ease-in-out; 
             display: flex; 
             flex-direction: column; 
             justify-content: space-between; 
-            position: relative;
         } 
           
-        /* Hover effect: kaart komt "omhoog" en schaduw wordt groter */
         .project-card:hover { 
-            transform: translate(-4px, -4px); 
-            box-shadow: 10px 10px 0 0 var(--border-color); 
+            transform: translate(-6px, -6px); 
+            box-shadow: 14px 14px 0 0 var(--border-color); 
+            background-color: #fff; /* Zorgt dat de kleurblokjes extra opvallen */
         } 
         
-        /* Decoratieve kleurblokjes bovenop de cards (optioneel, voor variatie) */
+        /* Duidelijke kleurcodering per kaart */
         .project-card:nth-child(odd) {
-            border-top: 8px solid var(--main-accent);
+            box-shadow: var(--shadow-offset) var(--shadow-offset) 0 0 var(--main-accent); /* Oranje schaduw */
+            border-color: var(--border-color);
         }
         .project-card:nth-child(even) {
-            border-top: 8px solid var(--secondary-accent);
+            box-shadow: var(--shadow-offset) var(--shadow-offset) 0 0 var(--secondary-accent); /* Blauwe schaduw */
+            border-color: var(--border-color);
+        }
+        
+        /* Hover states omdraaien voor effect */
+        .project-card:nth-child(odd):hover {
+             box-shadow: 14px 14px 0 0 var(--border-color);
+             border-color: var(--main-accent);
+        }
+        .project-card:nth-child(even):hover {
+             box-shadow: 14px 14px 0 0 var(--border-color);
+             border-color: var(--secondary-accent);
         }
 
         .project-card h3 { 
-            font-size: 1.8rem; 
+            font-size: 2rem; 
             font-weight: 900; 
             margin-bottom: 12px; 
-            color: var(--border-color); 
+            color: #000000; /* Expliciet ZWART */
             text-transform: uppercase;
+            background: var(--third-accent); /* Gele markering achter titel */
+            display: inline-block;
+            padding: 2px 8px;
+            border: 2px solid var(--border-color);
+            transform: rotate(-1deg);
         } 
 
         .project-card p { 
             margin-bottom: 24px; 
-            color: #333; 
-            font-weight: 500;
-            line-height: 1.6;
+            color: #000000; /* Expliciet ZWART */
+            font-weight: 600;
+            line-height: 1.5;
+            font-size: 1.1rem;
         } 
 
-        /* De "Brute" Knop */
+        /* Buttons */
         .project-button { 
-            display: inline-block; 
+            display: block; 
             background-color: var(--border-color); 
             color: #fff; 
-            padding: 14px 28px; 
-            font-weight: 700; 
+            padding: 16px 24px; 
+            font-weight: 900; 
             text-decoration: none; 
-            border: 2px solid var(--border-color);
-            box-shadow: 4px 4px 0 0 #888; /* Lichte schaduw voor diepte */
-            transition: all 0.1s;
+            border: 3px solid var(--border-color);
             text-transform: uppercase;
-            font-size: 0.9rem;
+            font-size: 1.1rem;
+            text-align: center;
             letter-spacing: 1px;
-            cursor: pointer; /* Belangrijk voor button elementen */
+            transition: 0.1s;
         } 
 
         .project-button:hover { 
-            background-color: var(--third-accent); /* Geel */
-            color: var(--border-color); /* Zwarte tekst */
-            box-shadow: 2px 2px 0 0 var(--border-color);
-            transform: translate(2px, 2px); /* Knop wordt 'ingedrukt' */
-            border-color: var(--border-color);
+            background-color: #fff; 
+            color: var(--border-color); 
+            box-shadow: 6px 6px 0 0 var(--border-color);
+            transform: translate(-2px, -2px);
         } 
         
-        /* Mobiele aanpassingen */
+        /* Specifieke hover kleuren voor knoppen op basis van kaart type */
+        .project-card:nth-child(odd) .project-button:hover {
+            background-color: var(--main-accent);
+            color: #fff;
+        }
+        .project-card:nth-child(even) .project-button:hover {
+            background-color: var(--secondary-accent);
+            color: #fff;
+        }
+
         @media (max-width: 768px) {
-            h1 { font-size: 2rem; }
-            .project-card { margin-bottom: 1rem; }
-            .project-button { width: 100%; text-align: center; }
+            h1 { font-size: 2.5rem; }
+            .project-card { margin-bottom: 2rem; }
+            .ticker-item { font-size: 1.5rem; }
         }
 
         footer {
-            margin-top: 4rem;
-            padding: 2rem;
-            border-top: 3px solid var(--border-color);
+            margin-top: 5rem;
+            padding: 3rem;
+            background: var(--border-color);
+            color: #fff;
             text-align: center;
             font-weight: 700;
+            text-transform: uppercase;
         }
 
     </style> 
@@ -224,31 +263,31 @@
     <nav>
         <div class="logo">
             <a href="index.html">
-                <!-- Zorg dat je logo.png ook een zwarte rand of transparantie heeft voor het beste effect -->
-                <img src="images/logo.png" alt="Eddiecool Logo" class="logo-img" style="border: 2px solid #000; padding: 2px;">
+                <img src="images/logo.png" alt="Eddiecool Logo" class="logo-img" style="border: 3px solid #000; padding: 4px; background: var(--third-accent);">
             </a>
         </div>
-        <span class="hamburger" id="hamburger-menu" style="font-weight:900;">&#9776;</span>
+        <!-- Hamburger kleur ook expliciet zwart -->
+        <span class="hamburger" id="hamburger-menu" style="font-weight:900; font-size: 2rem; color: #000000 !important;">&#9776;</span>
         <ul class="menu">
             <li><a href="index.html">🏠 Home</a></li>
             <li><a href="projects.html">✨ Projecten</a></li>
             <li><a href="ai_gallery.html">🖼️ Galerij</a></li>
             <li><a href="video_ideas.html">🎬 Video Ideeën</a></li>
             <li><a href="VibeCoding.html">⚡ Vibe Coding</a></li> 
-            <li><a href="ai_apps.html" style="background: var(--third-accent); box-shadow: 4px 4px 0 0 #000;">📱 AI Apps</a></li>
+            <!-- Actieve link tekst geforceerd naar wit !important -->
+            <li><a href="ai_apps.html" style="background: #000000; color: #ffffff !important; border-color: #000;">📱 AI Apps</a></li>
             <li><a href="about.html">ℹ️ Over Mij</a></li>
             <li><a href="contact.html">📧 Contact</a></li>
         </ul>
     </nav>  
 
     <main> 
-        <h1>📱 AI Apps <span style="font-size: 0.5em; vertical-align: middle; background: #000; color: #fff; padding: 2px 8px;">BETA</span></h1> 
+        <h1>📱 AI Apps <span style="font-size: 0.4em; vertical-align: middle; background: var(--main-accent); color: #fff; padding: 4px 10px; border: 3px solid #000; transform: rotate(3deg); display: inline-block;">BETA</span></h1> 
         <p>De speeltuin voor interactieve intelligentie. Geen saaie code, maar tools die werken.</p> 
 
         <!-- TICKER TAPE START -->
         <div class="ticker-wrap">
             <div class="ticker">
-                <!-- Content dubbel invoegen voor naadloze loop -->
                 <span class="ticker-item">Vibe Coding</span>
                 <span class="ticker-item">Geen Code Maar Vibes</span>
                 <span class="ticker-item">Nieuwe Tools</span>
