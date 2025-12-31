@@ -4,7 +4,8 @@
     <meta charset="UTF-8"> 
     <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
     <title>AI Apps - Eddiecool AI Speelplaats</title> 
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet"> 
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet"> 
+    <!-- Verwijzing naar style.css behouden voor globale dingen, maar we overschrijven veel hieronder -->
     <link rel="stylesheet" href="style.css"> 
 
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-SYG5T1Z0MV"></script> 
@@ -15,64 +16,207 @@
         gtag('config', 'G-SYG5T1Z0MV'); 
     </script> 
 
-    <style> 
-        /* Gecentraliseerde stijlen voor de AI Apps pagina */ 
+    <style>
+        /* --- NEO-BRUTALISM STIJLEN --- */
+        
+        :root {
+            --bg-color: #f0f0eb; /* Off-white achtergrond */
+            --card-bg: #ffffff;
+            --main-accent: #8b5cf6; /* Fel paars */
+            --secondary-accent: #ff6b6b; /* Fel rood/roze */
+            --third-accent: #facc15; /* Fel geel */
+            --border-color: #000000;
+            --shadow-offset: 6px;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--border-color);
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden; /* Belangrijk voor de ticker */
+        }
+
+        /* Navigatie aanpassing voor de brute look */
+        nav {
+            border-bottom: 3px solid var(--border-color);
+            background: #fff;
+            padding: 1rem;
+        }
+
+        .menu a {
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: -0.5px;
+            color: #000;
+            text-decoration: none;
+            padding: 5px 10px;
+            border: 2px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .menu a:hover {
+            background-color: var(--third-accent);
+            border: 2px solid var(--border-color);
+            box-shadow: 4px 4px 0 0 var(--border-color);
+            transform: translate(-2px, -2px);
+        }
+
+        /* Main Content */
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        h1 {
+            font-weight: 900;
+            font-size: 3rem;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+            text-shadow: 4px 4px 0px rgba(0,0,0,0.1);
+            letter-spacing: -1px;
+        }
+
+        main > p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin-bottom: 3rem;
+            border-left: 5px solid var(--main-accent);
+            padding-left: 1rem;
+        }
+
+        /* --- TICKER TAPE STIJLEN --- */
+        .ticker-wrap {
+            width: 100vw; /* Volledige breedte van scherm */
+            margin-left: calc(-50vw + 50%); /* Forceer buiten container marges */
+            overflow: hidden;
+            background-color: var(--third-accent); /* Fel Geel */
+            border-top: 3px solid var(--border-color);
+            border-bottom: 3px solid var(--border-color);
+            margin-bottom: 3rem;
+            box-shadow: 0 4px 0 rgba(0,0,0,0.1);
+            transform: rotate(-1deg); /* Klein beetje scheef voor extra chaos vibe */
+        }
+
+        .ticker {
+            display: flex;
+            white-space: nowrap;
+            /* Duur van animatie aanpassen voor snelheid */
+            animation: ticker 25s linear infinite; 
+        }
+
+        .ticker-item {
+            font-size: 1.5rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            padding: 1rem 0;
+            color: var(--border-color);
+            display: inline-block;
+        }
+        
+        /* Scheidingsteken tussen items */
+        .ticker-item::after {
+            content: "⚡";
+            margin: 0 2rem;
+            color: var(--main-accent); /* Paarse bliksem */
+        }
+
+        @keyframes ticker {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); } /* Schuif de helft op (de kopie) */
+        }
+
+        /* Het Grid */
         .ai-apps-list { 
             display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); /* Responsive grid */
-            gap: 2rem; 
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); 
+            gap: 2.5rem; 
         } 
 
+        /* De Brutalist Cards */
         .project-card { 
-            background-color: rgba(255, 255, 255, 0.05); /* Lichte glans */ 
-            border: 1px solid rgba(255, 255, 255, 0.1); 
-            border-radius: 12px; 
+            background-color: var(--card-bg); 
+            border: 3px solid var(--border-color); 
+            border-radius: 8px; /* Klein beetje ronding, niet te veel */
             padding: 24px; 
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37); 
-            backdrop-filter: blur(4px); 
-            -webkit-backdrop-filter: blur(4px); 
-            transition: transform 0.3s ease, box-shadow 0.3s ease; 
+            /* De harde schaduw is kenmerkend voor Neo-Brutalism */
+            box-shadow: var(--shadow-offset) var(--shadow-offset) 0 0 var(--border-color); 
+            transition: all 0.2s ease-in-out; 
             display: flex; 
             flex-direction: column; 
             justify-content: space-between; 
-            width: 100%; 
-            max-width: 800px; /* Voorkomt dat de kaarten te breed worden */ 
-            text-align: center; 
+            position: relative;
         } 
           
+        /* Hover effect: kaart komt "omhoog" en schaduw wordt groter */
         .project-card:hover { 
-            transform: translateY(-5px); 
-            box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.5); 
+            transform: translate(-4px, -4px); 
+            box-shadow: 10px 10px 0 0 var(--border-color); 
         } 
+        
+        /* Decoratieve kleurblokjes bovenop de cards (optioneel, voor variatie) */
+        .project-card:nth-child(odd) {
+            border-top: 8px solid var(--main-accent);
+        }
+        .project-card:nth-child(even) {
+            border-top: 8px solid var(--secondary-accent);
+        }
 
         .project-card h3 { 
-            font-size: 1.5rem; 
-            font-weight: 700; 
-            margin-bottom: 8px; 
-            color: #ffffff; /* Witte titel voor contrast */ 
+            font-size: 1.8rem; 
+            font-weight: 900; 
+            margin-bottom: 12px; 
+            color: var(--border-color); 
+            text-transform: uppercase;
         } 
 
         .project-card p { 
             margin-bottom: 24px; 
-            color: #d1d5db; /* Lichter grijs voor betere leesbaarheid */ 
-            flex-grow: 1; 
+            color: #333; 
+            font-weight: 500;
+            line-height: 1.6;
         } 
 
+        /* De "Brute" Knop */
         .project-button { 
             display: inline-block; 
-            background-color: #4f46e5; 
-            color: white; 
-            padding: 12px 24px; 
-            border-radius: 8px; 
-            font-weight: 600; 
+            background-color: var(--border-color); 
+            color: #fff; 
+            padding: 14px 28px; 
+            font-weight: 700; 
             text-decoration: none; 
-            transition: background-color 0.3s; 
+            border: 2px solid var(--border-color);
+            box-shadow: 4px 4px 0 0 #888; /* Lichte schaduw voor diepte */
+            transition: all 0.1s;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            cursor: pointer; /* Belangrijk voor button elementen */
         } 
 
         .project-button:hover { 
-            background-color: #6366f1; 
+            background-color: var(--third-accent); /* Geel */
+            color: var(--border-color); /* Zwarte tekst */
+            box-shadow: 2px 2px 0 0 var(--border-color);
+            transform: translate(2px, 2px); /* Knop wordt 'ingedrukt' */
+            border-color: var(--border-color);
         } 
-          
+        
+        /* Mobiele aanpassingen */
+        @media (max-width: 768px) {
+            h1 { font-size: 2rem; }
+            .project-card { margin-bottom: 1rem; }
+            .project-button { width: 100%; text-align: center; }
+        }
+
+        footer {
+            margin-top: 4rem;
+            padding: 2rem;
+            border-top: 3px solid var(--border-color);
+            text-align: center;
+            font-weight: 700;
+        }
+
     </style> 
 </head> 
 
@@ -80,81 +224,103 @@
     <nav>
         <div class="logo">
             <a href="index.html">
-                <img src="images/logo.png" alt="Eddiecool Logo" class="logo-img">
+                <!-- Zorg dat je logo.png ook een zwarte rand of transparantie heeft voor het beste effect -->
+                <img src="images/logo.png" alt="Eddiecool Logo" class="logo-img" style="border: 2px solid #000; padding: 2px;">
             </a>
         </div>
-        <span class="hamburger" id="hamburger-menu">&#9776;</span>
+        <span class="hamburger" id="hamburger-menu" style="font-weight:900;">&#9776;</span>
         <ul class="menu">
             <li><a href="index.html">🏠 Home</a></li>
             <li><a href="projects.html">✨ Projecten</a></li>
-            <li><a href="ai_apps.html">📱 AI Apps</a></li>
             <li><a href="ai_gallery.html">🖼️ Galerij</a></li>
             <li><a href="video_ideas.html">🎬 Video Ideeën</a></li>
             <li><a href="VibeCoding.html">⚡ Vibe Coding</a></li> 
+            <li><a href="ai_apps.html" style="background: var(--third-accent); box-shadow: 4px 4px 0 0 #000;">📱 AI Apps</a></li>
             <li><a href="about.html">ℹ️ Over Mij</a></li>
             <li><a href="contact.html">📧 Contact</a></li>
         </ul>
-    </nav>
+    </nav>  
 
     <main> 
-        <h1>📱 Welkom bij AI Apps!</h1> 
-        <p>Hier vind je een verzameling interactieve AI-applicaties en tools die ik heb ontwikkeld. Duik in de wereld van praktische AI!</p> 
+        <h1>📱 AI Apps <span style="font-size: 0.5em; vertical-align: middle; background: #000; color: #fff; padding: 2px 8px;">BETA</span></h1> 
+        <p>De speeltuin voor interactieve intelligentie. Geen saaie code, maar tools die werken.</p> 
+
+        <!-- TICKER TAPE START -->
+        <div class="ticker-wrap">
+            <div class="ticker">
+                <!-- Content dubbel invoegen voor naadloze loop -->
+                <span class="ticker-item">Vibe Coding</span>
+                <span class="ticker-item">Geen Code Maar Vibes</span>
+                <span class="ticker-item">Nieuwe Tools</span>
+                <span class="ticker-item">Creatieve Chaos</span>
+                <span class="ticker-item">AI Experimenten</span>
+                <span class="ticker-item">Eddiecool</span>
+                <!-- Herhaling -->
+                <span class="ticker-item">Vibe Coding</span>
+                <span class="ticker-item">Geen Code Maar Vibes</span>
+                <span class="ticker-item">Nieuwe Tools</span>
+                <span class="ticker-item">Creatieve Chaos</span>
+                <span class="ticker-item">AI Experimenten</span>
+                <span class="ticker-item">Eddiecool</span>
+            </div>
+        </div>
+        <!-- TICKER TAPE EIND -->
 
         <section class="ai-apps-list"> 
 
             <div class="project-card"> 
                 <div> 
-                    <h3>🎨 Creative Studio AI</h3> 
-                    <p>Jouw alles-in-één studio voor creatieve AI-experimenten. Van teksten genereren tot ideeën uitwerken, alles op één plek.</p> 
+                    <h3>Creative Studio</h3> 
+                    <p>Jouw digitale werkplaats. Teksten genereren, ideeën uitwerken, chaos organiseren. Alles op één plek.</p> 
                 </div> 
-                <a href="creative_aistudio.html" class="project-button">✨ Start Studio</a> 
+                <a href="creative_aistudio.html" class="project-button">Start Studio</a> 
             </div> 
 
             <div class="project-card"> 
                 <div> 
-                    <h3>🗞️ Dagelijks AI Nieuws</h3> 
-                    <p>Blijf op de hoogte van de laatste ontwikkelingen in de AI-wereld. Deze app cureert en vat dagelijks het belangrijkste AI-nieuws voor je samen.</p> 
+                    <h3>Daily AI News</h3> 
+                    <p>Geen tijd voor ruis? Deze app filtert het belangrijkste AI-nieuws en vat het samen.</p> 
                 </div> 
-                <a href="https://v0-daily-ai-news-app.vercel.app/" class="project-button" target="_blank" rel="noopener noreferrer">✨ Lees het Nieuws</a> 
+                <a href="https://v0-daily-ai-news-app.vercel.app/" class="project-button" target="_blank" rel="noopener noreferrer">Lees Nieuws</a> 
             </div> 
 
             <div class="project-card"> 
                 <div> 
-                    <h3>🌀 3D Spirograaf Simulator</h3> 
-                    <p>Een interactieve 3D-tool om complexe spirografen te maken en te manipuleren.</p> 
+                    <h3>Spirograaf 3D</h3> 
+                    <p>Wiskundige kunst in 3D. Manipuleer patronen en maak visuele chaos of perfecte orde.</p> 
                 </div> 
-                <a href="spirograaf.html" class="project-button">✨ Bekijk Project</a> 
+                <a href="spirograaf.html" class="project-button">Open Tool</a> 
             </div> 
              
             <div class="project-card"> 
                 <div> 
-                    <h3>🪐 3D Zonnestelsel Simulator</h3> 
-                    <p>Een interactieve 3D-simulatie van ons zonnestelsel, gebouwd met Three.js.</p> 
+                    <h3>Zonnestelsel</h3> 
+                    <p>Three.js simulatie. Draai planeten, verander perspectief en voel je een astronaut.</p> 
                 </div> 
-                <a href="zonnestelsel.html" class="project-button">✨ Bekijk Project</a> 
+                <a href="zonnestelsel.html" class="project-button">Bekijk Heelal</a> 
             </div> 
 
             <div class="project-card"> 
                 <div> 
-                    <h3>♛ Schaak Training App</h3> 
-                    <p>Train je schaakvaardigheden tegen een AI. Verbeter je ELO en leer van je zetten met de hint-functie.</p> 
+                    <h3>Schaak Trainer</h3> 
+                    <p>Train je brein tegen de AI. Verbeter je ELO en leer van je fouten (of geef de AI de schuld).</p> 
                 </div> 
-                <a href="schaken.html" class="project-button">✨ Speel het Spel</a> 
+                <a href="schaken.html" class="project-button">Schaakmat</a> 
             </div> 
 
             <div class="project-card"> 
                 <div> 
-                    <h3>👾 Retro Space Shooter</h3> 
-                    <p>Een klassieke arcade ervaring. Schiet vijanden neer, ontwijk projectielen en verbeter je highscore in deze retro game.</p> 
+                    <h3>Space Shooter</h3> 
+                    <p>Retro arcade vibes. Schiet pixels kapot en verbreek je highscore. Pew pew!</p> 
                 </div> 
-                <a href="shooter.html" class="project-button">✨ Start de Missie</a> 
+                <a href="shooter.html" class="project-button">Start Missie</a> 
             </div> 
              
         </section> 
     </main> 
 
     <footer> 
-        <p>&copy; 2025 Eddiecool AI Speelplaats. Alle rechten voorbehouden.</p> 
+        <p>&copy; 2025 Eddiecool. Gemaakt met vibes & code.</p> 
     </footer> 
 
     <script> 
@@ -165,5 +331,8 @@
     </script> 
 </body> 
 </html>
+
+
+
 
 
