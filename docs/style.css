@@ -1,0 +1,1208 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+
+body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    background-color: #09168e;
+    color: #f0f0f0;
+    font-family: 'Montserrat', sans-serif;
+    text-align: center;
+    padding-top: 50px;
+}
+
+.logo-img {
+    width: 120px;
+    height: auto;
+    max-width: 200px;
+    transition: width 0.3s ease;
+}
+
+@media (max-width: 768px) {
+    .logo-img {
+        width: 100px;
+        max-width: 150px;
+    }
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    background-color: #4e0433;
+    box-shadow: 0 2px 5px rgba(0, 255, 213, 0.2);
+    position: relative;
+    z-index: 9999;
+}
+
+nav .logo a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+nav .menu {
+    list-style: none;
+    display: flex;
+    margin: 0;
+    padding: 0;
+}
+
+nav .menu li {
+    margin-left: 20px;
+}
+
+nav .menu a {
+    color: #00ffd5;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 8px 12px;
+    border-radius: 5px;
+    transition: color 0.3s ease, background-color 0.3s ease;
+}
+
+nav .menu a:hover {
+    background-color: #8e44ad;
+    color: white;
+}
+
+nav .hamburger {
+    display: none;
+    font-size: 30px;
+    cursor: pointer;
+    color: #00ffd5;
+}
+
+@media (max-width: 768px) {
+    nav {
+        flex-wrap: wrap;
+    }
+    nav .menu {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        margin-top: 10px;
+    }
+    nav .menu.active {
+        display: flex;
+        animation: fadeIn 0.4s ease forwards;
+    }
+    nav .menu li {
+        margin: 10px 0;
+        text-align: center;
+    }
+    nav .hamburger {
+        display: block;
+    }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.single-project {
+    max-width: 700px;
+    margin: 50px auto;
+    position: relative;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.video-poster {
+    display: block;
+    width: 100%;
+    cursor: pointer;
+}
+
+.custom-play-button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 60px;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.6);
+    border: none;
+    border-radius: 50%;
+    padding: 20px 25px;
+    cursor: pointer;
+    z-index: 10;
+    animation: pulse 1.5s infinite;
+}
+
+video {
+    display: none;
+    width: 100%;
+    height: auto;
+}
+
+@keyframes pulse {
+    0% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+    50% { transform: translate(-50%, -50%) scale(1.1); opacity: 0.7; }
+    100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+}
+
+:fullscreen .single-project video,
+:-webkit-full-screen .single-project video,
+:-moz-full-screen .single-project video,
+:-ms-fullscreen .single-project video {
+    width: 100%;
+    height: 100%;
+    object-fit: contain !important;
+    display: block;
+}
+
+.logo-animation {
+    width: 300px;
+    display: block;
+    margin: 0 auto;
+    margin-top: 40px;
+}
+
+form {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #1a1a99;
+    border-radius: 12px;
+    box-shadow: 0 0 20px rgba(0, 255, 213, 0.2);
+}
+
+input,
+textarea {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    background-color: #f0f0f0;
+    color: #000;
+}
+
+textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+button {
+    padding: 12px 24px;
+    background-color: #00ffd5;
+    color: #000;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #00c2a8;
+}
+
+@media (min-width: 769px) {
+    form {
+        max-width: 800px;
+        padding: 40px;
+    }
+    input,
+    textarea {
+        font-size: 18px;
+        padding: 16px;
+    }
+    button {
+        font-size: 18px;
+        padding: 14px 28px;
+    }
+}
+
+
+
+h2 {
+    font-size: 28px;
+    color: #ffffff;
+    margin-top: 30px;
+}
+
+p {
+    font-size: 18px;
+    color: #e0e0e0;
+    line-height: 1.6;
+}
+
+.intro-tekst {
+    font-size: 22px;
+    line-height: 1.6;
+    color: #00ffd5;
+    margin-top: 40px;
+    background-color: rgba(255, 255, 255, 0.05);
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 255, 213, 0.2);
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    animation: fadeInSmooth 1.2s ease-in-out both;
+}
+
+.intro-tekst strong {
+    font-size: 26px;
+    color: #ffffff;
+}
+
+@keyframes fadeInSmooth {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+* {
+    box-sizing: border-box;
+}
+
+.container {
+    max-width: 800px;
+    margin: 40px auto;
+    background: #1a1a99;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 255, 213, 0.2);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+
+
+.container p {
+    color: #e0e0e0;
+    margin-bottom: 20px;
+}
+
+.chat-display {
+    background-color: #0d0d6e;
+    border: 1px solid rgba(0, 255, 213, 0.3);
+    border-radius: 8px;
+    padding: 15px;
+    min-height: 250px;
+    max-height: 450px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    color: #e0e0e0;
+    text-align: left;
+    box-shadow: inset 0 0 10px rgba(0, 255, 213, 0.1);
+}
+
+.chat-message {
+    padding: 10px 15px;
+    border-radius: 15px;
+    max-width: 85%;
+    word-wrap: break-word;
+    line-height: 1.4;
+}
+
+.user-message {
+    background-color: #007bff;
+    color: white;
+    align-self: flex-end;
+    border-bottom-right-radius: 2px;
+}
+
+.ai-message {
+    background-color: #4e0433;
+    color: #00ffd5;
+    align-self: flex-start;
+    border-bottom-left-radius: 2px;
+}
+
+.chat-input-area {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+    width: 100%;
+}
+
+.chat-input-area input {
+    flex-grow: 1;
+    padding: 12px;
+    border: 1px solid #00ffd5;
+    background-color: #0d0d6e;
+    color: #e0e0e0;
+    border-radius: 8px;
+    font-size: 1rem;
+}
+
+.chat-input-area input::placeholder {
+    color: rgba(224, 224, 224, 0.7);
+}
+
+.chat-input-area button,
+.clear-chat-button {
+    padding: 12px 20px;
+    background-color: #00ffd5;
+    color: #000;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 4px 10px rgba(0, 255, 213, 0.3);
+}
+
+.chat-input-area button:hover,
+.clear-chat-button:hover {
+    background-color: #00c2a8;
+    transform: translateY(-2px);
+}
+
+.clear-chat-button {
+    background-color: #dc3545;
+    color: white;
+    box-shadow: 0 4px 10px rgba(220, 53, 69, 0.3);
+    margin-top: 10px;
+}
+
+.clear-chat-button:hover {
+    background-color: #c82333;
+}
+
+@media (min-width: 769px) {
+    .container {
+        max-width: 900px;
+        padding: 50px;
+    }
+    .chat-input-area input,
+    .chat-input-area button,
+    .clear-chat-button {
+        font-size: 1.1rem;
+        padding: 15px;
+    }
+    .chat-display {
+        font-size: 1.1rem;
+        padding: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        margin: 20px auto;
+        padding: 20px;
+        border-radius: 5px;
+    }
+    .chat-display {
+        min-height: 150px;
+        max-height: 300px;
+    }
+    .chat-input-area {
+        flex-direction: column;
+        gap: 10px;
+    }
+    .chat-input-area button {
+        width: 100%;
+    }
+}
+
+.gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 15px;
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 15px;
+}
+
+.gallery img.thumbnail {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    display: block;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    cursor: pointer;
+}
+
+.gallery img.thumbnail:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+}
+
+@media (max-width: 768px) {
+    .gallery {
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 10px;
+    }
+    .gallery img.thumbnail {
+        height: 140px;
+    }
+}
+
+
+/* Styling voor het nieuwe hoofd introductieblok */
+.main-intro-content {
+    max-width: 900px;
+    margin: 60px auto; /* Meer ruimte rondom */
+    padding: 30px 25px; /* Wat meer padding */
+    background-color: rgba(255, 255, 255, 0.08); /* Iets donkerdere achtergrond */
+    border-radius: 18px;
+    box-shadow: 0 8px 30px rgba(0, 255, 213, 0.25); /* Meer uitgesproken schaduw */
+    text-align: left; /* Tekst links uitlijnen voor betere leesbaarheid */
+    animation: fadeInSmooth 1.5s ease-out both; /* Iets langzamere animatie */
+}
+
+.main-intro-content h2 {
+    font-size: 38px; /* Grotere titel */
+    color: #00ffd5; /* Accentkleur */
+    text-align: center; /* Titel centreren */
+    margin-bottom: 25px;
+    text-shadow: 0 0 12px rgba(0, 255, 213, 0.7);
+}
+
+.main-intro-content p {
+    font-size: 19px; /* Iets grotere paragraaf tekst */
+    line-height: 1.8;
+    color: #e0e0e0;
+    margin-bottom: 20px;
+}
+
+.ai-workflow-section {
+    background-color: rgba(0, 0, 0, 0.2); /* Donkerdere achtergrond voor deze sectie */
+    padding: 25px;
+    border-radius: 12px;
+    margin-top: 35px; /* Ruimte boven de workflow */
+    box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.3);
+}
+
+.ai-workflow-section h3 {
+    font-size: 28px; /* Titel van de workflow */
+    color: #ffffff;
+    text-align: center;
+    margin-bottom: 20px;
+    font-weight: 700;
+}
+
+.workflow-list {
+    list-style: none; /* Geen standaard lijststijl */
+    padding: 0;
+    margin: 0;
+}
+
+.workflow-list li {
+    font-size: 18px;
+    color: #f0f0f0;
+    margin-bottom: 15px; /* Ruimte tussen de lijstitems */
+    display: flex; /* Voor icon en tekst naast elkaar */
+    align-items: flex-start; /* Lijn items bovenaan uit */
+}
+
+.workflow-icon {
+    font-size: 24px; /* Grotere iconen */
+    margin-right: 15px;
+    color: #00ffd5; /* Accentkleur voor de iconen */
+    min-width: 30px; /* Zorgt dat de iconen niet in de tekst schuiven */
+    text-align: center;
+}
+
+.workflow-list a {
+    color: #8e44ad; /* Link kleur */
+    text-decoration: underline;
+    font-weight: bold;
+}
+
+.workflow-list a:hover {
+    color: #ad62c9; /* Hover effect voor links */
+}
+
+.workflow-result {
+    font-size: 20px;
+    font-style: italic;
+    color: #00ffd5; /* Accentkleur */
+    text-align: center;
+    margin-top: 30px;
+    font-weight: 600;
+}
+
+.call-to-action {
+    font-size: 22px;
+    color: #fff;
+    text-align: center;
+    margin-top: 30px;
+    font-weight: bold;
+}
+
+.call-to-action a {
+    color: #8e44ad; /* Accentkleur voor call to action link */
+    text-decoration: underline;
+    font-weight: 700;
+    transition: color 0.3s ease;
+}
+
+.call-to-action a:hover {
+    color: #ad62c9;
+}
+
+/* Media queries voor kleinere schermen */
+@media (max-width: 768px) {
+    .main-intro-content {
+        margin: 30px auto;
+        padding: 20px;
+    }
+    .main-intro-content h2 {
+        font-size: 30px;
+    }
+    .main-intro-content p {
+        font-size: 17px;
+    }
+    .ai-workflow-section h3 {
+        font-size: 24px;
+    }
+    .workflow-list li {
+        font-size: 16px;
+    }
+    .workflow-icon {
+        font-size: 20px;
+        margin-right: 10px;
+        min-width: 25px;
+    }
+    .workflow-result, .call-to-action {
+        font-size: 18px;
+    }
+}
+
+@media (max-width: 480px) {
+    .main-intro-content h2 {
+        font-size: 26px;
+    }
+    .main-intro-content p {
+        font-size: 16px;
+    }
+    .ai-workflow-section h3 {
+        font-size: 20px;
+    }
+    .workflow-list li {
+        font-size: 15px;
+    }
+    .workflow-icon {
+        font-size: 18px;
+        min-width: 20px;
+    }
+    .workflow-result, .call-to-action {
+        font-size: 16px;
+    }
+}
+/* Styling voor de nieuwe AI Toolkit sectie */
+.ai-toolkit-section {
+    max-width: 1000px; /* Iets breder dan de introductie */
+    margin: 80px auto; /* Meer ruimte boven en onder */
+    padding: 40px 30px;
+    background-color: #1a1a99; /* Donkerder blauw, zoals je formulier */
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0, 255, 213, 0.3); /* Duidelijkere neon gloed */
+    text-align: center;
+}
+
+.ai-toolkit-section h2 {
+    font-size: 42px; /* Grote, pakkende titel */
+    color: #00ffd5; /* Neon accentkleur */
+    margin-bottom: 30px;
+    text-shadow: 0 0 15px rgba(0, 255, 213, 0.8);
+    font-weight: 700;
+}
+
+.ai-toolkit-section .toolkit-intro {
+    font-size: 20px;
+    color: #e0e0e0;
+    line-height: 1.7;
+    margin-bottom: 40px;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.toolkit-categories {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* 2 of 3 kolommen op desktop */
+    gap: 30px; /* Ruimte tussen de categorieën */
+    margin-top: 40px;
+}
+
+.toolkit-category {
+    background-color: #0d0d6e; /* Iets donkerder dan de sectie zelf */
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
+    text-align: left; /* Tekst binnen categorie links uitlijnen */
+    border: 1px solid rgba(0, 255, 213, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.toolkit-category:hover {
+    transform: translateY(-8px); /* Lift effect bij hover */
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
+}
+
+.toolkit-category h3 {
+    font-size: 26px; /* Categorie titels */
+    color: #ffffff;
+    margin-bottom: 20px;
+    font-weight: 600;
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
+}
+
+.toolkit-category ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.toolkit-category li {
+    font-size: 17px;
+    color: #f0f0f0;
+    margin-bottom: 12px;
+    line-height: 1.5;
+}
+
+.toolkit-category li:last-child {
+    margin-bottom: 0; /* Geen marge onder het laatste item */
+}
+
+.toolkit-category a {
+    color: #00ffd5; /* Link kleur */
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+.toolkit-category a:hover {
+    color: #8e44ad; /* Hover kleur */
+    text-decoration: underline;
+}
+
+.ai-toolkit-section .toolkit-outro {
+    font-size: 18px;
+    color: #e0e0e0;
+    margin-top: 50px;
+    line-height: 1.6;
+}
+
+.ai-toolkit-section .toolkit-outro a {
+    color: #8e44ad;
+    text-decoration: underline;
+    font-weight: bold;
+}
+
+.ai-toolkit-section .toolkit-outro a:hover {
+    color: #ad62c9;
+}
+
+/* Media queries voor responsiviteit */
+@media (max-width: 992px) {
+    .ai-toolkit-section {
+        max-width: 90%; /* Iets smaller op tablets */
+        margin: 60px auto;
+        padding: 30px 20px;
+    }
+    .toolkit-categories {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Iets kleinere kolommen */
+        gap: 20px;
+    }
+    .ai-toolkit-section h2 {
+        font-size: 36px;
+    }
+    .ai-toolkit-section .toolkit-intro {
+        font-size: 18px;
+    }
+    .toolkit-category h3 {
+        font-size: 22px;
+    }
+    .toolkit-category li {
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 768px) {
+    .ai-toolkit-section {
+        margin: 40px auto;
+        padding: 25px 15px;
+    }
+    .toolkit-categories {
+        grid-template-columns: 1fr; /* Eén kolom op mobiel */
+        gap: 20px;
+    }
+    .ai-toolkit-section h2 {
+        font-size: 30px;
+    }
+    .ai-toolkit-section .toolkit-intro {
+        font-size: 17px;
+    }
+    .toolkit-category h3 {
+        font-size: 20px;
+    }
+    .toolkit-category li {
+        font-size: 15px;
+    }
+    .ai-toolkit-section .toolkit-outro {
+        font-size: 16px;
+    }
+}
+/* Algemene container voor content op video_ideas.html */
+.content-container {
+    max-width: 1000px;
+    margin: 40px auto 80px auto;
+    padding: 20px;
+    text-align: center;
+    color: #e0e0e0; /* Standaard tekstkleur */
+}
+
+.content-container h1 {
+    font-size: 48px;
+    color: #00ffd5;
+    margin-bottom: 20px;
+    text-shadow: 0 0 15px rgba(0, 255, 213, 0.8);
+}
+
+.content-container p {
+    font-size: 20px;
+    margin-bottom: 40px;
+}
+
+/* Styling voor Quick Start Ideas Sectie */
+.quick-start-ideas {
+    max-width: 900px;
+    margin: 60px auto 40px auto;
+    padding: 30px;
+    background-color: #1a1a99; /* Consistent met andere secties */
+    border-radius: 18px;
+    box-shadow: 0 8px 30px rgba(0, 255, 213, 0.25);
+    text-align: center;
+}
+
+.quick-start-ideas h2 {
+    font-size: 36px;
+    color: #00ffd5;
+    margin-bottom: 25px;
+    text-shadow: 0 0 12px rgba(0, 255, 213, 0.7);
+}
+
+.theme-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.theme-btn {
+    background-color: #8e44ad; /* Purple accent color */
+    color: #fff;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 25px;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 15px rgba(142, 68, 173, 0.4);
+}
+
+.theme-btn:hover {
+    background-color: #ad62c9;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(142, 68, 173, 0.6);
+}
+
+.theme-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 10px rgba(142, 68, 173, 0.3);
+}
+
+.theme-instruction {
+    font-size: 18px;
+    color: #f0f0f0;
+    margin-top: 20px;
+}
+
+/* Styling voor de AI Idea Generator sectie */
+.idea-generator {
+    max-width: 800px;
+    margin: 60px auto;
+    padding: 30px;
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.idea-generator h3 {
+    font-size: 28px;
+    color: #00ffd5;
+    margin-bottom: 25px;
+    text-shadow: 0 0 10px rgba(0, 255, 213, 0.5);
+}
+
+/* Chat display styling */
+.chat-display {
+    width: 100%;
+    height: 300px; /* Vaste hoogte voor chatvenster */
+    overflow-y: auto; /* Scrollen als inhoud te lang is */
+    border: 1px solid #00ffd5;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 20px;
+    background-color: #1c1c1c;
+    color: #e0e0e0;
+    text-align: left;
+    box-shadow: inset 0 0 10px rgba(0, 255, 213, 0.1);
+}
+
+.chat-message {
+    margin-bottom: 10px;
+    line-height: 1.5;
+}
+
+.user-message strong {
+    color: #8e44ad; /* Kleur voor "You:" */
+}
+
+.ai-message strong {
+    color: #00ffd5; /* Kleur voor "AI:" */
+}
+
+
+.chat-input-area {
+    display: flex;
+    width: 100%;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.idea-generator input[type="text"] {
+    flex-grow: 1; /* Neemt de beschikbare ruimte in */
+    padding: 15px;
+    border: 1px solid #00ffd5;
+    border-radius: 8px;
+    background-color: #1c1c1c;
+    color: #e0e0e0;
+    font-size: 18px;
+    box-shadow: 0 0 10px rgba(0, 255, 213, 0.3);
+    outline: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.idea-generator input[type="text"]:focus {
+    border-color: #8e44ad;
+    box-shadow: 0 0 15px rgba(142, 68, 173, 0.6);
+}
+
+.idea-generator button {
+    background-color: #00ffd5;
+    color: #1a1a1a;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 8px;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 255, 213, 0.4);
+}
+
+.idea-generator button:hover {
+    background-color: #00e6c5;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 255, 213, 0.6);
+}
+
+.idea-generator button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 10px rgba(0, 255, 213, 0.3);
+}
+
+.clear-chat-button {
+    background-color: #dc3545; /* Rood voor 'gevaar' actie */
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    margin-top: 10px; /* Ruimte boven de knop */
+}
+
+.clear-chat-button:hover {
+    background-color: #c82333;
+    transform: translateY(-2px);
+}
+
+.clear-chat-button:active {
+    transform: translateY(0);
+}
+
+/* Media queries voor responsiviteit */
+@media (max-width: 992px) {
+    .content-container {
+        margin: 30px auto 60px auto;
+    }
+    .quick-start-ideas, .idea-generator {
+        max-width: 90%;
+        margin: 40px auto;
+        padding: 25px;
+    }
+    .content-container h1 {
+        font-size: 40px;
+    }
+    .content-container p {
+        font-size: 18px;
+    }
+    .quick-start-ideas h2 {
+        font-size: 30px;
+    }
+    .theme-buttons {
+        gap: 10px;
+    }
+    .theme-btn {
+        padding: 10px 20px;
+        font-size: 16px;
+    }
+    .theme-instruction {
+        font-size: 16px;
+    }
+    .idea-generator h3 {
+        font-size: 24px;
+    }
+    .idea-generator input[type="text"] {
+        font-size: 16px;
+        padding: 12px;
+    }
+    .idea-generator button {
+        font-size: 18px;
+        padding: 12px 25px;
+    }
+}
+
+@media (max-width: 768px) {
+    .content-container h1 {
+        font-size: 34px;
+    }
+    .quick-start-ideas h2 {
+        font-size: 26px;
+    }
+    .theme-buttons {
+        flex-direction: column; /* Buttons onder elkaar op kleinere schermen */
+        align-items: center;
+    }
+    .theme-btn {
+        width: 80%; /* Bredere knoppen op mobiel */
+        max-width: 280px;
+        font-size: 15px;
+    }
+    .theme-instruction {
+        font-size: 15px;
+    }
+    .chat-input-area {
+        flex-direction: column; /* Input en knop onder elkaar */
+    }
+    .idea-generator button {
+        width: 100%; /* Knop vult breedte */
+    }
+}
+
+@media (max-width: 480px) {
+    .content-container h1 {
+        font-size: 28px;
+    }
+    .content-container p {
+        font-size: 16px;
+    }
+    .quick-start-ideas h2 {
+        font-size: 22px;
+    }
+    .theme-btn {
+        font-size: 14px;
+        padding: 10px 15px;
+    }
+    .idea-generator input[type="text"] {
+        font-size: 14px;
+        padding: 10px;
+    }
+    .idea-generator button {
+        font-size: 16px;
+        padding: 10px 20px;
+    }
+}
+/* Algemene H1 stijl voor alle hoofdtitels van pagina's */
+h1 {
+    font-size: 36px; /* Groter en prominenter */
+    color: #00ffd5; /* De neon-groene kleur van video_ideas */
+    font-weight: 700;
+    text-shadow: 0 0 10px rgba(0, 255, 213, 0.6); /* Sterkere neon gloed */
+    margin-top: 40px; /* Consistentie in ruimte bovenaan */
+    margin-bottom: 20px; /* Consistentie in ruimte onderaan */
+    text-align: center; /* Zorgt ervoor dat de titel altijd gecentreerd is */
+}
+
+/* Media query voor kleinere schermen om de H1 lettergrootte aan te passen */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 30px;
+        margin-top: 30px;
+        margin-bottom: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    h1 {
+        font-size: 24px;
+        margin-top: 20px;
+        margin-bottom: 10px;
+    }
+}
+/* Styling voor de AI Wijsheid Generator pagina */
+.page-description {
+    max-width: 800px;
+    margin: 20px auto 40px auto;
+    font-size: 1.1rem;
+    color: #e0e0e0;
+    line-height: 1.6;
+    text-align: center;
+}
+
+.wisdom-generator-container {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 30px;
+    background-color: #1a1a99; /* Donkerder blauw */
+    border-radius: 15px;
+    box-shadow: 0 0 25px rgba(0, 255, 213, 0.3);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px; /* Ruimte tussen elementen */
+}
+
+.generate-button {
+    padding: 15px 30px;
+    background-color: #00ffd5; /* Neon groen */
+    color: #000;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0, 255, 213, 0.4);
+}
+
+.generate-button:hover {
+    background-color: #00c2a8;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 255, 213, 0.6);
+}
+
+.generate-button:disabled {
+    background-color: #555;
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
+}
+
+.loading-spinner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    color: #00ffd5;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.spinner {
+    border: 4px solid rgba(255, 255, 255, 0.3);
+    border-top: 4px solid #00ffd5;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.wisdom-output {
+    background-color: #0d0d6e; /* Iets donkerder dan container */
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.4);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 25px;
+    width: 100%; /* Vult de breedte van de container */
+    text-align: center;
+}
+
+.wisdom-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+    border: 2px solid rgba(0, 255, 213, 0.3);
+}
+
+.wisdom-text {
+    font-size: 1.5rem; /* Grotere tekst voor de spreuk */
+    color: #f0f0f0;
+    font-style: italic;
+    line-height: 1.5;
+    margin: 0;
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.2);
+}
+
+/* Utility class */
+.hidden {
+    display: none !important;
+}
+
+/* Media queries voor responsiviteit */
+@media (max-width: 768px) {
+    .wisdom-generator-container {
+        margin: 20px auto;
+        padding: 20px;
+        gap: 20px;
+    }
+    .generate-button {
+        font-size: 1rem;
+        padding: 12px 25px;
+    }
+    .wisdom-text {
+        font-size: 1.2rem;
+    }
+    .loading-spinner p {
+        font-size: 1rem;
+    }
+    .spinner {
+        width: 30px;
+        height: 30px;
+    }
+}
+
+@media (max-width: 480px) {
+    .wisdom-text {
+        font-size: 1rem;
+    }
+    .generate-button {
+        width: 100%;
+    }
+}

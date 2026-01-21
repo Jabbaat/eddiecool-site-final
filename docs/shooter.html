@@ -1,0 +1,1091 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEO-PIXEL GRUNGE: 16-Bit Arcade</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background: #000;
+            overflow: hidden;
+            image-rendering: pixelated;
+            user-select: none;
+        }
+
+        #app {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+            background: #000;
+        }
+
+        /* CRT Effects */
+        .scanlines {
+            position: absolute;
+            inset: 0;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0, 255, 255, 0.03) 2px,
+                rgba(0, 255, 255, 0.03) 4px
+            );
+            pointer-events: none;
+            z-index: 50;
+            opacity: 0.3;
+        }
+
+        .chromatic {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at center, transparent 0%, rgba(255, 0, 166, 0.1) 100%);
+            mix-blend-mode: screen;
+            pointer-events: none;
+            z-index: 40;
+            opacity: 0.2;
+        }
+
+        .glitch-line {
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            background: white;
+            pointer-events: none;
+            z-index: 30;
+        }
+
+        /* Parallax Background */
+        .parallax {
+            position: absolute;
+            inset: 0;
+            opacity: 0.2;
+        }
+
+        .parallax-bar {
+            position: absolute;
+            width: 1px;
+            background: linear-gradient(to bottom, rgb(6, 182, 212), transparent);
+        }
+
+        /* Boot Screen */
+        .boot-screen {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+        }
+
+        .boot-text {
+            font-size: 2rem;
+            color: white;
+            letter-spacing: 0.1em;
+            animation: pulse 1s infinite;
+        }
+
+        .boot-flash {
+            position: absolute;
+            inset: 0;
+            background: white;
+            opacity: 0.8;
+        }
+
+        /* Menu */
+        .menu-container {
+            display: flex;
+            height: 100%;
+            position: relative;
+            z-index: 10;
+        }
+
+        .menu-main {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .menu-items {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .menu-button {
+            padding: 1rem 1.5rem;
+            font-size: 1.25rem;
+            letter-spacing: 0.15em;
+            border: 2px solid #00FFFF;
+            color: #00FFFF;
+            background: transparent;
+            cursor: pointer;
+            transition: all 0.1s;
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+        }
+
+        .menu-button:hover {
+            border: 3px solid #FF00A6;
+            box-shadow: 0 0 20px rgba(255, 0, 166, 0.8), inset 0 0 20px rgba(255, 0, 166, 0.2);
+            animation: btnPulse 0.5s infinite;
+        }
+
+        .hud-sidebar {
+            width: 20rem;
+            border-left: 4px solid rgb(6, 182, 212);
+            background: rgba(0, 0, 0, 0.8);
+            box-shadow: -5px 0 20px rgba(0, 255, 255, 0.3);
+            padding: 1.5rem;
+        }
+
+        .hud-title {
+            text-align: center;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid rgb(6, 182, 212);
+            color: rgb(6, 182, 212);
+            font-size: 1.25rem;
+            letter-spacing: 0.15em;
+            animation: hudPulse 2s infinite;
+            margin-bottom: 1.5rem;
+        }
+
+        .hud-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .hud-label {
+            font-size: 0.875rem;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.5rem;
+        }
+
+        .energy-bars {
+            display: flex;
+            gap: 0.25rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .energy-bar {
+            flex: 1;
+            height: 1.5rem;
+            border: 1px solid #00FF00;
+        }
+
+        .energy-bar.filled {
+            background: #00FF00;
+            box-shadow: 0 0 10px #00FF00;
+        }
+
+        .target-acquired {
+            position: absolute;
+            bottom: 1.5rem;
+            left: 1.5rem;
+            right: 1.5rem;
+            padding: 0.75rem;
+            border: 2px solid #FF00A6;
+            background: black;
+            color: #FF00A6;
+            box-shadow: 0 0 20px rgba(255, 0, 166, 0.8);
+            text-align: center;
+            letter-spacing: 0.15em;
+            animation: targetPulse 0.5s infinite;
+        }
+
+        /* Game */
+        .game-container {
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 10;
+        }
+
+        .game-arena {
+            width: 100%;
+            height: 100%;
+            max-width: 64rem;
+            position: relative;
+            border: 4px solid #00FFFF;
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
+        }
+
+        .player {
+            position: absolute;
+            width: 24px;
+            height: 32px;
+            transform: translate(-50%, -50%);
+        }
+
+        .player-ship {
+            width: 24px;
+            height: 32px;
+            position: relative;
+        }
+
+        .player-ship::before {
+            content: '';
+            position: absolute;
+            width: 12px;
+            height: 20px;
+            background: #00FFFF;
+            left: 6px;
+            top: 0;
+            clip-path: polygon(50% 0%, 100% 70%, 80% 100%, 20% 100%, 0% 70%);
+            box-shadow: 0 0 15px #00FFFF;
+        }
+
+        .player-ship::after {
+            content: '';
+            position: absolute;
+            width: 24px;
+            height: 8px;
+            background: linear-gradient(90deg, #00FFFF 0%, transparent 50%, #00FFFF 100%);
+            left: 0;
+            top: 12px;
+            box-shadow: 0 0 10px #00FFFF;
+        }
+
+        .bullet {
+            position: absolute;
+            width: 4px;
+            height: 12px;
+            background: #FF00A6;
+            box-shadow: 0 0 10px #FF00A6;
+            transform: translate(-50%, -50%);
+        }
+
+        .enemy {
+            position: absolute;
+            width: 28px;
+            height: 28px;
+            transform: translate(-50%, -50%);
+        }
+
+        .enemy-body {
+            width: 28px;
+            height: 28px;
+            position: relative;
+            animation: enemyFloat 1s infinite alternate;
+        }
+
+        .enemy-body::before {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: #00FF00;
+            left: 4px;
+            top: 4px;
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            box-shadow: 0 0 15px #00FF00;
+        }
+
+        .enemy-body::after {
+            content: '';
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: #FF00A6;
+            left: 11px;
+            top: 11px;
+            box-shadow: 0 0 8px #FF00A6;
+        }
+
+        .enemy-tentacle-left {
+            position: absolute;
+            width: 2px;
+            height: 8px;
+            background: #00FF00;
+            left: 6px;
+            top: 20px;
+            box-shadow: 0 0 5px #00FF00;
+        }
+
+        .enemy-tentacle-right {
+            position: absolute;
+            width: 2px;
+            height: 8px;
+            background: #00FF00;
+            right: 6px;
+            top: 20px;
+            box-shadow: 0 0 5px #00FF00;
+        }
+
+        /* Enemy Type 2 - Fast Scout */
+        .enemy-type2 .enemy-body::before {
+            background: #00FFFF;
+            clip-path: polygon(50% 10%, 90% 40%, 80% 90%, 20% 90%, 10% 40%);
+            box-shadow: 0 0 15px #00FFFF;
+        }
+
+        .enemy-type2 .enemy-body::after {
+            background: #FFFF00;
+            box-shadow: 0 0 8px #FFFF00;
+        }
+
+        .enemy-type2 .enemy-tentacle-left,
+        .enemy-type2 .enemy-tentacle-right {
+            background: #00FFFF;
+            box-shadow: 0 0 5px #00FFFF;
+            height: 6px;
+        }
+
+        /* Enemy Type 3 - Heavy Tank */
+        .enemy-type3 {
+            width: 36px;
+            height: 36px;
+        }
+
+        .enemy-type3 .enemy-body {
+            width: 36px;
+            height: 36px;
+        }
+
+        .enemy-type3 .enemy-body::before {
+            background: #FF00A6;
+            width: 28px;
+            height: 28px;
+            left: 4px;
+            top: 4px;
+            clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
+            box-shadow: 0 0 20px #FF00A6;
+        }
+
+        .enemy-type3 .enemy-body::after {
+            background: #FFFF00;
+            width: 8px;
+            height: 8px;
+            left: 14px;
+            top: 14px;
+            box-shadow: 0 0 10px #FFFF00;
+        }
+
+        .enemy-type3 .enemy-tentacle-left,
+        .enemy-type3 .enemy-tentacle-right {
+            background: #FF00A6;
+            box-shadow: 0 0 8px #FF00A6;
+            height: 10px;
+            width: 3px;
+        }
+
+        .game-hud {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            color: #00FFFF;
+            font-size: 1.25rem;
+            text-shadow: 0 0 10px #00FFFF;
+        }
+
+        .game-hud div {
+            margin-bottom: 0.5rem;
+        }
+
+        .game-controls {
+            position: absolute;
+            bottom: 1rem;
+            left: 1rem;
+            color: #00FF00;
+            font-size: 0.875rem;
+            opacity: 0.7;
+        }
+
+        .game-controls div {
+            margin-bottom: 0.25rem;
+        }
+
+        /* Mobile Controls */
+        .mobile-controls {
+            position: absolute;
+            bottom: 2rem;
+            left: 0;
+            right: 0;
+            display: none;
+            justify-content: space-between;
+            padding: 0 2rem;
+            z-index: 100;
+        }
+
+        .mobile-joystick {
+            position: relative;
+            width: 140px;
+            height: 140px;
+            touch-action: none;
+        }
+
+        .joystick-base {
+            position: absolute;
+            width: 140px;
+            height: 140px;
+            background: rgba(0, 255, 255, 0.2);
+            border: 3px solid #00FFFF;
+            border-radius: 50%;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.4);
+            pointer-events: none;
+        }
+
+        .joystick-stick {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background: rgba(0, 255, 255, 0.6);
+            border: 3px solid #00FFFF;
+            border-radius: 50%;
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.8);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            transition: none;
+            pointer-events: none;
+        }
+
+        .mobile-shoot {
+            width: 100px;
+            height: 100px;
+            background: rgba(255, 0, 166, 0.3);
+            border: 4px solid #FF00A6;
+            border-radius: 50%;
+            box-shadow: 0 0 20px rgba(255, 0, 166, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #FF00A6;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            user-select: none;
+            touch-action: none;
+            margin-top: 20px;
+        }
+
+        .mobile-shoot:active {
+            background: rgba(255, 0, 166, 0.7);
+            box-shadow: 0 0 30px rgba(255, 0, 166, 1);
+            transform: scale(0.95);
+        }
+
+        .mobile-shoot-auto {
+            margin-top: 0.5rem;
+            font-size: 0.7rem;
+            color: #00FF00;
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .mobile-controls {
+                display: flex;
+            }
+            
+            .game-controls {
+                display: none;
+            }
+
+            .game-hud {
+                font-size: 1rem;
+            }
+
+            .hud-sidebar {
+                display: none;
+            }
+
+            .mobile-joystick {
+                margin-left: 1rem;
+            }
+
+            .mobile-shoot-container {
+                margin-right: 1rem;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+
+        .game-over-screen {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.8);
+        }
+
+        .game-over-content {
+            text-align: center;
+        }
+
+        .game-over-title {
+            font-size: 4rem;
+            letter-spacing: 0.15em;
+            color: #FF00A6;
+            text-shadow: 0 0 30px #FF00A6;
+            animation: btnPulse 1s infinite;
+            margin-bottom: 1.5rem;
+        }
+
+        .game-over-score {
+            font-size: 2rem;
+            color: #00FFFF;
+            margin-bottom: 2rem;
+        }
+
+        .game-over-button {
+            display: inline-block;
+            padding: 1rem 2rem;
+            font-size: 1.25rem;
+            letter-spacing: 0.15em;
+            border: 3px solid #00FFFF;
+            color: #00FFFF;
+            background: transparent;
+            cursor: pointer;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.8);
+        }
+
+        /* Animations */
+        @keyframes enemyFloat {
+            0% { transform: translateY(0px); }
+            100% { transform: translateY(-3px); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        @keyframes btnPulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        @keyframes hudPulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+
+        @keyframes targetPulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <!-- CRT Effects -->
+        <div class="scanlines"></div>
+        <div class="chromatic"></div>
+        
+        <!-- Parallax Background -->
+        <div class="parallax" id="parallax"></div>
+
+        <!-- Boot Screen -->
+        <div id="bootScreen" class="boot-screen">
+            <div class="boot-text" id="bootText"></div>
+        </div>
+
+        <!-- Menu Screen -->
+        <div id="menuScreen" class="menu-container hidden">
+            <div class="menu-main">
+                <div class="menu-items">
+                    <button class="menu-button" id="btnStart">[[ START TRANSMISSION ]]</button>
+                    <button class="menu-button" id="btnLoad">[[ RELOAD SAVE DATA ]]</button>
+                    <button class="menu-button" id="btnConfig">[[ CONFIGURATION FILES ]]</button>
+                    <button class="menu-button" id="btnQuit">[[ QUIT TO DOS ]]</button>
+                </div>
+            </div>
+            <div class="hud-sidebar">
+                <div class="hud-title">:: H U D - A C C E S S ::</div>
+                
+                <div class="hud-section">
+                    <div class="hud-label" style="color: #00FF00;">ENERGY LEVEL:</div>
+                    <div class="energy-bars" id="energyBars"></div>
+                    <div style="text-align: right; color: #00FF00; font-size: 1.125rem;">82%</div>
+                </div>
+
+                <div class="hud-section">
+                    <div class="hud-label" style="color: rgb(6, 182, 212);">COORDINATES:</div>
+                    <div style="color: #FF00A6; font-size: 1.125rem;" id="coords">X -38.45 / Y 12.91</div>
+                </div>
+
+                <div class="hud-section">
+                    <div class="hud-label" style="color: rgb(6, 182, 212);">SYSTEM STATUS:</div>
+                    <div style="color: #00FF00; font-size: 1.125rem; animation: hudPulse 2s infinite;">ONLINE / NOMINAL</div>
+                </div>
+
+                <div class="hud-section">
+                    <div class="hud-label" style="color: rgb(6, 182, 212);">FRAME DATA:</div>
+                    <div style="color: #FF00A6; font-size: 1.5rem; font-weight: bold;" id="fps">60 FPS</div>
+                </div>
+
+                <div class="target-acquired hidden" id="targetAcquired">
+                    ⚡ TARGET ACQUIRED ⚡
+                </div>
+            </div>
+        </div>
+
+        <!-- Game Screen -->
+        <div id="gameScreen" class="game-container hidden">
+            <div class="game-arena" id="gameArena">
+                <!-- Game entities will be added here dynamically -->
+            </div>
+            <div class="game-hud">
+                <div>SCORE: <span id="score">0</span></div>
+                <div>LIVES: <span id="lives">███</span></div>
+            </div>
+            <div class="game-controls">
+                <div>WASD / ARROWS: MOVE</div>
+                <div>SPACE: SHOOT</div>
+                <div>ESC: MENU</div>
+            </div>
+
+            <!-- Mobile Controls -->
+            <div class="mobile-controls" id="mobileControls">
+                <div class="mobile-joystick" id="joystickContainer">
+                    <div class="joystick-base"></div>
+                    <div class="joystick-stick" id="joystickStick"></div>
+                </div>
+                <div class="mobile-shoot-container">
+                    <div class="mobile-shoot" id="btnShoot">FIRE</div>
+                    <div class="mobile-shoot-auto">Auto-fire: <span id="autoFireStatus">OFF</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Game State
+        const state = {
+            screen: 'boot',
+            player: { x: 50, y: 80 },
+            bullets: [],
+            enemies: [],
+            score: 0,
+            lives: 3,
+            gameOver: false,
+            keysPressed: {},
+            joystick: { active: false, x: 0, y: 0, centerX: 0, centerY: 0 },
+            autoFire: false,
+            lastTime: Date.now(),
+            fps: 60,
+            parallaxOffset: 0
+        };
+
+        // DOM Elements
+        const bootScreen = document.getElementById('bootScreen');
+        const bootText = document.getElementById('bootText');
+        const menuScreen = document.getElementById('menuScreen');
+        const gameScreen = document.getElementById('gameScreen');
+        const gameArena = document.getElementById('gameArena');
+        const parallax = document.getElementById('parallax');
+        const targetAcquired = document.getElementById('targetAcquired');
+
+        // Boot Sequence
+        function startBoot() {
+            setTimeout(() => bootText.textContent = 'LOADING DIGITAL CORE...', 0);
+            setTimeout(() => bootText.textContent = 'LOADING DIGITAL CORE... [OK]', 800);
+            setTimeout(() => {
+                bootText.textContent = '';
+                bootScreen.innerHTML = '<div class="boot-flash"></div>';
+            }, 1200);
+            setTimeout(() => {
+                bootScreen.classList.add('hidden');
+                menuScreen.classList.remove('hidden');
+                state.screen = 'menu';
+            }, 2000);
+        }
+
+        // Initialize Parallax
+        function initParallax() {
+            for (let i = 0; i < 20; i++) {
+                const bar = document.createElement('div');
+                bar.className = 'parallax-bar';
+                bar.style.height = `${100 + Math.random() * 200}px`;
+                bar.style.left = `${i * 60}px`;
+                bar.style.top = `${Math.random() * 50}%`;
+                bar.style.opacity = 0.3 + Math.random() * 0.3;
+                parallax.appendChild(bar);
+            }
+        }
+
+        // Initialize Energy Bars
+        function initEnergyBars() {
+            const energyBars = document.getElementById('energyBars');
+            for (let i = 0; i < 5; i++) {
+                const bar = document.createElement('div');
+                bar.className = `energy-bar ${i < 4 ? 'filled' : ''}`;
+                energyBars.appendChild(bar);
+            }
+        }
+
+        // Menu Buttons
+        document.getElementById('btnStart').addEventListener('click', startGame);
+        
+        document.querySelectorAll('.menu-button').forEach(btn => {
+            btn.addEventListener('mouseenter', () => {
+                targetAcquired.classList.remove('hidden');
+                btn.style.color = ['#00FFFF', '#FF00A6', '#00FF00'][Math.floor(Math.random() * 3)];
+            });
+            btn.addEventListener('mouseleave', () => {
+                targetAcquired.classList.add('hidden');
+                btn.style.color = '#00FFFF';
+            });
+        });
+
+        // Start Game
+        function startGame() {
+            menuScreen.classList.add('hidden');
+            gameScreen.classList.remove('hidden');
+            state.screen = 'game';
+            state.score = 0;
+            state.lives = 3;
+            state.gameOver = false;
+            state.player = { x: 50, y: 80 };
+            state.bullets = [];
+            state.enemies = [];
+            updateGameHUD();
+            gameLoop();
+        }
+
+        // Return to Menu
+        function returnToMenu() {
+            gameScreen.classList.add('hidden');
+            menuScreen.classList.remove('hidden');
+            state.screen = 'menu';
+            gameArena.innerHTML = '';
+        }
+
+        // Game Controls
+        window.addEventListener('keydown', (e) => {
+            state.keysPressed[e.key] = true;
+            if (e.key === ' ' && state.screen === 'game' && !state.gameOver) {
+                e.preventDefault();
+                shootBullet();
+            }
+            if (e.key === 'Escape' && state.screen === 'game') {
+                returnToMenu();
+            }
+        });
+
+        window.addEventListener('keyup', (e) => {
+            state.keysPressed[e.key] = false;
+        });
+
+        // Mobile Controls
+        function setupMobileControls() {
+            const joystickContainer = document.getElementById('joystickContainer');
+            const joystickStick = document.getElementById('joystickStick');
+            const btnShoot = document.getElementById('btnShoot');
+            const autoFireStatus = document.getElementById('autoFireStatus');
+
+            // Joystick Controls
+            const maxDistance = 40; // Maximum distance from center
+
+            const handleJoystickStart = (e) => {
+                e.preventDefault();
+                state.joystick.active = true;
+                
+                const rect = joystickContainer.getBoundingClientRect();
+                state.joystick.centerX = rect.left + rect.width / 2;
+                state.joystick.centerY = rect.top + rect.height / 2;
+            };
+
+            const handleJoystickMove = (e) => {
+                if (!state.joystick.active) return;
+                e.preventDefault();
+
+                const touch = e.touches ? e.touches[0] : e;
+                const deltaX = touch.clientX - state.joystick.centerX;
+                const deltaY = touch.clientY - state.joystick.centerY;
+
+                // Calculate distance from center
+                const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+                
+                // Limit to max distance
+                const limitedDistance = Math.min(distance, maxDistance);
+                const angle = Math.atan2(deltaY, deltaX);
+                
+                const x = Math.cos(angle) * limitedDistance;
+                const y = Math.sin(angle) * limitedDistance;
+
+                // Update stick position
+                joystickStick.style.transform = `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))`;
+
+                // Normalize to -1 to 1 range
+                state.joystick.x = x / maxDistance;
+                state.joystick.y = y / maxDistance;
+            };
+
+            const handleJoystickEnd = (e) => {
+                e.preventDefault();
+                state.joystick.active = false;
+                state.joystick.x = 0;
+                state.joystick.y = 0;
+                
+                // Reset stick position
+                joystickStick.style.transform = 'translate(-50%, -50%)';
+            };
+
+            joystickContainer.addEventListener('touchstart', handleJoystickStart);
+            joystickContainer.addEventListener('touchmove', handleJoystickMove);
+            joystickContainer.addEventListener('touchend', handleJoystickEnd);
+            joystickContainer.addEventListener('touchcancel', handleJoystickEnd);
+
+            // Mouse support for testing
+            joystickContainer.addEventListener('mousedown', handleJoystickStart);
+            document.addEventListener('mousemove', handleJoystickMove);
+            document.addEventListener('mouseup', handleJoystickEnd);
+
+            // Shoot Button - Manual Fire
+            btnShoot.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                shootBullet();
+            });
+
+            // Double tap to toggle auto-fire
+            let lastTap = 0;
+            btnShoot.addEventListener('touchend', (e) => {
+                e.preventDefault();
+                const currentTime = new Date().getTime();
+                const tapLength = currentTime - lastTap;
+                
+                if (tapLength < 300 && tapLength > 0) {
+                    // Double tap detected
+                    state.autoFire = !state.autoFire;
+                    autoFireStatus.textContent = state.autoFire ? 'ON' : 'OFF';
+                    autoFireStatus.style.color = state.autoFire ? '#00FF00' : '#FF00A6';
+                }
+                lastTap = currentTime;
+            });
+        }
+
+        // Shoot Bullet
+        function shootBullet() {
+            state.bullets.push({
+                x: state.player.x,
+                y: state.player.y - 2,
+                id: Date.now()
+            });
+        }
+
+        // Game Loop
+        function gameLoop() {
+            if (state.screen !== 'game' || state.gameOver) return;
+
+            const speed = 0.8; // Smooth, precise movement
+
+            // Move Player (Keyboard) - Smooth continuous movement
+            if (state.keysPressed['ArrowLeft'] || state.keysPressed['a']) state.player.x -= speed;
+            if (state.keysPressed['ArrowRight'] || state.keysPressed['d']) state.player.x += speed;
+            if (state.keysPressed['ArrowUp'] || state.keysPressed['w']) state.player.y -= speed;
+            if (state.keysPressed['ArrowDown'] || state.keysPressed['s']) state.player.y += speed;
+
+            // Move Player (Joystick) - Smooth analog movement
+            if (state.joystick.active || Math.abs(state.joystick.x) > 0.1 || Math.abs(state.joystick.y) > 0.1) {
+                state.player.x += state.joystick.x * speed * 3;
+                state.player.y += state.joystick.y * speed * 3;
+            }
+
+            state.player.x = Math.max(5, Math.min(95, state.player.x));
+            state.player.y = Math.max(5, Math.min(95, state.player.y));
+
+            // Auto-fire
+            if (state.autoFire && Math.random() > 0.85) {
+                shootBullet();
+            }
+
+            // Move Bullets
+            state.bullets = state.bullets
+                .map(b => ({ ...b, y: b.y - 3 }))
+                .filter(b => b.y > 0);
+
+            // Move Enemies
+            state.enemies = state.enemies
+                .map(e => {
+                    let speed = 0.5;
+                    if (e.type === 2) speed = 1.2; // Fast scout
+                    if (e.type === 3) speed = 0.3; // Slow tank
+                    return { ...e, y: e.y + speed };
+                })
+                .filter(e => e.y < 100);
+
+            // Check Bullet-Enemy Collisions
+            state.bullets = state.bullets.filter(bullet => {
+                const hitIndex = state.enemies.findIndex(enemy => {
+                    const hitboxSize = enemy.type === 3 ? 4 : 3;
+                    return Math.abs(bullet.x - enemy.x) < hitboxSize &&
+                           Math.abs(bullet.y - enemy.y) < hitboxSize;
+                });
+
+                if (hitIndex !== -1) {
+                    const enemy = state.enemies[hitIndex];
+                    let points = 100;
+                    if (enemy.type === 2) points = 150; // Fast scout worth more
+                    if (enemy.type === 3) points = 250; // Tank worth most
+                    
+                    state.enemies.splice(hitIndex, 1);
+                    state.score += points;
+                    updateGameHUD();
+                    return false;
+                }
+                return true;
+            });
+
+            // Check Player-Enemy Collisions
+            const hitEnemyIndex = state.enemies.findIndex(enemy => {
+                const hitboxSize = enemy.type === 3 ? 5 : 4;
+                return Math.abs(state.player.x - enemy.x) < hitboxSize &&
+                       Math.abs(state.player.y - enemy.y) < hitboxSize;
+            });
+
+            if (hitEnemyIndex !== -1) {
+                state.enemies.splice(hitEnemyIndex, 1);
+                state.lives--;
+                updateGameHUD();
+                if (state.lives <= 0) {
+                    state.gameOver = true;
+                    showGameOver();
+                    return;
+                }
+            }
+
+            // Spawn Enemies
+            if (Math.random() > 0.97) {
+                const rand = Math.random();
+                let type = 1; // Default: Basic alien
+                
+                if (rand > 0.7) type = 2; // 30% chance: Fast scout
+                if (rand > 0.9) type = 3; // 10% chance: Heavy tank
+                
+                state.enemies.push({
+                    x: Math.random() * 90 + 5,
+                    y: 0,
+                    id: Date.now(),
+                    type: type
+                });
+            }
+
+            renderGame();
+            requestAnimationFrame(gameLoop);
+        }
+
+        // Render Game
+        function renderGame() {
+            gameArena.innerHTML = '';
+
+            // Render Player
+            const player = document.createElement('div');
+            player.className = 'player';
+            player.style.left = `${state.player.x}%`;
+            player.style.top = `${state.player.y}%`;
+            player.innerHTML = '<div class="player-ship"></div>';
+            gameArena.appendChild(player);
+
+            // Render Bullets
+            state.bullets.forEach(bullet => {
+                const bulletEl = document.createElement('div');
+                bulletEl.className = 'bullet';
+                bulletEl.style.left = `${bullet.x}%`;
+                bulletEl.style.top = `${bullet.y}%`;
+                gameArena.appendChild(bulletEl);
+            });
+
+            // Render Enemies
+            state.enemies.forEach(enemy => {
+                const enemyEl = document.createElement('div');
+                enemyEl.className = `enemy enemy-type${enemy.type}`;
+                enemyEl.style.left = `${enemy.x}%`;
+                enemyEl.style.top = `${enemy.y}%`;
+                enemyEl.innerHTML = `
+                    <div class="enemy-body">
+                        <div class="enemy-tentacle-left"></div>
+                        <div class="enemy-tentacle-right"></div>
+                    </div>
+                `;
+                gameArena.appendChild(enemyEl);
+            });
+        }
+
+        // Update Game HUD
+        function updateGameHUD() {
+            document.getElementById('score').textContent = state.score;
+            document.getElementById('lives').textContent = '█'.repeat(state.lives);
+        }
+
+        // Show Game Over
+        function showGameOver() {
+            const gameOverDiv = document.createElement('div');
+            gameOverDiv.className = 'game-over-screen';
+            gameOverDiv.innerHTML = `
+                <div class="game-over-content">
+                    <div class="game-over-title">GAME OVER</div>
+                    <div class="game-over-score">SCORE: ${state.score}</div>
+                    <button class="game-over-button" onclick="returnToMenu()">[[ RETURN TO MENU ]]</button>
+                </div>
+            `;
+            gameArena.appendChild(gameOverDiv);
+        }
+
+        // FPS Counter
+        setInterval(() => {
+            const now = Date.now();
+            const delta = now - state.lastTime;
+            if (delta > 0) {
+                state.fps = Math.round(1000 / delta);
+                document.getElementById('fps').textContent = `${state.fps} FPS`;
+            }
+            state.lastTime = now;
+        }, 100);
+
+        // Parallax Animation
+        setInterval(() => {
+            state.parallaxOffset = (state.parallaxOffset + 0.5) % 100;
+            parallax.style.transform = `translateX(-${state.parallaxOffset}px)`;
+        }, 50);
+
+        // Coords Animation
+        setInterval(() => {
+            const x = (-38.45 + (Math.random() - 0.5) * 0.2).toFixed(2);
+            const y = (12.91 + (Math.random() - 0.5) * 0.2).toFixed(2);
+            document.getElementById('coords').textContent = `X ${x} / Y ${y}`;
+        }, 1500);
+
+        // Random Glitch Effects
+        setInterval(() => {
+            if (Math.random() > 0.95) {
+                const glitch1 = document.createElement('div');
+                glitch1.className = 'glitch-line';
+                glitch1.style.top = `${Math.random() * 100}%`;
+                glitch1.style.opacity = '0.8';
+                document.getElementById('app').appendChild(glitch1);
+
+                const glitch2 = document.createElement('div');
+                glitch2.className = 'glitch-line';
+                glitch2.style.top = `${Math.random() * 100}%`;
+                glitch2.style.opacity = '0.6';
+                document.getElementById('app').appendChild(glitch2);
+
+                setTimeout(() => {
+                    glitch1.remove();
+                    glitch2.remove();
+                }, 100);
+            }
+        }, 2000);
+
+        // Initialize
+        initParallax();
+        initEnergyBars();
+        setupMobileControls();
+        startBoot();
+    </script>
+</body>
+</html>

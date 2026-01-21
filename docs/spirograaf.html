@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cosmic Neon 3D Spirograaf</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0c1427;
+        }
+        #spiroContainer {
+            width: 100%;
+            height: auto;
+            aspect-ratio: 1 / 1;
+            cursor: move;
+            touch-action: none;
+            position: relative;
+        }
+        #spiroContainer canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100% !important;
+            height: 100% !important;
+        }
+        input[type="range"] {
+            -webkit-appearance: none; appearance: none;
+            width: 100%; height: 6px;
+            background: #374151;
+            border-radius: 3px;
+            outline: none; opacity: 0.8;
+            transition: opacity .2s;
+        }
+        input[type="range"]:hover { opacity: 1; }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none; appearance: none;
+            width: 20px; height: 20px;
+            background: #3b82f6;
+            cursor: pointer;
+            border-radius: 50%;
+            border: 2px solid #1f2937;
+        }
+        input[type=number]::-webkit-inner-spin-button, 
+        input[type=number]::-webkit-outer-spin-button { 
+          -webkit-appearance: none; 
+          margin: 0; 
+        }
+        input[type=number] { -moz-appearance: textfield; }
+        .tab { white-space: nowrap; }
+        .tab.active { border-color: #3b82f6; background-color: #1e40af; color: #eff6ff; }
+        .color-btn.active { box-shadow: 0 0 0 3px rgba(91, 192, 255, 0.7); transform: scale(1.05); }
+        .type-btn.active, .style-btn.active { background-color: #3b82f6; color: white; }
+        .keyframe-indicator {
+            height: 8px;
+            background-color: #4b5563;
+            border-radius: 4px;
+            position: relative;
+            overflow: hidden;
+        }
+        .keyframe-marker {
+            position: absolute;
+            width: 4px;
+            height: 100%;
+            background-color: #3b82f6;
+        }
+    </style>
+</head>
+<body class="text-gray-200 flex flex-col items-center justify-center min-h-screen p-4">
+
+    <div class="w-full max-w-7xl mx-auto bg-gray-900 bg-opacity-80 backdrop-blur-sm border border-gray-700 rounded-xl shadow-2xl p-6 md:p-8">
+        <h1 class="text-3xl md:text-4xl font-bold text-center text-blue-400 mb-6">Cosmic Neon Spirograaf</h1>
+
+        <div class="flex flex-col lg:flex-row gap-8">
+            
+            <div class="w-full lg:w-2/3 flex-shrink-0">
+                <div id="spiroContainer" class="rounded-lg border-2 border-gray-700 overflow-hidden"></div>
+            </div>
+
+            <div class="w-full lg:w-1/3 flex flex-col">
+                <div class="flex border-b border-gray-700 mb-4 overflow-x-auto">
+                    <button class="tab flex-1 py-3 px-2 text-center font-semibold text-gray-400 border-b-4 border-transparent transition" data-index="0">Fig. 1</button>
+                    <button class="tab flex-1 py-3 px-2 text-center font-semibold text-gray-400 border-b-4 border-transparent transition" data-index="1">Fig. 2</button>
+                    <button class="tab flex-1 py-3 px-2 text-center font-semibold text-gray-400 border-b-4 border-transparent transition" data-index="2">Fig. 3</button>
+                    <button class="tab flex-1 py-3 px-2 text-center font-semibold text-gray-400 border-b-4 border-transparent transition" data-index="3">Fig. 4</button>
+                    <button class="tab flex-1 py-3 px-2 text-center font-semibold text-gray-400 border-b-4 border-transparent transition" data-index="4">Fig. 5</button>
+                </div>
+
+                <div class="flex flex-col space-y-5">
+                    <div>
+                        <h2 class="text-xl font-bold mb-3 text-blue-300">Stijl</h2>
+                        <div class="grid grid-cols-2 gap-3 bg-gray-800 p-1 rounded-lg">
+                            <button id="styleTube" class="style-btn font-semibold py-2 rounded-md transition-all">Neon Lijn</button>
+                            <button id="styleSphere" class="style-btn font-semibold py-2 rounded-md transition-all">Neon Bollen</button>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h2 class="text-xl font-bold mb-3 text-blue-300">Parameters</h2>
+                        <div class="space-y-2">
+                            <!-- Parameter Controls will be dynamically inserted here -->
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h2 class="text-xl font-bold mb-3 text-blue-300">Type Figuur</h2>
+                        <div class="grid grid-cols-2 gap-3 bg-gray-800 p-1 rounded-lg">
+                            <button id="modeInside" class="type-btn font-semibold py-2 rounded-md transition-all">Binnenkant</button>
+                            <button id="modeOutside" class="type-btn font-semibold py-2 rounded-md transition-all">Buitenkant</button>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h2 class="text-xl font-bold mb-3 text-blue-300">Kleur</h2>
+                        <div id="color-palette" class="grid grid-cols-5 gap-3"></div>
+                    </div>
+                    
+                    <div>
+                         <h2 class="text-xl font-bold mb-3 text-blue-300">Acties</h2>
+                         <div class="space-y-4">
+                            <div>
+                                <label for="zoomSlider" class="flex justify-between font-medium text-gray-300">Zoom</label>
+                                <input type="range" id="zoomSlider" min="0" max="100" value="50" class="mt-1">
+                            </div>
+                            <div class="space-y-2">
+                                <button id="addKeyframeBtn" class="w-full bg-indigo-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-indigo-500 transition-colors duration-300">Keyframe Toevoegen</button>
+                                <div class="grid grid-cols-3 gap-2">
+                                    <button id="playAnimationBtn" class="w-full bg-green-600 text-white font-bold py-2 px-3 rounded-lg hover:bg-green-500 transition-colors">Play</button>
+                                    <button id="pauseAnimationBtn" class="w-full bg-yellow-600 text-white font-bold py-2 px-3 rounded-lg hover:bg-yellow-500 transition-colors">Pause</button>
+                                    <button id="resetAnimationBtn" class="w-full bg-gray-600 text-white font-bold py-2 px-3 rounded-lg hover:bg-gray-500 transition-colors">Reset Anim</button>
+                                </div>
+                                <div id="timeline-indicator" class="keyframe-indicator mt-2"></div>
+                            </div>
+                            <button id="clearBtn" class="w-full bg-red-700 text-white font-bold py-3 px-4 rounded-lg hover:bg-red-600 transition-colors duration-300">Alles Wissen</button>
+                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://cdn.jsdelivr.net/npm/three@0.164.1/build/three.module.js",
+                "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.164.1/examples/jsm/"
+            }
+        }
+    </script>
+    <script type="module">
+        import * as THREE from 'three';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+        import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+        import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+        import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+
+        const NUM_FIGURES = 5;
+        const MIN_ZOOM = 150;
+        const MAX_ZOOM = 1000;
+        const PARAMETERS = {
+            R: { min: 10, max: 250, step: 1, label: 'Vaste Cirkel (R)' },
+            r: { min: 1, max: 250, step: 1, label: 'Bewegende Cirkel (r)' },
+            d: { min: 1, max: 250, step: 1, label: 'Afstand Pen (d)' },
+            size: { min: 0.1, max: 5, step: 0.05, label: 'Grootte' },
+            rotation: { min: 0, max: 360, step: 1, label: 'Rotatie' },
+        };
+
+        const container = document.getElementById('spiroContainer');
+        const zoomSlider = document.getElementById('zoomSlider');
+        const tabs = document.querySelectorAll('.tab');
+        const modeInsideBtn = document.getElementById('modeInside');
+        const modeOutsideBtn = document.getElementById('modeOutside');
+        const styleTubeBtn = document.getElementById('styleTube');
+        const styleSphereBtn = document.getElementById('styleSphere');
+        const colorPalette = document.getElementById('color-palette');
+        const clearBtn = document.getElementById('clearBtn');
+        const addKeyframeBtn = document.getElementById('addKeyframeBtn');
+        const playAnimationBtn = document.getElementById('playAnimationBtn');
+        const pauseAnimationBtn = document.getElementById('pauseAnimationBtn');
+        const resetAnimationBtn = document.getElementById('resetAnimationBtn');
+        const timelineIndicator = document.getElementById('timeline-indicator');
+        
+        let scene, camera, renderer, controls, clock, composer, bloomPass;
+        let figureGroups = [];
+        const zPositions = [20, 10, 0, -10, -20];
+        let backgroundScene, backgroundCam;
+        let backgroundMesh;
+        
+        const shaderMaterial = new THREE.ShaderMaterial({
+            uniforms: { u_time: { value: 0.0 }, u_resolution: { value: new THREE.Vector2() } },
+            vertexShader: `varying vec2 vUv; void main() { vUv = uv; gl_Position = vec4(position, 1.0); }`,
+            fragmentShader: `
+                uniform vec2 u_resolution; uniform float u_time; varying vec2 vUv;
+                float random(vec2 st) { return fract(sin(dot(st.xy, vec2(12.9898, 78.233))) * 43758.5453123); }
+                float noise(vec2 st) {
+                    vec2 i = floor(st); vec2 f = fract(st); vec2 u = f * f * (3.0 - 2.0 * f);
+                    return mix(mix(random(i + vec2(0.0, 0.0)), random(i + vec2(1.0, 0.0)), u.x),
+                               mix(random(i + vec2(0.0, 1.0)), random(i + vec2(1.0, 1.0)), u.x), u.y);
+                }
+                float fbm(vec2 st) {
+                    float value = 0.0; float amplitude = 0.5;
+                    for (int i = 0; i < 5; i++) { value += amplitude * noise(st); st *= 2.0; amplitude *= 0.5; }
+                    return value;
+                }
+                void main() {
+                    vec2 st = vUv; st.x *= u_resolution.x / u_resolution.y;
+                    vec3 skyColor = mix(vec3(0.5, 0.7, 0.9), vec3(0.2, 0.4, 0.8), vUv.y);
+                    vec2 cloud_st = st * 2.0; cloud_st.x += u_time * 0.03;
+                    float cloud_noise = fbm(cloud_st);
+                    float cloud_mask = smoothstep(0.4, 0.7, cloud_noise);
+                    vec3 cloudColor = vec3(1.0, 1.0, 1.0);
+                    vec3 finalColor = mix(skyColor, cloudColor, cloud_mask * 0.8);
+                    gl_FragColor = vec4(finalColor, 1.0);
+                }`
+        });
+
+        let activeFigureIndex = 0;
+        const colorList = ['#00FFFF', '#FF00FF', '#FFFF00', '#00FF00', '#FF5733', '#33FF57', '#3357FF', '#FF33A1', '#A133FF', '#33FFA1'];
+        let figures = [];
+        let isAnimating = false;
+        let animationState = { startTime: 0, fromIndex: 0, duration: 3000 };
+        const uiControls = {};
+
+        function createInitialFigures() {
+            return [
+                { R: 180, r: 55, d: 125, size: 2.0, rotation: 0, color: '#00FFFF', mode: 'inside', style: 'sphere', keyframes: [] },
+                { R: 150, r: 65, d: 80, size: 0.3, rotation: 20, color: '#FF00FF', mode: 'inside', style: 'tube', keyframes: [] },
+                { R: 200, r: 110, d: 90, size: 2.2, rotation: 45, color: '#FFFF00', mode: 'outside', style: 'sphere', keyframes: [] },
+                { R: 120, r: 40, d: 150, size: 0.25, rotation: 90, color: '#00FF00', mode: 'inside', style: 'tube', keyframes: [] },
+                { R: 220, r: 80, d: 70, size: 1.8, rotation: 120, color: '#FF5733', mode: 'outside', style: 'sphere', keyframes: [] }
+            ];
+        }
+
+        function createResetFigures() {
+            const baseFig = { R: 100, r: 10, d: 10, size: 1.0, rotation: 0, mode: 'inside', style: 'sphere', keyframes: [] };
+            return Array(NUM_FIGURES).fill(null).map((_, i) => ({
+                ...baseFig,
+                style: i % 2 === 0 ? 'sphere' : 'tube',
+                size: i % 2 === 0 ? 1.5 : 0.3,
+                color: colorList[i],
+                keyframes: []
+            }));
+        }
+
+        function init() {
+            scene = new THREE.Scene();
+            clock = new THREE.Clock();
+            renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setPixelRatio(window.devicePixelRatio);
+            renderer.setSize(container.clientWidth, container.clientHeight);
+            renderer.toneMapping = THREE.ReinhardToneMapping;
+            container.appendChild(renderer.domElement);
+
+            camera = new THREE.PerspectiveCamera(50, container.clientWidth / container.clientHeight, 0.1, 2000);
+            camera.position.set(0, 0, 500);
+            
+            controls = new OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.autoRotate = true;
+            controls.autoRotateSpeed = 0.15;
+            controls.minDistance = MIN_ZOOM;
+            controls.maxDistance = MAX_ZOOM;
+
+            const backgroundGeom = new THREE.PlaneGeometry(2, 2);
+            backgroundMesh = new THREE.Mesh(backgroundGeom, shaderMaterial);
+            backgroundScene = new THREE.Scene();
+            backgroundCam = new THREE.Camera();
+            backgroundScene.add(backgroundMesh);
+            renderer.autoClear = false;
+
+            const renderScene = new RenderPass(scene, camera);
+            bloomPass = new UnrealBloomPass(new THREE.Vector2(container.clientWidth, container.clientHeight), 1.0, 0.4, 0.1);
+            composer = new EffectComposer(renderer);
+            composer.addPass(renderScene);
+            composer.addPass(bloomPass);
+
+            buildParameterControls();
+            figures = createInitialFigures();
+            populateColorPalette();
+            
+            for (let i = 0; i < NUM_FIGURES; i++) {
+                const group = new THREE.Group();
+                figureGroups.push(group);
+                scene.add(group);
+                updateFigure(i);
+            }
+            
+            setActiveFigure(0);
+            addEventListeners();
+            animate();
+        }
+
+        function getSpirographPoints(fig) {
+            const { R, r, d, mode } = fig;
+            const points = [];
+            if (r === 0) return points;
+            const commonDivisor = gcd(Math.round(R), Math.round(r));
+            const revolutions = Math.round(Math.abs(r)) / commonDivisor;
+            const max_t = 2 * Math.PI * revolutions;
+            for (let t = 0; t <= max_t; t += 0.02) {
+                let x, y;
+                if (mode === 'inside') {
+                    const R_minus_r = R - r; const ratio = R_minus_r / r;
+                    x = R_minus_r * Math.cos(t) + d * Math.cos(t * ratio);
+                    y = R_minus_r * Math.sin(t) - d * Math.sin(t * ratio);
+                } else {
+                    const R_plus_r = R + r; const ratio = R_plus_r / r;
+                    x = R_plus_r * Math.cos(t) - d * Math.cos(t * ratio);
+                    y = R_plus_r * Math.sin(t) - d * Math.sin(t * ratio);
+                }
+                points.push(new THREE.Vector3(x, y, 0));
+            }
+            return points;
+        }
+
+        function createSpirographObject(fig) {
+            const points = getSpirographPoints(fig);
+            if (points.length < 2) return new THREE.Object3D();
+            const material = new THREE.MeshBasicMaterial({ color: new THREE.Color(fig.color) });
+            if (fig.style === 'sphere') {
+                const sphereGeometry = new THREE.SphereGeometry(fig.size, 12, 8);
+                const sphereGroup = new THREE.Group();
+                const step = Math.max(1, Math.floor(points.length / 250));
+                for (let i = 0; i < points.length; i += step) {
+                    const sphereMesh = new THREE.Mesh(sphereGeometry, material);
+                    sphereMesh.position.copy(points[i]);
+                    sphereGroup.add(sphereMesh);
+                }
+                return sphereGroup;
+            } else {
+                const curve = new THREE.CatmullRomCurve3(points);
+                const geometry = new THREE.TubeGeometry(curve, 256, fig.size, 12, false);
+                return new THREE.Mesh(geometry, material);
+            }
+        }
+
+        function updateFigure(index) {
+            const fig = figures[index];
+            const group = figureGroups[index];
+            while(group.children.length > 0){ 
+                const objectToRemove = group.children[0];
+                objectToRemove.traverse(child => {
+                    if (child.isMesh) {
+                        if (child.geometry) child.geometry.dispose();
+                        if (child.material) child.material.dispose();
+                    }
+                });
+                group.remove(objectToRemove); 
+            }
+            const newObject = createSpirographObject(fig);
+            group.add(newObject);
+            group.rotation.z = fig.rotation * Math.PI / 180;
+            group.position.z = zPositions[index];
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            const delta = clock.getDelta();
+            shaderMaterial.uniforms.u_time.value += delta;
+            
+            if (isAnimating) {
+                runAnimation();
+            }
+
+            controls.update();
+            renderer.clear();
+            renderer.render(backgroundScene, backgroundCam);
+            renderer.clearDepth();
+            composer.render(delta);
+        }
+
+        function setActiveFigure(index) {
+            pauseAnimation();
+            activeFigureIndex = index;
+            tabs.forEach((tab, i) => tab.classList.toggle('active', i === index));
+            updateUIControls();
+            updateTimelineIndicator();
+        }
+
+        function updateUIControls(sourceFigure = figures[activeFigureIndex]) {
+            for (const key in PARAMETERS) {
+                uiControls[key].slider.value = sourceFigure[key];
+                uiControls[key].number.value = sourceFigure[key];
+            }
+            document.querySelectorAll('.color-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.color === sourceFigure.color));
+            modeInsideBtn.classList.toggle('active', sourceFigure.mode === 'inside');
+            modeOutsideBtn.classList.toggle('active', sourceFigure.mode === 'outside');
+            styleTubeBtn.classList.toggle('active', sourceFigure.style === 'tube');
+            styleSphereBtn.classList.toggle('active', sourceFigure.style === 'sphere');
+            updateZoomSliderFromCamera();
+        }
+
+        function populateColorPalette() {
+            colorPalette.innerHTML = '';
+            colorList.forEach(color => {
+                const button = document.createElement('button');
+                button.className = 'color-btn h-10 rounded-lg transition-transform transform hover:scale-110';
+                button.style.backgroundColor = color;
+                button.dataset.color = color;
+                colorPalette.appendChild(button);
+            });
+            document.querySelectorAll('.color-btn').forEach(btn => btn.addEventListener('click', handleColorChange));
+        }
+        
+        function gcd(a, b) { return b ? gcd(b, a % b) : a; }
+
+        function handleParameterChange(param, value) {
+            pauseAnimation();
+            const fig = figures[activeFigureIndex];
+            const pInfo = PARAMETERS[param];
+            const clampedValue = Math.max(pInfo.min, Math.min(pInfo.max, value));
+            
+            fig[param] = clampedValue;
+            uiControls[param].slider.value = clampedValue;
+            uiControls[param].number.value = clampedValue;
+            
+            updateFigure(activeFigureIndex);
+        }
+
+        function handleModeChange(e) {
+            pauseAnimation();
+            figures[activeFigureIndex].mode = e.target.id === 'modeInside' ? 'inside' : 'outside';
+            updateUIControls();
+            updateFigure(activeFigureIndex);
+        }
+
+        function handleStyleChange(e) {
+            pauseAnimation();
+            const newStyle = e.target.id === 'styleSphere' ? 'sphere' : 'tube';
+            const fig = figures[activeFigureIndex];
+            fig.style = newStyle;
+            fig.size = newStyle === 'sphere' ? 2.0 : 0.3;
+            updateUIControls();
+            updateFigure(activeFigureIndex);
+        }
+        
+        function handleColorChange(e) {
+            pauseAnimation();
+            figures[activeFigureIndex].color = e.target.dataset.color;
+            updateUIControls();
+            updateFigure(activeFigureIndex);
+        }
+
+        function handleZoomSlider(e) {
+            const zoomValue = parseFloat(e.target.value) / 100;
+            camera.position.setLength(MIN_ZOOM + (MAX_ZOOM - MIN_ZOOM) * (1 - zoomValue));
+        }
+
+        function updateZoomSliderFromCamera() {
+            const currentDistance = controls.getDistance();
+            const zoomPercentage = 1 - THREE.MathUtils.clamp((currentDistance - MIN_ZOOM) / (MAX_ZOOM - MIN_ZOOM), 0, 1);
+            zoomSlider.value = zoomPercentage * 100;
+        }
+
+        function handleResize() {
+            const width = container.clientWidth;
+            const height = container.clientHeight;
+            renderer.setSize(width, height);
+            composer.setSize(width, height);
+            camera.aspect = width / height;
+            camera.updateProjectionMatrix();
+            shaderMaterial.uniforms.u_resolution.value.set(width, height);
+            if (bloomPass) bloomPass.resolution.set(width, height);
+        }
+
+        function buildParameterControls() {
+            const parent = document.querySelector('.space-y-2');
+            parent.innerHTML = '';
+            for (const key in PARAMETERS) {
+                const p = PARAMETERS[key];
+                const controlRow = document.createElement('div');
+                controlRow.className = 'flex items-center gap-2 text-sm';
+                controlRow.innerHTML = `
+                    <label for="${key}" class="flex-none w-32 font-medium text-gray-300">${p.label}:</label>
+                    <input type="range" id="${key}_slider" min="${p.min}" max="${p.max}" step="${p.step}" class="flex-grow">
+                    <input type="number" id="${key}_num" min="${p.min}" max="${p.max}" step="${p.step}" class="w-20 bg-gray-700 border border-gray-600 rounded p-1 text-center">
+                `;
+                parent.appendChild(controlRow);
+                uiControls[key] = {
+                    slider: document.getElementById(`${key}_slider`),
+                    number: document.getElementById(`${key}_num`),
+                };
+            }
+        }
+
+        // --- Keyframe & Animation Logic ---
+        function addKeyframe() {
+            const fig = figures[activeFigureIndex];
+            const newKeyframe = { ...fig };
+            delete newKeyframe.keyframes; // Don't store keyframes within a keyframe
+            fig.keyframes.push(newKeyframe);
+            updateTimelineIndicator();
+        }
+
+        function playAnimation() {
+            const fig = figures[activeFigureIndex];
+            if (fig.keyframes.length < 2) {
+                console.log("Need at least 2 keyframes to play animation.");
+                return;
+            }
+            isAnimating = true;
+            animationState.startTime = clock.getElapsedTime();
+            animationState.fromIndex = 0;
+        }
+
+        function pauseAnimation() { isAnimating = false; }
+
+        function resetAnimation() {
+            pauseAnimation();
+            const fig = figures[activeFigureIndex];
+            fig.keyframes = [];
+            updateTimelineIndicator();
+        }
+
+        function runAnimation() {
+            const fig = figures[activeFigureIndex];
+            const kfs = fig.keyframes;
+            if (kfs.length < 2) { pauseAnimation(); return; }
+
+            const elapsedTime = (clock.getElapsedTime() - animationState.startTime) * 1000;
+            const progress = (elapsedTime % animationState.duration) / animationState.duration;
+            
+            const totalCycles = Math.floor(elapsedTime / animationState.duration);
+            const fromIndex = totalCycles % (kfs.length -1);
+            const toIndex = (fromIndex + 1);
+
+            const fromFrame = kfs[fromIndex];
+            const toFrame = kfs[toIndex];
+
+            const animatedParams = { ...fig }; // Start with current fig settings
+            for (const key in PARAMETERS) {
+                animatedParams[key] = THREE.MathUtils.lerp(fromFrame[key], toFrame[key], progress);
+            }
+            
+            // Update main figure object and UI
+            Object.assign(figures[activeFigureIndex], animatedParams);
+            updateUIControls(animatedParams);
+            updateFigure(activeFigureIndex);
+        }
+
+        function updateTimelineIndicator() {
+            timelineIndicator.innerHTML = '';
+            const kfs = figures[activeFigureIndex].keyframes;
+            if (kfs.length > 1) {
+                for (let i = 0; i < kfs.length; i++) {
+                    const marker = document.createElement('div');
+                    marker.className = 'keyframe-marker';
+                    marker.style.left = `${(i / (kfs.length - 1)) * 100}%`;
+                    timelineIndicator.appendChild(marker);
+                }
+            }
+        }
+
+        function addEventListeners() {
+            for (const key in uiControls) {
+                uiControls[key].slider.addEventListener('input', (e) => handleParameterChange(key, parseFloat(e.target.value)));
+                uiControls[key].number.addEventListener('input', (e) => handleParameterChange(key, parseFloat(e.target.value)));
+            }
+            tabs.forEach(tab => tab.addEventListener('click', () => setActiveFigure(parseInt(tab.dataset.index))));
+            [modeInsideBtn, modeOutsideBtn].forEach(btn => btn.addEventListener('click', handleModeChange));
+            [styleTubeBtn, styleSphereBtn].forEach(btn => btn.addEventListener('click', handleStyleChange));
+            clearBtn.addEventListener('click', () => {
+                figures = createResetFigures();
+                for(let i = 0; i < NUM_FIGURES; i++) { updateFigure(i); }
+                setActiveFigure(0);
+            });
+            zoomSlider.addEventListener('input', handleZoomSlider);
+            controls.addEventListener('change', updateZoomSliderFromCamera);
+            addKeyframeBtn.addEventListener('click', addKeyframe);
+            playAnimationBtn.addEventListener('click', playAnimation);
+            pauseAnimationBtn.addEventListener('click', pauseAnimation);
+            resetAnimationBtn.addEventListener('click', resetAnimation);
+            window.addEventListener('resize', handleResize);
+            handleResize();
+            updateZoomSliderFromCamera();
+        }
+
+        init();
+    </script>
+</body>
+</html>
+
+
+

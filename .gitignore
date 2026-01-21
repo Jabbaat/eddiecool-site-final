@@ -1,0 +1,13 @@
+# Geheim
+.env
+
+# Systeemmappen (Niet uploaden!)
+.venv/
+venv/
+node_modules/
+Downloads/
+
+# Rommel
+__pycache__/
+*.pyc
+package-lock.json
