@@ -1,6 +1,8 @@
 import os
 from pathlib import Path
 from google.adk.agents.llm_agent import Agent
+# --- IMPORT FIX: We voegen '_tool' toe aan de naam ---
+from google.adk.tools.google_search_tool import GoogleSearchTool 
 from dotenv import load_dotenv
 
 # --- 1. SETUP ---
@@ -9,7 +11,7 @@ env_path = current_dir.parent / '.env'
 load_dotenv(dotenv_path=env_path)
 
 print("\n--------------------------------------------------")
-print("🚀 VIBE MANAGER: POGING 'FLASH LATEST'...")
+print("🚀 VIBE MANAGER: NU MET WERKENDE SEARCH 🌐")
 print("--------------------------------------------------")
 
 # --- 2. CHECK KEY ---
@@ -21,14 +23,24 @@ else:
 
 print("--------------------------------------------------\n")
 
-# --- 3. DE AGENT ---
+# --- 3. DE TOOL AANZETTEN ---
+search_tool = GoogleSearchTool()
+
+# --- 4. DE AGENT ---
 root_agent = Agent(
     name="vibe_manager",
-    # WE GEBRUIKEN NU DE ALIAS UIT JOUW LIJST:
     model="gemini-flash-latest", 
-    description="De creatieve assistent van EddieCool",
+    tools=[search_tool], 
+    description="De creatieve assistent van EddieCool met internet-toegang.",
     instruction="""
     Je bent de Vibe Manager, assistent van EddieCool.
+    
+    Jouw Superkracht:
+    Je hebt toegang tot Google Search. Gebruik dit ALTIJD als de gebruiker vraagt naar:
+    - Actuele trends (vandaag/deze week).
+    - Nieuws of feiten.
+    - Dingen die je niet zeker weet.
+
     Antwoord kort, krachtig en met humor.
     Eindig elk antwoord met een Vibe Tip.
     """,
