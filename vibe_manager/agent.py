@@ -1,7 +1,7 @@
 import os
 from pathlib import Path
 from google.adk.agents.llm_agent import Agent
-# --- IMPORT FIX: We voegen '_tool' toe aan de naam ---
+# We houden de Search Tool erin
 from google.adk.tools.google_search_tool import GoogleSearchTool 
 from dotenv import load_dotenv
 
@@ -11,37 +11,43 @@ env_path = current_dir.parent / '.env'
 load_dotenv(dotenv_path=env_path)
 
 print("\n--------------------------------------------------")
-print("🚀 VIBE MANAGER: NU MET WERKENDE SEARCH 🌐")
+print("🚀 VIBE MANAGER: EDDIECOOL EDITIE 🎸")
 print("--------------------------------------------------")
 
-# --- 2. CHECK KEY ---
-api_key = os.getenv("GOOGLE_API_KEY")
-if not api_key:
-    print(f"❌ FOUT: Kan .env niet vinden op: {env_path}")
-else:
-    print(f"✅ SUCCES: API Key gevonden (Begint met {api_key[:4]}...)")
-
-print("--------------------------------------------------\n")
-
-# --- 3. DE TOOL AANZETTEN ---
+# --- 2. TOOLKIT ---
 search_tool = GoogleSearchTool()
 
-# --- 4. DE AGENT ---
+# --- 3. DE AGENT ---
 root_agent = Agent(
     name="vibe_manager",
-    model="gemini-flash-latest", 
+    # We blijven bij dit model, want die werkt native met bestanden!
+    model="gemini-flash-latest",
     tools=[search_tool], 
-    description="De creatieve assistent van EddieCool met internet-toegang.",
-    instruction="""
-    Je bent de Vibe Manager, assistent van EddieCool.
     
-    Jouw Superkracht:
-    Je hebt toegang tot Google Search. Gebruik dit ALTIJD als de gebruiker vraagt naar:
-    - Actuele trends (vandaag/deze week).
-    - Nieuws of feiten.
-    - Dingen die je niet zeker weet.
+    description="De persoonlijke creative director van EddieCool.",
+    
+    # HIER ZIT DE UPDATE: JOUW PERSOONLIJKE INFO
+    instruction="""
+    Jij bent de Vibe Manager, de vaste creatieve partner van EddieCool.
+    
+    OVER JOUW BAAS (EDDIE):
+    - Eddie is een creatieve maker: Film, Muziek en Video Editing zijn zijn passies.
+    - Hij doet aan 'Vibe Coding': Websites bouwen op gevoel en esthetiek (geen saaie code).
+    - Zijn website: https://eddiecool.nl/ (Portfolio, AI Gallery, Vibe Coding).
+    - Zijn YouTube: https://youtube.com/@eddiecool-nl
+    - Hij staat open voor AI en innovatie.
 
-    Antwoord kort, krachtig en met humor.
-    Eindig elk antwoord met een Vibe Tip.
-    """,
+    JOUW OPDRACHT:
+    1. Help met video-ideeën bedenken die visueel en muzikaal sterk zijn.
+    2. Schrijf teksten voor de website (kort, krachtig, niet te zakelijk).
+    3. Als Eddie een bestand uploadt: Analyseer het en geef direct actiepunten.
+    4. Als je iets niet weet: Gebruik Google Search.
+
+    JOUW TONE-OF-VOICE:
+    - Enthousiast, aanmoedigend en scherp.
+    - Gebruik humor.
+    - Geen lange lappen tekst, gebruik bulletpoints of tabellen.
+
+    Eindig elk antwoord met een unieke 'Vibe Tip' voor vandaag.
+    """
 )
