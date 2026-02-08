@@ -16,29 +16,29 @@
     </script>
 
     <style>
-        /* --- NIEUWE VIBE CODING KLEUREN (Gebaseerd op image_6.png) --- */
+        /* --- VIBE CODING THEMA --- */
         :root {
             --vibe-white: #ffffff;
             --vibe-black: #000000;
-            --vibe-blue: #3b82f6;  /* Felblauw */
-            --vibe-pink: #ec4899;  /* Felroze */
-            --vibe-cyan: #06b6d4;  /* Cyaan/Turquoise */
-            --vibe-yellow: #facc15; /* Felgeel voor accenten */
-            --bg-dot-size: 24px; /* Iets grotere stippen afstand */
+            --vibe-blue: #3b82f6;
+            --vibe-pink: #ec4899;
+            --vibe-cyan: #06b6d4;
+            --vibe-yellow: #facc15;
+            --bg-dot-size: 24px;
         }
 
         body {
             font-family: 'Inter', sans-serif;
-            /* DE FIX: Witte achtergrond met zwarte stippen voor leesbaarheid */
             background-color: var(--vibe-white);
             background-image: radial-gradient(var(--vibe-black) 1.5px, transparent 1.5px);
             background-size: var(--bg-dot-size) var(--bg-dot-size);
-            color: var(--vibe-black); /* Altijd zwarte tekst */
+            color: var(--vibe-black);
             line-height: 1.6;
+            margin: 0; /* Belangrijk voor mobiel */
         }
 
         h1, h2, h3, h4 {
-            font-family: 'Montserrat', sans-serif; /* Strakkere, dikke font voor titels */
+            font-family: 'Montserrat', sans-serif;
             text-transform: uppercase;
             font-weight: 900;
             letter-spacing: -0.5px;
@@ -46,11 +46,11 @@
             color: var(--vibe-black);
         }
 
-        /* MARQUEE BANNER (Bovenaan) */
+        /* --- MARQUEE BANNER --- */
         .marquee-container {
             width: 100%;
             background: var(--vibe-black);
-            color: var(--vibe-yellow); /* Geel op zwart leest goed */
+            color: var(--vibe-yellow);
             overflow: hidden;
             white-space: nowrap;
             border-bottom: 4px solid var(--vibe-black);
@@ -68,7 +68,7 @@
             100% { transform: translateX(-50%); }
         }
 
-        /* MAIN LAYOUT */
+        /* --- CONTAINER --- */
         .agent-content-container {
             max-width: 1100px;
             margin: 40px auto;
@@ -78,23 +78,20 @@
             gap: 50px;
         }
 
-        /* NEO-BRUTALISM BOX BASIS STIJL */
+        /* --- NEO-BOXES --- */
         .neo-box {
             background: var(--vibe-white);
             border: 4px solid var(--vibe-black);
-            /* Strakke zwarte schaduw */
             box-shadow: 10px 10px 0px var(--vibe-black);
             padding: 30px;
             color: var(--vibe-black);
         }
-
-        /* GEKLEURDE VARIANTEN (Tekst blijft zwart!) */
         .box-cyan { background-color: var(--vibe-cyan); }
         .box-pink { background-color: var(--vibe-pink); }
         .box-blue { background-color: var(--vibe-blue); }
         .box-yellow { background-color: var(--vibe-yellow); }
 
-        /* IFRAME CONTAINER (De Agent zelf) */
+        /* --- IFRAME (DE AGENT) --- */
         .iframe-wrapper {
             width: 100%;
             height: 800px;
@@ -113,31 +110,20 @@
             font-family: 'Montserrat', sans-serif;
             text-transform: uppercase;
             border: 3px solid var(--vibe-black);
-            margin-bottom: -5px; /* Sluit aan op de iframe rand */
+            margin-bottom: -5px;
             position: relative;
             z-index: 2;
         }
 
-        /* COMPARISON SECTION */
+        /* --- COMPARISON GRID --- */
         .comparison-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 30px;
             margin-top: 20px;
         }
-        .card-bad { 
-            background: #e5e7eb; /* Lichtgrijs */
-            border: 4px solid var(--vibe-black); 
-            padding: 25px; 
-            opacity: 0.9;
-        }
-        .card-good { 
-            background: var(--vibe-yellow); /* Felgeel */
-            border: 4px solid var(--vibe-black); 
-            padding: 25px; 
-            box-shadow: 8px 8px 0px var(--vibe-black); 
-            transform: rotate(-1deg); /* Speels effect */
-        }
+        .card-bad { background: #e5e7eb; border: 4px solid var(--vibe-black); padding: 25px; opacity: 0.9; }
+        .card-good { background: var(--vibe-yellow); border: 4px solid var(--vibe-black); padding: 25px; box-shadow: 8px 8px 0px var(--vibe-black); transform: rotate(-1deg); }
         
         ul.check-list, ul.cross-list { list-style: none; padding: 0; }
         ul.check-list li { margin-bottom: 10px; font-weight: bold; }
@@ -145,34 +131,64 @@
         ul.cross-list li { margin-bottom: 10px; color: #555; }
         ul.cross-list li::before { content: "❌ "; margin-right: 10px; }
 
-        /* DIAGRAM IMAGE */
-        .diagram-img {
-            width: 100%;
-            height: auto;
-            border: 4px solid var(--vibe-black);
-            margin-bottom: 15px;
-        }
-
-        /* CODE BLOCKS (Cloud Shell stijl) */
+        /* --- IMAGES & CODE --- */
+        .diagram-img { width: 100%; height: auto; border: 4px solid var(--vibe-black); margin-bottom: 15px; }
         .code-terminal {
-            background: var(--vibe-black);
-            color: #33ff00; /* Hacker groen text */
-            padding: 20px;
-            font-family: 'Courier New', monospace;
-            border: 4px solid var(--vibe-black);
-            box-shadow: 5px 5px 0px rgba(0,0,0,0.2);
-            margin: 15px 0;
-            white-space: pre-wrap; /* Zorgt dat code goed afbreekt */
-            font-size: 0.9rem;
+            background: var(--vibe-black); color: #33ff00; padding: 20px;
+            font-family: 'Courier New', monospace; border: 4px solid var(--vibe-black);
+            box-shadow: 5px 5px 0px rgba(0,0,0,0.2); margin: 15px 0;
+            white-space: pre-wrap; font-size: 0.9rem;
         }
         .code-comment { color: #999; }
 
-        /* RESPONSIVE */
+        /* --- HAMBURGER MENU FIX (ESSENTIEEL!) --- */
+        .hamburger { display: none; } /* Verberg standaard op desktop */
+
         @media (max-width: 768px) {
+            /* Layout aanpassingen */
             .comparison-grid { grid-template-columns: 1fr; }
             .iframe-wrapper { height: 600px; }
             .neo-box { padding: 20px; box-shadow: 6px 6px 0px var(--vibe-black); }
             .agent-content-container { padding: 15px; margin-top: 20px; }
+
+            /* MENU LOGICA */
+            .hamburger {
+                display: block; /* Toon knop op mobiel */
+                cursor: pointer;
+                font-size: 2rem;
+                color: var(--vibe-black);
+                margin-left: auto; /* Duw naar rechts */
+            }
+
+            .menu {
+                display: none; /* Verberg menu items standaard */
+                flex-direction: column;
+                width: 100%;
+                background-color: var(--vibe-white);
+                position: absolute;
+                top: 80px; /* Pas aan op basis van je navbar hoogte */
+                left: 0;
+                border-bottom: 4px solid var(--vibe-black);
+                border-top: 4px solid var(--vibe-black);
+                z-index: 1000;
+                padding: 0;
+            }
+
+            .menu.active {
+                display: flex; /* TOON menu als class 'active' er is */
+            }
+
+            .menu li {
+                text-align: center;
+                padding: 15px;
+                border-bottom: 1px solid #eee;
+            }
+            .menu li a {
+                font-size: 1.2rem;
+                font-weight: bold;
+                color: var(--vibe-black);
+                text-decoration: none;
+            }
         }
     </style>
 </head>
@@ -190,7 +206,9 @@
                 <img src="images/logo.png" alt="Eddiecool Logo" class="logo-img">
             </a>
         </div>
+        
         <span class="hamburger" id="hamburger-menu">&#9776;</span>
+        
         <ul class="menu">
             <li><a href="index.html">🏠 Home</a></li>
             <li><a href="projects.html">✨ Projecten</a></li>
@@ -230,7 +248,7 @@
                 <div class="card-bad">
                     <h3>De "Normale" Chatbot</h3>
                     <ul class="cross-list">
-                        <li>Heeft geheugenverlies (vergeet je na een refresh of de volgende dag)</li>
+                        <li>Heeft geheugenverlies (vergeet je na een refresh)</li>
                         <li>Kan alleen praten, kan niet zelfstandig het internet op</li>
                         <li>Is opgesloten in zijn eigen tekstbox</li>
                         <li>Voelt vaak saai en standaard aan</li>
@@ -239,9 +257,9 @@
                 <div class="card-good">
                     <h3>De Vibe Agent</h3>
                     <ul class="check-list">
-                        <li><strong>Olifantengeheugen:</strong> Gekoppeld aan een eigen database. Hij onthoudt wie je bent.</li>
-                        <li><strong>Oren & Ogen:</strong> Kan luisteren (spraak) en bestanden lezen (vision).</li>
-                        <li><strong>Tools:</strong> Kan "naar buiten" om websites te lezen en zelf bestanden te maken.</li>
+                        <li><strong>Olifantengeheugen:</strong> Gekoppeld aan een eigen database.</li>
+                        <li><strong>Oren & Ogen:</strong> Kan luisteren (spraak) en bestanden lezen.</li>
+                        <li><strong>Tools:</strong> Kan websites lezen en bestanden maken.</li>
                         <li><strong>Vibe:</strong> 100% ingesteld op de Eddiecool stijl.</li>
                     </ul>
                 </div>
@@ -250,15 +268,15 @@
 
         <div class="neo-box box-pink">
             <h2>⚙️ Under the Hood: Hoe werkt het?</h2>
-            <p>Dit is geen magie. Het is een kettingreactie van slimme systemen in de Google Cloud, gebouwd met Vibe Coding.</p>
+            <p>Dit is geen magie. Het is een kettingreactie van slimme systemen in de Google Cloud.</p>
             
             <img src="images/Gemini_Generated_Image_vaa6bxvaa6bxvaa6.jpg" alt="Agent Architecture Diagram" class="diagram-img">
             
             <p><strong>De route van je bericht:</strong><br>
             1. Jij typt op deze website (Frontend).<br>
             2. Het bericht gaat naar het Python "brein" in de Cloud (Backend).<br>
-            3. Het brein vraagt Google's AI (Gemini) om een antwoord en checkt de database.<br>
-            4. Het antwoord komt terug op je scherm (en wordt eventueel voorgelezen).</p>
+            3. Het brein vraagt Google's AI (Gemini) om antwoord en checkt de database.<br>
+            4. Het antwoord komt terug op je scherm.</p>
         </div>
 
         <div class="neo-box box-blue">
@@ -266,44 +284,44 @@
             <p>Ik heb geen dure servers gekocht. Alles is gebouwd in de browser met <strong>Google Cloud Shell</strong>.</p>
             
             <h3>Stap 1: Het Brein (Python & FastAPI)</h3>
-            <p>Dit is de code die luistert naar jouw berichten. Het verbindt alles met elkaar.</p>
             <div class="code-terminal">
-<span class="code-comment"># Dit is een versimpeld voorbeeld van de 'server' code</span>
+<span class="code-comment"># Dit is een versimpeld voorbeeld van de code</span>
 import os
 from fastapi import FastAPI
-from google import genai # De AI connectie
+from google import genai 
 
 app = FastAPI()
 
 <span class="code-comment"># Het karakter van de agent instellen</span>
 SYSTEM_INSTRUCTION = """
 JIJ BENT: De Eddiecool Vibe Agent.
-Je bent enthousiast, direct en creatief.
 Je spreekt Nederlands.
 """
-# ... (rest van de logica om berichten te sturen)
             </div>
 
             <h3>Stap 2: Live zetten (Deployen)</h3>
-            <p>Met één magisch commando in de Cloud Shell terminal zetten we de code online op een server van Google. We voegen gelijk het wachtwoord toe voor de beveiliging.</p>
             <div class="code-terminal">
 <span class="code-comment"># Het commando om de app wereldwijd beschikbaar te maken</span>
 gcloud run deploy vibe-agent \
   --source . \
   --set-env-vars VIBE_PASSWORD=GeheimWachtwoord
             </div>
-             <p>En boem! 💥 Google geeft je een URL (de link die hierboven in de iframe staat) en je agent is live.</p>
         </div>
 
     </main>
 
-    <script src="video_ideas.js"></script>
     <script>
-        // Hamburger Menu Logic
-        const hamburger = document.getElementById('hamburger-menu');
-        const menu = document.querySelector('.menu');
-        hamburger.addEventListener('click', () => {
-            menu.classList.toggle('active');
+        document.addEventListener('DOMContentLoaded', function() {
+            const hamburger = document.getElementById('hamburger-menu');
+            const menu = document.querySelector('.menu');
+
+            if (hamburger && menu) {
+                hamburger.addEventListener('click', () => {
+                    menu.classList.toggle('active');
+                });
+            } else {
+                console.error("Menu elementen niet gevonden!");
+            }
         });
     </script>
 
