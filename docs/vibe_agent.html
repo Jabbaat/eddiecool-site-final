@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🤖 Eddiecool Vibe Agent - The Brain</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css"> 
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-SYG5T1Z0MV"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-SYG5T1Z0MV'); 
+    </script>
+
+    <style>
+        /* --- NIEUWE VIBE CODING KLEUREN (Gebaseerd op image_6.png) --- */
+        :root {
+            --vibe-white: #ffffff;
+            --vibe-black: #000000;
+            --vibe-blue: #3b82f6;  /* Felblauw */
+            --vibe-pink: #ec4899;  /* Felroze */
+            --vibe-cyan: #06b6d4;  /* Cyaan/Turquoise */
+            --vibe-yellow: #facc15; /* Felgeel voor accenten */
+            --bg-dot-size: 24px; /* Iets grotere stippen afstand */
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            /* DE FIX: Witte achtergrond met zwarte stippen voor leesbaarheid */
+            background-color: var(--vibe-white);
+            background-image: radial-gradient(var(--vibe-black) 1.5px, transparent 1.5px);
+            background-size: var(--bg-dot-size) var(--bg-dot-size);
+            color: var(--vibe-black); /* Altijd zwarte tekst */
+            line-height: 1.6;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Montserrat', sans-serif; /* Strakkere, dikke font voor titels */
+            text-transform: uppercase;
+            font-weight: 900;
+            letter-spacing: -0.5px;
+            margin-top: 0;
+            color: var(--vibe-black);
+        }
+
+        /* MARQUEE BANNER (Bovenaan) */
+        .marquee-container {
+            width: 100%;
+            background: var(--vibe-black);
+            color: var(--vibe-yellow); /* Geel op zwart leest goed */
+            overflow: hidden;
+            white-space: nowrap;
+            border-bottom: 4px solid var(--vibe-black);
+            padding: 12px 0;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+        .marquee-content {
+            display: inline-block;
+            animation: marquee 20s linear infinite;
+        }
+        @keyframes marquee {
+            0% { transform: translateX(0%); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* MAIN LAYOUT */
+        .agent-content-container {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 50px;
+        }
+
+        /* NEO-BRUTALISM BOX BASIS STIJL */
+        .neo-box {
+            background: var(--vibe-white);
+            border: 4px solid var(--vibe-black);
+            /* Strakke zwarte schaduw */
+            box-shadow: 10px 10px 0px var(--vibe-black);
+            padding: 30px;
+            color: var(--vibe-black);
+        }
+
+        /* GEKLEURDE VARIANTEN (Tekst blijft zwart!) */
+        .box-cyan { background-color: var(--vibe-cyan); }
+        .box-pink { background-color: var(--vibe-pink); }
+        .box-blue { background-color: var(--vibe-blue); }
+        .box-yellow { background-color: var(--vibe-yellow); }
+
+        /* IFRAME CONTAINER (De Agent zelf) */
+        .iframe-wrapper {
+            width: 100%;
+            height: 800px;
+            border: 5px solid var(--vibe-black);
+            box-shadow: 15px 15px 0px var(--vibe-black);
+            background: var(--vibe-white);
+            position: relative;
+            margin-top: 30px;
+        }
+        .iframe-label {
+            display: inline-block;
+            background: var(--vibe-black);
+            color: var(--vibe-white);
+            padding: 8px 15px;
+            font-weight: 900;
+            font-family: 'Montserrat', sans-serif;
+            text-transform: uppercase;
+            border: 3px solid var(--vibe-black);
+            margin-bottom: -5px; /* Sluit aan op de iframe rand */
+            position: relative;
+            z-index: 2;
+        }
+
+        /* COMPARISON SECTION */
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 20px;
+        }
+        .card-bad { 
+            background: #e5e7eb; /* Lichtgrijs */
+            border: 4px solid var(--vibe-black); 
+            padding: 25px; 
+            opacity: 0.9;
+        }
+        .card-good { 
+            background: var(--vibe-yellow); /* Felgeel */
+            border: 4px solid var(--vibe-black); 
+            padding: 25px; 
+            box-shadow: 8px 8px 0px var(--vibe-black); 
+            transform: rotate(-1deg); /* Speels effect */
+        }
+        
+        ul.check-list, ul.cross-list { list-style: none; padding: 0; }
+        ul.check-list li { margin-bottom: 10px; font-weight: bold; }
+        ul.check-list li::before { content: "✅ "; margin-right: 10px; }
+        ul.cross-list li { margin-bottom: 10px; color: #555; }
+        ul.cross-list li::before { content: "❌ "; margin-right: 10px; }
+
+        /* DIAGRAM IMAGE */
+        .diagram-img {
+            width: 100%;
+            height: auto;
+            border: 4px solid var(--vibe-black);
+            margin-bottom: 15px;
+        }
+
+        /* CODE BLOCKS (Cloud Shell stijl) */
+        .code-terminal {
+            background: var(--vibe-black);
+            color: #33ff00; /* Hacker groen text */
+            padding: 20px;
+            font-family: 'Courier New', monospace;
+            border: 4px solid var(--vibe-black);
+            box-shadow: 5px 5px 0px rgba(0,0,0,0.2);
+            margin: 15px 0;
+            white-space: pre-wrap; /* Zorgt dat code goed afbreekt */
+            font-size: 0.9rem;
+        }
+        .code-comment { color: #999; }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .comparison-grid { grid-template-columns: 1fr; }
+            .iframe-wrapper { height: 600px; }
+            .neo-box { padding: 20px; box-shadow: 6px 6px 0px var(--vibe-black); }
+            .agent-content-container { padding: 15px; margin-top: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="marquee-container">
+        <div class="marquee-content">
+            +++ SYSTEM ONLINE +++ MEMORY: ACTIVE +++ VISION: ENABLED +++ VOICE: READY +++ CREATOR MODE: ON +++ WELKOM BIJ DE VIBE AGENT +++ SYSTEM ONLINE +++ MEMORY: ACTIVE +++
+        </div>
+    </div>
+
+    <nav>
+        <div class="logo">
+            <a href="index.html">
+                <img src="images/logo.png" alt="Eddiecool Logo" class="logo-img">
+            </a>
+        </div>
+        <span class="hamburger" id="hamburger-menu">&#9776;</span>
+        <ul class="menu">
+            <li><a href="index.html">🏠 Home</a></li>
+            <li><a href="projects.html">✨ Projecten</a></li>
+            <li><a href="ai_gallery.html">🖼️ Galerij</a></li>
+            <li><a href="vibe_agent.html" class="active">🤖 Vibe Agent</a></li>
+            <li><a href="VibeCoding.html">⚡ Vibe Coding</a></li> 
+            <li><a href="ai_apps.html">📱 AI Apps</a></li>
+            <li><a href="about.html">ℹ️ Over Mij</a></li>
+            <li><a href="contact.html">📧 Contact</a></li>
+        </ul>
+    </nav>  
+
+    <main class="agent-content-container">
+        
+        <div class="neo-box box-cyan" style="text-align: center;">
+            <h1 style="font-size: 2.5rem;">De Eddiecool Vibe Agent</h1>
+            <p style="font-size: 1.2rem; font-weight: bold;">Geen simpele chatbot. Jouw digitale sidekick.</p>
+        </div>
+
+        <div>
+            <div class="iframe-label">🔒 SECURE CONNECTION // PRIVATE ACCESS</div>
+            <div class="iframe-wrapper">
+                <iframe 
+                    src="https://vibe-manager-test-937495400955.europe-west4.run.app" 
+                    width="100%" 
+                    height="100%" 
+                    style="border: none;"
+                    allow="microphone; camera; display-capture; clipboard-write;">
+                </iframe>
+            </div>
+        </div>
+
+        <div class="neo-box">
+            <h2>🧠 Wat is het verschil?</h2>
+            <p>Waarom is dit anders dan ChatGPT of een standaard klantenservice bot?</p>
+            <div class="comparison-grid">
+                <div class="card-bad">
+                    <h3>De "Normale" Chatbot</h3>
+                    <ul class="cross-list">
+                        <li>Heeft geheugenverlies (vergeet je na een refresh of de volgende dag)</li>
+                        <li>Kan alleen praten, kan niet zelfstandig het internet op</li>
+                        <li>Is opgesloten in zijn eigen tekstbox</li>
+                        <li>Voelt vaak saai en standaard aan</li>
+                    </ul>
+                </div>
+                <div class="card-good">
+                    <h3>De Vibe Agent</h3>
+                    <ul class="check-list">
+                        <li><strong>Olifantengeheugen:</strong> Gekoppeld aan een eigen database. Hij onthoudt wie je bent.</li>
+                        <li><strong>Oren & Ogen:</strong> Kan luisteren (spraak) en bestanden lezen (vision).</li>
+                        <li><strong>Tools:</strong> Kan "naar buiten" om websites te lezen en zelf bestanden te maken.</li>
+                        <li><strong>Vibe:</strong> 100% ingesteld op de Eddiecool stijl.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="neo-box box-pink">
+            <h2>⚙️ Under the Hood: Hoe werkt het?</h2>
+            <p>Dit is geen magie. Het is een kettingreactie van slimme systemen in de Google Cloud, gebouwd met Vibe Coding.</p>
+            
+            <img src="images/Gemini_Generated_Image_vaa6bxvaa6bxvaa6.jpg" alt="Agent Architecture Diagram" class="diagram-img">
+            
+            <p><strong>De route van je bericht:</strong><br>
+            1. Jij typt op deze website (Frontend).<br>
+            2. Het bericht gaat naar het Python "brein" in de Cloud (Backend).<br>
+            3. Het brein vraagt Google's AI (Gemini) om een antwoord en checkt de database.<br>
+            4. Het antwoord komt terug op je scherm (en wordt eventueel voorgelezen).</p>
+        </div>
+
+        <div class="neo-box box-blue">
+            <h2>🛠️ Hoe is dit gebouwd? (Vibe Coding)</h2>
+            <p>Ik heb geen dure servers gekocht. Alles is gebouwd in de browser met <strong>Google Cloud Shell</strong>.</p>
+            
+            <h3>Stap 1: Het Brein (Python & FastAPI)</h3>
+            <p>Dit is de code die luistert naar jouw berichten. Het verbindt alles met elkaar.</p>
+            <div class="code-terminal">
+<span class="code-comment"># Dit is een versimpeld voorbeeld van de 'server' code</span>
+import os
+from fastapi import FastAPI
+from google import genai # De AI connectie
+
+app = FastAPI()
+
+<span class="code-comment"># Het karakter van de agent instellen</span>
+SYSTEM_INSTRUCTION = """
+JIJ BENT: De Eddiecool Vibe Agent.
+Je bent enthousiast, direct en creatief.
+Je spreekt Nederlands.
+"""
+# ... (rest van de logica om berichten te sturen)
+            </div>
+
+            <h3>Stap 2: Live zetten (Deployen)</h3>
+            <p>Met één magisch commando in de Cloud Shell terminal zetten we de code online op een server van Google. We voegen gelijk het wachtwoord toe voor de beveiliging.</p>
+            <div class="code-terminal">
+<span class="code-comment"># Het commando om de app wereldwijd beschikbaar te maken</span>
+gcloud run deploy vibe-agent \
+  --source . \
+  --set-env-vars VIBE_PASSWORD=GeheimWachtwoord
+            </div>
+             <p>En boem! 💥 Google geeft je een URL (de link die hierboven in de iframe staat) en je agent is live.</p>
+        </div>
+
+    </main>
+
+    <script src="video_ideas.js"></script>
+    <script>
+        // Hamburger Menu Logic
+        const hamburger = document.getElementById('hamburger-menu');
+        const menu = document.querySelector('.menu');
+        hamburger.addEventListener('click', () => {
+            menu.classList.toggle('active');
+        });
+    </script>
+
+</body>
+</html>
