@@ -7,13 +7,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css"> 
     
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-SYG5T1Z0MV"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
 
-      gtag('config', 'G-SYG5T1Z0MV'); // VERVANG DIT DOOR JOUW MEASUREMENT ID
+      gtag('config', 'G-SYG5T1Z0MV'); 
     </script>
     <style>
         .google-workflow-section {
@@ -62,7 +62,6 @@
 </head>
 
 <body>
-
      
     <nav>
         <div class="logo">
@@ -87,20 +86,22 @@
     <h1>🏠 Welkom bij Eddiecool</h1>
     <p>Hoi! Bekijk mijn introductievideo en scroll dan naar beneden voor jouw AI-avontuur!</p> 
     
-    <div class="single-project">
-      <img src="images/eddie_promo_thumb.jpg" alt="Eddiecool Promo Miniatuur" class="video-poster" id="promo-video-thumbnail">
-      <button class="custom-play-button" id="promo-custom-play">&#9658;</button>
-      <video id="promo-video-player" controls>
-        <source src="video/eddie_logo_animatie.mp4" type="video/mp4">
-        Je browser ondersteunt de videotag niet.
-      </video>
+    <div class="video-container">
+        <iframe 
+            width="100%" 
+            height="450" 
+            src="https://www.youtube.com/embed/Ni02M9LXMBo" 
+            title="YouTube video player" 
+            frameborder="0" 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+            allowfullscreen>
+        </iframe>
     </div>
 
     <div class="main-intro-content">
         <h2>Welkom bij de AI Speelplaats!</h2>
         <p>Hier komen creativiteit en kunstmatige intelligentie samen. Ik experimenteer met de nieuwste AI-tools, deel inspirerende ontdekkingen en help jou om nieuwe creatieve mogelijkheden te ontsluiten. Of je nu op zoek bent naar frisse ideeën, je workflow wilt stroomlijnen of gewoon nieuwsgierig bent naar wat er mogelijk is met AI – dit is jouw plek om te ontdekken, leren en geïnspireerd te raken.</p>
         
-        <!-- VERBETERDE GOOGLE WORKFLOW SECTIE -->
         <div class="google-workflow-section">
             <h3>Maak Consistente Karakters met Google's AI</h3>
             <p>Leer hoe je met Google's "Nano Banana 🍌" (Gemini 1.5 Flash) en Veo 3 via Flow een karakter creëert en animeert, terwijl het uiterlijk perfect consistent blijft.</p>
@@ -162,14 +163,13 @@
                 </ul>
             </div>
             
-            <!-- NIEUWE GOOGLE TOOLKIT CATEGORIE -->
             <div class="toolkit-category">
                 <h3>🌐 Google AI Suite</h3>
                 <ul>
                     <li><a href="https://aistudio.google.com/prompts/new_chat?model=gemini-2.5-flash-image-preview" target="_blank" rel="noopener noreferrer">**Nano Banana 🍌**</a> - (Gemini 1.5 Flash) Razendsnelle en efficiënte beeldgeneratie.</li>
                     <li><a href="https://aistudio.google.com/prompts/new_video" target="_blank" rel="noopener noreferrer">**Veo 3**</a> - Google's meest geavanceerde model voor hoge-kwaliteit videogeneratie.</li>
                     <li><a href="https://labs.google/fx/nl/tools/flow" target="_blank" rel="noopener noreferrer">**Flow**</a> - De creatieve interface om workflows te bouwen met tools zoals Veo en Nano Banana 🍌.</li>
-                    <li><a href="https://labs.google/fx/nl/tools/whisk" target="_blank" rel="noopener noreferrer">**Whisk**</a> - Google Whisk is een experimenteel AI-beeldgeneratie-tool van Google Labs met een frisse draai: in plaats van alleen tekst prompts gebruik je afbeeldingen als input.</li>
+                    <li><a href="https://labs.google/fx/nl/tools/whisk" target="_blank" rel="noopener noreferrer">**Whisk**</a> - Google Whisk is een experimenteel AI-beeldgeneratie-tool van Google Labs met een frisse draai.</li>
                 </ul>
             </div>
 
@@ -203,34 +203,14 @@
         </div>
         <p class="toolkit-outro">Elke tool heeft een specifiek doel in mijn creatieve proces. Wil je ze in actie zien? Bekijk mijn <a href="projects.html">experimentenpagina</a>!</p>
     </div>
+
     <script>
         // Hamburger menu
         document.getElementById("hamburger-menu").addEventListener("click", function() {
             document.querySelector(".menu").classList.toggle("active");
         });
 
-        // JAVASCRIPT VOOR DE VIDEO
-        document.addEventListener('DOMContentLoaded', function() {
-            const playBtnPromo = document.getElementById("promo-custom-play");
-            const thumbnailPromo = document.getElementById("promo-video-thumbnail");
-            const videoPromo = document.getElementById("promo-video-player");
-
-            function playVideo() {
-                if (thumbnailPromo) thumbnailPromo.style.display = "none";
-                if (playBtnPromo) playBtnPromo.style.display = "none";
-                if (videoPromo) {
-                    videoPromo.style.display = "block";
-                    videoPromo.play();
-                }
-            }
-
-            if (playBtnPromo) {
-                playBtnPromo.addEventListener("click", playVideo);
-            }
-            if (thumbnailPromo) {
-                thumbnailPromo.addEventListener("click", playVideo);
-            }
-        });
+        // OUDE VIDEO LOGICA VERWIJDERD OM CONFLICTEN MET YOUTUBE TE VOORKOMEN
     </script>
 
 </body>

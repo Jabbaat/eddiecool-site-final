@@ -1206,3 +1206,23 @@ h1 {
         width: 100%;
     }
 }
+/* Nieuwe styling voor de YouTube video */
+.video-container {
+    max-width: 800px;
+    margin: 40px auto;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+    background-color: #000;
+}
+
+.video-container iframe {
+    aspect-ratio: 16 / 9;
+    display: block;
+}
+
+@media (max-width: 768px) {
+    .video-container {
+        margin: 20px 15px;
+    }
+}
