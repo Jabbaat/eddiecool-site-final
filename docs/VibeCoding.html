@@ -1,58 +1,66 @@
 <!DOCTYPE html>
 <html lang="nl">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vibe Coding - Eddiecool</title>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&family=Inter:wght@400;700&display=swap"
+        rel="stylesheet">
     <!-- Markdown parsing for Gemini output -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    
+
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-SYG5T1Z0MV"></script>
     <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
 
-      gtag('config', 'G-SYG5T1Z0MV');
+        gtag('config', 'G-SYG5T1Z0MV');
     </script>
 
     <style>
         :root {
             /* Updated Palette: Dark Blue Theme with Vibrant Accents */
-            --primary: #0F172A; /* Dark Navy Blue */
-            --accent: #3B82F6;  /* Brighter Blue for highlights */
-            --yellow: #FACC15;  
+            --primary: #0F172A;
+            /* Dark Navy Blue */
+            --accent: #3B82F6;
+            /* Brighter Blue for highlights */
+            --yellow: #FACC15;
             --pink: #EC4899;
             --purple: #A855F7;
             --green: #22C55E;
             --orange: #F97316;
             --cyan: #06B6D4;
-            
+
             --white: #ffffff;
-            --bg: #F8FAFC;      /* Very light blue-grey bg */
+            --bg: #F8FAFC;
+            /* Very light blue-grey bg */
             --text: #0F172A;
             --border: 3px solid var(--primary);
             --shadow: 5px 5px 0px 0px var(--primary);
             --shadow-hover: 8px 8px 0px 0px var(--primary);
             --nav-bg: #ffffff;
-            
+
             /* Input specifieke variabelen voor de dark mode fix */
             --input-bg: #ffffff;
             --input-text: #0F172A;
-            --danger: #ef4444; /* Rood voor gevaar */
+            --danger: #ef4444;
+            /* Rood voor gevaar */
         }
 
         .dark-mode {
             --bg: #0F172A;
             --text: #ffffff;
             --nav-bg: #1E293B;
-            --primary: #ffffff; /* Borders become white */
+            --primary: #ffffff;
+            /* Borders become white */
             --border: 3px solid #ffffff;
             --shadow: 5px 5px 0px 0px #ffffff;
             --shadow-hover: 8px 8px 0px 0px #ffffff;
             --accent: #60A5FA;
-            
+
             /* Dark mode input fix: donkere achtergrond, lichte tekst */
             --input-bg: #1E293B;
             --input-text: #ffffff;
@@ -77,7 +85,10 @@
             overflow-x: hidden;
         }
 
-        h1, h2, h3, h4 {
+        h1,
+        h2,
+        h3,
+        h4 {
             font-family: 'Space Grotesk', sans-serif;
             font-weight: 700;
             text-transform: uppercase;
@@ -101,7 +112,7 @@
             display: block;
             transition: transform 0.2s;
         }
-        
+
         .logo a:hover {
             transform: scale(1.05) rotate(-2deg);
         }
@@ -198,7 +209,8 @@
 
         .hero-badge {
             background-color: var(--primary);
-            color: var(--bg); /* Aangepast naar bg voor consistentie */
+            color: var(--bg);
+            /* Aangepast naar bg voor consistentie */
             padding: 0.5rem 1.5rem;
             border: var(--border);
             box-shadow: var(--shadow);
@@ -253,7 +265,8 @@
             cursor: pointer;
         }
 
-        .btn-main:hover, .btn-secondary:hover {
+        .btn-main:hover,
+        .btn-secondary:hover {
             transform: translate(-4px, -4px);
             box-shadow: var(--shadow-hover);
         }
@@ -268,20 +281,26 @@
             padding: 1rem 0;
             /* FIX: kleur veranderd van var(--white) naar var(--bg) 
                Dit zorgt voor contrast in beide modi */
-            color: var(--bg); 
+            color: var(--bg);
         }
 
         .marquee-content {
             display: inline-block;
-            animation: marquee 40s linear infinite; /* Iets trager voor meer leesbaarheid */
+            animation: marquee 40s linear infinite;
+            /* Iets trager voor meer leesbaarheid */
             font-family: 'Space Grotesk', sans-serif;
             font-weight: bold;
             font-size: 1.5rem;
         }
 
         @keyframes marquee {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
+            0% {
+                transform: translateX(0);
+            }
+
+            100% {
+                transform: translateX(-50%);
+            }
         }
 
         /* --- Container & Grid --- */
@@ -297,7 +316,7 @@
             position: relative;
             display: inline-block;
         }
-        
+
         .section-title::after {
             content: '';
             position: absolute;
@@ -336,7 +355,8 @@
 
         .step-number {
             background-color: var(--primary);
-            color: var(--bg); /* Aangepast naar bg */
+            color: var(--bg);
+            /* Aangepast naar bg */
             font-family: 'Space Grotesk', sans-serif;
             font-size: 2rem;
             font-weight: bold;
@@ -353,18 +373,18 @@
         .step-content h3 {
             margin-bottom: 0.5rem;
         }
-        
+
         .step-content p {
             margin-bottom: 0.5rem;
         }
-        
+
         .step-tags {
             display: flex;
             gap: 0.5rem;
             flex-wrap: wrap;
             margin-top: 1rem;
         }
-        
+
         .tag {
             background-color: var(--text);
             color: var(--bg);
@@ -376,28 +396,86 @@
         }
 
         /* SPEELSE KLEUREN LOGICA */
-        .step-card.intro { background-color: var(--cyan); color: #000; }
-        .step-card.intro .step-number { background-color: #000; color: var(--cyan); }
+        .step-card.intro {
+            background-color: var(--cyan);
+            color: #000;
+        }
 
-        .step-card:nth-of-type(2) { border-color: var(--pink); box-shadow: 5px 5px 0px 0px var(--pink); }
-        .step-card:nth-of-type(2):hover { box-shadow: 8px 8px 0px 0px var(--pink); }
-        .step-card:nth-of-type(2) .step-number { background-color: var(--pink); color: white; }
+        .step-card.intro .step-number {
+            background-color: #000;
+            color: var(--cyan);
+        }
 
-        .step-card:nth-of-type(3) { border-color: var(--purple); box-shadow: 5px 5px 0px 0px var(--purple); }
-        .step-card:nth-of-type(3):hover { box-shadow: 8px 8px 0px 0px var(--purple); }
-        .step-card:nth-of-type(3) .step-number { background-color: var(--purple); color: white; }
+        .step-card:nth-of-type(2) {
+            border-color: var(--pink);
+            box-shadow: 5px 5px 0px 0px var(--pink);
+        }
 
-        .step-card:nth-of-type(4) { border-color: var(--green); box-shadow: 5px 5px 0px 0px var(--green); }
-        .step-card:nth-of-type(4):hover { box-shadow: 8px 8px 0px 0px var(--green); }
-        .step-card:nth-of-type(4) .step-number { background-color: var(--green); color: white; }
+        .step-card:nth-of-type(2):hover {
+            box-shadow: 8px 8px 0px 0px var(--pink);
+        }
 
-        .step-card:nth-of-type(5) { border-color: var(--orange); box-shadow: 5px 5px 0px 0px var(--orange); }
-        .step-card:nth-of-type(5):hover { box-shadow: 8px 8px 0px 0px var(--orange); }
-        .step-card:nth-of-type(5) .step-number { background-color: var(--orange); color: white; }
+        .step-card:nth-of-type(2) .step-number {
+            background-color: var(--pink);
+            color: white;
+        }
 
-        .step-card:nth-of-type(6) { border-color: var(--yellow); box-shadow: 5px 5px 0px 0px var(--yellow); }
-        .step-card:nth-of-type(6):hover { box-shadow: 8px 8px 0px 0px var(--yellow); }
-        .step-card:nth-of-type(6) .step-number { background-color: var(--yellow); color: black; border-color: black; }
+        .step-card:nth-of-type(3) {
+            border-color: var(--purple);
+            box-shadow: 5px 5px 0px 0px var(--purple);
+        }
+
+        .step-card:nth-of-type(3):hover {
+            box-shadow: 8px 8px 0px 0px var(--purple);
+        }
+
+        .step-card:nth-of-type(3) .step-number {
+            background-color: var(--purple);
+            color: white;
+        }
+
+        .step-card:nth-of-type(4) {
+            border-color: var(--green);
+            box-shadow: 5px 5px 0px 0px var(--green);
+        }
+
+        .step-card:nth-of-type(4):hover {
+            box-shadow: 8px 8px 0px 0px var(--green);
+        }
+
+        .step-card:nth-of-type(4) .step-number {
+            background-color: var(--green);
+            color: white;
+        }
+
+        .step-card:nth-of-type(5) {
+            border-color: var(--orange);
+            box-shadow: 5px 5px 0px 0px var(--orange);
+        }
+
+        .step-card:nth-of-type(5):hover {
+            box-shadow: 8px 8px 0px 0px var(--orange);
+        }
+
+        .step-card:nth-of-type(5) .step-number {
+            background-color: var(--orange);
+            color: white;
+        }
+
+        .step-card:nth-of-type(6) {
+            border-color: var(--yellow);
+            box-shadow: 5px 5px 0px 0px var(--yellow);
+        }
+
+        .step-card:nth-of-type(6):hover {
+            box-shadow: 8px 8px 0px 0px var(--yellow);
+        }
+
+        .step-card:nth-of-type(6) .step-number {
+            background-color: var(--yellow);
+            color: black;
+            border-color: black;
+        }
 
 
         /* --- GEMINI AI GENERATOR SECTION --- */
@@ -424,8 +502,10 @@
             border: 2px solid var(--text);
             margin: 1rem 0;
             border-radius: 0;
-            background-color: var(--input-bg); /* FIX voor Dark Mode */
-            color: var(--input-text);       /* FIX voor Dark Mode */
+            background-color: var(--input-bg);
+            /* FIX voor Dark Mode */
+            color: var(--input-text);
+            /* FIX voor Dark Mode */
             min-height: 100px;
             resize: vertical;
         }
@@ -446,7 +526,7 @@
         }
 
         .api-key-input {
-             width: 100%;
+            width: 100%;
             padding: 0.8rem;
             font-size: 1rem;
             font-family: monospace;
@@ -473,14 +553,15 @@
         }
 
         .warning-box {
-            background-color: #fff3cd; /* Lichtgeel voor warning */
+            background-color: #fff3cd;
+            /* Lichtgeel voor warning */
             color: #856404;
             border-left: 5px solid #ffa000;
             padding: 1rem;
             font-size: 0.9rem;
             margin-bottom: 1rem;
         }
-        
+
         .dark-mode .warning-box {
             background-color: #332b00;
             color: #ffeeba;
@@ -507,8 +588,16 @@
             box-shadow: 5px 5px 0px var(--text);
         }
 
-        .btn-save { background-color: var(--green); color: white; }
-        .btn-delete { background-color: var(--danger); color: white; }
+        .btn-save {
+            background-color: var(--green);
+            color: white;
+        }
+
+        .btn-delete {
+            background-color: var(--danger);
+            color: white;
+        }
+
         /* ------------------------------------- */
 
 
@@ -517,10 +606,12 @@
             padding: 1.5rem;
             background-color: var(--white);
             border: 2px solid var(--text);
-            display: none; /* Hidden by default */
-            color: #000; /* Altijd zwart voor leesbaarheid in box */
+            display: none;
+            /* Hidden by default */
+            color: #000;
+            /* Altijd zwart voor leesbaarheid in box */
         }
-        
+
         .result-box h3 {
             color: var(--pink);
             margin-bottom: 0.5rem;
@@ -535,15 +626,28 @@
         }
 
         /* Markdown styling inside result box */
-        .result-content p { margin-bottom: 1em; }
-        .result-content ul { padding-left: 1.5em; margin-bottom: 1em; }
-        .result-content code { background: #eee; padding: 2px 4px; border-radius: 4px; font-family: monospace; }
+        .result-content p {
+            margin-bottom: 1em;
+        }
+
+        .result-content ul {
+            padding-left: 1.5em;
+            margin-bottom: 1em;
+        }
+
+        .result-content code {
+            background: #eee;
+            padding: 2px 4px;
+            border-radius: 4px;
+            font-family: monospace;
+        }
 
 
         /* --- Footer --- */
         footer {
             background-color: var(--primary);
-            color: var(--bg); /* Aangepast naar bg */
+            color: var(--bg);
+            /* Aangepast naar bg */
             text-align: center;
             padding: 2rem;
             border-top: 3px solid var(--text);
@@ -567,7 +671,7 @@
             .menu.active {
                 display: flex;
             }
-            
+
             .menu li {
                 text-align: center;
                 margin-bottom: 0.5rem;
@@ -580,7 +684,7 @@
             .hero h1 {
                 font-size: 3rem;
             }
-            
+
             .step-card {
                 flex-direction: column;
                 align-items: center;
@@ -589,6 +693,7 @@
         }
     </style>
 </head>
+
 <body>
 
     <!-- Navigatie -->
@@ -604,7 +709,7 @@
             <li><a href="projects.html">✨ Projecten</a></li>
             <li><a href="ai_gallery.html">🖼️ Galerij</a></li>
             <li><a href="vibe_agent.html" class="active">🤖 Vibe Agent</a></li>
-            <li><a href="VibeCoding.html">⚡ Vibe Coding</a></li> 
+            <li><a href="VibeCoding.html">⚡ Vibe Coding</a></li>
             <li><a href="ai_apps.html">📱 AI Apps</a></li>
             <li><a href="about.html">ℹ️ Over Mij</a></li>
             <li><a href="contact.html">📧 Contact</a></li>
@@ -620,35 +725,42 @@
     <section class="hero">
         <div class="hero-badge">AI EXPERIMENTS</div>
         <h1>VIBE CODING</h1>
-        <p>Programmeren op 'vibes'. Vertel de AI wat je wilt, en het wordt gebouwd. <br>Geen moeilijke code, puur creativiteit.</p>
-        
+        <p>Programmeren op 'vibes'. Vertel de AI wat je wilt, en het wordt gebouwd. <br>Geen moeilijke code, puur
+            creativiteit.</p>
+
         <div class="btn-group">
             <a href="#roadmap" class="btn-main">🚀 Hoe werkt het?</a>
-            <a href="#generator" class="btn-secondary" style="background-color: var(--pink); color: white;">✨ Probeer AI Tool</a>
-            <a href="ai_apps.html" class="btn-secondary" style="background-color: var(--purple); color: white;">📱 Apps & Voorbeelden</a>
+            <a href="#generator" class="btn-secondary" style="background-color: var(--pink); color: white;">✨ Probeer AI
+                Tool</a>
+            <a href="ai_apps.html" class="btn-secondary" style="background-color: var(--purple); color: white;">📱 Apps
+                & Voorbeelden</a>
         </div>
     </section>
 
     <!-- Infinite Marquee -->
     <div class="marquee-container">
         <div class="marquee-content">
-            // VIBE CODING // GOOGLE CANVAS // CLAUDE ARTIFACTS // V0.DEV // BOLT.NEW // GEMINI // CHATGPT // GITHUB // VERCEL // NETLIFY // NO CODE REQUIRED // PURE CREATIVITY // AI POWERED // EDDIECOOL // VIBE CODING //
+            // VIBE CODING // GOOGLE CANVAS // CLAUDE ARTIFACTS // V0.DEV // BOLT.NEW // GEMINI // CHATGPT // GITHUB //
+            VERCEL // NETLIFY // NO CODE REQUIRED // PURE CREATIVITY // AI POWERED // EDDIECOOL // VIBE CODING //
         </div>
     </div>
 
     <!-- Roadmap Section (Stappenplan) -->
     <div class="container" id="roadmap">
         <h2 class="section-title">De Vibe Roadmap</h2>
-        
+
         <div class="roadmap">
-            
+
             <!-- Stap 0: Introductie (Cyan) -->
             <div class="step-card intro">
                 <div class="step-number">?</div>
                 <div class="step-content">
                     <h3>Wat is Vibe Coding?</h3>
-                    <p>In jip-en-janneketaal: Je bouwt echte <strong>apps, games en websites</strong> zonder dat je zelf code hoeft te typen.</p>
-                    <p>Jij vertelt de AI gewoon in het Nederlands wat je wilt hebben. "Maak een Mario-achtig spelletje" of "Bouw een website voor mijn bakkerij". De AI schrijft vervolgens al die ingewikkelde computertaal voor jou.</p>
+                    <p>In jip-en-janneketaal: Je bouwt echte <strong>apps, games en websites</strong> zonder dat je zelf
+                        code hoeft te typen.</p>
+                    <p>Jij vertelt de AI gewoon in het Nederlands wat je wilt hebben. "Maak een Mario-achtig spelletje"
+                        of "Bouw een website voor mijn bakkerij". De AI schrijft vervolgens al die ingewikkelde
+                        computertaal voor jou.</p>
                     <p>Jij bent de bedenker (de architect), de AI is de bouwer die het zware werk doet.</p>
                 </div>
             </div>
@@ -658,9 +770,14 @@
                 <div class="step-number">1</div>
                 <div class="step-content">
                     <h3>Kies je Wapens</h3>
-                    <p>Vergeet ingewikkelde editors. We gebruiken gratis tools die direct in je browser werken en perfect zijn voor Vibe Coding.</p>
-                    <p>Voor snelle prototypes en visuele ideeën gebruik je <strong>Google Canvas</strong> of <strong>Claude Artifacts</strong>. Deze tools laten je direct zien wat je maakt.</p>
-                    <p>Voor het echte bouwwerk gebruik je gratis online krachtpatsers zoals <strong>V0.dev</strong> (voor prachtige interfaces) of <strong>Bolt.new</strong> (voor complete apps). Je kunt ook gewoon <strong>ChatGPT</strong> of <strong>Gemini</strong> vragen om de code te schrijven en dit plakken.</p>
+                    <p>Vergeet ingewikkelde editors. We gebruiken gratis tools die direct in je browser werken en
+                        perfect zijn voor Vibe Coding.</p>
+                    <p>Voor snelle prototypes en visuele ideeën gebruik je <strong>Google Canvas</strong> of
+                        <strong>Claude Artifacts</strong>. Deze tools laten je direct zien wat je maakt.</p>
+                    <p>Voor het echte bouwwerk gebruik je gratis online krachtpatsers zoals <strong>V0.dev</strong>
+                        (voor prachtige interfaces) of <strong>Bolt.new</strong> (voor complete apps). Je kunt ook
+                        gewoon <strong>ChatGPT</strong> of <strong>Gemini</strong> vragen om de code te schrijven en dit
+                        plakken.</p>
                     <div class="step-tags">
                         <span class="tag">Google Canvas</span>
                         <span class="tag">Claude Artifacts</span>
@@ -675,8 +792,11 @@
                 <div class="step-number">2</div>
                 <div class="step-content">
                     <h3>Prompt als een Regisseur</h3>
-                    <p>Je schrijft geen code, je geeft instructies. Dit is je belangrijkste skill. Wees specifiek over de <strong>rol</strong> (bijv. "Je bent een senior frontend developer"), de <strong>context</strong> en de gewenste <strong>stijl</strong>.</p>
-                    <p>Gebruik natuurlijke taal: <em>"Maak een dashboard in Neobrutalism stijl met felle kleuren en dikke randen. Voeg een grafiek toe die data inlaadt als je eroverheen hovert."</em></p>
+                    <p>Je schrijft geen code, je geeft instructies. Dit is je belangrijkste skill. Wees specifiek over
+                        de <strong>rol</strong> (bijv. "Je bent een senior frontend developer"), de
+                        <strong>context</strong> en de gewenste <strong>stijl</strong>.</p>
+                    <p>Gebruik natuurlijke taal: <em>"Maak een dashboard in Neobrutalism stijl met felle kleuren en
+                            dikke randen. Voeg een grafiek toe die data inlaadt als je eroverheen hovert."</em></p>
                 </div>
             </div>
 
@@ -685,18 +805,24 @@
                 <div class="step-number">3</div>
                 <div class="step-content">
                     <h3>Iterate & Chat</h3>
-                    <p>De eerste versie is zelden perfect. Dat is normaal. Nu begint het gesprek. Je "chat" met je code om het te finetunen.</p>
-                    <p>Vraag om aanpassingen: <em>"Maak de tekst groter"</em>, <em>"Verander de kleur naar donkerblauw"</em> of <em>"Fix de bug in de mobiele weergave"</em>. Zie het als samenwerken met een collega die razendsnel werkt.</p>
+                    <p>De eerste versie is zelden perfect. Dat is normaal. Nu begint het gesprek. Je "chat" met je code
+                        om het te finetunen.</p>
+                    <p>Vraag om aanpassingen: <em>"Maak de tekst groter"</em>, <em>"Verander de kleur naar
+                            donkerblauw"</em> of <em>"Fix de bug in de mobiele weergave"</em>. Zie het als samenwerken
+                        met een collega die razendsnel werkt.</p>
                 </div>
             </div>
 
-             <!-- Stap 4: GitHub (Orange) -->
-             <div class="step-card">
+            <!-- Stap 4: GitHub (Orange) -->
+            <div class="step-card">
                 <div class="step-number">4</div>
                 <div class="step-content">
                     <h3>Secure the Goods (GitHub)</h3>
-                    <p>Tevreden met je code? Upload het naar <strong>GitHub</strong>. Dit is je veilige kluis in de cloud.</p>
-                    <p>Hiermee heb je <strong>versiebeheer</strong> (je kunt altijd terug als je iets breekt) en kun je jouw project makkelijk delen met hostingplatforms. Het is de ruggengraat van elk serieus project.</p>
+                    <p>Tevreden met je code? Upload het naar <strong>GitHub</strong>. Dit is je veilige kluis in de
+                        cloud.</p>
+                    <p>Hiermee heb je <strong>versiebeheer</strong> (je kunt altijd terug als je iets breekt) en kun je
+                        jouw project makkelijk delen met hostingplatforms. Het is de ruggengraat van elk serieus
+                        project.</p>
                     <div class="step-tags">
                         <span class="tag">Git</span>
                         <span class="tag">Versiebeheer</span>
@@ -710,13 +836,48 @@
                 <div class="step-number">5</div>
                 <div class="step-content">
                     <h3>Launch & Show off</h3>
-                    <p>Tijd om live te gaan! Koppel je GitHub aan <strong>Vercel</strong> of <strong>Netlify</strong>. Met één klik staat je site online voor de hele wereld.</p>
-                    <p>Elke keer als je nu een update naar GitHub stuurt, wordt je live site automatisch bijgewerkt. Zo snel kan het gaan.</p>
+                    <p>Tijd om live te gaan! Koppel je GitHub aan <strong>Vercel</strong> of <strong>Netlify</strong>.
+                        Met één klik staat je site online voor de hele wereld.</p>
+                    <p>Elke keer als je nu een update naar GitHub stuurt, wordt je live site automatisch bijgewerkt. Zo
+                        snel kan het gaan.</p>
                     <div class="step-tags">
                         <span class="tag">Vercel</span>
                         <span class="tag">Netlify</span>
                         <span class="tag">Deployment</span>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Antigravity Section -->
+    <div class="container" id="antigravity">
+        <h2 class="section-title">Viben met Antigravity 🚀</h2>
+        <p style="font-size: 1.2rem; margin-bottom: 2rem;">Hoe werk je lokaal in je eigen mappen met onze ultieme
+            AI-assistent? Heel simpel, op twee manieren:</p>
+
+        <div class="roadmap">
+            <!-- Agent Mode -->
+            <div class="step-card" style="border-color: var(--cyan); box-shadow: 5px 5px 0px 0px var(--cyan);">
+                <div class="step-number" style="background-color: var(--cyan); color: #000; font-size: 1.5rem;">🤖</div>
+                <div class="step-content">
+                    <h3 style="color: var(--cyan); text-shadow: 1px 1px 0px #000;">Agent Mode (De Architect)</h3>
+                    <p>Dit is voor de grote visie en creatieve flow. Je typt een idee in gewone mensentaal, en de AI
+                        rent autonoom door al je projectmappen, maakt een plan en bouwt of verbouwt de code overal
+                        tegelijk. Je focust puur op de <strong>'vibe'</strong> en het resultaat. Antigravity overziet
+                        het grote geheel.</p>
+                </div>
+            </div>
+
+            <!-- Editor Mode -->
+            <div class="step-card" style="border-color: var(--pink); box-shadow: 5px 5px 0px 0px var(--pink);">
+                <div class="step-number" style="background-color: var(--pink); color: #fff; font-size: 1.5rem;">🛠️
+                </div>
+                <div class="step-content">
+                    <h3 style="color: var(--pink); text-shadow: 1px 1px 0px #000;">Editor Mode (De Metselaar)</h3>
+                    <p>Voor de absolute regie. Als je de details wilt finetunen, open je zelf een specifiek bestand en
+                        laat je de AI gerichte, chirurgische aanpassingen doen in een paar regels code. Jij bepaalt
+                        precies waar de 'stenen' worden gelegd.</p>
                 </div>
             </div>
         </div>
@@ -728,21 +889,24 @@
         <div class="generator-box">
             <h3 style="color: var(--pink);">Van Saai naar Vibe</h3>
             <p>Heb je een idee, maar weet je niet hoe je het aan de AI moet vragen? Typ je simpele idee hieronder.</p>
-            
-            <textarea id="ideaInput" class="generator-input" placeholder="Bijv: Ik wil een simpele to-do app waar de taken ontploffen als je ze afvinkt..."></textarea>
-            
+
+            <textarea id="ideaInput" class="generator-input"
+                placeholder="Bijv: Ik wil een simpele to-do app waar de taken ontploffen als je ze afvinkt..."></textarea>
+
             <!-- === EDDIECOOL API STANDARD === -->
             <div class="api-security-box">
                 <h4 style="margin-bottom: 0.5rem;">⚙️ ENGINE ACCESS (API Key)</h4>
-                
+
                 <!-- Instructie link -->
                 <details style="margin-bottom: 1rem; cursor: pointer;">
                     <summary style="font-size: 0.9rem; font-weight: bold; color: var(--accent);">
                         🔑 Nog geen sleutel? Klik hier voor instructies
                     </summary>
-                    <div style="background: #f1f5f9; padding: 10px; margin-top: 5px; border: 1px solid var(--text); color: #000;">
+                    <div
+                        style="background: #f1f5f9; padding: 10px; margin-top: 5px; border: 1px solid var(--text); color: #000;">
                         <ol style="margin-left: 1.5rem; line-height: 1.5;">
-                            <li>Ga naar <a href="https://aistudio.google.com/app/apikey" target="_blank" style="color: var(--pink); font-weight: bold;">Google AI Studio</a>.</li>
+                            <li>Ga naar <a href="https://aistudio.google.com/app/apikey" target="_blank"
+                                    style="color: var(--pink); font-weight: bold;">Google AI Studio</a>.</li>
                             <li>Klik op <strong>"Create API key"</strong>.</li>
                             <li>Kopieer de key en plak hem hieronder.</li>
                         </ol>
@@ -757,9 +921,12 @@
 
                 <!-- Warning Box -->
                 <div class="warning-box">
-                    <p><strong>⚠️ Veiligheidscheck:</strong> Je sleutel wordt alléén in jouw eigen browser opgeslagen (Local Storage). Hij wordt nooit naar onze server verstuurd.</p>
-                    <p style="margin-top: 5px;"><strong>🛑 Openbare Computer?</strong> (School/Bieb): Klik na gebruik ALTIJD op de rode knop <strong>'Wissen'</strong>.</p>
-                    <p style="margin-top: 5px;"><strong>💡 Tip:</strong> Maak een aparte, gratis API key aan voor dit soort tests.</p>
+                    <p><strong>⚠️ Veiligheidscheck:</strong> Je sleutel wordt alléén in jouw eigen browser opgeslagen
+                        (Local Storage). Hij wordt nooit naar onze server verstuurd.</p>
+                    <p style="margin-top: 5px;"><strong>🛑 Openbare Computer?</strong> (School/Bieb): Klik na gebruik
+                        ALTIJD op de rode knop <strong>'Wissen'</strong>.</p>
+                    <p style="margin-top: 5px;"><strong>💡 Tip:</strong> Maak een aparte, gratis API key aan voor dit
+                        soort tests.</p>
                 </div>
 
                 <!-- Actie Knoppen -->
@@ -771,7 +938,7 @@
             <!-- ============================== -->
 
             <button id="generateBtn" class="btn-main" style="width: 100%;">✨ Genereer Vibe Prompt</button>
-            
+
             <div id="loadingIndicator" class="loading-spinner">
                 Gemini is aan het koken... 🍳
             </div>
@@ -779,16 +946,19 @@
             <div id="resultBox" class="result-box">
                 <h3>Jouw Vibe Prompt:</h3>
                 <div id="resultContent" class="result-content"></div>
-                <button id="copyBtn" class="btn-secondary" style="margin-top: 1rem; font-size: 0.9rem; padding: 0.5rem 1rem;">📋 Kopieer Tekst</button>
+                <button id="copyBtn" class="btn-secondary"
+                    style="margin-top: 1rem; font-size: 0.9rem; padding: 0.5rem 1rem;">📋 Kopieer Tekst</button>
             </div>
         </div>
     </div>
 
     <!-- Pricing / CTA -->
     <div class="container" style="text-align: center; margin-bottom: 4rem;">
-        <div class="card" style="background-color: var(--primary); color: var(--white); padding: 3rem; border: var(--border); box-shadow: var(--shadow); display: inline-block; max-width: 700px;">
+        <div class="card"
+            style="background-color: var(--primary); color: var(--white); padding: 3rem; border: var(--border); box-shadow: var(--shadow); display: inline-block; max-width: 700px;">
             <h2 style="font-size: 2.5rem; margin-bottom: 1rem; color: var(--yellow);">Let's Connect!</h2>
-            <p style="font-size: 1.2rem; margin-bottom: 2rem;">Heb je vragen of suggesties? Neem gerust contact met me op.</p>
+            <p style="font-size: 1.2rem; margin-bottom: 2rem;">Heb je vragen of suggesties? Neem gerust contact met me
+                op.</p>
             <a href="contact.html" class="btn-secondary" style="font-size: 1.3rem;">Neem Contact Op</a>
         </div>
     </div>
@@ -800,7 +970,7 @@
 
     <script>
         // Hamburger menu
-        document.getElementById("hamburger-menu").addEventListener("click", function() {
+        document.getElementById("hamburger-menu").addEventListener("click", function () {
             document.querySelector(".menu").classList.toggle("active");
         });
 
@@ -815,7 +985,7 @@
 
         themeToggle.addEventListener('click', () => {
             body.classList.toggle('dark-mode');
-            
+
             if (body.classList.contains('dark-mode')) {
                 themeToggle.textContent = '☀️';
                 localStorage.setItem('theme', 'dark');
@@ -829,7 +999,7 @@
         const generateBtn = document.getElementById('generateBtn');
         const ideaInput = document.getElementById('ideaInput');
         const apiKeyInput = document.getElementById('apiKeyInput');
-        
+
         // Nieuwe Knoppen
         const toggleApiVisibility = document.getElementById('toggleApiVisibility');
         const saveKeyBtn = document.getElementById('saveKeyBtn');
@@ -874,7 +1044,7 @@
 
         // 4. Delete Key Logic (Danger)
         deleteKeyBtn.addEventListener('click', () => {
-            if(confirm("Weet je zeker dat je de sleutel wilt verwijderen van dit apparaat?")) {
+            if (confirm("Weet je zeker dat je de sleutel wilt verwijderen van dit apparaat?")) {
                 localStorage.removeItem('gemini_api_key');
                 apiKeyInput.value = "";
                 alert("🗑️ Sleutel verwijderd.");
@@ -890,7 +1060,7 @@
             if (!apiKey) {
                 apiKey = localStorage.getItem('gemini_api_key');
             }
-            
+
             if (!userIdea) {
                 alert("Typ eerst een idee in!");
                 return;
@@ -945,7 +1115,7 @@
 
                 // Render Markdown using marked library
                 resultContent.innerHTML = marked.parse(generatedText);
-                
+
                 resultBox.style.display = 'block';
 
             } catch (error) {
@@ -974,4 +1144,5 @@
     </script>
 
 </body>
+
 </html>
