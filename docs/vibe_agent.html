@@ -1,18 +1,20 @@
 <!DOCTYPE html>
 <html lang="nl">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🤖 Eddiecool Vibe Agent - The Brain</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Inter:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css"> 
-    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Inter:wght@400;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-SYG5T1Z0MV"></script>
     <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-SYG5T1Z0MV'); 
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-SYG5T1Z0MV'); 
     </script>
 
     <style>
@@ -34,10 +36,14 @@
             background-size: var(--bg-dot-size) var(--bg-dot-size);
             color: var(--vibe-black);
             line-height: 1.6;
-            margin: 0; /* Belangrijk voor mobiel */
+            margin: 0;
+            /* Belangrijk voor mobiel */
         }
 
-        h1, h2, h3, h4 {
+        h1,
+        h2,
+        h3,
+        h4 {
             font-family: 'Montserrat', sans-serif;
             text-transform: uppercase;
             font-weight: 900;
@@ -59,13 +65,20 @@
             font-weight: bold;
             font-size: 1.1rem;
         }
+
         .marquee-content {
             display: inline-block;
             animation: marquee 20s linear infinite;
         }
+
         @keyframes marquee {
-            0% { transform: translateX(0%); }
-            100% { transform: translateX(-50%); }
+            0% {
+                transform: translateX(0%);
+            }
+
+            100% {
+                transform: translateX(-50%);
+            }
         }
 
         /* --- CONTAINER --- */
@@ -86,10 +99,22 @@
             padding: 30px;
             color: var(--vibe-black);
         }
-        .box-cyan { background-color: var(--vibe-cyan); }
-        .box-pink { background-color: var(--vibe-pink); }
-        .box-blue { background-color: var(--vibe-blue); }
-        .box-yellow { background-color: var(--vibe-yellow); }
+
+        .box-cyan {
+            background-color: var(--vibe-cyan);
+        }
+
+        .box-pink {
+            background-color: var(--vibe-pink);
+        }
+
+        .box-blue {
+            background-color: var(--vibe-blue);
+        }
+
+        .box-yellow {
+            background-color: var(--vibe-yellow);
+        }
 
         /* --- IFRAME (DE AGENT) --- */
         .iframe-wrapper {
@@ -101,6 +126,7 @@
             position: relative;
             margin-top: 30px;
         }
+
         .iframe-label {
             display: inline-block;
             background: var(--vibe-black);
@@ -122,51 +148,140 @@
             gap: 30px;
             margin-top: 20px;
         }
-        .card-bad { background: #e5e7eb; border: 4px solid var(--vibe-black); padding: 25px; opacity: 0.9; }
-        .card-good { background: var(--vibe-yellow); border: 4px solid var(--vibe-black); padding: 25px; box-shadow: 8px 8px 0px var(--vibe-black); transform: rotate(-1deg); }
-        
-        ul.check-list, ul.cross-list { list-style: none; padding: 0; }
-        ul.check-list li { margin-bottom: 10px; font-weight: bold; }
-        ul.check-list li::before { content: "✅ "; margin-right: 10px; }
-        ul.cross-list li { margin-bottom: 10px; color: #555; }
-        ul.cross-list li::before { content: "❌ "; margin-right: 10px; }
+
+        .card-bad {
+            background: #ff3300;
+            border: 6px solid var(--vibe-black);
+            padding: 25px;
+            box-shadow: 12px 12px 0px var(--vibe-black);
+            transform: rotate(1deg);
+        }
+
+        .card-good {
+            background: var(--vibe-yellow);
+            border: 6px solid var(--vibe-black);
+            padding: 25px;
+            box-shadow: 14px 14px 0px var(--vibe-black);
+            transform: rotate(-1deg);
+        }
+
+        ul.check-list,
+        ul.cross-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        ul.check-list li {
+            margin-bottom: 10px;
+            font-weight: 900;
+        }
+
+        ul.check-list li::before {
+            content: "✅ ";
+            margin-right: 10px;
+        }
+
+        ul.cross-list li {
+            margin-bottom: 10px;
+            color: var(--vibe-black);
+            font-weight: 900;
+        }
+
+        ul.cross-list li::before {
+            content: "❌ ";
+            margin-right: 10px;
+        }
+
+        .neo-subtitle {
+            background-color: #FFEE00;
+            color: var(--vibe-black);
+            border: 4px solid var(--vibe-black);
+            padding: 8px 15px;
+            font-weight: 900;
+            display: inline-block;
+            box-shadow: 6px 6px 0px var(--vibe-black);
+            transform: rotate(-2deg);
+            margin: 10px 0 20px 0;
+            font-size: 1.1rem;
+        }
+
+        .box-pattern {
+            background-color: #00ffaa;
+            background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(0, 0, 0, 0.05) 10px, rgba(0, 0, 0, 0.05) 20px);
+        }
 
         /* --- IMAGES & CODE --- */
-        .diagram-img { width: 100%; height: auto; border: 4px solid var(--vibe-black); margin-bottom: 15px; }
-        .code-terminal {
-            background: var(--vibe-black); color: #33ff00; padding: 20px;
-            font-family: 'Courier New', monospace; border: 4px solid var(--vibe-black);
-            box-shadow: 5px 5px 0px rgba(0,0,0,0.2); margin: 15px 0;
-            white-space: pre-wrap; font-size: 0.9rem;
+        .diagram-img {
+            width: 100%;
+            height: auto;
+            border: 4px solid var(--vibe-black);
+            margin-bottom: 15px;
         }
-        .code-comment { color: #999; }
+
+        .code-terminal {
+            background: var(--vibe-black);
+            color: #33ff00;
+            padding: 20px;
+            font-family: 'Courier New', monospace;
+            border: 4px solid var(--vibe-black);
+            box-shadow: 5px 5px 0px rgba(0, 0, 0, 0.2);
+            margin: 15px 0;
+            white-space: pre-wrap;
+            font-size: 0.9rem;
+        }
+
+        .code-comment {
+            color: #999;
+        }
 
         /* --- HAMBURGER MENU FIX (ESSENTIEEL!) --- */
-        .hamburger { display: none; } /* Verberg standaard op desktop */
+        .hamburger {
+            display: none;
+        }
+
+        /* Verberg standaard op desktop */
 
         @media (max-width: 768px) {
+
             /* Layout aanpassingen */
-            .comparison-grid { grid-template-columns: 1fr; }
-            .iframe-wrapper { height: 600px; }
-            .neo-box { padding: 20px; box-shadow: 6px 6px 0px var(--vibe-black); }
-            .agent-content-container { padding: 15px; margin-top: 20px; }
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .iframe-wrapper {
+                height: 600px;
+            }
+
+            .neo-box {
+                padding: 20px;
+                box-shadow: 6px 6px 0px var(--vibe-black);
+            }
+
+            .agent-content-container {
+                padding: 15px;
+                margin-top: 20px;
+            }
 
             /* MENU LOGICA */
             .hamburger {
-                display: block; /* Toon knop op mobiel */
+                display: block;
+                /* Toon knop op mobiel */
                 cursor: pointer;
                 font-size: 2rem;
                 color: var(--vibe-black);
-                margin-left: auto; /* Duw naar rechts */
+                margin-left: auto;
+                /* Duw naar rechts */
             }
 
             .menu {
-                display: none; /* Verberg menu items standaard */
+                display: none;
+                /* Verberg menu items standaard */
                 flex-direction: column;
                 width: 100%;
                 background-color: var(--vibe-white);
                 position: absolute;
-                top: 80px; /* Pas aan op basis van je navbar hoogte */
+                top: 80px;
+                /* Pas aan op basis van je navbar hoogte */
                 left: 0;
                 border-bottom: 4px solid var(--vibe-black);
                 border-top: 4px solid var(--vibe-black);
@@ -175,7 +290,8 @@
             }
 
             .menu.active {
-                display: flex; /* TOON menu als class 'active' er is */
+                display: flex;
+                /* TOON menu als class 'active' er is */
             }
 
             .menu li {
@@ -183,6 +299,7 @@
                 padding: 15px;
                 border-bottom: 1px solid #eee;
             }
+
             .menu li a {
                 font-size: 1.2rem;
                 font-weight: bold;
@@ -192,11 +309,13 @@
         }
     </style>
 </head>
+
 <body>
 
     <div class="marquee-container">
         <div class="marquee-content">
-            +++ SYSTEM ONLINE +++ MEMORY: ACTIVE +++ VISION: ENABLED +++ VOICE: READY +++ CREATOR MODE: ON +++ WELKOM BIJ DE VIBE AGENT +++ SYSTEM ONLINE +++ MEMORY: ACTIVE +++
+            +++ SYSTEM ONLINE +++ MEMORY: ACTIVE +++ VISION: ENABLED +++ VOICE: READY +++ CREATOR MODE: ON +++ WELKOM
+            BIJ DE VIBE AGENT +++ SYSTEM ONLINE +++ MEMORY: ACTIVE +++
         </div>
     </div>
 
@@ -206,23 +325,23 @@
                 <img src="images/logo.png" alt="Eddiecool Logo" class="logo-img">
             </a>
         </div>
-        
+
         <span class="hamburger" id="hamburger-menu">&#9776;</span>
-        
+
         <ul class="menu">
             <li><a href="index.html">🏠 Home</a></li>
             <li><a href="projects.html">✨ Projecten</a></li>
             <li><a href="ai_gallery.html">🖼️ Galerij</a></li>
             <li><a href="vibe_agent.html" class="active">🤖 Vibe Agent</a></li>
-            <li><a href="VibeCoding.html">⚡ Vibe Coding</a></li> 
+            <li><a href="VibeCoding.html">⚡ Vibe Coding</a></li>
             <li><a href="ai_apps.html">📱 AI Apps</a></li>
             <li><a href="about.html">ℹ️ Over Mij</a></li>
             <li><a href="contact.html">📧 Contact</a></li>
         </ul>
-    </nav>  
+    </nav>
 
     <main class="agent-content-container">
-        
+
         <div class="neo-box box-cyan" style="text-align: center;">
             <h1 style="font-size: 2.5rem;">De Eddiecool Vibe Agent</h1>
             <p style="font-size: 1.2rem; font-weight: bold;">Geen simpele chatbot. Jouw digitale sidekick.</p>
@@ -231,19 +350,15 @@
         <div>
             <div class="iframe-label">🔒 SECURE CONNECTION // PRIVATE ACCESS</div>
             <div class="iframe-wrapper">
-                <iframe 
-                    src="https://vibe-manager-test-937495400955.europe-west4.run.app" 
-                    width="100%" 
-                    height="100%" 
-                    style="border: none;"
-                    allow="microphone; camera; display-capture; clipboard-write;">
+                <iframe src="https://vibe-manager-test-937495400955.europe-west4.run.app" width="100%" height="100%"
+                    style="border: none;" allow="microphone; camera; display-capture; clipboard-write;">
                 </iframe>
             </div>
         </div>
 
-        <div class="neo-box">
+        <div class="neo-box box-pattern">
             <h2>🧠 Wat is het verschil?</h2>
-            <p>Waarom is dit anders dan ChatGPT of een standaard klantenservice bot?</p>
+            <div class="neo-subtitle">Waarom is dit anders dan ChatGPT of een standaard klantenservice bot?</div>
             <div class="comparison-grid">
                 <div class="card-bad">
                     <h3>De "Normale" Chatbot</h3>
@@ -269,49 +384,51 @@
         <div class="neo-box box-pink">
             <h2>⚙️ Under the Hood: Hoe werkt het?</h2>
             <p>Dit is geen magie. Het is een kettingreactie van slimme systemen in de Google Cloud.</p>
-            
-            <img src="images/Gemini_Generated_Image_vaa6bxvaa6bxvaa6.jpg" alt="Agent Architecture Diagram" class="diagram-img">
-            
+
+            <img src="images/Gemini_Generated_Image_vaa6bxvaa6bxvaa6.jpg" alt="Agent Architecture Diagram"
+                class="diagram-img">
+
             <p><strong>De route van je bericht:</strong><br>
-            1. Jij typt op deze website (Frontend).<br>
-            2. Het bericht gaat naar het Python "brein" in de Cloud (Backend).<br>
-            3. Het brein vraagt Google's AI (Gemini) om antwoord en checkt de database.<br>
-            4. Het antwoord komt terug op je scherm.</p>
+                1. Jij typt op deze website (Frontend).<br>
+                2. Het bericht gaat naar het Python "brein" in de Cloud (Backend).<br>
+                3. Het brein vraagt Google's AI (Gemini) om antwoord en checkt de database.<br>
+                4. Het antwoord komt terug op je scherm.</p>
         </div>
 
         <div class="neo-box box-blue">
             <h2>🛠️ Hoe is dit gebouwd? (Vibe Coding)</h2>
-            <p>Ik heb geen dure servers gekocht. Alles is gebouwd in de browser met <strong>Google Cloud Shell</strong>.</p>
-            
+            <p>Ik heb geen dure servers gekocht. Alles is gebouwd in de browser met <strong>Google Cloud Shell</strong>.
+            </p>
+
             <h3>Stap 1: Het Brein (Python & FastAPI)</h3>
             <div class="code-terminal">
-<span class="code-comment"># Dit is een versimpeld voorbeeld van de code</span>
-import os
-from fastapi import FastAPI
-from google import genai 
+                <span class="code-comment"># Dit is een versimpeld voorbeeld van de code</span>
+                import os
+                from fastapi import FastAPI
+                from google import genai
 
-app = FastAPI()
+                app = FastAPI()
 
-<span class="code-comment"># Het karakter van de agent instellen</span>
-SYSTEM_INSTRUCTION = """
-JIJ BENT: De Eddiecool Vibe Agent.
-Je spreekt Nederlands.
-"""
+                <span class="code-comment"># Het karakter van de agent instellen</span>
+                SYSTEM_INSTRUCTION = """
+                JIJ BENT: De Eddiecool Vibe Agent.
+                Je spreekt Nederlands.
+                """
             </div>
 
             <h3>Stap 2: Live zetten (Deployen)</h3>
             <div class="code-terminal">
-<span class="code-comment"># Het commando om de app wereldwijd beschikbaar te maken</span>
-gcloud run deploy vibe-agent \
-  --source . \
-  --set-env-vars VIBE_PASSWORD=GeheimWachtwoord
+                <span class="code-comment"># Het commando om de app wereldwijd beschikbaar te maken</span>
+                gcloud run deploy vibe-agent \
+                --source . \
+                --set-env-vars VIBE_PASSWORD=GeheimWachtwoord
             </div>
         </div>
 
     </main>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const hamburger = document.getElementById('hamburger-menu');
             const menu = document.querySelector('.menu');
 
@@ -326,4 +443,5 @@ gcloud run deploy vibe-agent \
     </script>
 
 </body>
+
 </html>
