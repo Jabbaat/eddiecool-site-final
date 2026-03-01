@@ -16,47 +16,77 @@
       gtag('config', 'G-SYG5T1Z0MV'); 
     </script>
     <style>
+        /* Vernieuwde styling voor de Google Workflow sectie */
         .google-workflow-section {
-            background-color: #2c3e50; /* Donkerblauw */
-            color: #ffffff;
-            border-radius: 12px;
-            padding: 30px;
-            margin: 30px 0;
+            background: linear-gradient(145deg, rgba(30, 41, 59, 0.4), rgba(15, 23, 42, 0.6));
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 40px;
+            margin: 40px 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
         }
         .google-workflow-section h3 {
             color: #ffffff;
+            font-size: 1.8rem;
             margin-top: 0;
+            margin-bottom: 10px;
         }
-        .google-workflow-section p {
-            color: #e0e0e0;
-            text-align: left;
-            max-width: 100%;
+        .google-workflow-section > p.intro-text {
+            color: #cbd5e1;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 20px;
         }
         .workflow-step {
             display: flex;
             align-items: flex-start;
-            margin-top: 25px;
+            margin-top: 30px;
+            background: rgba(0, 0, 0, 0.15);
+            padding: 20px;
+            border-radius: 12px;
+            border-left: 4px solid #f1c40f;
+            transition: transform 0.2s ease;
+        }
+        .workflow-step:hover {
+            transform: translateX(5px);
         }
         .workflow-step-icon {
             font-size: 2.5rem;
-            margin-right: 20px;
+            margin-right: 25px;
             margin-top: 5px;
         }
         .workflow-step-content h4 {
-            margin: 0 0 5px 0;
-            font-size: 1.2rem;
-            color: #f1c40f; /* Goudgele kleur voor titels */
+            margin: 0 0 10px 0;
+            font-size: 1.3rem;
+            color: #f1c40f; 
+        }
+        .workflow-step-content p {
+            color: #e2e8f0;
+            line-height: 1.6;
+            margin-bottom: 15px;
         }
         .prompt-box {
-            background-color: rgba(0, 0, 0, 0.2);
-            border-radius: 6px;
-            padding: 15px;
-            margin-top: 10px;
+            background-color: #0f172a;
+            border-radius: 8px;
+            padding: 15px 20px;
             font-family: 'Courier New', Courier, monospace;
             font-size: 0.95rem;
-            border-left: 4px solid #f1c40f;
+            color: #a7f3d0;
             white-space: pre-wrap;
             word-wrap: break-word;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);
+        }
+        .prompt-box strong {
+            color: #94a3b8;
+            font-family: 'Inter', sans-serif;
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
     </style>
 </head>
@@ -103,27 +133,37 @@
         <p>Hier komen creativiteit en kunstmatige intelligentie samen. Ik experimenteer met de nieuwste AI-tools, deel inspirerende ontdekkingen en help jou om nieuwe creatieve mogelijkheden te ontsluiten. Of je nu op zoek bent naar frisse ideeën, je workflow wilt stroomlijnen of gewoon nieuwsgierig bent naar wat er mogelijk is met AI – dit is jouw plek om te ontdekken, leren en geïnspireerd te raken.</p>
         
         <div class="google-workflow-section">
-            <h3>Maak Consistente Karakters met Google's AI</h3>
-            <p>Leer hoe je met Google's "Nano Banana 🍌" (Gemini 1.5 Flash) en Veo 3 via Flow een karakter creëert en animeert, terwijl het uiterlijk perfect consistent blijft.</p>
+            <h3>Consistente Karakters met Google's AI</h3>
+            <p class="intro-text">Ontdek hoe je met de onlangs geüpdatete Google Flow-omgeving een perfect samenwerkende brug slaat tussen beeld en video. We gebruiken de kracht van <strong>Nano Banana 2</strong> (Gemini 3 Flash Image) voor het ontwerp, en <strong>Veo</strong> voor de animatie.</p>
+            
             <div class="workflow-step">
                 <div class="workflow-step-icon">🎨</div>
                 <div class="workflow-step-content">
-                    <h4>Stap 1: Creëer je Karakter met Nano Banana 🍌</h4>
-                    <p>Gebruik een gedetailleerde prompt in "Nano Banana 🍌" om je karakter te ontwerpen. Wees specifiek over uiterlijk, kleding, stijl en omgeving voor het beste resultaat.</p>
+                    <h4>Stap 1: Het Ontwerp (Nano Banana 2)</h4>
+                    <p>Start met het fundament. Gebruik een uiterst gedetailleerde prompt in Nano Banana 2 om je karakter te smeden. Omdat dit model excelleert in scherpte, helpt het om heel specifiek te zijn over materialen, belichting en de sfeer van de ruimte.</p>
                     <div class="prompt-box">
-                        <strong>Voorbeeldprompt:</strong><br>
-                        "A charismatic cartoon robot, friendly expression, glowing blue eyes, metallic silver body with orange accents, standing in a futuristic, minimalist white room. Pixar animation style, sharp focus, detailed."
+                        <strong>Voorbeeldprompt:</strong>
+"A charismatic cartoon robot, friendly expression, glowing blue eyes, metallic silver body with orange accents, standing in a futuristic, minimalist white room. Pixar animation style, sharp focus, detailed."
                     </div>
                 </div>
             </div>
+
+            <div class="workflow-step">
+                <div class="workflow-step-icon">🔄</div>
+                <div class="workflow-step-content">
+                    <h4>Stap 2: De Brug (Google Flow)</h4>
+                    <p>De nieuwste update van Flow maakt de workflow vloeiender. Importeer je zojuist gemaakte afbeelding hier. Deze afbeelding fungeert vanaf nu als je absolute ankerpunt — het <em>"beginning frame"</em>. Dit verzekert dat je karakter er in de video exact hetzelfde uitziet als op je afbeelding.</p>
+                </div>
+            </div>
+
             <div class="workflow-step">
                 <div class="workflow-step-icon">🎬</div>
                 <div class="workflow-step-content">
-                    <h4>Stap 2: Animeer met Flow en Veo 3</h4>
-                    <p>Importeer je gemaakte afbeelding in Google Flow. Dit beeld dient als "beginning frame" (beginframe) voor Veo 3, wat zorgt voor de consistentie. Geef daarna een simpele actie op om de animatie te starten.</p>
+                    <h4>Stap 3: De Beweging (Veo)</h4>
+                    <p>Met het ankerpunt vastgezet, stuur je het door naar Veo, de videomotor. Omdat Veo je afbeelding al als visuele context heeft, hoef je in je videoprompt alleen nog maar de beweging of actie te beschrijven. Kort, duidelijk en doelgericht.</p>
                      <div class="prompt-box">
-                        <strong>Voorbeeldprompt voor video:</strong><br>
-                        "The robot waves happily at the camera and then gives a thumbs up."
+                        <strong>Voorbeeldprompt voor video:</strong>
+"The robot waves happily at the camera and then gives a thumbs up."
                     </div>
                 </div>
             </div>
@@ -156,7 +196,7 @@
                 <h3>💬 AI Assistenten</h3>
                 <ul>
                     <li><a href="https://chat.openai.com" target="_blank" rel="noopener noreferrer">**ChatGPT**</a> - Mijn favoriet voor brainstormen en scripts schrijven</li>
-                    <li><a href="https://gemini.google.com" target="_blank" rel="noopener noreferrer">**Gemini**</a> - Krachtig voor onderzoek en analyse</li>     
+                    <li><a href="https://gemini.google.com" target="_blank" rel="noopener noreferrer">**Gemini**</a> - Krachtig voor onderzoek en analyse</li>    
                     <li><a href="https://claude.ai" target="_blank" rel="noopener noreferrer">**Claude**</a> - Uitstekend voor gedetailleerde feedback</li>
                     <li><a href="https://www.perplexity.ai/" target="_blank" rel="noopener noreferrer">**Perplexity**</a> - Geweldig voor actuele, bron-gebaseerde antwoorden</li>
                     <li><a href="https://www.mistral.ai/le-chat" target="_blank" rel="noopener noreferrer">**Le Chat**</a> - Sterk in meertalige en creatieve taken</li>
@@ -166,10 +206,10 @@
             <div class="toolkit-category">
                 <h3>🌐 Google AI Suite</h3>
                 <ul>
-                    <li><a href="https://aistudio.google.com/prompts/new_chat?model=gemini-2.5-flash-image-preview" target="_blank" rel="noopener noreferrer">**Nano Banana 🍌**</a> - (Gemini 1.5 Flash) Razendsnelle en efficiënte beeldgeneratie.</li>
-                    <li><a href="https://aistudio.google.com/prompts/new_video" target="_blank" rel="noopener noreferrer">**Veo 3**</a> - Google's meest geavanceerde model voor hoge-kwaliteit videogeneratie.</li>
-                    <li><a href="https://labs.google/fx/nl/tools/flow" target="_blank" rel="noopener noreferrer">**Flow**</a> - De creatieve interface om workflows te bouwen met tools zoals Veo en Nano Banana 🍌.</li>
-                    <li><a href="https://labs.google/fx/nl/tools/whisk" target="_blank" rel="noopener noreferrer">**Whisk**</a> - Google Whisk is een experimenteel AI-beeldgeneratie-tool van Google Labs met een frisse draai.</li>
+                    <li><a href="https://aistudio.google.com/prompts/new_chat?model=gemini-2.5-flash-image-preview" target="_blank" rel="noopener noreferrer">**Nano Banana 2 🍌**</a> - (Gemini 3 Flash Image) Razendsnelle en superieure beeldgeneratie.</li>
+                    <li><a href="https://aistudio.google.com/prompts/new_video" target="_blank" rel="noopener noreferrer">**Veo**</a> - Google's vlaggenschip voor adembenemende videogeneratie.</li>
+                    <li><a href="https://labs.google/fx/nl/tools/flow" target="_blank" rel="noopener noreferrer">**Flow**</a> - De dynamische interface om visuele workflows en iteraties razendsnel te bouwen.</li>
+                    <li><a href="https://labs.google/fx/nl/tools/whisk" target="_blank" rel="noopener noreferrer">**Whisk**</a> - Een experimentele tool van Google Labs met een verrassende twist.</li>
                 </ul>
             </div>
 
@@ -185,33 +225,4 @@
             <div class="toolkit-category">
                 <h3>🎬 Video & Animatie</h3>
                 <ul>
-                    <li><a href="https://hailuoai.video" target="_blank" rel="noopener noreferrer">**Hailuo AI**</a> - Indrukwekkende videogeneratie vanuit tekst</li>
-                    <li><a href="https://klingai.com" target="_blank" rel="noopener noreferrer">**Kling AI**</a> - Hoge kwaliteit video's met geweldige beweging</li>
-                    <li><a href="https://pixverse.ai" target="_blank" rel="noopener noreferrer">**Pixverse**</a> - Perfect om afbeeldingen tot leven te wekken</li>
-                    <li><a href="https://hedra.com" target="_blank" rel="noopener noreferrer">**Hedra**</a> - Gespecialiseerd in karakteranimatie en lip-sync</li>
-                </ul>
-            </div>
-
-            <div class="toolkit-category">
-                <h3>🎵 Audio & Muziek</h3>
-                <ul>
-                    <li><a href="https://elevenlabs.io" target="_blank" rel="noopener noreferrer">**ElevenLabs**</a> - De meest natuurlijk klinkende AI-stemmen</li>
-                    <li><a href="https://udio.com" target="_blank" noreferrer">**Udio**</a> - Creëer muziek op maat die bij elke sfeer past</li>
-                    <li><a href="https://suno.ai" target="_blank" rel="noopener noreferrer">**Suno**</a> - AI-gegenereerde nummers met tekst en melodieën</li>
-                </ul>
-            </div>
-        </div>
-        <p class="toolkit-outro">Elke tool heeft een specifiek doel in mijn creatieve proces. Wil je ze in actie zien? Bekijk mijn <a href="projects.html">experimentenpagina</a>!</p>
-    </div>
-
-    <script>
-        // Hamburger menu
-        document.getElementById("hamburger-menu").addEventListener("click", function() {
-            document.querySelector(".menu").classList.toggle("active");
-        });
-
-        // OUDE VIDEO LOGICA VERWIJDERD OM CONFLICTEN MET YOUTUBE TE VOORKOMEN
-    </script>
-
-</body>
-</html>
+                    <li><a href="https://hailuoai.video" target="_blank" rel="noopener noreferrer">**Hail
