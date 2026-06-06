@@ -1,0 +1,543 @@
+/* ============================================================
+   EDDIECOOL — DARK MODE NEOMORFISME THEMA EXTENSIE
+   Toegevoegd bovenop de bestaande stijlen
+   ============================================================ */
+
+/* ─── 1. CSS CUSTOM PROPERTIES (ROOT VARS) ─────────────────── */
+:root {
+    --neo-bg:           #1a1a1a;
+    --neo-surface:      #222222;
+    --neo-surface-alt:  #1e1e1e;
+    --neo-text:         #e0e0e0;
+    --neo-text-muted:   #999999;
+    --neo-accent:       #a855f7;
+    --neo-accent2:      #06b6d4;
+    --neo-accent3:      #f43f5e;
+    --neo-shadow-dark:  #0b0b0b;
+    --neo-shadow-light: #2f2f2f;
+    --neo-border:       rgba(168, 85, 247, 0.15);
+    --neo-glow:         rgba(168, 85, 247, 0.35);
+    --neo-glow2:        rgba(6, 182, 212, 0.25);
+    --neo-radius:       20px;
+    --neo-radius-sm:    12px;
+    --neo-transition:   all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+/* ─── 2. BODY & GLOBALE RESET ───────────────────────────────── */
+body {
+    background-color: var(--neo-bg) !important;
+    color: var(--neo-text) !important;
+    padding-top: 0 !important;
+    /* Semi-transparant zodat WebGL canvas zichtbaar is */
+}
+
+/* ─── 3. NAVIGATIEBALK ─────────────────────────────────────── */
+nav {
+    background: rgba(20, 20, 20, 0.85) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    border-bottom: 1px solid var(--neo-border) !important;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.6),
+                0 1px 0 rgba(168, 85, 247, 0.1) !important;
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 9999 !important;
+}
+
+nav .menu a {
+    color: #a0aec0 !important;
+    transition: var(--neo-transition) !important;
+    border-radius: 8px !important;
+}
+
+nav .menu a:hover {
+    color: var(--neo-accent) !important;
+    background: rgba(168, 85, 247, 0.12) !important;
+}
+
+nav .menu a.active {
+    color: var(--neo-accent) !important;
+    background: rgba(168, 85, 247, 0.1) !important;
+}
+
+nav .hamburger {
+    color: var(--neo-accent) !important;
+}
+
+/* ─── 4. NEOMORFISCHE KAARTKLASSEN ─────────────────────────── */
+
+/* Standaard neomorfische kaart (uitstekend effect) */
+.neo-card {
+    background: var(--neo-surface);
+    border-radius: var(--neo-radius);
+    box-shadow:
+         8px  8px 16px var(--neo-shadow-dark),
+        -8px -8px 16px var(--neo-shadow-light);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    transition: var(--neo-transition);
+    position: relative;
+    overflow: hidden;
+}
+
+.neo-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.03) 0%,
+        transparent 50%,
+        rgba(0, 0, 0, 0.05) 100%
+    );
+    pointer-events: none;
+    border-radius: inherit;
+}
+
+/* 3D kantel-effect bij hover */
+.neo-card:hover {
+    box-shadow:
+         12px  12px 24px var(--neo-shadow-dark),
+        -12px -12px 24px var(--neo-shadow-light),
+         0 0 30px var(--neo-glow);
+    transform: perspective(800px) rotateX(-2deg) rotateY(2deg) translateY(-4px);
+    border-color: var(--neo-border);
+}
+
+/* Verzonken variant (voor actieve/ingedrukte states) */
+.neo-inset {
+    background: var(--neo-surface);
+    border-radius: var(--neo-radius-sm);
+    box-shadow:
+        inset  6px  6px 12px var(--neo-shadow-dark),
+        inset -6px -6px 12px var(--neo-shadow-light);
+    border: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+/* Accent neo-kaart (paarse gloed) */
+.neo-card-accent {
+    background: var(--neo-surface);
+    border-radius: var(--neo-radius);
+    box-shadow:
+         8px  8px 16px var(--neo-shadow-dark),
+        -8px -8px 16px var(--neo-shadow-light),
+        0 0 0 1px rgba(168, 85, 247, 0.2);
+    transition: var(--neo-transition);
+}
+
+.neo-card-accent:hover {
+    box-shadow:
+         10px  10px 20px var(--neo-shadow-dark),
+        -10px -10px 20px var(--neo-shadow-light),
+        0 0 40px var(--neo-glow);
+    transform: perspective(800px) rotateX(-1.5deg) rotateY(1.5deg) translateY(-3px);
+}
+
+/* ─── 5. NEOMORFISCHE KNOPPEN ───────────────────────────────── */
+.neo-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: var(--neo-surface);
+    color: var(--neo-text);
+    border: none;
+    border-radius: var(--neo-radius-sm);
+    padding: 12px 24px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow:
+         5px  5px 10px var(--neo-shadow-dark),
+        -5px -5px 10px var(--neo-shadow-light);
+    transition: var(--neo-transition);
+    outline: none;
+    font-family: inherit;
+}
+
+.neo-btn:hover {
+    box-shadow:
+         3px  3px  6px var(--neo-shadow-dark),
+        -3px -3px  6px var(--neo-shadow-light);
+    color: var(--neo-accent);
+}
+
+.neo-btn:active {
+    box-shadow:
+        inset  3px  3px  6px var(--neo-shadow-dark),
+        inset -3px -3px  6px var(--neo-shadow-light);
+    transform: scale(0.98);
+}
+
+.neo-btn-accent {
+    background: linear-gradient(135deg, #7c3aed, #a855f7);
+    color: #fff;
+    box-shadow:
+         5px  5px 15px rgba(124, 58, 237, 0.4),
+        -5px -5px 10px var(--neo-shadow-light);
+}
+
+.neo-btn-accent:hover {
+    box-shadow:
+         3px  3px  8px rgba(124, 58, 237, 0.6),
+        -3px -3px  8px var(--neo-shadow-light),
+        0 0 20px var(--neo-glow);
+    color: #fff;
+}
+
+.neo-btn-play {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    padding: 0;
+    background: var(--neo-surface);
+    color: var(--neo-accent);
+    box-shadow:
+         6px  6px 12px var(--neo-shadow-dark),
+        -6px -6px 12px var(--neo-shadow-light);
+    font-size: 1.1rem;
+    flex-shrink: 0;
+}
+
+.neo-btn-play:hover {
+    background: linear-gradient(135deg, #7c3aed, #a855f7);
+    color: #fff;
+    box-shadow:
+         4px  4px  8px var(--neo-shadow-dark),
+        -4px -4px  8px var(--neo-shadow-light),
+        0 0 20px var(--neo-glow);
+}
+
+.neo-btn-play.is-playing {
+    background: linear-gradient(135deg, #7c3aed, #a855f7);
+    color: #fff;
+    box-shadow:
+        inset  3px  3px  6px rgba(0,0,0,0.3),
+        inset -3px -3px  6px rgba(124,58,237,0.3),
+        0 0 20px var(--neo-glow);
+}
+
+/* ─── 6. MUZIEKPAGINA COMPONENTEN ───────────────────────────── */
+
+/* Grid container */
+.music-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 28px;
+    padding: 0;
+}
+
+/* Track nummerbadge */
+.track-num {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--neo-accent);
+    margin-bottom: 6px;
+    display: block;
+}
+
+/* Progress bar container */
+.neo-progress {
+    width: 100%;
+    height: 4px;
+    background: var(--neo-shadow-dark);
+    border-radius: 2px;
+    overflow: hidden;
+    margin: 10px 0 4px;
+    box-shadow: inset 1px 1px 3px var(--neo-shadow-dark);
+}
+
+.neo-progress-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--neo-accent), var(--neo-accent2));
+    border-radius: 2px;
+    transition: width 0.1s linear;
+}
+
+/* Tijdweergave */
+.neo-time {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.7rem;
+    color: var(--neo-text-muted);
+    font-variant-numeric: tabular-nums;
+}
+
+/* Verberg de native audio element */
+.neo-audio-hidden {
+    display: none !important;
+}
+
+/* ─── 7. NEOMORFISCHE CONTAINERS VOOR BESTAANDE PAGINA'S ────── */
+
+/* Wrap voor index pagina workflow */
+.neo-section {
+    background: var(--neo-surface);
+    border-radius: var(--neo-radius);
+    box-shadow:
+         8px  8px 16px var(--neo-shadow-dark),
+        -8px -8px 16px var(--neo-shadow-light);
+    padding: 32px;
+    margin: 28px auto;
+    max-width: 900px;
+    transition: var(--neo-transition);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.neo-section:hover {
+    box-shadow:
+         10px  10px 20px var(--neo-shadow-dark),
+        -10px -10px 20px var(--neo-shadow-light);
+}
+
+/* Hero sectie */
+.neo-hero {
+    text-align: center;
+    padding: 60px 24px 40px;
+    position: relative;
+    z-index: 1;
+}
+
+.neo-hero h1 {
+    background: linear-gradient(135deg, #ffffff 0%, var(--neo-accent) 50%, var(--neo-accent2) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: none !important;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    margin-bottom: 16px;
+}
+
+/* Formulier neomorfisch */
+.neo-form {
+    background: var(--neo-surface);
+    border-radius: var(--neo-radius);
+    box-shadow:
+         8px  8px 16px var(--neo-shadow-dark),
+        -8px -8px 16px var(--neo-shadow-light);
+    padding: 36px;
+    max-width: 620px;
+    margin: 32px auto;
+}
+
+.neo-input {
+    width: 100%;
+    padding: 14px 18px;
+    background: var(--neo-bg);
+    color: var(--neo-text);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: var(--neo-radius-sm);
+    font-size: 1rem;
+    font-family: inherit;
+    margin-bottom: 16px;
+    box-shadow:
+        inset  4px  4px  8px var(--neo-shadow-dark),
+        inset -4px -4px  8px var(--neo-shadow-light);
+    transition: var(--neo-transition);
+    box-sizing: border-box;
+}
+
+.neo-input:focus {
+    outline: none;
+    border-color: rgba(168, 85, 247, 0.4);
+    box-shadow:
+        inset  4px  4px  8px var(--neo-shadow-dark),
+        inset -4px -4px  8px var(--neo-shadow-light),
+        0 0 0 2px rgba(168, 85, 247, 0.2);
+}
+
+.neo-input::placeholder {
+    color: var(--neo-text-muted);
+}
+
+textarea.neo-input {
+    resize: vertical;
+    min-height: 130px;
+}
+
+label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--neo-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 6px;
+}
+
+/* ─── 8. OVERRIDES BESTAANDE KLASSEN ────────────────────────── */
+
+/* Projects single-project kaart */
+.single-project {
+    background: var(--neo-surface) !important;
+    border-radius: var(--neo-radius) !important;
+    box-shadow:
+         8px  8px 16px var(--neo-shadow-dark),
+        -8px -8px 16px var(--neo-shadow-light) !important;
+    border: 1px solid rgba(255,255,255,0.04) !important;
+    transition: var(--neo-transition) !important;
+    overflow: hidden !important;
+}
+
+.single-project:hover {
+    box-shadow:
+         12px  12px 24px var(--neo-shadow-dark),
+        -12px -12px 24px var(--neo-shadow-light),
+        0 0 30px var(--neo-glow) !important;
+    transform: translateY(-4px) !important;
+}
+
+/* Toolkit categories */
+.toolkit-category {
+    background: var(--neo-surface) !important;
+    border-radius: var(--neo-radius) !important;
+    box-shadow:
+         6px  6px 12px var(--neo-shadow-dark),
+        -6px -6px 12px var(--neo-shadow-light) !important;
+    border: 1px solid rgba(255,255,255,0.03) !important;
+    transition: var(--neo-transition) !important;
+}
+
+.toolkit-category:hover {
+    box-shadow:
+         10px  10px 20px var(--neo-shadow-dark),
+        -10px -10px 20px var(--neo-shadow-light),
+        0 0 20px var(--neo-glow) !important;
+    transform: translateY(-5px) !important;
+}
+
+/* AI toolkit section */
+.ai-toolkit-section {
+    background: var(--neo-surface) !important;
+    border-radius: var(--neo-radius) !important;
+    box-shadow:
+         8px  8px 16px var(--neo-shadow-dark),
+        -8px -8px 16px var(--neo-shadow-light) !important;
+}
+
+/* Main intro */
+.main-intro-content {
+    background: var(--neo-surface) !important;
+    border-radius: var(--neo-radius) !important;
+    box-shadow:
+         8px  8px 16px var(--neo-shadow-dark),
+        -8px -8px 16px var(--neo-shadow-light) !important;
+    border: 1px solid rgba(255,255,255,0.04) !important;
+}
+
+/* Gallery items */
+.gallery img.thumbnail {
+    border-radius: var(--neo-radius-sm) !important;
+    box-shadow:
+         6px  6px 12px var(--neo-shadow-dark),
+        -6px -6px 12px var(--neo-shadow-light) !important;
+}
+
+/* Video container */
+.video-container {
+    border-radius: var(--neo-radius) !important;
+    box-shadow:
+         8px  8px 16px var(--neo-shadow-dark),
+        -8px -8px 16px var(--neo-shadow-light) !important;
+}
+
+/* Form elements */
+form {
+    background: var(--neo-surface) !important;
+    border-radius: var(--neo-radius) !important;
+    box-shadow:
+         8px  8px 16px var(--neo-shadow-dark),
+        -8px -8px 16px var(--neo-shadow-light) !important;
+    border: none !important;
+}
+
+input:not([type="submit"]):not([type="button"]):not([type="range"]),
+textarea {
+    background: var(--neo-bg) !important;
+    color: var(--neo-text) !important;
+    border: 1px solid rgba(255,255,255,0.06) !important;
+    box-shadow:
+        inset  3px  3px  6px var(--neo-shadow-dark),
+        inset -3px -3px  6px var(--neo-shadow-light) !important;
+    border-radius: var(--neo-radius-sm) !important;
+}
+
+input:focus,
+textarea:focus {
+    outline: none !important;
+    border-color: rgba(168, 85, 247, 0.4) !important;
+    box-shadow:
+        inset  3px  3px  6px var(--neo-shadow-dark),
+        inset -3px -3px  6px var(--neo-shadow-light),
+        0 0 0 2px rgba(168, 85, 247, 0.2) !important;
+}
+
+button[type="submit"] {
+    background: linear-gradient(135deg, #7c3aed, #a855f7) !important;
+    color: #fff !important;
+    border: none !important;
+    border-radius: var(--neo-radius-sm) !important;
+    box-shadow:
+         4px  4px 12px rgba(124, 58, 237, 0.4),
+        -4px -4px 10px var(--neo-shadow-light) !important;
+    transition: var(--neo-transition) !important;
+}
+
+button[type="submit"]:hover {
+    box-shadow:
+         2px  2px  6px rgba(124, 58, 237, 0.5),
+        -2px -2px  6px var(--neo-shadow-light),
+        0 0 20px var(--neo-glow) !important;
+    transform: translateY(-2px) !important;
+}
+
+/* H2 kleur override */
+h2 {
+    color: var(--neo-text) !important;
+}
+
+/* ─── 9. RESPONSIVITEIT MUZIEK GRID ─────────────────────────── */
+@media (max-width: 768px) {
+    .music-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .neo-card:hover,
+    .neo-card-accent:hover {
+        transform: translateY(-3px) !important;
+    }
+
+    .neo-section {
+        padding: 20px 16px;
+        margin: 16px auto;
+    }
+}
+
+@media (max-width: 480px) {
+    .neo-btn-play {
+        width: 44px;
+        height: 44px;
+    }
+}
+
+/* ─── 10. WEBGL CANVAS ACHTERGROND ──────────────────────────── */
+#webgl-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0.85;
+}
+
+/* ─── 11. PAGE WRAPPER ──────────────────────────────────────── */
+.page-wrapper {
+    position: relative;
+    z-index: 1;
+    min-height: 100vh;
+}

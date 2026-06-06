@@ -1,0 +1,1182 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎵 Muziek — Eddiecool AI Music Studio</title>
+    <meta name="description" content="Luister naar AI-gegenereerde muziek van Eddiecool. 27 unieke tracks gecreëerd met kunstmatige intelligentie.">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="neo-theme.css">
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-SYG5T1Z0MV"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-SYG5T1Z0MV');
+    </script>
+
+    <style>
+        /* ─── PAGINA-SPECIFIEKE MUZIEK STIJLEN ─── */
+        body {
+            font-family: 'Inter', sans-serif;
+            text-align: left;
+        }
+
+        /* HERO */
+        .music-hero {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            padding: 70px 24px 50px;
+        }
+
+        .music-hero::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--neo-accent), transparent);
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: rgba(168, 85, 247, 0.12);
+            border: 1px solid rgba(168, 85, 247, 0.35);
+            color: var(--neo-accent);
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            padding: 6px 18px;
+            border-radius: 100px;
+            margin-bottom: 28px;
+            backdrop-filter: blur(8px);
+        }
+
+        .music-hero h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: clamp(2.4rem, 6vw, 4.5rem);
+            font-weight: 900;
+            line-height: 1.08;
+            letter-spacing: -1.5px;
+            margin: 0 0 18px;
+            background: linear-gradient(135deg, #fff 0%, var(--neo-accent) 55%, var(--neo-accent2) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .music-hero .hero-sub {
+            font-size: clamp(0.95rem, 1.8vw, 1.15rem);
+            color: var(--neo-text-muted);
+            max-width: 500px;
+            margin: 0 auto 40px;
+            line-height: 1.7;
+        }
+
+        /* GELUIDSGOLVEN */
+        .sound-wave {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            margin: 0 auto 14px;
+            height: 44px;
+        }
+
+        .sound-wave span {
+            display: block;
+            width: 4px;
+            border-radius: 2px;
+            background: linear-gradient(180deg, var(--neo-accent), var(--neo-accent2));
+            animation: waveAnim 1.3s ease-in-out infinite;
+            opacity: 0.8;
+        }
+
+        .sound-wave span:nth-child(1)  { height: 10px; animation-delay: 0.0s; }
+        .sound-wave span:nth-child(2)  { height: 24px; animation-delay: 0.1s; }
+        .sound-wave span:nth-child(3)  { height: 18px; animation-delay: 0.2s; }
+        .sound-wave span:nth-child(4)  { height: 36px; animation-delay: 0.3s; }
+        .sound-wave span:nth-child(5)  { height: 44px; animation-delay: 0.4s; }
+        .sound-wave span:nth-child(6)  { height: 28px; animation-delay: 0.5s; }
+        .sound-wave span:nth-child(7)  { height: 40px; animation-delay: 0.4s; }
+        .sound-wave span:nth-child(8)  { height: 32px; animation-delay: 0.3s; }
+        .sound-wave span:nth-child(9)  { height: 20px; animation-delay: 0.2s; }
+        .sound-wave span:nth-child(10) { height: 14px; animation-delay: 0.1s; }
+        .sound-wave span:nth-child(11) { height: 8px;  animation-delay: 0.0s; }
+
+        @keyframes waveAnim {
+            0%, 100% { transform: scaleY(1);    opacity: 0.6; }
+            50%       { transform: scaleY(0.3);  opacity: 1;   }
+        }
+
+        /* STATISTIEKEN */
+        .stats-row {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            padding: 0 24px 52px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .stat-pill {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--neo-surface);
+            border-radius: 100px;
+            padding: 12px 22px;
+            box-shadow:
+                 5px  5px 10px var(--neo-shadow-dark),
+                -5px -5px 10px var(--neo-shadow-light);
+            font-size: 0.875rem;
+        }
+
+        .stat-pill .stat-icon { font-size: 1.1rem; }
+        .stat-pill .stat-val  { font-weight: 700; color: #fff; }
+        .stat-pill .stat-lbl  { color: var(--neo-text-muted); font-size: 0.8rem; }
+
+        /* MUZIEK GALERIJ */
+        .music-gallery {
+            position: relative;
+            z-index: 1;
+            max-width: 1160px;
+            margin: 0 auto;
+            padding: 0 24px 80px;
+        }
+
+        .section-divider {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 36px;
+        }
+
+        .section-divider::before,
+        .section-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: rgba(168, 85, 247, 0.18);
+        }
+
+        .section-divider span {
+            font-size: 0.68rem;
+            font-weight: 700;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--neo-accent);
+            white-space: nowrap;
+        }
+
+        /* TRACK KAART */
+        .track-card {
+            background: var(--neo-surface);
+            border-radius: 18px;
+            box-shadow:
+                 8px  8px 16px var(--neo-shadow-dark),
+                -8px -8px 16px var(--neo-shadow-light);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            padding: 24px 22px 20px;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .track-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.025) 0%, transparent 60%);
+            pointer-events: none;
+            border-radius: inherit;
+        }
+
+        .track-card:hover {
+            box-shadow:
+                 12px  12px 24px var(--neo-shadow-dark),
+                -12px -12px 24px var(--neo-shadow-light),
+                0 0 28px var(--neo-glow);
+            transform: perspective(900px) rotateX(-1.5deg) rotateY(1.5deg) translateY(-5px);
+            border-color: rgba(168, 85, 247, 0.18);
+        }
+
+        .track-card.is-active {
+            box-shadow:
+                 8px  8px 16px var(--neo-shadow-dark),
+                -8px -8px 16px var(--neo-shadow-light),
+                0 0 40px var(--neo-glow);
+            border-color: rgba(168, 85, 247, 0.3);
+        }
+
+        /* Gloed-accent rechtsboven */
+        .track-card .card-glow {
+            position: absolute;
+            top: -40px;
+            right: -40px;
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(168,85,247,0.12) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        /* TRACK HEADER */
+        .track-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+        }
+
+        .track-meta { flex: 1; min-width: 0; }
+
+        .track-num {
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--neo-accent);
+            margin-bottom: 4px;
+            display: block;
+        }
+
+        .track-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.05rem;
+            font-weight: 900;
+            color: #ffffff;
+            margin: 0;
+            letter-spacing: -0.3px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* PLAY KNOP */
+        .play-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: none;
+            background: var(--neo-surface);
+            color: var(--neo-accent);
+            font-size: 1rem;
+            cursor: pointer;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow:
+                 5px  5px 10px var(--neo-shadow-dark),
+                -5px -5px 10px var(--neo-shadow-light);
+            transition: all 0.25s ease;
+            outline: none;
+        }
+
+        .play-btn:hover {
+            color: #fff;
+            background: linear-gradient(135deg, #7c3aed, #a855f7);
+            box-shadow:
+                 3px  3px  6px var(--neo-shadow-dark),
+                -3px -3px  6px var(--neo-shadow-light),
+                0 0 18px var(--neo-glow);
+        }
+
+        .play-btn.is-playing {
+            background: linear-gradient(135deg, #7c3aed, #a855f7);
+            color: #fff;
+            box-shadow:
+                inset  3px  3px  6px rgba(0,0,0,0.3),
+                inset -3px -3px  6px rgba(124,58,237,0.3),
+                0 0 22px var(--neo-glow);
+            animation: playPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes playPulse {
+            0%, 100% { box-shadow: inset 3px 3px 6px rgba(0,0,0,0.3), inset -3px -3px 6px rgba(124,58,237,0.3), 0 0 22px var(--neo-glow); }
+            50%       { box-shadow: inset 3px 3px 6px rgba(0,0,0,0.3), inset -3px -3px 6px rgba(124,58,237,0.3), 0 0 40px var(--neo-glow); }
+        }
+
+        /* PROGRESS */
+        .progress-track {
+            width: 100%;
+            height: 4px;
+            background: #111;
+            border-radius: 2px;
+            cursor: pointer;
+            position: relative;
+            box-shadow: inset 1px 1px 3px #090909, inset -1px -1px 2px #252525;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            border-radius: 2px;
+            background: linear-gradient(90deg, #7c3aed, #a855f7, #06b6d4);
+            transition: width 0.1s linear;
+            pointer-events: none;
+        }
+
+        .time-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.68rem;
+            color: var(--neo-text-muted);
+            margin-top: 5px;
+            font-variant-numeric: tabular-nums;
+            letter-spacing: 0.02em;
+        }
+
+        /* Verbergt native audio */
+        .track-audio { display: none !important; }
+
+        /* MOBIEL */
+        @media (max-width: 640px) {
+            .track-card { padding: 18px 16px; }
+            .play-btn   { width: 44px; height: 44px; font-size: 0.9rem; }
+            .track-title { font-size: 0.95rem; }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="page-wrapper">
+
+        <!-- NAV -->
+        <nav>
+            <div class="logo">
+                <a href="index.html">
+                    <img src="images/logo.png" alt="Eddiecool Logo" class="logo-img">
+                </a>
+            </div>
+            <span class="hamburger" id="hamburger-menu">&#9776;</span>
+            <ul class="menu">
+                <li><a href="index.html">🏠 Home</a></li>
+                <li><a href="projects.html">✨ Projecten</a></li>
+                <li><a href="ai_gallery.html">🖼️ Galerij</a></li>
+                <li><a href="muziek.html" class="active">🎵 Muziek</a></li>
+                <li><a href="VibeCoding.html">⚡ Vibe Coding</a></li>
+                <li><a href="ai_apps.html">📱 AI Apps</a></li>
+                <li><a href="about.html">ℹ️ Over Mij</a></li>
+                <li><a href="contact.html">📧 Contact</a></li>
+            </ul>
+        </nav>
+
+        <!-- HERO -->
+        <section class="music-hero">
+            <div class="hero-badge">✦ AI Generated Music Studio</div>
+            <h1>27 Tracks.<br>Nul Instrumenten.</h1>
+            <p class="hero-sub">Muziek geboren uit algoritmes — iedere noot gegenereerd door kunstmatige intelligentie.</p>
+            <div class="sound-wave" aria-hidden="true">
+                <span></span><span></span><span></span><span></span><span></span>
+                <span></span><span></span><span></span><span></span><span></span>
+                <span></span>
+            </div>
+        </section>
+
+        <!-- STATISTIEKEN -->
+        <div class="stats-row">
+            <div class="stat-pill">
+                <span class="stat-icon">🎵</span>
+                <span class="stat-val">27</span>
+                <span class="stat-lbl">Tracks</span>
+            </div>
+            <div class="stat-pill">
+                <span class="stat-icon">🤖</span>
+                <span class="stat-val">100%</span>
+                <span class="stat-lbl">AI Gegenereerd</span>
+            </div>
+            <div class="stat-pill">
+                <span class="stat-icon">🎛️</span>
+                <span class="stat-val">Udio &amp; Suno</span>
+                <span class="stat-lbl">Tools</span>
+            </div>
+        </div>
+
+        <!-- MUZIEK GALERIJ -->
+        <main class="music-gallery">
+            <div class="section-divider"><span>Alle Tracks</span></div>
+
+            <div class="music-grid" id="music-grid">
+
+                <!-- Track 01 -->
+                <article class="track-card" data-track="1">
+                    <div class="card-glow"></div>
+                    <div class="track-header">
+                        <div class="track-meta">
+                            <span class="track-num">Track 01</span>
+                            <h2 class="track-title">Ayaya Loma</h2>
+                        </div>
+                        <button class="play-btn" aria-label="Afspelen Ayaya Loma" data-id="track-01">
+                            <span class="play-icon">▶</span>
+                        </button>
+                    </div>
+                    <div class="progress-track" data-id="track-01">
+                        <div class="progress-fill"></div>
+                    </div>
+                    <div class="time-row">
+                        <span class="time-current">0:00</span>
+                        <span class="time-total">–:––</span>
+                    </div>
+                    <audio class="track-audio" id="track-01" preload="metadata">
+                        <source src="assets/audio/Ayaya loma 19.mp3" type="audio/mpeg">
+                    </audio>
+                </article>
+
+                <!-- Track 02 -->
+                <article class="track-card" data-track="2">
+                    <div class="card-glow"></div>
+                    <div class="track-header">
+                        <div class="track-meta">
+                            <span class="track-num">Track 02</span>
+                            <h2 class="track-title">Beštro Ťaž</h2>
+                        </div>
+                        <button class="play-btn" aria-label="Afspelen Beštro Ťaž" data-id="track-02">
+                            <span class="play-icon">▶</span>
+                        </button>
+                    </div>
+                    <div class="progress-track" data-id="track-02">
+                        <div class="progress-fill"></div>
+                    </div>
+                    <div class="time-row">
+                        <span class="time-current">0:00</span>
+                        <span class="time-total">–:––</span>
+                    </div>
+                    <audio class="track-audio" id="track-02" preload="metadata">
+                        <source src="assets/audio/Beštro ťaž 03.mp3" type="audio/mpeg">
+                    </audio>
+                </article>
+
+                <!-- Track 03 -->
+                <article class="track-card" data-track="3">
+                    <div class="card-glow"></div>
+                    <div class="track-header">
+                        <div class="track-meta">
+                            <span class="track-num">Track 03</span>
+                            <h2 class="track-title">Blooms 04</h2>
+                        </div>
+                        <button class="play-btn" aria-label="Afspelen Blooms 04" data-id="track-03">
+                            <span class="play-icon">▶</span>
+                        </button>
+                    </div>
+                    <div class="progress-track" data-id="track-03">
+                        <div class="progress-fill"></div>
+                    </div>
+                    <div class="time-row">
+                        <span class="time-current">0:00</span>
+                        <span class="time-total">–:––</span>
+                    </div>
+                    <audio class="track-audio" id="track-03" preload="metadata">
+                        <source src="assets/audio/Blooms 04.mp3" type="audio/mpeg">
+                    </audio>
+                </article>
+
+                <!-- Track 04 -->
+                <article class="track-card" data-track="4">
+                    <div class="card-glow"></div>
+                    <div class="track-header">
+                        <div class="track-meta">
+                            <span class="track-num">Track 04</span>
+                            <h2 class="track-title">Blooms 09</h2>
+                        </div>
+                        <button class="play-btn" aria-label="Afspelen Blooms 09" data-id="track-04">
+                            <span class="play-icon">▶</span>
+                        </button>
+                    </div>
+                    <div class="progress-track" data-id="track-04">
+                        <div class="progress-fill"></div>
+                    </div>
+                    <div class="time-row">
+                        <span class="time-current">0:00</span>
+                        <span class="time-total">–:––</span>
+                    </div>
+                    <audio class="track-audio" id="track-04" preload="metadata">
+                        <source src="assets/audio/Blooms 09.mp3" type="audio/mpeg">
+                    </audio>
+                </article>
+
+                <!-- Track 05 -->
+                <article class="track-card" data-track="5">
+                    <div class="card-glow"></div>
+                    <div class="track-header">
+                        <div class="track-meta">
+                            <span class="track-num">Track 05</span>
+                            <h2 class="track-title">Cobh's Cold</h2>
+                        </div>
+                        <button class="play-btn" aria-label="Afspelen Cobh's Cold" data-id="track-05">
+                            <span class="play-icon">▶</span>
+                        </button>
+                    </div>
+                    <div class="progress-track" data-id="track-05">
+                        <div class="progress-fill"></div>
+                    </div>
+                    <div class="time-row">
+                        <span class="time-current">0:00</span>
+                        <span class="time-total">–:––</span>
+                    </div>
+                    <audio class="track-audio" id="track-05" preload="metadata">
+                        <source src="assets/audio/Cobh's cold 18.mp3" type="audio/mpeg">
+                    </audio>
+                </article>
+
+                <!-- Track 06 -->
+                <article class="track-card" data-track="6">
+                    <div class="card-glow"></div>
+                    <div class="track-header">
+                        <div class="track-meta">
+                            <span class="track-num">Track 06</span>
+                            <h2 class="track-title">Coins Jingle</h2>
+                        </div>
+                        <button class="play-btn" aria-label="Afspelen Coins Jingle" data-id="track-06">
+                            <span class="play-icon">▶</span>
+                        </button>
+                    </div>
+                    <div class="progress-track" data-id="track-06">
+                        <div class="progress-fill"></div>
+                    </div>
+                    <div class="time-row">
+                        <span class="time-current">0:00</span>
+                        <span class="time-total">–:––</span>
+                    </div>
+                    <audio class="track-audio" id="track-06" preload="metadata">
+                        <source src="assets/audio/Coins jingle 07.mp3" type="audio/mpeg">
+                    </audio>
+                </article>
+
+                <!-- Track 07 -->
+                <article class="track-card" data-track="7">
+                    <div class="card-glow"></div>
+                    <div class="track-header">
+                        <div class="track-meta">
+                            <span class="track-num">Track 07</span>
+                            <h2 class="track-title">Donau Se Geur</h2>
+                        </div>
+                        <button class="play-btn" aria-label="Afspelen Donau Se Geur" data-id="track-07">
+                            <span class="play-icon">▶</span>
+                        </button>
+                    </div>
+                    <div class="progress-track" data-id="track-07">
+                        <div class="progress-fill"></div>
+                    </div>
+                    <div class="time-row">
+                        <span class="time-current">0:00</span>
+                        <span class="time-total">–:––</span>
+                    </div>
+                    <audio class="track-audio" id="track-07" preload="metadata">
+                        <source src="assets/audio/Donau se geur 11.mp3" type="audio/mpeg">
+                    </audio>
+                </article>
+
+                <!-- Track 08 -->
+                <article class="track-card" data-track="8">
+                    <div class="card-glow"></div>
+                    <div class="track-header">
+                        <div class="track-meta">
+                            <span class="track-num">Track 08</span>
+                            <h2 class="track-title">Echoes of Shadows (Alt)</h2>
+                        </div>
+                        <button class="play-btn" aria-label="Afspelen Echoes of Shadows Alt" data-id="track-08">
+                            <span class="play-icon">▶</span>
+                        </button>
+                    </div>
+                    <div class="progress-track" data-id="track-08">
+                        <div class="progress-fill"></div>
+                    </div>
+                    <div class="time-row">
+                        <span class="time-current">0:00</span>
+                        <span class="time-total">–:––</span>
+                    </div>
+                    <audio class="track-audio" id="track-08" preload="metadata">
+                        <source src="assets/audio/Echoes of Shadows ext v1 (1).mp3" type="audio/mpeg">
+                    </audio>
+                </article>
+
+                <!-- Track 09 -->
+                <article class="track-card" data-track="9">
+                    <div class="card-glow"></div>
+                    <div class="track-header">
+                        <div class="track-meta">
+                            <span class="track-num">Track 09</span>
+                            <h2 class="track-title">Echoes of Shadows</h2>
+                        </div>
+                        <button class="play-btn" aria-label="Afspelen Echoes of Shadows" data-id="track-09">
+                            <span class="play-icon">▶</span>
+                        </button>
+                    </div>
+                    <div class="progress-track" data-id="track-09">
+                        <div class="progress-fill"></div>
+                    </div>
+                    <div class="time-row">
+                        <span class="time-current">0:00</span>
+                        <span class="time-total">–:––</span>
+                    </div>
+                    <audio class="track-audio" id="track-09" preload="metadata">
+                        <source src="assets/audio/Echoes of Shadows ext v1.mp3" type="audio/mpeg">
+                    </audio>
+                </article>
+
+                <!-- Track 10 -->
+                <article class="track-card" data-track="10">
+                    <div class="card-glow"></div>
+                    <div class="track-header">
+                        <div class="track-meta">
+                            <span class="track-num">Track 10</span>
+                            <h2 class="track-title">Fais Tourner</h2>
+                        </div>
+                        <button class="play-btn" aria-label="Afspelen Fais Tourner" data-id="track-10">
+                            <span class="play-icon">▶</span>
+                        </button>
+                    </div>
+                    <div class="progress-track" data-id="track-10">
+                        <div class="progress-fill"></div>
+                    </div>
+                    <div class="time-row">
+                        <span class="time-current">0:00</span>
+                        <span class="time-total">–:––</span>
+                    </div>
+                    <audio class="track-audio" id="track-10" preload="metadata">
+                        <source src="assets/audio/Fais tourner 08.mp3" type="audio/mpeg">
+                    </audio>
+                </article>
+
+                <!-- Track 11 -->
+                <article class="track-card" data-track="11">
+                    <div class="card-glow"></div>
+                    <div class="track-header">
+                        <div class="track-meta">
+                            <span class="track-num">Track 11</span>
+                            <h2 class="track-title">Fiolerna Skrattar</h2>
+                        </div>
+                        <button class="play-btn" aria-label="Afspelen Fiolerna Skrattar" data-id="track-11">
+                            <span class="play-icon">▶</span>
+                        </button>
+                    </div>
+                    <div class="progress-track" data-id="track-11">
+                        <div class="progress-fill"></div>
+                    </div>
+                    <div class="time-row">
+                        <span class="time-current">0:00</span>
+                        <span class="time-total">–:––</span>
+                    </div>
+                    <audio class="track-audio" id="track-11" preload="metadata">
+                        <source src="assets/audio/Fiolerna skrattar 17.mp3" type="audio/mpeg">
+                    </audio>
+                </article>
+
+                <!-- Track 12 -->
+                <article class="track-card" data-track="12">
+                    <div class="card-glow"></div>
+                    <div class="track-header">
+                        <div class="track-meta">
+                            <span class="track-num">Track 12</span>
+                            <h2 class="track-title">Groove Tonight</h2>
+                        </div>
+                        <button class="play-btn" aria-label="Afspelen Groove Tonight" data-id="track-12">
+                            <span class="play-icon">▶</span>
+                        </button>
+                    </div>
+                    <div class="progress-track" data-id="track-12">
+                        <div class="progress-fill"></div>
+                    </div>
+                    <div class="time-row">
+                        <span class="time-current">0:00</span>
+                        <span class="time-total">–:––</span>
+                    </div>
+                    <audio class="track-audio" id="track-12" preload="metadata">
+                        <source src="assets/audio/Groove Tonight.mp3" type="audio/mpeg">
+                    </audio>
+                </article>
+
+                <!-- Track 13 -->
+                <article class="track-card" data-track="13">
+                    <div class="card-glow"></div>
+                    <div class="track-header">
+                        <div class="track-meta">
+                            <span class="track-num">Track 13</span>
+                            <h2 class="track-title">Gypsy Flower</h2>
+                        </div>
+                        <button class="play-btn" aria-label="Afspelen Gypsy Flower" data-id="track-13">
+                            <span class="play-icon">▶</span>
+                        </button>
+                    </div>
+                    <div class="progress-track" data-id="track-13">
+                        <div class="progress-fill"></div>
+                    </div>
+                    <div class="time-row">
+                        <span class="time-current">0:00</span>
+                        <span class="time-total">–:––</span>
+                    </div>
+                    <audio class="track-audio" id="track-13" preload="metadata">
+                        <source src="assets/audio/Gypsy flower 14.mp3" type="audio/mpeg">
+                    </audio>
+                </article>
+
+                <!-- Track 14 -->
+                <article class="track-card" data-track="14">
+                    <div class="card-glow"></div>
+                    <div class="track-header">
+                        <div class="track-meta">
+                            <span class="track-num">Track 14</span>
+                            <h2 class="track-title">Gypsy Queen</h2>
+                        </div>
+                        <button class="play-btn" aria-label="Afspelen Gypsy Queen" data-id="track-14">
+                            <span class="play-icon">▶</span>
+                        </button>
+                    </div>
+                    <div class="progress-track" data-id="track-14">
+                        <div class="progress-fill"></div>
+                    </div>
+                    <div class="time-row">
+                        <span class="time-current">0:00</span>
+                        <span class="time-total">–:––</span>
+                    </div>
+                    <audio class="track-audio" id="track-14" preload="metadata">
+                        <source src="assets/audio/Gypsy queen 13.mp3" type="audio/mpeg">
+                    </audio>
+                </article>
+
+                <!-- Track 15 -->
+                <article class="track-card" data-track="15">
+                    <div class="card-glow"></div>
+                    <div class="track-header">
+                        <div class="track-meta">
+                            <span class="track-num">Track 15</span>
+                            <h2 class="track-title">Kalimaya 05</h2>
+                        </div>
+                        <button class="play-btn" aria-label="Afspelen Kalimaya 05" data-id="track-15">
+                            <span class="play-icon">▶</span>
+                        </button>
+                    </div>
+                    <div class="progress-track" data-id="track-15">
+                        <div class="progress-fill"></div>
+                    </div>
+                    <div class="time-row">
+                        <span class="time-current">0:00</span>
+                        <span class="time-total">–:––</span>
+                    </div>
+                    <audio class="track-audio" id="track-15" preload="metadata">
+                        <source src="assets/audio/Kalimaya 05.mp3" type="audio/mpeg">
+                    </audio>
+                </article>
+
+                <!-- Track 16 -->
+                <article class="track-card" data-track="16">
+                    <div class="card-glow"></div>
+                    <div class="track-header">
+                        <div class="track-meta">
+                            <span class="track-num">Track 16</span>
+                            <h2 class="track-title">Kalimaya 12</h2>
+                        </div>
+                        <button class="play-btn" aria-label="Afspelen Kalimaya 12" data-id="track-16">
+                            <span class="play-icon">▶</span>
+                        </button>
+                    </div>
+                    <div class="progress-track" data-id="track-16">
+                        <div class="progress-fill"></div>
+                    </div>
+                    <div class="time-row">
+                        <span class="time-current">0:00</span>
+                        <span class="time-total">–:––</span>
+                    </div>
+                    <audio class="track-audio" id="track-16" preload="metadata">
+                        <source src="assets/audio/Kalimaya 12.mp3" type="audio/mpeg">
+                    </audio>
+                </article>
+
+                <!-- Track 17 -->
+                <article class="track-card" data-track="17">
+                    <div class="card-glow"></div>
+                    <div class="track-header">
+                        <div class="track-meta">
+                            <span class="track-num">Track 17</span>
+                            <h2 class="track-title">Neeché Chaal</h2>
+                        </div>
+                        <button class="play-btn" aria-label="Afspelen Neeché Chaal" data-id="track-17">
+                            <span class="play-icon">▶</span>
+                        </button>
+                    </div>
+                    <div class="progress-track" data-id="track-17">
+                        <div class="progress-fill"></div>
+                    </div>
+                    <div class="time-row">
+                        <span class="time-current">0:00</span>
+                        <span class="time-total">–:––</span>
+                    </div>
+                    <audio class="track-audio" id="track-17" preload="metadata">
+                        <source src="assets/audio/Neeché chaal 06.mp3" type="audio/mpeg">
+                    </audio>
+                </article>
+
+                <!-- Track 18 -->
+                <article class="track-card" data-track="18">
+                    <div class="card-glow"></div>
+                    <div class="track-header">
+                        <div class="track-meta">
+                            <span class="track-num">Track 18</span>
+                            <h2 class="track-title">Njora Kvelda</h2>
+                        </div>
+                        <button class="play-btn" aria-label="Afspelen Njora Kvelda" data-id="track-18">
+                            <span class="play-icon">▶</span>
+                        </button>
+                    </div>
+                    <div class="progress-track" data-id="track-18">
+                        <div class="progress-fill"></div>
+                    </div>
+                    <div class="time-row">
+                        <span class="time-current">0:00</span>
+                        <span class="time-total">–:––</span>
+                    </div>
+                    <audio class="track-audio" id="track-18" preload="metadata">
+                        <source src="assets/audio/Njora kvelda 10.mp3" type="audio/mpeg">
+                    </audio>
+                </article>
+
+                <!-- Track 19 -->
+                <article class="track-card" data-track="19">
+                    <div class="card-glow"></div>
+                    <div class="track-header">
+                        <div class="track-meta">
+                            <span class="track-num">Track 19</span>
+                            <h2 class="track-title">Schaduwspel</h2>
+                        </div>
+                        <button class="play-btn" aria-label="Afspelen Schaduwspel" data-id="track-19">
+                            <span class="play-icon">▶</span>
+                        </button>
+                    </div>
+                    <div class="progress-track" data-id="track-19">
+                        <div class="progress-fill"></div>
+                    </div>
+                    <div class="time-row">
+                        <span class="time-current">0:00</span>
+                        <span class="time-total">–:––</span>
+                    </div>
+                    <audio class="track-audio" id="track-19" preload="metadata">
+                        <source src="assets/audio/Schaduwspel.mp3" type="audio/mpeg">
+                    </audio>
+                </article>
+
+                <!-- Track 20 -->
+                <article class="track-card" data-track="20">
+                    <div class="card-glow"></div>
+                    <div class="track-header">
+                        <div class="track-meta">
+                            <span class="track-num">Track 20</span>
+                            <h2 class="track-title">Shadow Strings</h2>
+                        </div>
+                        <button class="play-btn" aria-label="Afspelen Shadow Strings" data-id="track-20">
+                            <span class="play-icon">▶</span>
+                        </button>
+                    </div>
+                    <div class="progress-track" data-id="track-20">
+                        <div class="progress-fill"></div>
+                    </div>
+                    <div class="time-row">
+                        <span class="time-current">0:00</span>
+                        <span class="time-total">–:––</span>
+                    </div>
+                    <audio class="track-audio" id="track-20" preload="metadata">
+                        <source src="assets/audio/Shadow Strings.mp3" type="audio/mpeg">
+                    </audio>
+                </article>
+
+                <!-- Track 21 -->
+                <article class="track-card" data-track="21">
+                    <div class="card-glow"></div>
+                    <div class="track-header">
+                        <div class="track-meta">
+                            <span class="track-num">Track 21</span>
+                            <h2 class="track-title">Sinistere Pamfluit</h2>
+                        </div>
+                        <button class="play-btn" aria-label="Afspelen Sinistere Pamfluit" data-id="track-21">
+                            <span class="play-icon">▶</span>
+                        </button>
+                    </div>
+                    <div class="progress-track" data-id="track-21">
+                        <div class="progress-fill"></div>
+                    </div>
+                    <div class="time-row">
+                        <span class="time-current">0:00</span>
+                        <span class="time-total">–:––</span>
+                    </div>
+                    <audio class="track-audio" id="track-21" preload="metadata">
+                        <source src="assets/audio/Sinistere Pamfluit.mp3" type="audio/mpeg">
+                    </audio>
+                </article>
+
+                <!-- Track 22 -->
+                <article class="track-card" data-track="22">
+                    <div class="card-glow"></div>
+                    <div class="track-header">
+                        <div class="track-meta">
+                            <span class="track-num">Track 22</span>
+                            <h2 class="track-title">Tamburinen</h2>
+                        </div>
+                        <button class="play-btn" aria-label="Afspelen Tamburinen" data-id="track-22">
+                            <span class="play-icon">▶</span>
+                        </button>
+                    </div>
+                    <div class="progress-track" data-id="track-22">
+                        <div class="progress-fill"></div>
+                    </div>
+                    <div class="time-row">
+                        <span class="time-current">0:00</span>
+                        <span class="time-total">–:––</span>
+                    </div>
+                    <audio class="track-audio" id="track-22" preload="metadata">
+                        <source src="assets/audio/Tamburinen 02.mp3" type="audio/mpeg">
+                    </audio>
+                </article>
+
+                <!-- Track 23 -->
+                <article class="track-card" data-track="23">
+                    <div class="card-glow"></div>
+                    <div class="track-header">
+                        <div class="track-meta">
+                            <span class="track-num">Track 23</span>
+                            <h2 class="track-title">They Are Coming</h2>
+                        </div>
+                        <button class="play-btn" aria-label="Afspelen They Are Coming" data-id="track-23">
+                            <span class="play-icon">▶</span>
+                        </button>
+                    </div>
+                    <div class="progress-track" data-id="track-23">
+                        <div class="progress-fill"></div>
+                    </div>
+                    <div class="time-row">
+                        <span class="time-current">0:00</span>
+                        <span class="time-total">–:––</span>
+                    </div>
+                    <audio class="track-audio" id="track-23" preload="metadata">
+                        <source src="assets/audio/They are comming.mp3" type="audio/mpeg">
+                    </audio>
+                </article>
+
+                <!-- Track 24 -->
+                <article class="track-card" data-track="24">
+                    <div class="card-glow"></div>
+                    <div class="track-header">
+                        <div class="track-meta">
+                            <span class="track-num">Track 24</span>
+                            <h2 class="track-title">Tikiti Waka 01</h2>
+                        </div>
+                        <button class="play-btn" aria-label="Afspelen Tikiti Waka 01" data-id="track-24">
+                            <span class="play-icon">▶</span>
+                        </button>
+                    </div>
+                    <div class="progress-track" data-id="track-24">
+                        <div class="progress-fill"></div>
+                    </div>
+                    <div class="time-row">
+                        <span class="time-current">0:00</span>
+                        <span class="time-total">–:––</span>
+                    </div>
+                    <audio class="track-audio" id="track-24" preload="metadata">
+                        <source src="assets/audio/Tikiti Waka 01_.mp3" type="audio/mpeg">
+                    </audio>
+                </article>
+
+                <!-- Track 25 -->
+                <article class="track-card" data-track="25">
+                    <div class="card-glow"></div>
+                    <div class="track-header">
+                        <div class="track-meta">
+                            <span class="track-num">Track 25</span>
+                            <h2 class="track-title">Tikiti Waka 15</h2>
+                        </div>
+                        <button class="play-btn" aria-label="Afspelen Tikiti Waka 15" data-id="track-25">
+                            <span class="play-icon">▶</span>
+                        </button>
+                    </div>
+                    <div class="progress-track" data-id="track-25">
+                        <div class="progress-fill"></div>
+                    </div>
+                    <div class="time-row">
+                        <span class="time-current">0:00</span>
+                        <span class="time-total">–:––</span>
+                    </div>
+                    <audio class="track-audio" id="track-25" preload="metadata">
+                        <source src="assets/audio/Tikiti waka 15.mp3" type="audio/mpeg">
+                    </audio>
+                </article>
+
+                <!-- Track 26 -->
+                <article class="track-card" data-track="26">
+                    <div class="card-glow"></div>
+                    <div class="track-header">
+                        <div class="track-meta">
+                            <span class="track-num">Track 26</span>
+                            <h2 class="track-title">Whispers of the Heart</h2>
+                        </div>
+                        <button class="play-btn" aria-label="Afspelen Whispers of the Heart" data-id="track-26">
+                            <span class="play-icon">▶</span>
+                        </button>
+                    </div>
+                    <div class="progress-track" data-id="track-26">
+                        <div class="progress-fill"></div>
+                    </div>
+                    <div class="time-row">
+                        <span class="time-current">0:00</span>
+                        <span class="time-total">–:––</span>
+                    </div>
+                    <audio class="track-audio" id="track-26" preload="metadata">
+                        <source src="assets/audio/Whispers of the Heart 01.mp3" type="audio/mpeg">
+                    </audio>
+                </article>
+
+                <!-- Track 27 -->
+                <article class="track-card" data-track="27">
+                    <div class="card-glow"></div>
+                    <div class="track-header">
+                        <div class="track-meta">
+                            <span class="track-num">Track 27</span>
+                            <h2 class="track-title">Éveillons</h2>
+                        </div>
+                        <button class="play-btn" aria-label="Afspelen Éveillons" data-id="track-27">
+                            <span class="play-icon">▶</span>
+                        </button>
+                    </div>
+                    <div class="progress-track" data-id="track-27">
+                        <div class="progress-fill"></div>
+                    </div>
+                    <div class="time-row">
+                        <span class="time-current">0:00</span>
+                        <span class="time-total">–:––</span>
+                    </div>
+                    <audio class="track-audio" id="track-27" preload="metadata">
+                        <source src="assets/audio/Éveillons 16.mp3" type="audio/mpeg">
+                    </audio>
+                </article>
+
+            </div><!-- /music-grid -->
+        </main>
+
+        <!-- FOOTER NOTE -->
+        <footer style="text-align:center; padding: 24px; color: var(--neo-text-muted); font-size: 0.85rem; position: relative; z-index: 1;">
+            Alle muziek is 100% AI-gegenereerd via Udio &amp; Suno. &mdash;
+            <a href="projects.html" style="color: var(--neo-accent); text-decoration: none; font-weight: 600;">Bekijk meer projecten →</a>
+        </footer>
+
+    </div><!-- /page-wrapper -->
+
+    <!-- SCRIPTS -->
+    <script>
+        /* ─── HAMBURGER ─── */
+        document.getElementById('hamburger-menu').addEventListener('click', function () {
+            document.querySelector('.menu').classList.toggle('active');
+        });
+
+        /* ─── CUSTOM AUDIO PLAYER ─── */
+        (function () {
+            var currentAudio  = null;
+            var currentBtn    = null;
+            var currentCard   = null;
+
+            function formatTime(sec) {
+                if (isNaN(sec) || !isFinite(sec)) return '0:00';
+                var m = Math.floor(sec / 60);
+                var s = Math.floor(sec % 60);
+                return m + ':' + (s < 10 ? '0' : '') + s;
+            }
+
+            function stopCurrent() {
+                if (currentAudio) {
+                    currentAudio.pause();
+                    currentAudio.currentTime = 0;
+                }
+                if (currentBtn) {
+                    currentBtn.classList.remove('is-playing');
+                    currentBtn.querySelector('.play-icon').textContent = '▶';
+                }
+                if (currentCard) {
+                    currentCard.classList.remove('is-active');
+                    currentCard.querySelector('.progress-fill').style.width = '0%';
+                    currentCard.querySelector('.time-current').textContent = '0:00';
+                }
+                currentAudio = null;
+                currentBtn   = null;
+                currentCard  = null;
+            }
+
+            document.querySelectorAll('.play-btn').forEach(function (btn) {
+                var id    = btn.getAttribute('data-id');
+                var audio = document.getElementById(id);
+                var card  = btn.closest('.track-card');
+                var fill  = card.querySelector('.progress-fill');
+                var track = card.querySelector('.progress-track');
+                var tCur  = card.querySelector('.time-current');
+                var tTot  = card.querySelector('.time-total');
+                var icon  = btn.querySelector('.play-icon');
+
+                /* Duur laden */
+                audio.addEventListener('loadedmetadata', function () {
+                    tTot.textContent = formatTime(audio.duration);
+                });
+
+                /* Voortgang updaten */
+                audio.addEventListener('timeupdate', function () {
+                    if (audio.duration) {
+                        fill.style.width = (audio.currentTime / audio.duration * 100) + '%';
+                        tCur.textContent = formatTime(audio.currentTime);
+                    }
+                });
+
+                /* Klaar → reset */
+                audio.addEventListener('ended', function () {
+                    stopCurrent();
+                });
+
+                /* Klik op voortgangsbalk → seek */
+                track.addEventListener('click', function (e) {
+                    if (!audio.duration) return;
+                    var rect  = track.getBoundingClientRect();
+                    var ratio = (e.clientX - rect.left) / rect.width;
+                    audio.currentTime = ratio * audio.duration;
+                });
+
+                /* Play/Pause toggle */
+                btn.addEventListener('click', function () {
+                    if (currentAudio === audio) {
+                        /* Pauzeer lopende track */
+                        audio.pause();
+                        btn.classList.remove('is-playing');
+                        icon.textContent = '▶';
+                        card.classList.remove('is-active');
+                        currentAudio = null;
+                        currentBtn   = null;
+                        currentCard  = null;
+                        return;
+                    }
+
+                    stopCurrent();
+
+                    audio.play().then(function () {
+                        btn.classList.add('is-playing');
+                        icon.textContent = '⏸';
+                        card.classList.add('is-active');
+                        currentAudio = audio;
+                        currentBtn   = btn;
+                        currentCard  = card;
+                    }).catch(function (err) {
+                        console.warn('Audio play error:', err);
+                    });
+                });
+            });
+        })();
+    </script>
+
+    <!-- THREE.JS WEBGL ACHTERGROND -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="webgl-bg.js"></script>
+
+</body>
+</html>

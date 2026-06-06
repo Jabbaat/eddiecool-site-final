@@ -4,9 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Projecten - Eddiecool</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="neo-theme.css">
   <style>
     body {
       font-family: 'Inter', sans-serif;
@@ -67,6 +67,7 @@
 </head>
 
 <body>
+<div class="page-wrapper">
     <nav>
         <div class="logo">
             <a href="index.html">
@@ -78,7 +79,7 @@
             <li><a href="index.html">🏠 Home</a></li>
             <li><a href="projects.html" class="active">✨ Projecten</a></li>
             <li><a href="ai_gallery.html">🖼️ Galerij</a></li>
-            <li><a href="vibe_agent.html">🤖 Vibe Agent</a></li>
+            <li><a href="muziek.html">🎵 Muziek</a></li>
             <li><a href="VibeCoding.html">⚡ Vibe Coding</a></li> 
             <li><a href="ai_apps.html">📱 AI Apps</a></li>
             <li><a href="about.html">ℹ️ Over Mij</a></li>
@@ -492,5 +493,8 @@
       document.querySelector(".menu").classList.toggle("active");
     });
   </script>
-</body>
+</div><!-- /page-wrapper -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="webgl-bg.js"></script>
+  </body>
 </html>
