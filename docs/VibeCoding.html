@@ -81,6 +81,17 @@
             height: 50px;
         }
 
+        .hamburger {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 30px;
+            cursor: pointer;
+            color: var(--neo-accent, #a855f7);
+            padding: 0.25rem 0.5rem;
+            line-height: 1;
+        }
+
         .menu {
             display: flex;
             list-style: none;
@@ -746,6 +757,23 @@
         @media (max-width: 768px) {
             .menu {
                 display: none;
+                flex-direction: column;
+                width: 100%;
+                margin-top: 10px;
+            }
+
+            .menu.active {
+                display: flex;
+                animation: fadeInMenu 0.3s ease forwards;
+            }
+
+            @keyframes fadeInMenu {
+                from { opacity: 0; transform: translateY(-8px); }
+                to   { opacity: 1; transform: translateY(0); }
+            }
+
+            nav {
+                flex-wrap: wrap;
             }
 
             .hamburger {
@@ -1147,6 +1175,21 @@
                 card.style.transform = '';
             });
         });
+
+        // Hamburger menu
+        const hamburgerBtn = document.getElementById('hamburger-menu');
+        const mainMenu = document.getElementById('main-menu');
+        if (hamburgerBtn && mainMenu) {
+            hamburgerBtn.addEventListener('click', function () {
+                mainMenu.classList.toggle('active');
+            });
+            // Menu sluiten bij klik op een link
+            mainMenu.querySelectorAll('a').forEach(function (link) {
+                link.addEventListener('click', function () {
+                    mainMenu.classList.remove('active');
+                });
+            });
+        }
 
         // Theme Toggle Logic
         const themeToggle = document.getElementById('themeToggle');
