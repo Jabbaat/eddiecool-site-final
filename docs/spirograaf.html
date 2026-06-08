@@ -5,142 +5,370 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/jpeg" href="images/logoeddie.jpg">
     <link rel="apple-touch-icon" href="images/logoeddie.jpg">
-    <meta name="theme-color" content="#1a1a1a">
-    <title>Cosmic Neon 3D Spirograaf</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <meta name="theme-color" content="#1a1f24">
+    <title>Spirograaf 3D - Steampunk Neomorfisme</title>
+    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --slate-bg: #1a1f24;
+            --slate-surface: #222831;
+            --copper-accent: #c87f4c;
+            --bronze-muted: #b08d6a;
+            --neon-amber: #ffb703;
+            --neon-cyan: #00f0ff;
+            --text-main: #e2e8f0;
+            --text-muted: #94a3b8;
+            
+            --neo-shadow: 6px 6px 12px rgba(0,0,0,0.6), -6px -6px 12px rgba(255,255,255,0.02);
+            --neo-inset: inset 4px 4px 8px rgba(0,0,0,0.6), inset -4px -4px 8px rgba(255,255,255,0.02);
+        }
+
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #0c1427;
+            background-color: var(--slate-bg);
+            color: var(--text-main);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+            box-sizing: border-box;
+            background-image: radial-gradient(circle at center, #222831 0%, #1a1f24 100%);
         }
+
+        .main-container {
+            width: 100%;
+            max-width: 1400px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        @media (min-width: 1024px) {
+            .main-container { flex-direction: row; }
+        }
+
+        h1 {
+            font-family: 'Courier Prime', monospace;
+            color: var(--neon-amber);
+            text-align: center;
+            width: 100%;
+            font-size: 2rem;
+            margin: 10px 0 20px 0;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(255, 183, 3, 0.4);
+        }
+
+        .canvas-wrapper {
+            flex: 1 1 65%;
+            background: var(--slate-surface);
+            border-radius: 16px;
+            box-shadow: var(--neo-inset);
+            border: 2px solid var(--bronze-muted);
+            padding: 10px;
+            position: relative;
+        }
+
         #spiroContainer {
             width: 100%;
-            height: auto;
-            aspect-ratio: 1 / 1;
-            cursor: move;
-            touch-action: none;
-            position: relative;
-        }
-        #spiroContainer canvas {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100% !important;
-            height: 100% !important;
-        }
-        input[type="range"] {
-            -webkit-appearance: none; appearance: none;
-            width: 100%; height: 6px;
-            background: #374151;
-            border-radius: 3px;
-            outline: none; opacity: 0.8;
-            transition: opacity .2s;
-        }
-        input[type="range"]:hover { opacity: 1; }
-        input[type="range"]::-webkit-slider-thumb {
-            -webkit-appearance: none; appearance: none;
-            width: 20px; height: 20px;
-            background: #3b82f6;
-            cursor: pointer;
-            border-radius: 50%;
-            border: 2px solid #1f2937;
-        }
-        input[type=number]::-webkit-inner-spin-button, 
-        input[type=number]::-webkit-outer-spin-button { 
-          -webkit-appearance: none; 
-          margin: 0; 
-        }
-        input[type=number] { -moz-appearance: textfield; }
-        .tab { white-space: nowrap; }
-        .tab.active { border-color: #3b82f6; background-color: #1e40af; color: #eff6ff; }
-        .color-btn.active { box-shadow: 0 0 0 3px rgba(91, 192, 255, 0.7); transform: scale(1.05); }
-        .type-btn.active, .style-btn.active { background-color: #3b82f6; color: white; }
-        .keyframe-indicator {
-            height: 8px;
-            background-color: #4b5563;
-            border-radius: 4px;
-            position: relative;
-            overflow: hidden;
-        }
-        .keyframe-marker {
-            position: absolute;
-            width: 4px;
             height: 100%;
-            background-color: #3b82f6;
+            min-height: 500px;
+            border-radius: 8px;
+            overflow: hidden;
+            background: #000;
         }
+
+        .controls-wrapper {
+            flex: 1 1 35%;
+            background: var(--slate-surface);
+            border-radius: 16px;
+            box-shadow: var(--neo-shadow);
+            border: 1px solid rgba(200, 127, 76, 0.2);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 5px;
+            border-bottom: 2px solid var(--bronze-muted);
+            padding-bottom: 10px;
+        }
+
+        .tab {
+            flex: 1;
+            background: var(--slate-bg);
+            color: var(--text-muted);
+            border: none;
+            padding: 10px 5px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Courier Prime', monospace;
+            font-weight: bold;
+            box-shadow: var(--neo-shadow);
+            transition: all 0.3s;
+        }
+
+        .tab.active {
+            background: var(--copper-accent);
+            color: #1a1f24;
+            box-shadow: var(--neo-inset);
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+        }
+
+        /* Control Sections */
+        .control-section {
+            background: rgba(0,0,0,0.15);
+            padding: 15px;
+            border-radius: 12px;
+            box-shadow: var(--neo-inset);
+        }
+
+        h2 {
+            font-family: 'Courier Prime', monospace;
+            font-size: 1.1rem;
+            color: var(--copper-accent);
+            margin: 0 0 15px 0;
+            border-bottom: 1px dashed var(--bronze-muted);
+            padding-bottom: 5px;
+        }
+
+        /* Buttons */
+        .btn-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .neo-btn {
+            background: var(--slate-bg);
+            color: var(--text-muted);
+            border: 1px solid rgba(255,255,255,0.05);
+            padding: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Courier Prime', monospace;
+            font-weight: bold;
+            box-shadow: var(--neo-shadow);
+            transition: all 0.2s;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+        }
+
+        .neo-btn.active {
+            color: var(--neon-cyan);
+            box-shadow: var(--neo-inset);
+            border-color: var(--neon-cyan);
+            text-shadow: 0 0 5px var(--neon-cyan);
+        }
+        
+        .neo-btn:hover:not(.active) {
+            color: var(--neon-amber);
+            box-shadow: 4px 4px 8px rgba(0,0,0,0.5), -4px -4px 8px rgba(255,255,255,0.03);
+        }
+
+        /* Sliders */
+        .param-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+            font-size: 0.85rem;
+        }
+
+        .param-label {
+            flex: 0 0 120px;
+            color: var(--text-main);
+            font-weight: 600;
+        }
+
+        input[type="range"] {
+            flex: 1;
+            -webkit-appearance: none;
+            height: 10px;
+            background: #111418;
+            border-radius: 5px;
+            box-shadow: var(--neo-inset);
+            outline: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 24px;
+            background: linear-gradient(180deg, var(--copper-accent), #8c522d);
+            border: 2px solid var(--slate-surface);
+            border-radius: 4px;
+            cursor: pointer;
+            box-shadow: 0 0 8px rgba(200, 127, 76, 0.6);
+        }
+
+        input[type="number"] {
+            width: 50px;
+            background: #111418;
+            border: 1px solid var(--bronze-muted);
+            color: var(--neon-amber);
+            padding: 4px;
+            border-radius: 4px;
+            text-align: center;
+            font-family: 'Courier Prime', monospace;
+            font-weight: bold;
+            box-shadow: var(--neo-inset);
+        }
+
+        /* Colors */
+        .color-palette {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+        }
+
+        .color-btn {
+            height: 30px;
+            border-radius: 6px;
+            border: 2px solid transparent;
+            cursor: pointer;
+            box-shadow: var(--neo-shadow);
+            transition: transform 0.2s;
+        }
+
+        .color-btn.active {
+            border-color: #fff;
+            box-shadow: 0 0 10px currentColor, var(--neo-inset);
+            transform: scale(0.9);
+        }
+
+        /* Actions */
+        .action-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .action-btn {
+            background: var(--slate-bg);
+            color: var(--text-main);
+            border: none;
+            padding: 10px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: var(--neo-shadow);
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.8rem;
+        }
+        
+        .action-btn:active { box-shadow: var(--neo-inset); }
+
+        #playAnimationBtn { color: #00ff00; }
+        #pauseAnimationBtn { color: #ffb703; }
+        #resetAnimationBtn { color: #ff0055; }
+        
+        .timeline {
+            height: 10px;
+            background: #111418;
+            border-radius: 5px;
+            box-shadow: var(--neo-inset);
+            margin-top: 10px;
+            position: relative;
+        }
+        
+        .timeline-marker {
+            position: absolute;
+            width: 6px;
+            height: 14px;
+            background: var(--neon-cyan);
+            top: -2px;
+            border-radius: 3px;
+            box-shadow: 0 0 5px var(--neon-cyan);
+        }
+
+        .back-link {
+            text-align: center;
+            margin-top: 10px;
+        }
+        .back-link a {
+            color: var(--bronze-muted);
+            text-decoration: none;
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.9rem;
+        }
+        .back-link a:hover { color: var(--copper-accent); text-decoration: underline; }
     </style>
 </head>
-<body class="text-gray-200 flex flex-col items-center justify-center min-h-screen p-4">
+<body>
 
-    <div class="w-full max-w-7xl mx-auto bg-gray-900 bg-opacity-80 backdrop-blur-sm border border-gray-700 rounded-xl shadow-2xl p-6 md:p-8">
-        <h1 class="text-3xl md:text-4xl font-bold text-center text-blue-400 mb-6">Cosmic Neon Spirograaf</h1>
-
-        <div class="flex flex-col lg:flex-row gap-8">
+    <div style="width: 100%; max-width: 1400px; display: flex; flex-direction: column;">
+        <h1>⚙️ Mechanische Spirograaf 3D</h1>
+        
+        <div class="main-container">
             
-            <div class="w-full lg:w-2/3 flex-shrink-0">
-                <div id="spiroContainer" class="rounded-lg border-2 border-gray-700 overflow-hidden"></div>
+            <div class="canvas-wrapper">
+                <div id="spiroContainer"></div>
             </div>
 
-            <div class="w-full lg:w-1/3 flex flex-col">
-                <div class="flex border-b border-gray-700 mb-4 overflow-x-auto">
-                    <button class="tab flex-1 py-3 px-2 text-center font-semibold text-gray-400 border-b-4 border-transparent transition" data-index="0">Fig. 1</button>
-                    <button class="tab flex-1 py-3 px-2 text-center font-semibold text-gray-400 border-b-4 border-transparent transition" data-index="1">Fig. 2</button>
-                    <button class="tab flex-1 py-3 px-2 text-center font-semibold text-gray-400 border-b-4 border-transparent transition" data-index="2">Fig. 3</button>
-                    <button class="tab flex-1 py-3 px-2 text-center font-semibold text-gray-400 border-b-4 border-transparent transition" data-index="3">Fig. 4</button>
-                    <button class="tab flex-1 py-3 px-2 text-center font-semibold text-gray-400 border-b-4 border-transparent transition" data-index="4">Fig. 5</button>
+            <div class="controls-wrapper">
+                <div class="tabs">
+                    <button class="tab active" data-index="0">Fig. 1</button>
+                    <button class="tab" data-index="1">Fig. 2</button>
+                    <button class="tab" data-index="2">Fig. 3</button>
+                    <button class="tab" data-index="3">Fig. 4</button>
+                    <button class="tab" data-index="4">Fig. 5</button>
                 </div>
 
-                <div class="flex flex-col space-y-5">
-                    <div>
-                        <h2 class="text-xl font-bold mb-3 text-blue-300">Stijl</h2>
-                        <div class="grid grid-cols-2 gap-3 bg-gray-800 p-1 rounded-lg">
-                            <button id="styleTube" class="style-btn font-semibold py-2 rounded-md transition-all">Neon Lijn</button>
-                            <button id="styleSphere" class="style-btn font-semibold py-2 rounded-md transition-all">Neon Bollen</button>
-                        </div>
+                <div class="control-section">
+                    <h2>Render Methode</h2>
+                    <div class="btn-grid">
+                        <button id="styleTube" class="neo-btn">Neon Lijn</button>
+                        <button id="styleSphere" class="neo-btn">Neon Bollen</button>
                     </div>
+                </div>
 
-                    <div>
-                        <h2 class="text-xl font-bold mb-3 text-blue-300">Parameters</h2>
-                        <div class="space-y-2">
-                            <!-- Parameter Controls will be dynamically inserted here -->
-                        </div>
+                <div class="control-section">
+                    <h2>Geometrie Parameters</h2>
+                    <div id="paramContainer"></div>
+                </div>
+                
+                <div class="control-section">
+                    <h2>Constellatie Type</h2>
+                    <div class="btn-grid">
+                        <button id="modeInside" class="neo-btn">Binnenkant (Hypo)</button>
+                        <button id="modeOutside" class="neo-btn">Buitenkant (Epi)</button>
+                    </div>
+                </div>
+                
+                <div class="control-section">
+                    <h2>Emissie Kleur</h2>
+                    <div id="color-palette" class="color-palette"></div>
+                </div>
+                
+                <div class="control-section">
+                    <h2>Mechanische Aandrijving</h2>
+                    <div class="param-row">
+                        <div class="param-label">Optische Zoom</div>
+                        <input type="range" id="zoomSlider" min="0" max="100" value="50">
                     </div>
                     
-                    <div>
-                        <h2 class="text-xl font-bold mb-3 text-blue-300">Type Figuur</h2>
-                        <div class="grid grid-cols-2 gap-3 bg-gray-800 p-1 rounded-lg">
-                            <button id="modeInside" class="type-btn font-semibold py-2 rounded-md transition-all">Binnenkant</button>
-                            <button id="modeOutside" class="type-btn font-semibold py-2 rounded-md transition-all">Buitenkant</button>
-                        </div>
+                    <button id="addKeyframeBtn" class="action-btn" style="width: 100%; color: var(--neon-cyan); margin-top: 10px;">[ RECORD KEYFRAME ]</button>
+                    
+                    <div class="action-grid">
+                        <button id="playAnimationBtn" class="action-btn">PLAY</button>
+                        <button id="pauseAnimationBtn" class="action-btn">PAUSE</button>
+                        <button id="resetAnimationBtn" class="action-btn">RESET</button>
                     </div>
                     
-                    <div>
-                        <h2 class="text-xl font-bold mb-3 text-blue-300">Kleur</h2>
-                        <div id="color-palette" class="grid grid-cols-5 gap-3"></div>
-                    </div>
+                    <div id="timeline-indicator" class="timeline"></div>
                     
-                    <div>
-                         <h2 class="text-xl font-bold mb-3 text-blue-300">Acties</h2>
-                         <div class="space-y-4">
-                            <div>
-                                <label for="zoomSlider" class="flex justify-between font-medium text-gray-300">Zoom</label>
-                                <input type="range" id="zoomSlider" min="0" max="100" value="50" class="mt-1">
-                            </div>
-                            <div class="space-y-2">
-                                <button id="addKeyframeBtn" class="w-full bg-indigo-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-indigo-500 transition-colors duration-300">Keyframe Toevoegen</button>
-                                <div class="grid grid-cols-3 gap-2">
-                                    <button id="playAnimationBtn" class="w-full bg-green-600 text-white font-bold py-2 px-3 rounded-lg hover:bg-green-500 transition-colors">Play</button>
-                                    <button id="pauseAnimationBtn" class="w-full bg-yellow-600 text-white font-bold py-2 px-3 rounded-lg hover:bg-yellow-500 transition-colors">Pause</button>
-                                    <button id="resetAnimationBtn" class="w-full bg-gray-600 text-white font-bold py-2 px-3 rounded-lg hover:bg-gray-500 transition-colors">Reset Anim</button>
-                                </div>
-                                <div id="timeline-indicator" class="keyframe-indicator mt-2"></div>
-                            </div>
-                            <button id="clearBtn" class="w-full bg-red-700 text-white font-bold py-3 px-4 rounded-lg hover:bg-red-600 transition-colors duration-300">Alles Wissen</button>
-                         </div>
-                    </div>
+                    <button id="clearBtn" class="action-btn" style="width: 100%; margin-top: 15px; background: #3a1c1c; color: #ff5555;">[ SYSTEEM WISSEN ]</button>
+                </div>
+
+                <div class="back-link">
+                    <a href="ai_apps.html">&lt; Terug naar Hub</a>
                 </div>
             </div>
         </div>
@@ -165,11 +393,11 @@
         const MIN_ZOOM = 150;
         const MAX_ZOOM = 1000;
         const PARAMETERS = {
-            R: { min: 10, max: 250, step: 1, label: 'Vaste Cirkel (R)' },
-            r: { min: 1, max: 250, step: 1, label: 'Bewegende Cirkel (r)' },
-            d: { min: 1, max: 250, step: 1, label: 'Afstand Pen (d)' },
-            size: { min: 0.1, max: 5, step: 0.05, label: 'Grootte' },
-            rotation: { min: 0, max: 360, step: 1, label: 'Rotatie' },
+            R: { min: 10, max: 250, step: 1, label: 'Primaire Radius' },
+            r: { min: 1, max: 250, step: 1, label: 'Secundaire Radius' },
+            d: { min: 1, max: 250, step: 1, label: 'Pen Offset (d)' },
+            size: { min: 0.1, max: 5, step: 0.05, label: 'Lijndikte' },
+            rotation: { min: 0, max: 360, step: 1, label: 'Z-Rotatie' },
         };
 
         const container = document.getElementById('spiroContainer');
@@ -186,13 +414,15 @@
         const pauseAnimationBtn = document.getElementById('pauseAnimationBtn');
         const resetAnimationBtn = document.getElementById('resetAnimationBtn');
         const timelineIndicator = document.getElementById('timeline-indicator');
+        const paramContainer = document.getElementById('paramContainer');
         
         let scene, camera, renderer, controls, clock, composer, bloomPass;
         let figureGroups = [];
         const zPositions = [20, 10, 0, -10, -20];
+        
+        // Dark abstract background
         let backgroundScene, backgroundCam;
         let backgroundMesh;
-        
         const shaderMaterial = new THREE.ShaderMaterial({
             uniforms: { u_time: { value: 0.0 }, u_resolution: { value: new THREE.Vector2() } },
             vertexShader: `varying vec2 vUv; void main() { vUv = uv; gl_Position = vec4(position, 1.0); }`,
@@ -211,18 +441,19 @@
                 }
                 void main() {
                     vec2 st = vUv; st.x *= u_resolution.x / u_resolution.y;
-                    vec3 skyColor = mix(vec3(0.5, 0.7, 0.9), vec3(0.2, 0.4, 0.8), vUv.y);
-                    vec2 cloud_st = st * 2.0; cloud_st.x += u_time * 0.03;
-                    float cloud_noise = fbm(cloud_st);
-                    float cloud_mask = smoothstep(0.4, 0.7, cloud_noise);
-                    vec3 cloudColor = vec3(1.0, 1.0, 1.0);
-                    vec3 finalColor = mix(skyColor, cloudColor, cloud_mask * 0.8);
+                    // Dark mechanical background
+                    vec3 color1 = vec3(0.05, 0.06, 0.08);
+                    vec3 color2 = vec3(0.12, 0.08, 0.05); // slight copper tint
+                    vec2 noise_st = st * 3.0; noise_st.y += u_time * 0.02;
+                    float n = fbm(noise_st);
+                    vec3 finalColor = mix(color1, color2, n * 0.5);
                     gl_FragColor = vec4(finalColor, 1.0);
                 }`
         });
 
         let activeFigureIndex = 0;
-        const colorList = ['#00FFFF', '#FF00FF', '#FFFF00', '#00FF00', '#FF5733', '#33FF57', '#3357FF', '#FF33A1', '#A133FF', '#33FFA1'];
+        // Neon color palette for Steampunk contrast
+        const colorList = ['#00f0ff', '#ffb703', '#ff0055', '#00ffaa', '#b08d6a', '#c87f4c', '#ff5500', '#dd00ff', '#5555ff', '#ffffff'];
         let figures = [];
         let isAnimating = false;
         let animationState = { startTime: 0, fromIndex: 0, duration: 3000 };
@@ -230,20 +461,20 @@
 
         function createInitialFigures() {
             return [
-                { R: 180, r: 55, d: 125, size: 2.0, rotation: 0, color: '#00FFFF', mode: 'inside', style: 'sphere', keyframes: [] },
-                { R: 150, r: 65, d: 80, size: 0.3, rotation: 20, color: '#FF00FF', mode: 'inside', style: 'tube', keyframes: [] },
-                { R: 200, r: 110, d: 90, size: 2.2, rotation: 45, color: '#FFFF00', mode: 'outside', style: 'sphere', keyframes: [] },
-                { R: 120, r: 40, d: 150, size: 0.25, rotation: 90, color: '#00FF00', mode: 'inside', style: 'tube', keyframes: [] },
-                { R: 220, r: 80, d: 70, size: 1.8, rotation: 120, color: '#FF5733', mode: 'outside', style: 'sphere', keyframes: [] }
+                { R: 180, r: 55, d: 125, size: 0.8, rotation: 0, color: '#00f0ff', mode: 'inside', style: 'tube', keyframes: [] },
+                { R: 150, r: 65, d: 80, size: 0.5, rotation: 20, color: '#ffb703', mode: 'inside', style: 'tube', keyframes: [] },
+                { R: 200, r: 110, d: 90, size: 1.5, rotation: 45, color: '#ff0055', mode: 'outside', style: 'sphere', keyframes: [] },
+                { R: 120, r: 40, d: 150, size: 0.4, rotation: 90, color: '#00ffaa', mode: 'inside', style: 'tube', keyframes: [] },
+                { R: 220, r: 80, d: 70, size: 1.2, rotation: 120, color: '#c87f4c', mode: 'outside', style: 'sphere', keyframes: [] }
             ];
         }
 
         function createResetFigures() {
-            const baseFig = { R: 100, r: 10, d: 10, size: 1.0, rotation: 0, mode: 'inside', style: 'sphere', keyframes: [] };
+            const baseFig = { R: 100, r: 10, d: 10, size: 0.5, rotation: 0, mode: 'inside', style: 'tube', keyframes: [] };
             return Array(NUM_FIGURES).fill(null).map((_, i) => ({
                 ...baseFig,
                 style: i % 2 === 0 ? 'sphere' : 'tube',
-                size: i % 2 === 0 ? 1.5 : 0.3,
+                size: i % 2 === 0 ? 1.5 : 0.5,
                 color: colorList[i],
                 keyframes: []
             }));
@@ -252,7 +483,7 @@
         function init() {
             scene = new THREE.Scene();
             clock = new THREE.Clock();
-            renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
             renderer.setPixelRatio(window.devicePixelRatio);
             renderer.setSize(container.clientWidth, container.clientHeight);
             renderer.toneMapping = THREE.ReinhardToneMapping;
@@ -263,8 +494,7 @@
             
             controls = new OrbitControls(camera, renderer.domElement);
             controls.enableDamping = true;
-            controls.autoRotate = true;
-            controls.autoRotateSpeed = 0.15;
+            controls.autoRotate = false; // We handle complex rotation manually
             controls.minDistance = MIN_ZOOM;
             controls.maxDistance = MAX_ZOOM;
 
@@ -276,7 +506,8 @@
             renderer.autoClear = false;
 
             const renderScene = new RenderPass(scene, camera);
-            bloomPass = new UnrealBloomPass(new THREE.Vector2(container.clientWidth, container.clientHeight), 1.0, 0.4, 0.1);
+            // Stronger bloom for intense neon steampunk effect
+            bloomPass = new UnrealBloomPass(new THREE.Vector2(container.clientWidth, container.clientHeight), 2.5, 0.6, 0.1);
             composer = new EffectComposer(renderer);
             composer.addPass(renderScene);
             composer.addPass(bloomPass);
@@ -356,7 +587,8 @@
             }
             const newObject = createSpirographObject(fig);
             group.add(newObject);
-            group.rotation.z = fig.rotation * Math.PI / 180;
+            // Reset base rotation for the Z-axis slider
+            group.rotation.set(0, 0, fig.rotation * Math.PI / 180);
             group.position.z = zPositions[index];
         }
 
@@ -368,6 +600,14 @@
             if (isAnimating) {
                 runAnimation();
             }
+
+            // Complex multi-axis rotation to make it more mesmerizing
+            figureGroups.forEach((group, index) => {
+                // We keep the base Z rotation from the slider, but add continuous X and Y rotations
+                const speed = 0.002 + (index * 0.0005);
+                group.rotateX(speed);
+                group.rotateY(speed * 0.8);
+            });
 
             controls.update();
             renderer.clear();
@@ -401,8 +641,9 @@
             colorPalette.innerHTML = '';
             colorList.forEach(color => {
                 const button = document.createElement('button');
-                button.className = 'color-btn h-10 rounded-lg transition-transform transform hover:scale-110';
+                button.className = 'color-btn';
                 button.style.backgroundColor = color;
+                button.style.color = color; // Used for shadow
                 button.dataset.color = color;
                 colorPalette.appendChild(button);
             });
@@ -436,7 +677,7 @@
             const newStyle = e.target.id === 'styleSphere' ? 'sphere' : 'tube';
             const fig = figures[activeFigureIndex];
             fig.style = newStyle;
-            fig.size = newStyle === 'sphere' ? 2.0 : 0.3;
+            fig.size = newStyle === 'sphere' ? 1.5 : 0.5;
             updateUIControls();
             updateFigure(activeFigureIndex);
         }
@@ -471,18 +712,17 @@
         }
 
         function buildParameterControls() {
-            const parent = document.querySelector('.space-y-2');
-            parent.innerHTML = '';
+            paramContainer.innerHTML = '';
             for (const key in PARAMETERS) {
                 const p = PARAMETERS[key];
-                const controlRow = document.createElement('div');
-                controlRow.className = 'flex items-center gap-2 text-sm';
-                controlRow.innerHTML = `
-                    <label for="${key}" class="flex-none w-32 font-medium text-gray-300">${p.label}:</label>
-                    <input type="range" id="${key}_slider" min="${p.min}" max="${p.max}" step="${p.step}" class="flex-grow">
-                    <input type="number" id="${key}_num" min="${p.min}" max="${p.max}" step="${p.step}" class="w-20 bg-gray-700 border border-gray-600 rounded p-1 text-center">
+                const row = document.createElement('div');
+                row.className = 'param-row';
+                row.innerHTML = `
+                    <div class="param-label">${p.label}</div>
+                    <input type="range" id="${key}_slider" min="${p.min}" max="${p.max}" step="${p.step}">
+                    <input type="number" id="${key}_num" min="${p.min}" max="${p.max}" step="${p.step}">
                 `;
-                parent.appendChild(controlRow);
+                paramContainer.appendChild(row);
                 uiControls[key] = {
                     slider: document.getElementById(`${key}_slider`),
                     number: document.getElementById(`${key}_num`),
@@ -490,21 +730,17 @@
             }
         }
 
-        // --- Keyframe & Animation Logic ---
         function addKeyframe() {
             const fig = figures[activeFigureIndex];
             const newKeyframe = { ...fig };
-            delete newKeyframe.keyframes; // Don't store keyframes within a keyframe
+            delete newKeyframe.keyframes;
             fig.keyframes.push(newKeyframe);
             updateTimelineIndicator();
         }
 
         function playAnimation() {
             const fig = figures[activeFigureIndex];
-            if (fig.keyframes.length < 2) {
-                console.log("Need at least 2 keyframes to play animation.");
-                return;
-            }
+            if (fig.keyframes.length < 2) return;
             isAnimating = true;
             animationState.startTime = clock.getElapsedTime();
             animationState.fromIndex = 0;
@@ -534,12 +770,11 @@
             const fromFrame = kfs[fromIndex];
             const toFrame = kfs[toIndex];
 
-            const animatedParams = { ...fig }; // Start with current fig settings
+            const animatedParams = { ...fig };
             for (const key in PARAMETERS) {
                 animatedParams[key] = THREE.MathUtils.lerp(fromFrame[key], toFrame[key], progress);
             }
             
-            // Update main figure object and UI
             Object.assign(figures[activeFigureIndex], animatedParams);
             updateUIControls(animatedParams);
             updateFigure(activeFigureIndex);
@@ -551,7 +786,7 @@
             if (kfs.length > 1) {
                 for (let i = 0; i < kfs.length; i++) {
                     const marker = document.createElement('div');
-                    marker.className = 'keyframe-marker';
+                    marker.className = 'timeline-marker';
                     marker.style.left = `${(i / (kfs.length - 1)) * 100}%`;
                     timelineIndicator.appendChild(marker);
                 }
@@ -586,6 +821,3 @@
     </script>
 </body>
 </html>
-
-
-

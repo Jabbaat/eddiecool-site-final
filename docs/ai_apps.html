@@ -6,10 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/jpeg" href="images/logoeddie.jpg">
     <link rel="apple-touch-icon" href="images/logoeddie.jpg">
-    <meta name="theme-color" content="#1a1a1a">
-    <title>AI Apps - Eddiecool AI Speelplaats</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
-    <!-- Verwijzing naar style.css behouden voor globale dingen, maar we overschrijven veel hieronder -->
+    <meta name="theme-color" content="#1a1f24">
+    <title>AI Apps - Post-Modern Steampunk</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="neo-theme.css">
 
@@ -22,421 +21,302 @@
     </script>
 
     <style>
-        /* --- NEO-BRUTALISM HIGH CONTRAST STIJLEN --- */
-
+        /* --- POST-MODERN STEAMPUNK NEOMORPHISM --- */
         :root {
-            --bg-color: #eeeeee;
-            /* Neutraal beton-grijs voor contrast */
-            --card-bg: #ffffff;
-
-            /* AANGEPASTE KLEUREN: */
-            --main-accent: #ff3300;
-            /* Signaal Rood/Oranje (Actie) */
-            --secondary-accent: #0055ff;
-            /* Electrisch Blauw (Tech/Koel) */
-            --third-accent: #ffee00;
-            /* Markeerstift Geel (Aandacht) */
-
-            --border-color: #000000;
-            --shadow-offset: 8px;
-            /* Iets dikkere schaduw voor meer diepte */
+            --slate-bg: #1a1f24;
+            --slate-surface: #222831;
+            --copper-accent: #c87f4c;
+            --bronze-muted: #b08d6a;
+            --neon-amber: #ffb703;
+            --text-main: #e2e8f0;
+            --text-muted: #94a3b8;
+            
+            --shadow-light: rgba(255, 255, 255, 0.03);
+            --shadow-dark: rgba(0, 0, 0, 0.5);
+            
+            --neo-shadow: 8px 8px 16px var(--shadow-dark), -8px -8px 16px var(--shadow-light);
+            --neo-shadow-hover: 12px 12px 20px var(--shadow-dark), -12px -12px 20px var(--shadow-light);
+            --neo-inset: inset 6px 6px 12px var(--shadow-dark), inset -6px -6px 12px var(--shadow-light);
         }
 
         body {
-            background-color: var(--bg-color);
-            color: #000000;
-            /* Expliciet ZWART */
+            background-color: var(--slate-bg);
+            color: var(--text-main);
             font-family: 'Inter', sans-serif;
             overflow-x: hidden;
+            margin: 0;
+            background-image: 
+                radial-gradient(circle at 15% 50%, rgba(200, 127, 76, 0.05), transparent 25%),
+                radial-gradient(circle at 85% 30%, rgba(255, 183, 3, 0.03), transparent 25%);
         }
 
+        /* Navigatie overschrijving voor specifieke steampunk vibe (behoudt functionaliteit style.css) */
         nav {
-            border-bottom: 4px solid var(--border-color);
-            /* Dikkere lijn */
-            background: #fff;
-            padding: 1rem;
+            background: rgba(26, 31, 36, 0.85) !important;
+            border-bottom: 1px solid rgba(200, 127, 76, 0.2) !important;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
         }
-
-        /* --- MENU STYLING (FORCE BLACK) --- */
-        .menu a {
-            font-weight: 900;
-            /* Dikker font */
-            text-transform: uppercase;
-            letter-spacing: -0.5px;
-            color: #000000 !important;
-            /* FORCEER ZWART (overschrijft style.css) */
-            text-decoration: none;
-            padding: 8px 12px;
-            border: 3px solid transparent;
-            transition: all 0.1s;
-        }
-
-        .menu a:hover {
-            background-color: var(--third-accent);
-            border: 3px solid var(--border-color);
-            box-shadow: 4px 4px 0 0 var(--border-color);
-            transform: translate(-2px, -2px);
-            color: #000 !important;
-        }
-
-        /* Hamburger menu kleur fix */
-        .hamburger {
-            color: #000000 !important;
+        
+        .menu li a:hover, .menu li a.active {
+            color: var(--neon-amber) !important;
+            background: rgba(255, 183, 3, 0.1) !important;
+            box-shadow: inset 0 -2px 0 var(--neon-amber);
         }
 
         main {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 2rem;
+            padding: 4rem 2rem;
+            position: relative;
+            z-index: 2;
         }
 
-        h1 {
-            font-weight: 900;
-            font-size: 3.5rem;
-            /* Groter */
-            text-transform: uppercase;
-            margin-bottom: 1rem;
-            color: #000000;
-            /* Expliciet ZWART */
-            -webkit-text-stroke: 1px var(--border-color);
-            /* Extra randje */
-            letter-spacing: -2px;
-        }
-
-        /* AANGEPASTE INTRO TEKST */
-        main>p {
-            font-size: 1.5rem;
-            /* Groter gemaakt voor duidelijkheid */
-            font-weight: 800;
-            /* Extra dikgedrukt (Bold) */
-            color: #000000;
-            /* Diep Zwart */
-            max-width: 750px;
-            margin-bottom: 3rem;
-            background: #fff;
-            border: 4px solid var(--border-color);
-            /* Iets dikkere rand */
-            padding: 1.5rem;
-            /* Ruimere padding */
-            box-shadow: 6px 6px 0 0 var(--border-color);
-            /* Iets hardere schaduw */
-            line-height: 1.4;
-        }
-
-        /* --- TICKER TAPE --- */
-        .ticker-wrap {
-            width: 100vw;
-            margin-left: calc(-50vw + 50%);
-            overflow: hidden;
-            background-color: var(--third-accent);
-            /* Blijft geel want dat valt het best op */
-            border-top: 4px solid var(--border-color);
-            border-bottom: 4px solid var(--border-color);
-            margin-bottom: 4rem;
-            transform: rotate(-2deg);
-            /* Iets schuiner voor meer effect */
-            z-index: 10;
+        .header-section {
+            text-align: center;
+            margin-bottom: 5rem;
             position: relative;
         }
 
-        .ticker {
-            display: flex;
-            white-space: nowrap;
-            animation: ticker 20s linear infinite;
-            /* Iets sneller */
+        h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            color: var(--text-main);
+            margin-bottom: 1.5rem;
+            letter-spacing: -1px;
+            text-shadow: 0 0 20px rgba(200, 127, 76, 0.3);
         }
 
-        .ticker-item {
-            font-size: 2rem;
-            /* Groter */
-            font-weight: 900;
-            text-transform: uppercase;
-            padding: 0.8rem 0;
-            color: #000000;
-            /* Expliciet ZWART */
-            display: inline-block;
+        h1 span {
+            color: var(--copper-accent);
         }
 
-        .ticker-item::after {
-            content: "⚡";
-            margin: 0 2rem;
-            color: var(--main-accent);
-            /* Rood/Oranje bliksem */
+        .header-section p {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
         }
 
-        @keyframes ticker {
-            0% {
-                transform: translateX(0);
-            }
-
-            100% {
-                transform: translateX(-50%);
-            }
+        /* Decoratieve SVG tandwielen achtergrond */
+        .bg-gear {
+            position: absolute;
+            opacity: 0.05;
+            z-index: -1;
+            fill: var(--copper-accent);
+            animation: spin 60s linear infinite;
         }
+        
+        .bg-gear-1 { top: -50px; left: -100px; width: 300px; }
+        .bg-gear-2 { top: 200px; right: -150px; width: 450px; animation-direction: reverse; }
+
+        @keyframes spin { 100% { transform: rotate(360deg); } }
 
         /* Grid */
         .ai-apps-list {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
             gap: 3rem;
         }
 
-        /* Cards */
+        /* Neomorfische Steampunk Cards */
         .project-card {
-            background-color: var(--card-bg);
-            border: 4px solid var(--border-color);
-            /* Dikkere randen */
-            border-radius: 0;
-            /* Geen ronde hoeken meer, echt bruut */
-            padding: 24px;
-            box-shadow: var(--shadow-offset) var(--shadow-offset) 0 0 var(--border-color);
-            transition: all 0.1s ease-in-out;
+            background-color: var(--slate-surface);
+            border-radius: 20px;
+            padding: 2.5rem 2rem;
+            box-shadow: var(--neo-shadow);
+            border: 1px solid rgba(255, 255, 255, 0.02);
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 2px;
+            background: linear-gradient(90deg, transparent, var(--copper-accent), transparent);
+            opacity: 0;
+            transition: opacity 0.4s;
         }
 
         .project-card:hover {
-            transform: translate(-6px, -6px);
-            box-shadow: 14px 14px 0 0 var(--border-color);
-            background-color: #fff;
-            /* Zorgt dat de kleurblokjes extra opvallen */
+            transform: translateY(-5px);
+            box-shadow: var(--neo-shadow-hover);
+            border-color: rgba(200, 127, 76, 0.1);
         }
 
-        /* Duidelijke kleurcodering per kaart */
-        .project-card:nth-child(odd) {
-            box-shadow: var(--shadow-offset) var(--shadow-offset) 0 0 var(--main-accent);
-            /* Oranje schaduw */
-            border-color: var(--border-color);
+        .project-card:hover::before {
+            opacity: 1;
         }
 
-        .project-card:nth-child(even) {
-            box-shadow: var(--shadow-offset) var(--shadow-offset) 0 0 var(--secondary-accent);
-            /* Blauwe schaduw */
-            border-color: var(--border-color);
-        }
-
-        /* Hover states omdraaien voor effect */
-        .project-card:nth-child(odd):hover {
-            box-shadow: 14px 14px 0 0 var(--border-color);
-            border-color: var(--main-accent);
-        }
-
-        .project-card:nth-child(even):hover {
-            box-shadow: 14px 14px 0 0 var(--border-color);
-            border-color: var(--secondary-accent);
+        .card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            display: inline-block;
+            filter: drop-shadow(0 0 10px rgba(255, 183, 3, 0.4));
         }
 
         .project-card h3 {
-            font-size: 2rem;
-            font-weight: 900;
-            margin-bottom: 12px;
-            color: #000000;
-            /* Expliciet ZWART */
-            text-transform: uppercase;
-            background: var(--third-accent);
-            /* Gele markering achter titel */
-            display: inline-block;
-            padding: 2px 8px;
-            border: 2px solid var(--border-color);
-            transform: rotate(-1deg);
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text-main);
+            letter-spacing: 0.5px;
         }
 
         .project-card p {
-            margin-bottom: 24px;
-            color: #000000;
-            /* Expliciet ZWART */
-            font-weight: 600;
-            line-height: 1.5;
-            font-size: 1.1rem;
+            color: var(--text-muted);
+            line-height: 1.7;
+            font-size: 1rem;
+            margin-bottom: 2.5rem;
+            flex-grow: 1;
         }
 
-        /* Buttons */
+        /* Steampunk Buttons */
         .project-button {
-            display: block;
-            background-color: var(--border-color);
-            color: #fff;
-            padding: 16px 24px;
-            font-weight: 900;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--slate-bg);
+            color: var(--copper-accent);
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            font-weight: 600;
             text-decoration: none;
-            border: 3px solid var(--border-color);
             text-transform: uppercase;
-            font-size: 1.1rem;
-            text-align: center;
             letter-spacing: 1px;
-            transition: 0.1s;
+            font-size: 0.9rem;
+            box-shadow: var(--neo-shadow);
+            border: 1px solid rgba(255, 255, 255, 0.02);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-button::after {
+            content: '';
+            position: absolute;
+            width: 4px; height: 4px;
+            border-radius: 50%;
+            background: var(--neon-amber);
+            right: 1.2rem;
+            box-shadow: 0 0 8px var(--neon-amber);
+            opacity: 0.5;
+            transition: all 0.3s;
         }
 
         .project-button:hover {
-            background-color: #fff;
-            color: var(--border-color);
-            box-shadow: 6px 6px 0 0 var(--border-color);
-            transform: translate(-2px, -2px);
+            color: var(--neon-amber);
+            box-shadow: var(--neo-inset);
         }
-
-        /* Specifieke hover kleuren voor knoppen op basis van kaart type */
-        .project-card:nth-child(odd) .project-button:hover {
-            background-color: var(--main-accent);
-            color: #fff;
-        }
-
-        .project-card:nth-child(even) .project-button:hover {
-            background-color: var(--secondary-accent);
-            color: #fff;
-        }
-
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 2.5rem;
-            }
-
-            .project-card {
-                margin-bottom: 2rem;
-            }
-
-            .ticker-item {
-                font-size: 1.5rem;
-            }
+        
+        .project-button:hover::after {
+            opacity: 1;
+            box-shadow: 0 0 12px var(--neon-amber);
         }
 
         footer {
-            margin-top: 5rem;
+            margin-top: 6rem;
             padding: 3rem;
-            background: var(--border-color);
-            color: #fff;
             text-align: center;
-            font-weight: 700;
-            text-transform: uppercase;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            position: relative;
+            z-index: 2;
         }
+
     </style>
 </head>
 
 <body>
-<div class="page-wrapper">
-    <nav>
-        <div class="logo">
-            <a href="index.html">
-                <img src="images/logo.png" alt="Eddiecool Logo" class="logo-img"
-                    style="border: 3px solid #000; padding: 4px; background: var(--third-accent);">
-            </a>
-        </div>
-        <!-- Hamburger kleur ook expliciet zwart -->
-        <span class="hamburger" id="hamburger-menu"
-            style="font-weight:900; font-size: 2rem; color: #000000 !important;">&#9776;</span>
-        <ul class="menu">
-            <li><a href="index.html">🏠 Home</a></li>
-            <li><a href="projects.html">✨ Projecten</a></li>
-            <li><a href="ai_gallery.html">🖼️ Galerij</a></li>
-            <li><a href="muziek.html">🎵 Muziek</a></li>
-            <li><a href="VibeCoding.html">⚡ Vibe Coding</a></li>
-            <li><a href="ai_apps.html">📱 AI Apps</a></li>
-            <li><a href="about.html">ℹ️ Over Mij</a></li>
-            <li><a href="contact.html">📧 Contact</a></li>
-        </ul>
-    </nav>
-
-    <main>
-        <h1>📱 AI Apps <span
-                style="font-size: 0.4em; vertical-align: middle; background: var(--main-accent); color: #fff; padding: 4px 10px; border: 3px solid #000; transform: rotate(3deg); display: inline-block;">BETA</span>
-        </h1>
-        <p>De speeltuin voor interactieve intelligentie. Geen saaie code, maar tools die werken.</p>
-
-        <!-- TICKER TAPE START -->
-        <div class="ticker-wrap">
-            <div class="ticker">
-                <span class="ticker-item">Vibe Coding</span>
-                <span class="ticker-item">Geen Code Maar Vibes</span>
-                <span class="ticker-item">Nieuwe Tools</span>
-                <span class="ticker-item">Creatieve Chaos</span>
-                <span class="ticker-item">AI Experimenten</span>
-                <span class="ticker-item">Eddiecool</span>
-                <!-- Herhaling -->
-                <span class="ticker-item">Vibe Coding</span>
-                <span class="ticker-item">Geen Code Maar Vibes</span>
-                <span class="ticker-item">Nieuwe Tools</span>
-                <span class="ticker-item">Creatieve Chaos</span>
-                <span class="ticker-item">AI Experimenten</span>
-                <span class="ticker-item">Eddiecool</span>
+    <div class="page-wrapper">
+        <nav>
+            <div class="logo">
+                <a href="index.html">
+                    <img src="images/logo.png" alt="Eddiecool Logo" class="logo-img">
+                </a>
             </div>
-        </div>
-        <!-- TICKER TAPE EIND -->
+            <span class="hamburger" id="hamburger-menu">&#9776;</span>
+            <ul class="menu">
+                <li><a href="index.html">🏠 Home</a></li>
+                <li><a href="projects.html">✨ Projecten</a></li>
+                <li><a href="ai_gallery.html">🖼️ Galerij</a></li>
+                <li><a href="muziek.html">🎵 Muziek</a></li>
+                <li><a href="VibeCoding.html">⚡ Vibe Coding</a></li> 
+                <li><a href="ai_apps.html">📱 AI Apps</a></li>
+                <li><a href="about.html">ℹ️ Over Mij</a></li>
+                <li><a href="contact.html">📧 Contact</a></li>
+            </ul>
+        </nav>
 
-        <section class="ai-apps-list">
+        <main>
+            <!-- Decoratieve tandwielen -->
+            <svg class="bg-gear bg-gear-1" viewBox="0 0 100 100">
+                <path d="M50 0 L55 10 A40 40 0 0 1 65 13 L75 5 L80 10 L72 18 A40 40 0 0 1 87 28 L98 25 L100 32 L90 38 A40 40 0 0 1 90 50 L100 55 L98 62 L87 58 A40 40 0 0 1 72 72 L80 80 L75 85 L65 77 A40 40 0 0 1 55 80 L50 90 L45 80 A40 40 0 0 1 35 77 L25 85 L20 80 L28 72 A40 40 0 0 1 13 58 L2 62 L0 55 L10 50 A40 40 0 0 1 10 38 L0 32 L2 25 L13 28 A40 40 0 0 1 28 18 L20 10 L25 5 L35 13 A40 40 0 0 1 45 10 Z" />
+                <circle cx="50" cy="50" r="25" fill="none" stroke="currentColor" stroke-width="10"/>
+            </svg>
+            <svg class="bg-gear bg-gear-2" viewBox="0 0 100 100">
+                <path d="M50 0 L55 10 A40 40 0 0 1 65 13 L75 5 L80 10 L72 18 A40 40 0 0 1 87 28 L98 25 L100 32 L90 38 A40 40 0 0 1 90 50 L100 55 L98 62 L87 58 A40 40 0 0 1 72 72 L80 80 L75 85 L65 77 A40 40 0 0 1 55 80 L50 90 L45 80 A40 40 0 0 1 35 77 L25 85 L20 80 L28 72 A40 40 0 0 1 13 58 L2 62 L0 55 L10 50 A40 40 0 0 1 10 38 L0 32 L2 25 L13 28 A40 40 0 0 1 28 18 L20 10 L25 5 L35 13 A40 40 0 0 1 45 10 Z" />
+                <circle cx="50" cy="50" r="25" fill="none" stroke="currentColor" stroke-width="10"/>
+            </svg>
 
-            <div class="project-card">
-                <div>
-                    <h3>AI Taal Trainer</h3>
-                    <p>Leer talen zoals Zweeds, Frans en Italiaans met AI-gegenereerde lessen, spaced-repetition en
-                        native audio-uitspraak. Volledig gebouwd in neo-brutalisme stijl!</p>
+            <div class="header-section">
+                <h1>AI <span>Speelplaats</span></h1>
+                <p>Post-moderne mechanica ontmoet digitale interactie. Ontdek de precisie van gesimuleerde werelden, aangedreven door code en verbeelding.</p>
+            </div>
+
+            <section class="ai-apps-list">
+
+                <div class="project-card">
+                    <span class="card-icon">🪐</span>
+                    <div>
+                        <h3>Orrery Zonnestelsel</h3>
+                        <p>Een mechanisch aangedreven 3D-simulatie van ons zonnestelsel. Ontdek de koperen banen van planeten en bestudeer de astrometrische telemetrie in real-time.</p>
+                    </div>
+                    <a href="zonnestelsel.html" class="project-button">Activeer Mechanisme</a>
                 </div>
-                <a href="https://taalapp-frontend.onrender.com" class="project-button" target="_blank"
-                    rel="noopener noreferrer">Start Leren</a>
-            </div>
 
-            <div class="project-card">
-                <div>
-                    <h3>Creative Studio</h3>
-                    <p>Jouw digitale werkplaats. Teksten genereren, ideeën uitwerken, chaos organiseren. Alles op één
-                        plek.</p>
+                <div class="project-card">
+                    <span class="card-icon">✨</span>
+                    <div>
+                        <h3>Spirograaf 3D</h3>
+                        <p>Wiskundige precisie-kunst. Manipuleer de geometrische parameters via het messing controlepaneel en creëer gloeiende, meer-assige neon-patronen.</p>
+                    </div>
+                    <a href="spirograaf.html" class="project-button">Kalibreer Patronen</a>
                 </div>
-                <a href="creative_aistudio.html" class="project-button">Start Studio</a>
-            </div>
 
-            <div class="project-card">
-                <div>
-                    <h3>Daily AI News</h3>
-                    <p>Geen tijd voor ruis? Deze app filtert het belangrijkste AI-nieuws en vat het samen.</p>
+                <div class="project-card">
+                    <span class="card-icon">🚀</span>
+                    <div>
+                        <h3>Aether Shooter</h3>
+                        <p>Een door stoom aangedreven luchtgevecht tegen mechanische vijanden. Ontwijk projectielen, verzamel power-ups en vernietig de eindbaas in deze canvas-gestuurde arena.</p>
+                    </div>
+                    <a href="shooter.html" class="project-button">Start Motoren</a>
                 </div>
-                <a href="https://v0-daily-ai-news-app.vercel.app/" class="project-button" target="_blank"
-                    rel="noopener noreferrer">Lees Nieuws</a>
-            </div>
 
-            <div class="project-card">
-                <div>
-                    <h3>Spirograaf 3D</h3>
-                    <p>Wiskundige kunst in 3D. Manipuleer patronen en maak visuele chaos of perfecte orde.</p>
-                </div>
-                <a href="spirograaf.html" class="project-button">Open Tool</a>
-            </div>
+            </section>
+        </main>
 
-            <div class="project-card">
-                <div>
-                    <h3>Zonnestelsel</h3>
-                    <p>Three.js simulatie. Draai planeten, verander perspectief en voel je een astronaut.</p>
-                </div>
-                <a href="zonnestelsel.html" class="project-button">Bekijk Heelal</a>
-            </div>
+        <footer>
+            <p>&copy; 2026 Eddiecool. Vibe Coding | Mechanische Precisie | AI Exploratie</p>
+        </footer>
 
-            <div class="project-card">
-                <div>
-                    <h3>Schaak Trainer</h3>
-                    <p>Train je brein tegen de AI. Verbeter je ELO en leer van je fouten (of geef de AI de schuld).</p>
-                </div>
-                <a href="schaken.html" class="project-button">Schaakmat</a>
-            </div>
-
-            <div class="project-card">
-                <div>
-                    <h3>Space Shooter</h3>
-                    <p>Retro arcade vibes. Schiet pixels kapot en verbreek je highscore. Pew pew!</p>
-                </div>
-                <a href="shooter.html" class="project-button">Start Missie</a>
-            </div>
-
-        </section>
-    </main>
-
-    <footer>
-        <p>&copy; 2025 Eddiecool. Gemaakt met vibes & code.</p>
-    </footer>
-
-    <script>
-        // Hamburger menu 
-        document.getElementById("hamburger-menu").addEventListener("click", function () {
-            document.querySelector(".menu").classList.toggle("active");
-        }); 
-    </script>
-</div><!-- /page-wrapper -->
+        <script>
+            // Hamburger menu 
+            document.getElementById("hamburger-menu").addEventListener("click", function () {
+                document.querySelector(".menu").classList.toggle("active");
+            }); 
+        </script>
+    </div><!-- /page-wrapper -->
+    
+    <!-- Three.js achtergrond -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="webgl-bg.js"></script>
 </body>

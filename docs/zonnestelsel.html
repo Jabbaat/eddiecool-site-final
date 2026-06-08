@@ -5,141 +5,172 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/jpeg" href="images/logoeddie.jpg">
     <link rel="apple-touch-icon" href="images/logoeddie.jpg">
-    <meta name="theme-color" content="#1a1a1a">
-    <title>Fotorealistisch 3D Zonnestelsel</title>
+    <meta name="theme-color" content="#1a1f24">
+    <title>Steampunk Orrery - Zonnestelsel</title>
     
-    <!-- Scripts voor de 3D simulatie -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/TextureLoader.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/objects/Lensflare.js"></script>
 
+    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+
     <style>
-        /* Basis stijlen voor de simulatie */
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: #000; overflow: hidden; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: white; }
+        body { 
+            background: #0f1115; 
+            overflow: hidden; 
+            font-family: 'Courier Prime', monospace; 
+            color: #d1bfae; 
+        }
         #canvas-container { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; cursor: grab; z-index: 1; }
         #canvas-container:active { cursor: grabbing; }
         
-        /* Stijlen voor de UI panelen */
+        /* Neomorfische Steampunk UI */
         .ui-panel {
-            position: absolute; z-index: 100; background: rgba(0, 0, 0, 0.8);
-            padding: 20px; border-radius: 15px; backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 215, 0, 0.3); box-shadow: 0 0 25px rgba(255, 215, 0, 0.1);
-        }
-        .controls { top: 20px; left: 20px; }
-        .navigation-help { bottom: 20px; left: 20px; padding: 15px; }
-        .ui-panel h3, .ui-panel h4 { color: #ffd700; margin-bottom: 15px; font-weight: 600; }
-        .control-group { margin: 15px 0; }
-        .control-group label { display: block; margin-bottom: 8px; color: #ccc; font-size: 14px; }
-        .control-group input[type="range"] { width: 220px; }
-        .loading {
-            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            color: #ffd700; font-size: 24px; z-index: 1000;
-        }
-        .label {
-            position: absolute;
-            top: 0;
-            left: 0;
-            pointer-events: none;
-            text-shadow: 0 0 5px #000;
-            font-size: 16px;
-            z-index: 101;
-        }
-
-        /* --- Stijlen voor de Info Pop-up (Modal) --- */
-        #info-modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            z-index: 300;
-            display: none; /* Standaard verborgen */
-            justify-content: center;
-            align-items: center;
+            position: absolute; z-index: 100; 
+            background: linear-gradient(145deg, #1a1f24, #14171c);
+            padding: 20px; 
+            border-radius: 12px; 
+            border: 2px solid #b08d6a; 
+            box-shadow: 6px 6px 15px rgba(0,0,0,0.8), inset 2px 2px 5px rgba(255,255,255,0.05);
             backdrop-filter: blur(5px);
         }
-        .planet-info {
-            position: relative; /* Nodig voor de sluitknop */
-            max-width: 500px;
-            width: 90%;
-            max-height: 80vh;
-            overflow-y: auto;
-        }
-        #close-info-btn {
-            position: absolute;
-            top: 10px;
-            right: 20px;
-            font-size: 2.5rem;
-            color: #fff;
-            cursor: pointer;
-            line-height: 1;
-        }
-        #planetDetails h4 { margin: 0 0 10px 0; font-size: 20px; padding-right: 30px; }
-        #planetDetails p { margin: 0; line-height: 1.5; font-size: 15px; }
         
-        /* --- MOBIELVRIENDELIJKE STIJLEN --- */
+        .controls { top: 20px; left: 20px; }
+        .telemetry { top: 20px; right: 20px; width: 300px; display: none; }
+        .navigation-help { bottom: 20px; left: 20px; padding: 15px; }
+        
+        .ui-panel h3, .ui-panel h4 { 
+            color: #ffb703; 
+            margin-bottom: 15px; 
+            font-weight: 700; 
+            text-transform: uppercase;
+            border-bottom: 1px dashed #b08d6a;
+            padding-bottom: 8px;
+            text-shadow: 0 0 8px rgba(255, 183, 3, 0.4);
+        }
+        
+        .control-group { margin: 15px 0; }
+        .control-group label { display: block; margin-bottom: 8px; color: #b08d6a; font-size: 14px; font-weight: bold; }
+        
+        /* Steampunk Slider */
+        input[type="range"] {
+            -webkit-appearance: none;
+            width: 220px;
+            height: 8px;
+            background: #0f1115;
+            border: 1px solid #c87f4c;
+            border-radius: 4px;
+            outline: none;
+            box-shadow: inset 2px 2px 5px rgba(0,0,0,0.8);
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 16px;
+            height: 24px;
+            background: linear-gradient(to bottom, #ffb703, #c87f4c);
+            border: 1px solid #1a1f24;
+            border-radius: 2px;
+            cursor: pointer;
+            box-shadow: 0 0 5px rgba(255, 183, 3, 0.5);
+        }
+        
+        /* Checkbox */
+        input[type="checkbox"] {
+            accent-color: #ffb703;
+            transform: scale(1.2);
+            margin-right: 8px;
+        }
+
+        .loading {
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            color: #ffb703; font-size: 24px; z-index: 1000;
+            font-weight: bold; text-shadow: 0 0 10px #ffb703;
+        }
+
+        .label {
+            position: absolute;
+            top: 0; left: 0;
+            pointer-events: none;
+            text-shadow: 1px 1px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000;
+            font-size: 14px;
+            font-weight: bold;
+            z-index: 101;
+            letter-spacing: 1px;
+            background: rgba(0,0,0,0.5);
+            padding: 2px 6px;
+            border: 1px solid rgba(200, 127, 76, 0.5);
+            border-radius: 4px;
+        }
+
+        /* Telemetry meters */
+        .meter {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 10px;
+            background: rgba(0,0,0,0.3);
+            padding: 8px;
+            border-radius: 4px;
+            border-left: 3px solid #ffb703;
+        }
+        .meter span.val { color: #00f0ff; font-weight: bold; text-shadow: 0 0 5px rgba(0, 240, 255, 0.5); }
+
+        #close-telemetry-btn {
+            position: absolute; top: 10px; right: 15px; font-size: 20px;
+            color: #b08d6a; cursor: pointer; font-weight: bold;
+        }
+        #close-telemetry-btn:hover { color: #ffb703; }
+
         @media (max-width: 768px) {
-            .controls {
-                top: 10px;
-                left: 10px;
-                right: 10px;
-                width: auto;
-                padding: 15px;
-            }
-            .navigation-help {
-                display: none; /* Verberg hulp op mobiel om ruimte te besparen */
-            }
-            .ui-panel h3 {
-                font-size: 1.1rem;
-            }
-            .control-group input[type="range"] {
-                width: 100%;
-            }
-            .label {
-                font-size: 12px;
-            }
+            .controls, .telemetry { top: 10px; left: 10px; right: 10px; width: auto; }
+            .navigation-help { display: none; }
+            input[type="range"] { width: 100%; }
         }
     </style>
 </head>
 <body>
-    <!-- Elementen van de Zonnestelsel App -->
-    <div class="loading" id="loading">Zonnestelsel wordt geladen...</div>
+    <div class="loading" id="loading">KALIBRATIE MECHANISME...</div>
     <div id="canvas-container"></div>
+    
     <div class="ui-panel controls">
-        <h3>🚀 Zonnestelsel Controles</h3>
+        <h3>⚙️ Hoofdmechaniek</h3>
         <div class="control-group">
-            <label>Simulatiesnelheid: <span id="speedValue">1.0x</span></label>
+            <label>Aandrijfsnelheid: <span id="speedValue" style="color:#ffb703">1.0x</span></label>
             <input type="range" id="speedControl" min="0" max="10" step="0.1" value="1">
         </div>
         <div class="control-group">
-            <label><input type="checkbox" id="showOrbits" checked> Toon banen</label>
+            <label><input type="checkbox" id="showOrbits" checked> Geleidingsringen Tonen</label>
         </div>
         <div class="control-group">
-            <label><input type="checkbox" id="showNames" checked> Toon namen</label>
+            <label><input type="checkbox" id="showNames" checked> Identificaties Tonen</label>
+        </div>
+        <div style="margin-top: 15px; font-size: 0.85em; color: #94a3b8;">
+            <a href="ai_apps.html" style="color: #c87f4c; text-decoration: none;">&lt; Terug naar Catalogus</a>
         </div>
     </div>
     
-    <!-- Info paneel zit nu in een overlay voor de pop-up -->
-    <div id="info-modal-overlay">
-        <div class="ui-panel planet-info">
-            <span id="close-info-btn">&times;</span>
-            <div id="planetDetails">Klik op een hemellichaam voor leuke weetjes.</div>
-        </div>
+    <div class="ui-panel telemetry" id="telemetryPanel">
+        <span id="close-telemetry-btn">&times;</span>
+        <h3 id="telName">PLANEET</h3>
+        <p id="telDesc" style="font-size: 13px; margin-bottom: 15px; color: #d1bfae; line-height: 1.4;"></p>
+        <div class="meter"><span>Orbitale Radius:</span> <span class="val" id="telDist">0</span></div>
+        <div class="meter"><span>Baansnelheid:</span> <span class="val" id="telSpeed">0</span></div>
+        <div class="meter"><span>Rotatiecyclus:</span> <span class="val" id="telRot">0</span></div>
+        <div class="meter"><span>Massa Index:</span> <span class="val" id="telMass">0</span></div>
     </div>
 
     <div class="ui-panel navigation-help">
-        <h4>⌨️ Navigatie</h4>
-        <p>🖱️ Linkermuisknop: Roteer camera</p>
-        <p>🖱️ Rechtermuisknop: Pan camera</p>
-        <p>⚪ Scroll: Zoom in/uit</p>
-        <p>⌨️ Spatie: Pauzeer/start</p>
+        <h4>🔭 Observatiepaneel</h4>
+        <p style="font-size: 13px; line-height: 1.6; color: #b08d6a;">
+        [L-KLIK] : Roteer Perspectief<br>
+        [R-KLIK] : Panoramisch Verschuiven<br>
+        [SCROLL] : Lens Zoom<br>
+        [SPATIE] : Koppelingspauze<br>
+        [KLIK OP BOL] : Telemetrie Uitlezen
+        </p>
     </div>
 
     <script>
-        // ----- BEGIN ZONNESTELSEL SCRIPT -----
         let scene, camera, renderer, controls;
         let sun, sunLight;
         let celestialObjects = [];
@@ -148,41 +179,49 @@
         let asteroids = [];
         let animationSpeed = 1;
         let isPaused = false;
+        let selectedPlanet = null;
         const textureLoader = new THREE.TextureLoader();
 
         const celestialData = [
-            { name: 'Mercurius', distance: 15, size: 0.8, tilt: 0.03, color: 0x8C7853, texture: 'https://raw.githubusercontent.com/jeromeetienne/threex.planets/master/images/mercurymap.jpg', speed: 4.74, rotationSpeed: 0.01, facts: ['Een dag duurt er langer dan een jaar.', 'Het is de kleinste planeet in ons zonnestelsel.', 'De temperatuurverschillen zijn extreem: van 430°C tot -180°C.', 'Mercurius heeft een verrassend sterk magnetisch veld.', 'De planeet krimpt langzaam maar zeker.', 'Het oppervlak lijkt sterk op dat van onze maan.', 'Er is ijs gevonden in kraters op de polen.', 'Mercurius heeft geen manen of ringen.', 'De ijzeren kern is relatief gezien enorm groot.', 'Vanaf Mercurius lijkt de zon drie keer zo groot als vanaf de Aarde.'] },
-            { name: 'Venus', distance: 20, size: 1.2, tilt: 177.0, color: 0xFFB649, texture: 'https://raw.githubusercontent.com/jeromeetienne/threex.planets/master/images/venusmap.jpg', speed: 3.50, rotationSpeed: -0.007, facts: ['Het is de heetste planeet, heter dan Mercurius.', 'De atmosferische druk is 92 keer zo hoog als op Aarde.', 'Venus draait achterstevoren in vergelijking met de meeste planeten.', 'Een dag op Venus duurt langer dan een jaar op Venus.', 'De lucht is er gevuld met wolken van zwavelzuur.', 'Het is het helderste object aan de hemel na de zon en de maan.', 'Er zijn duizenden vulkanen op het oppervlak.', 'Venus heeft geen manen.', 'De planeet wordt soms de "kwaadaardige tweeling" van de Aarde genoemd.', 'De eerste succesvolle landing op een andere planeet was op Venus.'] },
-            { name: 'Aarde', distance: 25, size: 1.3, tilt: 23.44, color: 0x6B93D6, texture: 'https://raw.githubusercontent.com/jeromeetienne/threex.planets/master/images/earthmap1k.jpg', speed: 2.98, rotationSpeed: 0.02, facts: ['De enige planeet met vloeibaar water op het oppervlak.', 'De atmosfeer beschermt ons tegen meteoren en straling.', 'De Aarde is de dichtste planeet in het zonnestelsel.', 'De rotatie van de Aarde vertraagt heel langzaam.', '70% van het oppervlak is bedekt met water.', 'De Aarde heeft een krachtig magnetisch veld.', 'De hoogste berg op Aarde is de Mount Everest.', 'De Aarde is niet perfect rond, maar een afgeplatte sferoïde.', 'Onze planeet is ongeveer 4,5 miljard jaar oud.', 'De naam "Aarde" is de enige die niet uit de Griekse/Romeinse mythologie komt.'], atmosphere: true },
-            { name: 'Mars', distance: 30, size: 1.0, tilt: 25.19, color: 0xCD5C5C, texture: 'https://raw.githubusercontent.com/jeromeetienne/threex.planets/master/images/marsmap1k.jpg', speed: 2.41, rotationSpeed: 0.018, facts: ['Mars heeft de hoogste vulkaan van het zonnestelsel: Olympus Mons.', 'De planeet heeft seizoenen, net als de Aarde.', 'Een dag op Mars duurt ongeveer 24,6 uur.', 'Stofstormen kunnen de hele planeet bedekken.', 'Mars heeft twee kleine manen: Phobos en Deimos.', 'De rode kleur komt door roest in de bodem.', 'Er zijn ijskappen op de polen van Mars.', 'In het verleden stroomde er vloeibaar water op Mars.', 'De zwaartekracht is er maar 38% van die op Aarde.', 'Er rijden momenteel meerdere robots rond op Mars.'] },
-            { name: 'Jupiter', distance: 45, size: 4.0, tilt: 3.13, color: 0xD2691E, texture: 'https://raw.githubusercontent.com/jeromeetienne/threex.planets/master/images/jupitermap.jpg', speed: 1.31, rotationSpeed: 0.04, facts: ['Jupiter is twee keer zo zwaar als alle andere planeten bij elkaar.', 'De Grote Rode Vlek is een storm die groter is dan de Aarde.', 'Een dag op Jupiter duurt minder dan 10 uur.', 'Jupiter heeft het sterkste magnetische veld van alle planeten.', 'De planeet heeft zwakke, nauwelijks zichtbare ringen.', 'Jupiter heeft minstens 79 manen.', 'De maan Ganymedes is groter dan de planeet Mercurius.', 'Jupiter beschermt de Aarde door kometen en asteroïden af te vangen.', 'De planeet straalt meer warmte uit dan hij van de zon ontvangt.', 'Jupiter is een gasreus, zonder vast oppervlak.'] },
-            { name: 'Saturnus', distance: 60, size: 3.5, tilt: 26.73, color: 0xFAB552, texture: 'https://raw.githubusercontent.com/jeromeetienne/threex.planets/master/images/saturnmap.jpg', speed: 0.97, rotationSpeed: 0.038, facts: ['De ringen van Saturnus zijn extreem dun, soms maar 10 meter dik.', 'Saturnus heeft de laagste dichtheid; hij zou op water drijven.', 'Een jaar op Saturnus duurt meer dan 29 aardse jaren.', 'De winden kunnen er snelheden van 1.800 km/u bereiken.', 'Op de noordpool bevindt zich een mysterieuze zeshoekige storm.', 'De maan Titan heeft een dichte atmosfeer en meren van vloeibaar methaan.', 'Saturnus heeft 82 bekende manen.', 'De ringen bestaan voornamelijk uit ijsdeeltjes.', 'De planeet is zichtbaar met het blote oog vanaf de Aarde.', 'De Cassini-ruimtesonde heeft de planeet 13 jaar lang bestudeerd.'] },
-            { name: 'Uranus', distance: 75, size: 2.5, tilt: 97.77, color: 0x4FD0E7, texture: 'https://raw.githubusercontent.com/jeromeetienne/threex.planets/master/images/uranusmap.jpg', speed: 0.68, rotationSpeed: 0.03, facts: ['Uranus draait op zijn kant, met zijn polen naar de zon gericht.', 'Het is de koudste planeet in het zonnestelsel.', 'Een jaar op Uranus duurt 84 aardse jaren.', 'De blauwe kleur komt door methaan in de atmosfeer.', 'Uranus heeft 13 bekende, donkere ringen.', 'De manen zijn vernoemd naar personages van Shakespeare en Alexander Pope.', 'Uranus was de eerste planeet die met een telescoop werd ontdekt.', 'De seizoenen zijn extreem, met 42 jaar daglicht gevolgd door 42 jaar duisternis.', 'De planeet is een "ijsreus", bestaande uit water, methaan en ammoniak.', 'Slechts één ruimtesonde heeft Uranus ooit bezocht: Voyager 2.'] },
-            { name: 'Neptunus', distance: 90, size: 2.4, tilt: 28.32, color: 0x4169E1, texture: 'https://raw.githubusercontent.com/jeromeetienne/threex.planets/master/images/neptunemap.jpg', speed: 0.54, rotationSpeed: 0.032, facts: ['Neptunus heeft de snelste winden in het zonnestelsel, tot 2.100 km/u.', 'De planeet werd ontdekt door wiskundige berekeningen.', 'Een jaar op Neptunus duurt bijna 165 aardse jaren.', 'De grootste maan, Triton, draait in de verkeerde richting.', 'Neptunus is de kleinste van de gasreuzen.', 'De Grote Donkere Vlek was een storm vergelijkbaar met die van Jupiter.', 'De planeet is vernoemd naar de Romeinse god van de zee.', 'Het duurt 12 jaar voor een ruimtesonde om Neptunus te bereiken.', 'De blauwe kleur komt, net als bij Uranus, door methaan.', 'Neptunus heeft vijf zwakke ringen.'] },
-            { name: 'Pluto', type: 'dwarf', distance: 105, size: 0.5, tilt: 122.53, color: 0xD3BBAF, texture: 'https://raw.githubusercontent.com/jeromeetienne/threex.planets/master/images/plutomap1k.jpg', speed: 0.47, rotationSpeed: 0.005, facts: ['Pluto is kleiner dan onze eigen maan.', 'Het heeft een hartvormig gletsjergebied op zijn oppervlak.', 'Een jaar op Pluto duurt 248 aardse jaren.', 'Pluto heeft vijf manen.', 'De atmosfeer is alleen aanwezig als Pluto dicht bij de zon staat.', 'Zijn baan is zo excentriek dat hij soms dichter bij de zon staat dan Neptunus.', 'Pluto wordt nu geclassificeerd als een dwergplaneet.', 'De New Horizons-sonde deed er 9,5 jaar over om Pluto te bereiken.', 'De grootste maan, Charon, is bijna half zo groot als Pluto zelf.', 'De temperatuur op Pluto kan dalen tot -240°C.'] }
+            { name: 'Mercurius', distance: 20, size: 0.8, tilt: 0.03, color: 0x8C7853, texture: 'https://raw.githubusercontent.com/jeromeetienne/threex.planets/master/images/mercurymap.jpg', speed: 4.74, rotationSpeed: 0.01, facts: 'Een zinderend stuk gesmolten koper. De kleinste en snelste ratel in het raderwerk.' },
+            { name: 'Venus', distance: 28, size: 1.2, tilt: 177.0, color: 0xFFB649, texture: 'https://raw.githubusercontent.com/jeromeetienne/threex.planets/master/images/venusmap.jpg', speed: 3.50, rotationSpeed: -0.007, facts: 'Een broeikas van messing en zwavel. Draait achterwaarts in het mechanisme.' },
+            { name: 'Aarde', distance: 38, size: 1.3, tilt: 23.44, color: 0x6B93D6, texture: 'https://raw.githubusercontent.com/jeromeetienne/threex.planets/master/images/earthmap1k.jpg', speed: 2.98, rotationSpeed: 0.02, facts: 'Onze thuisbasis. Een fragiel blauwglazen sieraad in de kosmos.', atmosphere: true },
+            { name: 'Mars', distance: 48, size: 1.0, tilt: 25.19, color: 0xCD5C5C, texture: 'https://raw.githubusercontent.com/jeromeetienne/threex.planets/master/images/marsmap1k.jpg', speed: 2.41, rotationSpeed: 0.018, facts: 'Geroest ijzer overspant de vlaktes. Bevat de gigantische Olympus Mons vulkaan.' },
+            { name: 'Jupiter', distance: 70, size: 4.0, tilt: 3.13, color: 0xD2691E, texture: 'https://raw.githubusercontent.com/jeromeetienne/threex.planets/master/images/jupitermap.jpg', speed: 1.31, rotationSpeed: 0.04, facts: 'De massieve stoommachine van het stelsel. Absorbeert asteroïden voor de binnenplaneten.' },
+            { name: 'Saturnus', distance: 95, size: 3.5, tilt: 26.73, color: 0xFAB552, texture: 'https://raw.githubusercontent.com/jeromeetienne/threex.planets/master/images/saturnmap.jpg', speed: 0.97, rotationSpeed: 0.038, facts: 'Uitgerust met een meesterlijk geconstrueerd systeem van ijs- en stofringen.' },
+            { name: 'Uranus', distance: 120, size: 2.5, tilt: 97.77, color: 0x4FD0E7, texture: 'https://raw.githubusercontent.com/jeromeetienne/threex.planets/master/images/uranusmap.jpg', speed: 0.68, rotationSpeed: 0.03, facts: 'Een bevroren cyaanblauwe bol. Roteert op zijn zijkant door een antieke kosmische botsing.' },
+            { name: 'Neptunus', distance: 145, size: 2.4, tilt: 28.32, color: 0x4169E1, texture: 'https://raw.githubusercontent.com/jeromeetienne/threex.planets/master/images/neptunemap.jpg', speed: 0.54, rotationSpeed: 0.032, facts: 'De uiterste gasreus. Geteisterd door methaanstormen met supersonische snelheden.' },
+            { name: 'Pluto', type: 'dwarf', distance: 165, size: 0.5, tilt: 122.53, color: 0xD3BBAF, texture: 'https://raw.githubusercontent.com/jeromeetienne/threex.planets/master/images/plutomap1k.jpg', speed: 0.47, rotationSpeed: 0.005, facts: 'Een kleine, verre buitenpost. Ooit een planeet, nu een dwerg.' }
         ];
-        const sunFacts = ['De zon bevat 99,86% van alle massa in het zonnestelsel.', 'Elke seconde zet de zon 600 miljoen ton waterstof om in helium.', 'Het licht van de zon doet er 8 minuten en 20 seconden over om de aarde te bereiken.', 'De kern van de zon is 15 miljoen graden Celsius.', 'De zon is een middelgrote ster, een zogenaamde "gele dwerg".', 'Een miljoen aardes zouden in de zon passen.', 'De zon draait eens in de 25-35 dagen om zijn as.', 'De zon genereert een constante stroom van deeltjes, de zonnewind.', 'Zonnevlammen kunnen communicatie op Aarde verstoren.', 'Over 5 miljard jaar zal de zon opzwellen tot een rode reus.'];
 
         function init() {
             scene = new THREE.Scene();
-            camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 3000);
-            renderer = new THREE.WebGLRenderer({ antialias: true });
+            scene.fog = new THREE.FogExp2(0x0f1115, 0.002);
+            
+            camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 3000);
+            renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
             renderer.setSize(window.innerWidth, window.innerHeight);
-            renderer.setClearColor(0x000005);
+            renderer.setClearColor(0x0a0c0f);
+            
+            // Betere belichting voor metallic materialen
+            renderer.outputEncoding = THREE.sRGBEncoding;
+            renderer.toneMapping = THREE.ACESFilmicToneMapping;
+            renderer.toneMappingExposure = 1.2;
+
             document.getElementById('canvas-container').appendChild(renderer.domElement);
 
             controls = new THREE.OrbitControls(camera, renderer.domElement);
             controls.enableDamping = true;
             controls.dampingFactor = 0.05;
-            controls.minDistance = 20;
-            controls.maxDistance = 500;
+            controls.minDistance = 30;
+            controls.maxDistance = 600;
 
-            addStars();
+            addStarsAndDust();
             createSun();
             createCelestialBodies();
             createAsteroidBelt();
 
-            camera.position.set(0, 80, 150);
+            camera.position.set(0, 100, 200);
             controls.update();
 
             setupEventListeners();
@@ -190,52 +229,78 @@
             animate();
         }
 
-        function addStars() {
+        function addStarsAndDust() {
+            // Stars
             const starsGeometry = new THREE.BufferGeometry();
             const starsVertices = [];
-            for (let i = 0; i < 10000; i++) {
-                const x = THREE.MathUtils.randFloatSpread(2500);
-                const y = THREE.MathUtils.randFloatSpread(2500);
-                const z = THREE.MathUtils.randFloatSpread(2500);
+            for (let i = 0; i < 5000; i++) {
+                const x = THREE.MathUtils.randFloatSpread(2000);
+                const y = THREE.MathUtils.randFloatSpread(2000);
+                const z = THREE.MathUtils.randFloatSpread(2000);
                 starsVertices.push(x, y, z);
             }
             starsGeometry.setAttribute('position', new THREE.Float32BufferAttribute(starsVertices, 3));
-            const starsMaterial = new THREE.PointsMaterial({ color: 0xAAAAAA, size: 0.7 });
+            const starsMaterial = new THREE.PointsMaterial({ color: 0xd1bfae, size: 0.5 });
             scene.add(new THREE.Points(starsGeometry, starsMaterial));
+
+            // Steampunk "Aether" dust
+            const dustGeo = new THREE.BufferGeometry();
+            const dustVerts = [];
+            for (let i = 0; i < 2000; i++) {
+                dustVerts.push(
+                    THREE.MathUtils.randFloatSpread(500),
+                    THREE.MathUtils.randFloatSpread(100),
+                    THREE.MathUtils.randFloatSpread(500)
+                );
+            }
+            dustGeo.setAttribute('position', new THREE.Float32BufferAttribute(dustVerts, 3));
+            const dustMat = new THREE.PointsMaterial({ color: 0xc87f4c, size: 0.2, transparent: true, opacity: 0.4 });
+            scene.add(new THREE.Points(dustGeo, dustMat));
         }
 
         function createSun() {
-            const sunMaterial = new THREE.MeshBasicMaterial({ color: 0xFFD700 });
+            // Kern van de zon
+            const sunMaterial = new THREE.MeshStandardMaterial({ 
+                color: 0xffb703,
+                emissive: 0xff8800,
+                emissiveIntensity: 1.5,
+                metalness: 0.8,
+                roughness: 0.2
+            });
             
             textureLoader.load(
                 'https://raw.githubusercontent.com/jeromeetienne/threex.planets/master/images/sunmap.jpg',
-                (texture) => { sunMaterial.map = texture; sunMaterial.color.set(0xffffff); sunMaterial.needsUpdate = true; },
-                undefined,
-                (err) => { console.error('Kon zon textuur niet laden, fallback naar kleur.', err); }
+                (texture) => { sunMaterial.map = texture; sunMaterial.needsUpdate = true; }
             );
 
-            sun = new THREE.Mesh(new THREE.SphereGeometry(7, 64, 64), sunMaterial);
+            sun = new THREE.Mesh(new THREE.SphereGeometry(10, 64, 64), sunMaterial);
             celestialObjects.push(sun);
             scene.add(sun);
 
-            sunLight = new THREE.PointLight(0xffffff, 2, 3000);
+            // Mechanische behuizing rondom de zon
+            const casingMat = new THREE.MeshStandardMaterial({ color: 0x3a2e24, metalness: 0.9, roughness: 0.4, wireframe: true });
+            const sunCasing = new THREE.Mesh(new THREE.IcosahedronGeometry(11, 2), casingMat);
+            sun.add(sunCasing);
+
+            sunLight = new THREE.PointLight(0xffddaa, 2, 1000);
             scene.add(sunLight);
             
-            const flareTexture = textureLoader.load('https://threejs.org/examples/textures/lensflare/lensflare0.png');
-            const lensflare = new THREE.Lensflare();
-            lensflare.addElement(new THREE.LensflareElement(flareTexture, 700, 0, sunLight.color));
-            sunLight.add(lensflare);
+            // Extra sfeerverlichting (ambient) voor de koper/brons reflecties
+            scene.add(new THREE.AmbientLight(0x221100, 0.5));
         }
 
         function createCelestialBodies() {
             celestialData.forEach(data => {
-                const material = new THREE.MeshStandardMaterial({ color: data.color });
+                // Steampunk Metallic Planets
+                const material = new THREE.MeshStandardMaterial({ 
+                    color: data.color,
+                    metalness: 0.6,
+                    roughness: 0.5
+                });
                 const planet = new THREE.Mesh(new THREE.SphereGeometry(data.size, 32, 32), material);
                 
                 textureLoader.load(data.texture,
-                    (texture) => { planet.material.map = texture; planet.material.color.set(0xffffff); planet.material.needsUpdate = true; },
-                    undefined,
-                    (err) => { console.error(`Kon textuur niet laden voor ${data.name}:`, err); }
+                    (texture) => { planet.material.map = texture; planet.material.color.set(0xffffff); planet.material.needsUpdate = true; }
                 );
                 
                 planet.rotation.z = THREE.MathUtils.degToRad(data.tilt);
@@ -244,40 +309,30 @@
                 scene.add(planet);
                 celestialObjects.push(planet);
 
-                createOrbit(data.distance, data.type === 'dwarf' ? 0x666666 : 0x333333);
-                createLabel(data.name, planet, 0xFFFFFF);
+                createOrbit(data.distance);
+                createLabel(data.name, planet, data.color);
 
                 if (data.name === 'Saturnus') createSaturnRings(planet, data.size);
                 if (data.name === 'Aarde') {
-                    createMoon(planet, 3, 0.3, 'https://raw.githubusercontent.com/jeromeetienne/threex.planets/master/images/moonmap1k.jpg', 20);
-                    createAtmosphere(planet, data.size);
+                    createMoon(planet, 3, 0.3, 0xaabbcc, 20);
                 }
                 if (data.name === 'Mars') {
-                    createMoon(planet, 2.0, 0.1, 0xAAAAAA, 30);
-                    createMoon(planet, 2.8, 0.15, 0x999999, 45);
+                    createMoon(planet, 2.0, 0.1, 0xc87f4c, 30);
+                    createMoon(planet, 2.8, 0.15, 0x8a5a44, 45);
+                }
+                if (data.name === 'Jupiter') {
+                    createMoon(planet, 5, 0.4, 0xddaa88, 15);
+                    createMoon(planet, 6.5, 0.3, 0xaaddff, 12);
                 }
             });
         }
         
-        function createAtmosphere(parent, size) {
-            const atmosphereMaterial = new THREE.MeshBasicMaterial({
-                color: 0x6B93D6,
-                transparent: true,
-                opacity: 0.2,
-                side: THREE.BackSide
+        function createMoon(parent, distance, size, color, speed) {
+            const moonMaterial = new THREE.MeshStandardMaterial({ 
+                color: color, 
+                metalness: 0.8, 
+                roughness: 0.4 
             });
-            const atmosphere = new THREE.Mesh(new THREE.SphereGeometry(size + 0.1, 32, 32), atmosphereMaterial);
-            parent.add(atmosphere);
-        }
-
-        function createMoon(parent, distance, size, textureOrColor, speed) {
-            let moonMaterial;
-            if (typeof textureOrColor === 'string' && textureOrColor.startsWith('http')) {
-                const moonTexture = textureLoader.load(textureOrColor);
-                moonMaterial = new THREE.MeshStandardMaterial({ map: moonTexture });
-            } else {
-                moonMaterial = new THREE.MeshStandardMaterial({ color: textureOrColor });
-            }
             const moon = new THREE.Mesh(new THREE.SphereGeometry(size, 16, 16), moonMaterial);
             moon.position.x = distance;
             parent.add(moon);
@@ -287,51 +342,55 @@
         }
 
         function createAsteroidBelt() {
-            const beltMaterial = new THREE.MeshStandardMaterial({ color: 0x8B4513, roughness: 0.8 });
-            for (let i = 0; i < 1500; i++) {
-                const size = Math.random() * 0.2 + 0.05;
+            const beltMaterial = new THREE.MeshStandardMaterial({ color: 0x5c4033, metalness: 0.5, roughness: 0.8 });
+            for (let i = 0; i < 800; i++) {
+                const size = Math.random() * 0.3 + 0.1;
                 const asteroid = new THREE.Mesh(new THREE.DodecahedronGeometry(size, 0), beltMaterial);
                 const angle = Math.random() * Math.PI * 2;
-                const distance = 34 + Math.random() * 8;
-                asteroid.position.set(Math.cos(angle) * distance, (Math.random() - 0.5) * 2, Math.sin(angle) * distance);
-                asteroid.userData = { distance, angle, speed: (Math.random() * 0.2 + 0.8) * 1.5 };
+                const distance = 56 + Math.random() * 8;
+                asteroid.position.set(Math.cos(angle) * distance, (Math.random() - 0.5) * 1.5, Math.sin(angle) * distance);
+                asteroid.userData = { distance, angle, speed: (Math.random() * 0.2 + 0.5) * 1.5 };
                 asteroids.push(asteroid);
                 scene.add(asteroid);
             }
         }
         
-        function createOrbit(distance, color) {
-            const points = [];
-            for (let i = 0; i <= 128; i++) {
-                const angle = (i / 128) * Math.PI * 2;
-                points.push(new THREE.Vector3(Math.cos(angle) * distance, 0, Math.sin(angle) * distance));
-            }
-            const orbitGeometry = new THREE.BufferGeometry().setFromPoints(points);
-            const orbitMaterial = new THREE.LineBasicMaterial({ color: color, transparent: true, opacity: 0.5 });
-            const orbit = new THREE.Line(orbitGeometry, orbitMaterial);
+        function createOrbit(distance) {
+            // Steampunk massieve koperen ringen in plaats van lijnen
+            const orbitGeometry = new THREE.TorusGeometry(distance, 0.05, 8, 128);
+            const orbitMaterial = new THREE.MeshStandardMaterial({ 
+                color: 0xc87f4c, 
+                metalness: 0.9, 
+                roughness: 0.2,
+                emissive: 0x331100,
+                transparent: true,
+                opacity: 0.4
+            });
+            const orbit = new THREE.Mesh(orbitGeometry, orbitMaterial);
+            orbit.rotation.x = Math.PI / 2;
             scene.add(orbit);
             orbits.push(orbit);
         }
 
         function createSaturnRings(planet, planetSize) {
-            const ringTexture = textureLoader.load('https://raw.githubusercontent.com/jeromeetienne/threex.planets/master/images/saturnring.png');
-            const ringMaterial = new THREE.MeshBasicMaterial({
-                map: ringTexture,
-                side: THREE.DoubleSide,
-                transparent: true,
-                opacity: 0.8
-            });
-            const rings = new THREE.Mesh(new THREE.RingGeometry(planetSize + 0.5, planetSize + 3.5, 64), ringMaterial);
-            rings.rotation.x = -Math.PI / 2;
-            planet.add(rings);
+            // Mechanische gear-achtige ringen voor Saturnus
+            const ringGeo = new THREE.TorusGeometry(planetSize + 2, 0.4, 4, 64);
+            const ringMat = new THREE.MeshStandardMaterial({ color: 0xcca677, metalness: 0.8, roughness: 0.3 });
+            const ring1 = new THREE.Mesh(ringGeo, ringMat);
+            ring1.rotation.x = -Math.PI / 2;
+            planet.add(ring1);
+            
+            const ringGeo2 = new THREE.TorusGeometry(planetSize + 3.5, 0.2, 4, 64);
+            const ring2 = new THREE.Mesh(ringGeo2, ringMat);
+            ring2.rotation.x = -Math.PI / 2;
+            planet.add(ring2);
         }
 
-        function createLabel(text, object, color) {
+        function createLabel(text, object, colorHex) {
             const div = document.createElement('div');
             div.className = 'label';
             div.textContent = text;
-            div.style.color = `#${color.toString(16)}`;
-            // AANGEPAST: Label toevoegen aan de canvas-container voor betere positionering
+            div.style.color = `#${colorHex.toString(16)}`;
             document.getElementById('canvas-container').appendChild(div);
             labels.push({ div, object });
         }
@@ -348,24 +407,20 @@
             const raycaster = new THREE.Raycaster();
             const mouse = new THREE.Vector2();
             renderer.domElement.addEventListener('click', e => {
-                // AANGEPAST: Robuustere manier om muispositie te berekenen t.o.v. het canvas
                 const rect = renderer.domElement.getBoundingClientRect();
                 mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
                 mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
 
                 raycaster.setFromCamera(mouse, camera);
                 const intersects = raycaster.intersectObjects(celestialObjects);
-                if (intersects.length > 0) showPlanetInfo(intersects[0].object);
+                if (intersects.length > 0) {
+                    showTelemetry(intersects[0].object);
+                }
             });
 
-            const modalOverlay = document.getElementById('info-modal-overlay');
-            document.getElementById('close-info-btn').addEventListener('click', () => {
-                modalOverlay.style.display = 'none';
-            });
-            modalOverlay.addEventListener('click', (e) => {
-                if (e.target === modalOverlay) {
-                    modalOverlay.style.display = 'none';
-                }
+            document.getElementById('close-telemetry-btn').addEventListener('click', () => {
+                document.getElementById('telemetryPanel').style.display = 'none';
+                selectedPlanet = null;
             });
 
             window.addEventListener('resize', () => {
@@ -375,47 +430,41 @@
             });
         }
 
-        function showPlanetInfo(planet) {
-            const modalOverlay = document.getElementById('info-modal-overlay');
-            const infoDiv = document.getElementById('planetDetails');
-            let html = 'Selecteer een object.';
-            let factsArray = [];
-
+        function showTelemetry(planet) {
+            selectedPlanet = planet;
+            const panel = document.getElementById('telemetryPanel');
+            const data = planet.userData;
+            
             if (planet === sun) {
-                factsArray = sunFacts;
-            } else if (planet.userData && planet.userData.facts) {
-                factsArray = planet.userData.facts;
-            }
-
-            if (factsArray.length > 0) {
-                const randomFact = factsArray[Math.floor(Math.random() * factsArray.length)];
-                const data = planet.userData;
-                const emoji = (planet === sun) ? '☀️' : (data.type === 'dwarf' ? '☄️' : '🪐');
-                const name = (planet === sun) ? 'Zon' : data.name;
-                const color = (planet === sun) ? 'FFD700' : data.color.toString(16);
-
-                html = `<h4 style="color:#${color}">${emoji} ${name}</h4><p>${randomFact}</p>`;
+                document.getElementById('telName').textContent = "ZON (AANDRIJFKERN)";
+                document.getElementById('telDesc').textContent = "De nucleaire verbrandingsoven die het mechanisme van energie voorziet.";
+                document.getElementById('telDist').textContent = "0 AE";
+                document.getElementById('telSpeed').textContent = "N/A";
+                document.getElementById('telRot').textContent = "27 DAGEN";
+                document.getElementById('telMass').textContent = "333.000x AARDE";
+            } else {
+                document.getElementById('telName').textContent = data.name.toUpperCase();
+                document.getElementById('telDesc').textContent = data.facts;
+                document.getElementById('telDist').textContent = data.distance + " MLN KM";
+                document.getElementById('telSpeed').textContent = (data.speed * 10).toFixed(1) + " KM/S";
+                document.getElementById('telRot').textContent = (1 / data.rotationSpeed).toFixed(1) + " CYCLI";
+                document.getElementById('telMass').textContent = (data.size * data.size).toFixed(1) + " M-UNIT";
             }
             
-            infoDiv.innerHTML = html;
-            modalOverlay.style.display = 'flex';
+            panel.style.display = 'block';
         }
 
         function updateLabels() {
             labels.forEach(labelData => {
                 const { div, object } = labelData;
                 const pos = new THREE.Vector3();
-                
-                // Zorg ervoor dat de wereldpositie van het object correct is
                 object.getWorldPosition(pos);
                 pos.project(camera);
 
-                // AANGEPAST: Bereken de positie relatief aan de canvasgrootte, niet de venstergrootte
                 const canvas = renderer.domElement;
                 const x = (pos.x * 0.5 + 0.5) * canvas.clientWidth;
                 const y = (pos.y * -0.5 + 0.5) * canvas.clientHeight;
                 
-                // Toon het label alleen als het voor de camera is
                 div.style.display = (pos.z < 1 && document.getElementById('showNames').checked) ? 'block' : 'none';
                 div.style.transform = `translate(-50%, -150%) translate(${x}px, ${y}px)`;
             });
@@ -426,7 +475,9 @@
 
             if (!isPaused) {
                 const speedFactor = 0.1 * animationSpeed;
-                sun.rotation.y += 0.001 * animationSpeed;
+                sun.rotation.y += 0.002 * animationSpeed;
+                sun.children[0].rotation.z -= 0.001 * animationSpeed; // Casing roteren
+                sun.children[0].rotation.x += 0.001 * animationSpeed;
 
                 celestialObjects.forEach(obj => {
                     if (!obj.userData.distance) return;
@@ -453,13 +504,21 @@
                 });
             }
 
+            // Dynamische telemetrie updates voor geselecteerde planeet
+            if (selectedPlanet && selectedPlanet !== sun && !isPaused && animationSpeed > 0) {
+                // Simuleer fluctuaties in telemetrie om het mechanisch te laten lijken
+                const speedSpan = document.getElementById('telSpeed');
+                const baseSpeed = selectedPlanet.userData.speed * 10;
+                const fluctuation = (Math.random() * 0.2 - 0.1);
+                speedSpan.textContent = (baseSpeed + fluctuation).toFixed(1) + " KM/S";
+            }
+
             controls.update();
             updateLabels();
             renderer.render(scene, camera);
         }
 
         window.addEventListener('load', init);
-        // ----- EINDE ZONNESTELSEL SCRIPT -----
     </script>
 </body>
 </html>
