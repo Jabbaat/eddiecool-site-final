@@ -14,6 +14,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="neo-theme.css">
 
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-SYG5T1Z0MV"></script>
@@ -52,66 +53,6 @@
         h4 {
             font-family: 'Space Grotesk', sans-serif;
             font-weight: 700;
-        }
-
-        /* ─── NAVIGATIE ───────────────────────────────────────────────── */
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem 2rem;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            background: rgba(18, 18, 18, 0.8);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .logo a {
-            display: block;
-            transition: transform 0.2s;
-        }
-
-        .logo a:hover {
-            transform: scale(1.05) rotate(-2deg);
-        }
-
-        .logo-img {
-            height: 50px;
-        }
-
-        .hamburger {
-            display: none;
-            background: none;
-            border: none;
-            font-size: 30px;
-            cursor: pointer;
-            color: var(--neo-accent, #a855f7);
-            padding: 0.25rem 0.5rem;
-            line-height: 1;
-        }
-
-        .menu {
-            display: flex;
-            list-style: none;
-            gap: 0.25rem;
-        }
-
-        .menu li a {
-            text-decoration: none;
-            color: #a0aec0;
-            font-weight: 600;
-            font-size: 0.95rem;
-            padding: 0.5rem 0.85rem;
-            border-radius: 8px;
-            transition: all 0.2s;
-        }
-
-        .menu li a:hover,
-        .menu li a[href="VibeCoding.html"] {
-            color: var(--neo-accent, #a855f7);
-            background: rgba(168, 85, 247, 0.12);
         }
 
         /* ─── THEME TOGGLE ───────────────────────────────────────── */
@@ -755,31 +696,6 @@
         }
 
         @media (max-width: 768px) {
-            .menu {
-                display: none;
-                flex-direction: column;
-                width: 100%;
-                margin-top: 10px;
-            }
-
-            .menu.active {
-                display: flex;
-                animation: fadeInMenu 0.3s ease forwards;
-            }
-
-            @keyframes fadeInMenu {
-                from { opacity: 0; transform: translateY(-8px); }
-                to   { opacity: 1; transform: translateY(0); }
-            }
-
-            nav {
-                flex-wrap: wrap;
-            }
-
-            .hamburger {
-                display: block;
-            }
-
             .hero h1 {
                 font-size: 3rem;
             }
@@ -800,16 +716,16 @@
                     <img src="images/logo.png" alt="Eddiecool Logo" class="logo-img">
                 </a>
             </div>
-            <button class="hamburger" id="hamburger-menu" aria-label="Menu openen">&#9776;</button>
-            <ul class="menu" id="main-menu">
+            <span class="hamburger" id="hamburger-menu">&#9776;</span>
+            <ul class="menu">
                 <li><a href="index.html">🏠 Home</a></li>
-                <li><a href="projects.html">🚀 Projecten</a></li>
+                <li><a href="projects.html">✨ Projecten</a></li>
                 <li><a href="ai_gallery.html">🖼️ Galerij</a></li>
                 <li><a href="muziek.html">🎵 Muziek</a></li>
-                <li><a href="VibeCoding.html">✨ Vibe Coding</a></li>
+                <li><a href="VibeCoding.html">⚡ Vibe Coding</a></li> 
                 <li><a href="ai_apps.html">📱 AI Apps</a></li>
-                <li><a href="about.html">👤 Over Mij</a></li>
-                <li><a href="contact.html">📫 Contact</a></li>
+                <li><a href="about.html">ℹ️ Over Mij</a></li>
+                <li><a href="contact.html">📧 Contact</a></li>
             </ul>
         </nav>
 
@@ -1177,19 +1093,9 @@
         });
 
         // Hamburger menu
-        const hamburgerBtn = document.getElementById('hamburger-menu');
-        const mainMenu = document.getElementById('main-menu');
-        if (hamburgerBtn && mainMenu) {
-            hamburgerBtn.addEventListener('click', function () {
-                mainMenu.classList.toggle('active');
-            });
-            // Menu sluiten bij klik op een link
-            mainMenu.querySelectorAll('a').forEach(function (link) {
-                link.addEventListener('click', function () {
-                    mainMenu.classList.remove('active');
-                });
-            });
-        }
+        document.getElementById("hamburger-menu").addEventListener("click", function() {
+            document.querySelector(".menu").classList.toggle("active");
+        });
 
         // Theme Toggle Logic
         const themeToggle = document.getElementById('themeToggle');
