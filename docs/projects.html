@@ -1,78 +1,242 @@
 <!DOCTYPE html>
 <html lang="nl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/jpeg" href="images/logoeddie.jpg">
     <link rel="apple-touch-icon" href="images/logoeddie.jpg">
     <meta name="theme-color" content="#1a1a1a">
-  <title>Projecten - Eddiecool</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="neo-theme.css">
-  <style>
-    body {
-      font-family: 'Inter', sans-serif;
-    }
+    <title>✨ Projecten — Eddiecool AI Video Studio</title>
+    <meta name="description" content="Bekijk de spraakmakende AI-videoprojecten van Eddiecool. Van hyperrealistische actiescènes tot surrealistische droomlandschappen, gegroepeerd in vier thematische categorieën.">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="neo-theme.css">
 
-    .single-project {
-      max-width: 700px;
-      margin: 50px auto;
-      position: relative;
-      border-radius: 16px;
-      overflow: hidden;
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
-      background-color: #1a1a1a; /* Donkere achtergrond voor de projectkaarten */
-      color: #fff; /* Witte tekst voor leesbaarheid */
-    }
-    
-    .project-title {
-        padding: 10px 20px 0px 20px;
-    }
-    
-    .project-description {
-        padding: 5px 20px 20px 20px;
-    }
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-SYG5T1Z0MV"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-SYG5T1Z0MV');
+    </script>
 
-    .video-poster {
-      display: block;
-      width: 100%;
-      cursor: pointer;
-    }
+    <style>
+        body { font-family: 'Inter', sans-serif; }
 
-    .custom-play-button {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      font-size: 60px;
-      color: white;
-      background-color: rgba(0, 0, 0, 0.6);
-      border: none;
-      border-radius: 50%;
-      padding: 20px 25px;
-      cursor: pointer;
-      z-index: 10;
-      animation: pulse 1.5s infinite;
-    }
+        /* ── PAGE HERO ── */
+        .projects-hero {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            padding: 70px 24px 50px;
+        }
+        .projects-hero::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 50%;
+            transform: translateX(-50%);
+            width: 40%; height: 1px;
+            background: linear-gradient(90deg, transparent, var(--neo-accent), transparent);
+        }
+        .hero-badge {
+            display: inline-block;
+            background: rgba(168, 85, 247, 0.12);
+            border: 1px solid rgba(168, 85, 247, 0.35);
+            color: var(--neo-accent);
+            font-size: 0.72rem; font-weight: 700;
+            letter-spacing: 0.22em; text-transform: uppercase;
+            padding: 6px 18px; border-radius: 100px;
+            margin-bottom: 28px; backdrop-filter: blur(8px);
+        }
+        .projects-hero h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: clamp(2.2rem, 5.5vw, 4rem);
+            font-weight: 900; line-height: 1.08;
+            letter-spacing: -1.5px; margin: 0 0 18px;
+            background: linear-gradient(135deg, #fff 0%, var(--neo-accent) 55%, var(--neo-accent2) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .projects-hero .hero-sub {
+            font-size: clamp(0.95rem, 1.8vw, 1.1rem);
+            color: var(--neo-text-muted);
+            max-width: 720px; margin: 0 auto;
+            line-height: 1.75;
+        }
 
-    video {
-      display: none;
-      width: 100%;
-    }
+        /* ── STATS ── */
+        .stats-row {
+            display: flex; justify-content: center;
+            gap: 20px; flex-wrap: wrap;
+            padding: 48px 24px 52px;
+            position: relative; z-index: 1;
+        }
+        .stat-pill {
+            display: flex; align-items: center; gap: 10px;
+            background: var(--neo-surface); border-radius: 100px;
+            padding: 12px 22px;
+            box-shadow: 5px 5px 10px var(--neo-shadow-dark), -5px -5px 10px var(--neo-shadow-light);
+            font-size: 0.875rem;
+        }
+        .stat-pill .stat-icon { font-size: 1.1rem; }
+        .stat-pill .stat-val  { font-weight: 700; color: #fff; }
+        .stat-pill .stat-lbl  { color: var(--neo-text-muted); font-size: 0.8rem; }
 
-    @keyframes pulse {
-      0% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
-      50% { transform: translate(-50%, -50%) scale(1.1); opacity: 0.7; }
-      100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
-    }
-  </style>
-    <meta name="description" content="Bekijk de spraakmakende AI-projecten van Eddiecool. Van surrealistische AI-films en animaties tot verrassende experimenten en Vibe Coding showcases.">
+        /* ── GALLERY WRAPPER ── */
+        .projects-gallery {
+            position: relative; z-index: 1;
+            max-width: 1200px; margin: 0 auto;
+            padding: 0 24px 80px;
+        }
+
+        /* ── CATEGORIE SECTIE ── */
+        .category-section { margin-bottom: 72px; }
+        .category-header  { margin-bottom: 32px; }
+        .category-header h2 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: clamp(1.4rem, 3vw, 2rem);
+            font-weight: 900; color: #ffffff;
+            margin: 0 0 8px; letter-spacing: -0.5px;
+        }
+        .category-header .cat-desc {
+            font-size: 0.88rem; color: var(--neo-text-muted);
+            line-height: 1.5; margin: 0 0 20px;
+        }
+        .section-divider {
+            display: flex; align-items: center; gap: 16px;
+            margin-bottom: 36px;
+        }
+        .section-divider::before,
+        .section-divider::after {
+            content: ''; flex: 1; height: 1px;
+            background: rgba(168, 85, 247, 0.18);
+        }
+        .section-divider span {
+            font-size: 0.68rem; font-weight: 700;
+            letter-spacing: 0.2em; text-transform: uppercase;
+            color: var(--neo-accent); white-space: nowrap;
+        }
+
+        /* ── PROJECT GRID ── */
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 28px;
+        }
+
+        /* ── PROJECT KAART ── */
+        .project-card {
+            background: var(--neo-surface);
+            border-radius: 20px;
+            box-shadow: 8px 8px 16px var(--neo-shadow-dark), -8px -8px 16px var(--neo-shadow-light);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            overflow: hidden;
+            transition: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
+            display: flex; flex-direction: column;
+            position: relative;
+        }
+        .project-card::before {
+            content: '';
+            position: absolute; inset: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.025) 0%, transparent 60%);
+            pointer-events: none; border-radius: inherit; z-index: 1;
+        }
+        .project-card:hover {
+            box-shadow: 12px 12px 24px var(--neo-shadow-dark), -12px -12px 24px var(--neo-shadow-light), 0 0 28px var(--neo-glow);
+            transform: translateY(-6px);
+            border-color: rgba(168, 85, 247, 0.2);
+        }
+
+        /* video wrapper — fixed 16:9 */
+        .card-video-wrap {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%;
+            overflow: hidden;
+            background: #0a0a0a;
+            flex-shrink: 0;
+        }
+        .card-video-wrap iframe,
+        .card-video-wrap video {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            border: none; display: block;
+        }
+        .card-video-wrap img.video-poster {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            object-fit: cover; cursor: pointer;
+        }
+        .card-video-wrap .custom-play-button {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 48px; color: white;
+            background: rgba(0,0,0,0.65);
+            border: none; border-radius: 50%;
+            width: 76px; height: 76px;
+            cursor: pointer; z-index: 10;
+            display: flex; align-items: center; justify-content: center;
+            transition: background 0.2s, transform 0.2s;
+            animation: pulse 1.8s infinite;
+        }
+        .card-video-wrap .custom-play-button:hover {
+            background: rgba(168,85,247,0.75);
+            transform: translate(-50%, -50%) scale(1.1);
+        }
+        @keyframes pulse {
+            0%,100% { box-shadow: 0 0 0 0 rgba(168,85,247,0.35); }
+            50%      { box-shadow: 0 0 0 14px rgba(168,85,247,0); }
+        }
+
+        /* card body */
+        .card-body {
+            padding: 20px 20px 0;
+            flex: 1; display: flex; flex-direction: column; gap: 8px;
+        }
+        .card-body h3 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.05rem; font-weight: 900;
+            color: #fff; margin: 0;
+            letter-spacing: -0.3px;
+        }
+        .card-body p {
+            font-size: 0.84rem; color: var(--neo-text-muted);
+            line-height: 1.55; margin: 0;
+        }
+
+        /* tool badge */
+        .tool-badge {
+            display: inline-flex; align-items: center; gap: 6px;
+            margin: 12px 20px 18px;
+            background: rgba(168, 85, 247, 0.08);
+            border: 1px solid rgba(168, 85, 247, 0.22);
+            border-radius: 100px;
+            padding: 5px 14px;
+            font-size: 0.7rem; font-weight: 700;
+            letter-spacing: 0.12em; text-transform: uppercase;
+            color: var(--neo-accent);
+            width: fit-content;
+        }
+        .tool-badge::before { content: '⚡'; font-size: 0.75rem; }
+
+        /* local video hidden by default */
+        .card-video-wrap video { display: none; }
+
+        @media (max-width: 700px) {
+            .project-grid { grid-template-columns: 1fr; }
+        }
+    </style>
 </head>
 
 <body>
 <div class="page-wrapper">
-        <nav>
+
+    <!-- NAV -->
+    <nav>
         <div class="logo">
             <a href="index.html">
                 <img src="images/logo.png" alt="Eddiecool Logo" class="logo-img">
@@ -81,424 +245,568 @@
         <span class="hamburger" id="hamburger-menu">&#9776;</span>
         <ul class="menu">
             <li><a href="index.html">🏠 Home</a></li>
-            <li><a href="projects.html">✨ Projecten</a></li>
+            <li><a href="projects.html" class="active">✨ Projecten</a></li>
             <li><a href="ai_gallery.html">🖼️ Galerij</a></li>
             <li><a href="muziek.html">🎵 Muziek</a></li>
-            <li><a href="VibeCoding.html">⚡ Vibe Coding</a></li> 
+            <li><a href="VibeCoding.html">⚡ Vibe Coding</a></li>
             <li><a href="ai_apps.html">📱 AI Apps</a></li>
             <li><a href="about.html">ℹ️ Over Mij</a></li>
             <li><a href="contact.html">📧 Contact</a></li>
         </ul>
-    </nav>  
+    </nav>
 
-  <h1 style="text-align:center; margin-top:40px;">✨ Mijn AI-speelplaats in actie! </h1>
+    <!-- HERO -->
+    <section class="projects-hero">
+        <div class="hero-badge">✦ AI Video Studio</div>
+        <h1>✨ Mijn AI-Speelplaats<br>in Actie</h1>
+        <p class="hero-sub">Bewegend beeld, gedreven door pure verbeelding. Hier vind je een verzameling videoprojecten waar AI de regiestoel heeft overgenomen. Van hyperrealistische actiesporten tot surrealistische droomlandschappen. Gebouwd met de nieuwste generatie videomaterialen zoals Google Veo, Runway en Kling AI. Geen traditionele camera's of logge render-farms — uitsluitend ruwe ideeën en strakke prompts, direct vertaald naar pixels.</p>
+    </section>
 
-<div class="single-project">
-  <iframe width="100%" height="394" 
-          src="https://www.youtube.com/embed/sh3dTfsv4Sg?si=0luoyzozwiSmj4RA" 
-          title="YouTube video player" 
-          frameborder="0" 
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-          referrerpolicy="strict-origin-when-cross-origin" 
-          allowfullscreen
-          style="display: block;">
-  </iframe>
-  <h2 class="project-title">Alice in Matrix land</h2>
-  <p class="project-description">
-    Down the digital AI rabbit hole.
-  </p>
-</div> 
-
-<div class="single-project">
-  <iframe width="100%" height="394" 
-          src="https://www.youtube.com/embed/ZhAsFPMLF8Y?si=9xfiLAJ65edkkq0d" 
-          title="Snowboard vibes" 
-          frameborder="0" 
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-          referrerpolicy="strict-origin-when-cross-origin" 
-          allowfullscreen
-          style="display: block;">
-  </iframe>
-  <h2 class="project-title">Snowboard vibes</h2>
-  <p class="project-description">
-    Snowboarding in een digitale wereld.
-  </p>
-</div>  
-
-<div class="single-project">
-  <iframe width="100%" height="394"
-          src="https://www.youtube.com/embed/4EcpX8u8f9o?si=SEIf2xA9pKHf5Y7x"
-          title="Titel van je video"
-          frameborder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          referrerpolicy="strict-origin-when-cross-origin"
-          allowfullscreen
-          style="display: block;">
-  </iframe>
-  <h2 class="project-title">QCO Kerstfilm 2025</h2>
-  <p class="project-description">
-    De nacht dat kerstmis gered werd.
-  </p>
-</div>  
-
-<div class="single-project">
-  <iframe width="100%" height="394"
-          src="https://www.youtube.com/embed/JSoUqVCTTxA?si=xwgiHhILbvmfZcEG"
-          title="Synthetic Genesis"
-          frameborder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          referrerpolicy="strict-origin-when-cross-origin"
-          allowfullscreen
-          style="display: block;">
-  </iframe>
-  <h2 class="project-title">Synthetic Genesis</h2>
-  <p class="project-description">
-    Het ontstaan van digitale materie. Waar nullen en enen evolueren tot iets dat verdacht veel op leven lijkt.
-  </p>
-</div>
-
-<div class="single-project">
-  <iframe width="100%" height="394"
-          src="https://www.youtube.com/embed/sn-cg2RZFAk?si=t7r5Or8OchQjIXl8"
-          title="Glitch in de Matrix"
-          frameborder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          referrerpolicy="strict-origin-when-cross-origin"
-          allowfullscreen
-          style="display: block;">
-  </iframe>
-  <h2 class="project-title">Glitch in de Matrix</h2>
-  <p class="project-description">
-    Een visuele hapering in de realiteit. Kijk hoe de wereld om ons heen vervormt wanneer de algoritmes het overnemen.
-  </p>
-</div>
-
-<div class="single-project">
-  <iframe width="100%" height="394"
-          src="https://www.youtube.com/embed/FpS_QGNMYvg?si=a6k30jyJ3Jh03AhM"
-          title="Retro Groove: Drie Mannen in Technicolor"
-          frameborder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          referrerpolicy="strict-origin-when-cross-origin"
-          allowfullscreen
-          style="display: block;">
-  </iframe>
-  <h2 class="project-title">Retro Groove</h2>
-  <p class="project-description">
-    AI Retro Groove Show 🎬🕺✨ 
-  </p>
-</div>
-
-<div class="single-project">
-  <iframe width="100%" height="394"
-          src="https://www.youtube.com/embed/jVR7uV3dQvw?si=uyaEte_3CLE6iCNi"
-          title="Halifax mission Operation Hendrik"
-          frameborder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-           referrerpolicy="strict-origin-when-cross-origin"
-          allowfullscreen
-          style="display: block;">
-  </iframe>
-  <h2 class="project-title">The Halifax</h2>
-  <p class="project-description">
-    Een waargebeurd verhaal nagespeeld door AI.
-  </p>
-</div>
-
-<div class="single-project">
-  <iframe width="100%" height="394"
-          src="https://www.youtube.com/embed/n9TO-XzJVqU?si=TogbsDydQuLGOFu0"
-          title="Extreme Sport"
-          frameborder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-           referrerpolicy="strict-origin-when-cross-origin"
-          allowfullscreen
-          style="display: block;">
-  </iframe>
-  <h2 class="project-title">Downhill Adventure</h2>
-  <p class="project-description">
-    Waar technologie en sport samenkomen in een adembenemende downhill-ervaring.
-  </p>
-</div>
-
-<div class="single-project">
-  <iframe width="100%" height="394"
-          src="https://www.youtube.com/embed/6jPBcRhPZhA?si=oBQn8HWzM8pYOhjg"
-          title="Nieuwe Video"
-          frameborder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-           referrerpolicy="strict-origin-when-cross-origin"
-          allowfullscreen
-          style="display: block;">
-  </iframe>
-  <h2 class="project-title">Surrealistische droom</h2>
-  <p class="project-description">
-    Visioenen op een Leeg Canvas.
-  </p>
-</div>
-
-<div class="single-project">
-  <iframe width="100%" height="394"
-          src="https://www.youtube.com/embed/622yyFNpSdE?si=93w8VIkohGDBflDP"
-          title="The Architecture of time"
-          frameborder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-           referrerpolicy="strict-origin-when-cross-origin"
-          allowfullscreen
-          style="display: block;">
-  </iframe>
-  <h2 class="project-title">The Architecture of time</h2>
-  <p class="project-description">
-    AI in een Tijdloze Dimensie
-  </p>
-</div>
-
-
-<div class="single-project">
-  <iframe width="100%" height="394"
-          src="https://www.youtube.com/embed/x248m-ugOyY?si=cQ7A15d5oCZRaYdv"
-          title="AI Ballet"
-          frameborder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-           referrerpolicy="strict-origin-when-cross-origin"
-          allowfullscreen
-          style="display: block;">
-  </iframe>
-  <h2 class="project-title">AI Dance</h2>
-  <p class="project-description">
-    Bewegingen van het Ongeziene: Een Ballet van Kunstmatige Ziel
-  </p>
-</div>
-
-<div class="single-project">
-  <iframe width="100%" height="394"
-          src="https://www.youtube.com/embed/rFMIB5VvkuU?si=FBrd28yCCOsf9y5k"
-          title="AI Slapstick Surrealisme"
-          frameborder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-           referrerpolicy="strict-origin-when-cross-origin"
-          allowfullscreen
-          style="display: block;">
-  </iframe>
-  <h2 class="project-title">AI Slapstick Surrealisme</h2>
-  <p class="project-description">
-    De Logica van het Onlogische – AI in Absurdistan.
-  </p>
-</div>
-
-
-<div class="single-project">
-  <iframe width="100%" height="394"
-          src="https://www.youtube.com/embed/eor9w8reS4s?si=6KJBIW3SPqxU2EAN"
-          title="AI Surrealisme: A Surreal Journey"
-          frameborder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-           referrerpolicy="strict-origin-when-cross-origin"
-          allowfullscreen
-          style="display: block;">
-  </iframe>
-  <h2 class="project-title">AI Surrealisme</h2>
-  <p class="project-description">
-    Een surrealistische reis door een door AI gegenereerde droomwereld. 
-  </p>
-</div>
-
-<div class="single-project">
-  <iframe width="100%" height="394"
-          src="https://www.youtube.com/embed/BoUBkd2S9j8?si=Nxml5fkyFRd_12yh"
-          title="De Ochtendshow AI Short"
-          frameborder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-           referrerpolicy="strict-origin-when-cross-origin"
-          allowfullscreen
-          style="display: block;">
-  </iframe>
-  <h2 class="project-title">De reiziger</h2>
-  <p class="project-description">
-    Een speelse AI-edit van een digitale pelgrimstocht door het ondenkbare.
-  </p>
-</div>
-
-  <div class="single-project">
-    <iframe width="100%" height="394" src="https://www.youtube.com/embed/q-GimIFeehA?si=dnSKINDVpyp7zf2L" 
-            title="Earth's Last Stand" 
-            frameborder="0" 
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-             referrerpolicy="strict-origin-when-cross-origin" 
-            allowfullscreen 
-            style="display: block;">
-    </iframe>
-    <h2 class="project-title">Earth's Last Stand</h2>
-    <p class="project-description">
-      Is dit het einde, of een nieuw begin? AI verkent een van de grootste 'wat als'-scenario's van de mensheid.
-    </p>
-  </div>
-
-  <div class="single-project">
-  <iframe width="100%" height="394"
-          src="https://www.youtube.com/embed/1AE2vdNydXg"
-          title="Een betere wereld?"
-          frameborder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-           referrerpolicy="strict-origin-when-cross-origin"
-          allowfullscreen
-          style="display: block;">
-  </iframe>
-  <h2 class="project-title">Disco dance</h2>
-  <p class="project-description">
-    Wanneer kunstmatige intelligentie z’n heupen leert gebruiken
-  </p>
-</div>
-
-<div class="single-project">
-  <iframe width="100%" height="394"
-          src="https://www.youtube.com/embed/eTW3ffeO7_M"
-          title="Het Tijdportaal der Fantasie"
-          frameborder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-           referrerpolicy="strict-origin-when-cross-origin"
-          allowfullscreen
-          style="display: block;">
-  </iframe>
-  <h2 class="project-title">Het Tijdportaal der Fantasie</h2>
-  <p class="project-description">
-    Het Digitale Sprookjesbos.
-  </p>
-</div>
-
-
-  <div class="single-project">
-    <img src="images/yoda-thumb.jpg" alt="Yoda Miniatuur" class="video-poster" id="thumbnail1">
-    <button class="custom-play-button" id="play1">►</button>
-    <video id="video1" controls>
-      <source src="video/yoda_video.mp4" type="video/mp4">
-      Je browser ondersteunt de videotag niet.
-    </video>
-    <h2 class="project-title">Yoda's Wijsheid</h2>
-    <p class="project-description">Een filosofisch moment met een AI-gegenereerde Grootvader van Yoda. "Do or do not, there is no try."</p>
-  </div>
-
-  <div class="single-project">
-    <img src="images/funnyhorror-tumb.jpg" alt="Grappige Horror Miniatuur" class="video-poster" id="thumbnail2">
-    <button class="custom-play-button" id="play2">►</button>
-    <video id="video2" controls>
-      <source src="video/funnyhorror_video.mp4" type="video/mp4">
-      Je browser ondersteunt de videotag niet.
-    </video>
-    <h2 class="project-title">Grappige Horror</h2>
-    <p class="project-description">Wat gebeurt er als horror en komedie samenkomen? Deze korte film combineert AI-gegenereerde beelden met bizarre voice-overs voor een griezelige lach.</p>
-  </div>
-
-  <div class="single-project">
-    <img src="images/fear-thumb.jpg" alt="Angst Miniatuur" class="video-poster" id="thumbnail3">
-    <button class="custom-play-button" id="play3">►</button>
-    <video id="video3" controls>
-      <source src="video/fear_video.mp4" type="video/mp4">
-      Je browser ondersteunt de videotag niet.
-    </video>
-    <h2 class="project-title">ANGST</h2>
-    <p class="project-description">Een intens AI-experiment dat onze diepste angsten verkent. Een mix van text-to-video beelden en een beklemmend audiodesign.</p>
-  </div>
-
-  <div class="single-project">
-    <img src="images/western-thumb.jpg" alt="Western Miniatuur" class="video-poster" id="thumbnail4">
-    <button class="custom-play-button" id="play4">►</button>
-    <video id="video4" controls>
-      <source src="video/western_video.mp4" type="video/mp4">
-      Je browser ondersteunt de videotag niet.
-    </video>
-    <h2 class="project-title">Western Confrontatie</h2>
-    <p class="project-description">Een digitale westerndroom vol stof en duels — waar het Oude Westen het nieuwe algoritme ontmoet.</p>
-  </div>
-
-<div class="single-project">
-  <iframe width="100%" height="394"
-          src="https://www.youtube.com/embed/9aCLiXAYFyQ"
-          title="Shorts: The Power of AI"
-          frameborder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-           referrerpolicy="strict-origin-when-cross-origin"
-          allowfullscreen
-          style="display: block;">
-  </iframe>
-  <h2 class="project-title">The Power of AI</h2>
-  <p class="project-description">
-    Een AI-visioen: waar beweging betekenisloos wordt.
-  </p>
-</div>
-
-<div class="single-project">
-  <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;">
-    <iframe
-      src="https://www.youtube.com/embed/hCoEm4-9SOs"
-      style="position:absolute;top:0;left:0;width:100%;height:100%;"
-      frameborder="0"
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-      allowfullscreen>
-    </iframe>
-  </div>
-
-  <h2 class="project-title">Modern Dance</h2>
-  <p class="project-description">
-    Elegante bewegingen, veranderende kleuren en morphende objecten.
-  </p>
-</div>
-
-<div class="single-project">
-  <iframe width="100%" height="394" src="https://www.youtube.com/embed/oy21lmOaQ1s?si=9vnEbT0gIMfLjvkt"
-          title="Forces of the galaxy"
-          frameborder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-           referrerpolicy="strict-origin-when-cross-origin"
-          allowfullscreen
-          style="display: block;">
-  </iframe>
-  <h2 class="project-title">Forces of the galaxy</h2>
-  <p class="project-description">
-    De duistere zijde roept... en AI luistert! Bereid je voor op epische krachten.
-  </p>
-</div>
-
-<div class="single-project">
-    <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;">
-      <iframe src="https://www.youtube.com/embed/J8y8P3CI3iE" 
-        style="position:absolute;top:0;left:0;width:100%;height:100%;" 
-        frameborder="0" allowfullscreen>
-      </iframe>
+    <!-- STATISTIEKEN -->
+    <div class="stats-row">
+        <div class="stat-pill">
+            <span class="stat-icon">🎬</span>
+            <span class="stat-val">22</span>
+            <span class="stat-lbl">Projecten</span>
+        </div>
+        <div class="stat-pill">
+            <span class="stat-icon">🤖</span>
+            <span class="stat-val">100%</span>
+            <span class="stat-lbl">AI Gegenereerd</span>
+        </div>
+        <div class="stat-pill">
+            <span class="stat-icon">📂</span>
+            <span class="stat-val">4</span>
+            <span class="stat-lbl">Categorieën</span>
+        </div>
+        <div class="stat-pill">
+            <span class="stat-icon">🛠️</span>
+            <span class="stat-val">Veo · Runway · Kling</span>
+            <span class="stat-lbl">Tools</span>
+        </div>
     </div>
-    <h2 class="project-title">Morph Faces</h2>
-    <p class="project-description">
-        Het digitaal samensmelten van gezichten.
-    </p>
-</div>
 
-  <script>
-    function setupVideo(thumbnailId, playBtnId, videoId) {
-      const thumbnail = document.getElementById(thumbnailId);
-      const playBtn = document.getElementById(playBtnId);
-      const video = document.getElementById(videoId);
+    <!-- GALERIJ -->
+    <main class="projects-gallery">
 
-      if(thumbnail && playBtn && video) {
-        playBtn.addEventListener("click", () => {
-          thumbnail.style.display = "none";
-          playBtn.style.display = "none";
-          video.style.display = "block";
-          video.play();
-        });
-      }
-    }
 
-    setupVideo("thumbnail1", "play1", "video1");
-    setupVideo("thumbnail2", "play2", "video2");
-    setupVideo("thumbnail3", "play3", "video3");
-    setupVideo("thumbnail4", "play4", "video4");
+        <!-- ════════════════════════════════════════════ -->
+        <!-- CATEGORIE 1: CINEMATIC & HYPER-REALISM       -->
+        <!-- ════════════════════════════════════════════ -->
+        <div class="category-section">
+            <div class="category-header">
+                <div class="section-divider"><span>🎥 Categorie I</span></div>
+                <h2>Cinematic &amp; Hyper-Realism</h2>
+                <p class="cat-desc">AI als cameraman, regisseur én VFX-studio in één. Hyperrealistische scènes, meeslepende actie en filmische verhalen — zonder één frame met een echte camera opgenomen.</p>
+            </div>
+            <div class="project-grid">
 
-    document.getElementById("hamburger-menu").addEventListener("click", function () {
-      document.querySelector(".menu").classList.toggle("active");
-    });
-  </script>
+                <!-- Snowboard vibes -->
+                <div class="project-card">
+                    <div class="card-video-wrap">
+                        <iframe src="https://www.youtube.com/embed/ZhAsFPMLF8Y?si=9xfiLAJ65edkkq0d"
+                            title="Snowboard vibes"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerpolicy="strict-origin-when-cross-origin"
+                            allowfullscreen></iframe>
+                    </div>
+                    <div class="card-body">
+                        <h3>Snowboard Vibes</h3>
+                        <p>Snowboarding in een digitale wereld — puur adrenaline, gegenereerd door AI.</p>
+                    </div>
+                    <span class="tool-badge">AI Video Generator</span>
+                </div>
+
+                <!-- QCO Kerstfilm 2025 -->
+                <div class="project-card">
+                    <div class="card-video-wrap">
+                        <iframe src="https://www.youtube.com/embed/4EcpX8u8f9o?si=SEIf2xA9pKHf5Y7x"
+                            title="QCO Kerstfilm 2025"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerpolicy="strict-origin-when-cross-origin"
+                            allowfullscreen></iframe>
+                    </div>
+                    <div class="card-body">
+                        <h3>QCO Kerstfilm 2025</h3>
+                        <p>De nacht dat kerstmis gered werd — een cinematisch AI-verhaal met een warme kerststemming.</p>
+                    </div>
+                    <span class="tool-badge">AI Video Generator</span>
+                </div>
+
+                <!-- Downhill Adventure -->
+                <div class="project-card">
+                    <div class="card-video-wrap">
+                        <iframe src="https://www.youtube.com/embed/n9TO-XzJVqU?si=TogbsDydQuLGOFu0"
+                            title="Downhill Adventure"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerpolicy="strict-origin-when-cross-origin"
+                            allowfullscreen></iframe>
+                    </div>
+                    <div class="card-body">
+                        <h3>Downhill Adventure</h3>
+                        <p>Waar technologie en sport samenkomen in een adembenemende downhill-ervaring.</p>
+                    </div>
+                    <span class="tool-badge">AI Video Generator</span>
+                </div>
+
+                <!-- The Halifax -->
+                <div class="project-card">
+                    <div class="card-video-wrap">
+                        <iframe src="https://www.youtube.com/embed/jVR7uV3dQvw?si=uyaEte_3CLE6iCNi"
+                            title="The Halifax"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerpolicy="strict-origin-when-cross-origin"
+                            allowfullscreen></iframe>
+                    </div>
+                    <div class="card-body">
+                        <h3>The Halifax</h3>
+                        <p>Een waargebeurd verhaal nagespeeld door AI — missie Operatie Hendrik tot leven gewekt.</p>
+                    </div>
+                    <span class="tool-badge">AI Video Generator</span>
+                </div>
+
+                <!-- Earth's Last Stand -->
+                <div class="project-card">
+                    <div class="card-video-wrap">
+                        <iframe src="https://www.youtube.com/embed/q-GimIFeehA?si=dnSKINDVpyp7zf2L"
+                            title="Earth's Last Stand"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerpolicy="strict-origin-when-cross-origin"
+                            allowfullscreen></iframe>
+                    </div>
+                    <div class="card-body">
+                        <h3>Earth's Last Stand</h3>
+                        <p>Is dit het einde, of een nieuw begin? AI verkent een van de grootste 'wat als'-scenario's van de mensheid.</p>
+                    </div>
+                    <span class="tool-badge">AI Video Generator</span>
+                </div>
+
+                <!-- The Power of AI -->
+                <div class="project-card">
+                    <div class="card-video-wrap">
+                        <iframe src="https://www.youtube.com/embed/9aCLiXAYFyQ"
+                            title="The Power of AI"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerpolicy="strict-origin-when-cross-origin"
+                            allowfullscreen></iframe>
+                    </div>
+                    <div class="card-body">
+                        <h3>The Power of AI</h3>
+                        <p>Een AI-visioen: waar beweging de grenzen van het realisme doorbreekt.</p>
+                    </div>
+                    <span class="tool-badge">AI Video Generator</span>
+                </div>
+
+            </div>
+        </div><!-- /categorie 1 -->
+
+
+        <!-- ════════════════════════════════════════════ -->
+        <!-- CATEGORIE 2: SURREAL & ABSTRACT              -->
+        <!-- ════════════════════════════════════════════ -->
+        <div class="category-section">
+            <div class="category-header">
+                <div class="section-divider"><span>🌀 Categorie II</span></div>
+                <h2>Surreal &amp; Abstract</h2>
+                <p class="cat-desc">Waar logica ophoudt te bestaan. Droomlandschappen, digitale hallucinaties en visuele experimenten die de grens tussen realiteit en fantasie volledig uitwissen.</p>
+            </div>
+            <div class="project-grid">
+
+                <!-- Alice in Matrix land -->
+                <div class="project-card">
+                    <div class="card-video-wrap">
+                        <iframe src="https://www.youtube.com/embed/sh3dTfsv4Sg?si=0luoyzozwiSmj4RA"
+                            title="Alice in Matrix land"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerpolicy="strict-origin-when-cross-origin"
+                            allowfullscreen></iframe>
+                    </div>
+                    <div class="card-body">
+                        <h3>Alice in Matrix Land</h3>
+                        <p>Down the digital AI rabbit hole — een surrealistisch avontuur door de digitale wonderwereld.</p>
+                    </div>
+                    <span class="tool-badge">AI Video Generator</span>
+                </div>
+
+                <!-- Synthetic Genesis -->
+                <div class="project-card">
+                    <div class="card-video-wrap">
+                        <iframe src="https://www.youtube.com/embed/JSoUqVCTTxA?si=xwgiHhILbvmfZcEG"
+                            title="Synthetic Genesis"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerpolicy="strict-origin-when-cross-origin"
+                            allowfullscreen></iframe>
+                    </div>
+                    <div class="card-body">
+                        <h3>Synthetic Genesis</h3>
+                        <p>Het ontstaan van digitale materie — waar nullen en enen evolueren tot iets dat verdacht veel op leven lijkt.</p>
+                    </div>
+                    <span class="tool-badge">AI Video Generator</span>
+                </div>
+
+                <!-- Glitch in de Matrix -->
+                <div class="project-card">
+                    <div class="card-video-wrap">
+                        <iframe src="https://www.youtube.com/embed/sn-cg2RZFAk?si=t7r5Or8OchQjIXl8"
+                            title="Glitch in de Matrix"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerpolicy="strict-origin-when-cross-origin"
+                            allowfullscreen></iframe>
+                    </div>
+                    <div class="card-body">
+                        <h3>Glitch in de Matrix</h3>
+                        <p>Een visuele hapering in de realiteit — kijk hoe de wereld vervormt wanneer de algoritmes het overnemen.</p>
+                    </div>
+                    <span class="tool-badge">AI Video Generator</span>
+                </div>
+
+                <!-- Surrealistische droom -->
+                <div class="project-card">
+                    <div class="card-video-wrap">
+                        <iframe src="https://www.youtube.com/embed/6jPBcRhPZhA?si=oBQn8HWzM8pYOhjg"
+                            title="Surrealistische droom"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerpolicy="strict-origin-when-cross-origin"
+                            allowfullscreen></iframe>
+                    </div>
+                    <div class="card-body">
+                        <h3>Surrealistische Droom</h3>
+                        <p>Visioenen op een leeg canvas — waar de verbeelding geen grenzen kent.</p>
+                    </div>
+                    <span class="tool-badge">AI Video Generator</span>
+                </div>
+
+                <!-- The Architecture of Time -->
+                <div class="project-card">
+                    <div class="card-video-wrap">
+                        <iframe src="https://www.youtube.com/embed/622yyFNpSdE?si=93w8VIkohGDBflDP"
+                            title="The Architecture of Time"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerpolicy="strict-origin-when-cross-origin"
+                            allowfullscreen></iframe>
+                    </div>
+                    <div class="card-body">
+                        <h3>The Architecture of Time</h3>
+                        <p>AI in een tijdloze dimensie — structuren die het concept van tijd zelf hertekenen.</p>
+                    </div>
+                    <span class="tool-badge">AI Video Generator</span>
+                </div>
+
+                <!-- AI Dance -->
+                <div class="project-card">
+                    <div class="card-video-wrap">
+                        <iframe src="https://www.youtube.com/embed/x248m-ugOyY?si=cQ7A15d5oCZRaYdv"
+                            title="AI Dance"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerpolicy="strict-origin-when-cross-origin"
+                            allowfullscreen></iframe>
+                    </div>
+                    <div class="card-body">
+                        <h3>AI Dance</h3>
+                        <p>Bewegingen van het ongeziene — een ballet van kunstmatige ziel.</p>
+                    </div>
+                    <span class="tool-badge">AI Video Generator</span>
+                </div>
+
+                <!-- AI Slapstick Surrealisme -->
+                <div class="project-card">
+                    <div class="card-video-wrap">
+                        <iframe src="https://www.youtube.com/embed/rFMIB5VvkuU?si=FBrd28yCCOsf9y5k"
+                            title="AI Slapstick Surrealisme"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerpolicy="strict-origin-when-cross-origin"
+                            allowfullscreen></iframe>
+                    </div>
+                    <div class="card-body">
+                        <h3>AI Slapstick Surrealisme</h3>
+                        <p>De logica van het onlogische — AI in Absurdistan waar niets klopt maar alles werkt.</p>
+                    </div>
+                    <span class="tool-badge">AI Video Generator</span>
+                </div>
+
+                <!-- AI Surrealisme -->
+                <div class="project-card">
+                    <div class="card-video-wrap">
+                        <iframe src="https://www.youtube.com/embed/eor9w8reS4s?si=6KJBIW3SPqxU2EAN"
+                            title="AI Surrealisme"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerpolicy="strict-origin-when-cross-origin"
+                            allowfullscreen></iframe>
+                    </div>
+                    <div class="card-body">
+                        <h3>AI Surrealisme</h3>
+                        <p>Een surrealistische reis door een AI-gegenereerde droomwereld — zonder kaart, zonder terugweg.</p>
+                    </div>
+                    <span class="tool-badge">AI Video Generator</span>
+                </div>
+
+                <!-- Het Tijdportaal der Fantasie -->
+                <div class="project-card">
+                    <div class="card-video-wrap">
+                        <iframe src="https://www.youtube.com/embed/eTW3ffeO7_M"
+                            title="Het Tijdportaal der Fantasie"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerpolicy="strict-origin-when-cross-origin"
+                            allowfullscreen></iframe>
+                    </div>
+                    <div class="card-body">
+                        <h3>Het Tijdportaal der Fantasie</h3>
+                        <p>Het digitale sprookjesbos — een tijdportaal dat je meeneemt naar een wereld buiten de werkelijkheid.</p>
+                    </div>
+                    <span class="tool-badge">AI Video Generator</span>
+                </div>
+
+                <!-- De Reiziger -->
+                <div class="project-card">
+                    <div class="card-video-wrap">
+                        <iframe src="https://www.youtube.com/embed/BoUBkd2S9j8?si=Nxml5fkyFRd_12yh"
+                            title="De reiziger"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerpolicy="strict-origin-when-cross-origin"
+                            allowfullscreen></iframe>
+                    </div>
+                    <div class="card-body">
+                        <h3>De Reiziger</h3>
+                        <p>Een speelse AI-edit van een digitale pelgrimstocht door het ondenkbare.</p>
+                    </div>
+                    <span class="tool-badge">AI Video Generator</span>
+                </div>
+
+                <!-- Morph Faces -->
+                <div class="project-card">
+                    <div class="card-video-wrap">
+                        <iframe src="https://www.youtube.com/embed/J8y8P3CI3iE"
+                            title="Morph Faces"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen></iframe>
+                    </div>
+                    <div class="card-body">
+                        <h3>Morph Faces</h3>
+                        <p>Het digitaal samensmelten van gezichten — identiteit als vloeibare data.</p>
+                    </div>
+                    <span class="tool-badge">AI Video Generator</span>
+                </div>
+
+            </div>
+        </div><!-- /categorie 2 -->
+
+
+        <!-- ════════════════════════════════════════════ -->
+        <!-- CATEGORIE 3: AI MUSIC VIDEOS                 -->
+        <!-- ════════════════════════════════════════════ -->
+        <div class="category-section">
+            <div class="category-header">
+                <div class="section-divider"><span>🎵 Categorie III</span></div>
+                <h2>AI Music Videos</h2>
+                <p class="cat-desc">Ritme en beeld in perfecte symbiose. Videoclips waarbij AI zowel de muzikale sfeer als de visuele choreografie bepaalt — van disco tot ruimteoperatica.</p>
+            </div>
+            <div class="project-grid">
+
+                <!-- Retro Groove -->
+                <div class="project-card">
+                    <div class="card-video-wrap">
+                        <iframe src="https://www.youtube.com/embed/FpS_QGNMYvg?si=a6k30jyJ3Jh03AhM"
+                            title="Retro Groove"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerpolicy="strict-origin-when-cross-origin"
+                            allowfullscreen></iframe>
+                    </div>
+                    <div class="card-body">
+                        <h3>Retro Groove</h3>
+                        <p>AI Retro Groove Show 🎬🕺✨ — drie mannen in Technicolor die het dansfloor overnemen.</p>
+                    </div>
+                    <span class="tool-badge">AI Video Generator</span>
+                </div>
+
+                <!-- Disco Dance -->
+                <div class="project-card">
+                    <div class="card-video-wrap">
+                        <iframe src="https://www.youtube.com/embed/1AE2vdNydXg"
+                            title="Disco Dance"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerpolicy="strict-origin-when-cross-origin"
+                            allowfullscreen></iframe>
+                    </div>
+                    <div class="card-body">
+                        <h3>Disco Dance</h3>
+                        <p>Wanneer kunstmatige intelligentie z'n heupen leert gebruiken — het dansfloor is nooit meer hetzelfde.</p>
+                    </div>
+                    <span class="tool-badge">AI Video Generator</span>
+                </div>
+
+                <!-- Modern Dance -->
+                <div class="project-card">
+                    <div class="card-video-wrap">
+                        <iframe src="https://www.youtube.com/embed/hCoEm4-9SOs"
+                            title="Modern Dance"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen></iframe>
+                    </div>
+                    <div class="card-body">
+                        <h3>Modern Dance</h3>
+                        <p>Elegante bewegingen, veranderende kleuren en morphende objecten in een vloeiende visual experience.</p>
+                    </div>
+                    <span class="tool-badge">AI Video Generator</span>
+                </div>
+
+                <!-- Forces of the Galaxy -->
+                <div class="project-card">
+                    <div class="card-video-wrap">
+                        <iframe src="https://www.youtube.com/embed/oy21lmOaQ1s?si=9vnEbT0gIMfLjvkt"
+                            title="Forces of the Galaxy"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerpolicy="strict-origin-when-cross-origin"
+                            allowfullscreen></iframe>
+                    </div>
+                    <div class="card-body">
+                        <h3>Forces of the Galaxy</h3>
+                        <p>De duistere zijde roept... en AI luistert! Bereid je voor op epische kosmische krachten.</p>
+                    </div>
+                    <span class="tool-badge">AI Video Generator</span>
+                </div>
+
+            </div>
+        </div><!-- /categorie 3 -->
+
+
+        <!-- ════════════════════════════════════════════ -->
+        <!-- CATEGORIE 4: VIBE CODING & UI EXPERIMENTS    -->
+        <!-- ════════════════════════════════════════════ -->
+        <div class="category-section">
+            <div class="category-header">
+                <div class="section-divider"><span>⚡ Categorie IV</span></div>
+                <h2>Vibe Coding &amp; UI Experiments</h2>
+                <p class="cat-desc">Korte, gecontroleerde AI-experimenten waarbij sfeer, script en beeld in één workflow worden gegenereerd. Vibe Coding in zijn puurste vorm — van prompt naar productie.</p>
+            </div>
+            <div class="project-grid">
+
+                <!-- Yoda's Wijsheid -->
+                <div class="project-card">
+                    <div class="card-video-wrap" style="position:relative; overflow:hidden; background:#0a0a0a;">
+                        <img src="images/yoda-thumb.jpg" alt="Yoda Miniatuur" class="video-poster" id="thumbnail1">
+                        <button class="custom-play-button" id="play1">▶</button>
+                        <video id="video1" controls>
+                            <source src="video/yoda_video.mp4" type="video/mp4">
+                            Je browser ondersteunt de videotag niet.
+                        </video>
+                    </div>
+                    <div class="card-body">
+                        <h3>Yoda's Wijsheid</h3>
+                        <p>Een filosofisch moment met een AI-gegenereerde Grootvader van Yoda. "Do or do not, there is no try."</p>
+                    </div>
+                    <span class="tool-badge">AI Video Generator</span>
+                </div>
+
+                <!-- Grappige Horror -->
+                <div class="project-card">
+                    <div class="card-video-wrap" style="position:relative; overflow:hidden; background:#0a0a0a;">
+                        <img src="images/funnyhorror-tumb.jpg" alt="Grappige Horror Miniatuur" class="video-poster" id="thumbnail2">
+                        <button class="custom-play-button" id="play2">▶</button>
+                        <video id="video2" controls>
+                            <source src="video/funnyhorror_video.mp4" type="video/mp4">
+                            Je browser ondersteunt de videotag niet.
+                        </video>
+                    </div>
+                    <div class="card-body">
+                        <h3>Grappige Horror</h3>
+                        <p>Wat gebeurt er als horror en komedie samenkomen? AI-beelden met bizarre voice-overs voor een griezelige lach.</p>
+                    </div>
+                    <span class="tool-badge">AI Video Generator</span>
+                </div>
+
+                <!-- ANGST -->
+                <div class="project-card">
+                    <div class="card-video-wrap" style="position:relative; overflow:hidden; background:#0a0a0a;">
+                        <img src="images/fear-thumb.jpg" alt="Angst Miniatuur" class="video-poster" id="thumbnail3">
+                        <button class="custom-play-button" id="play3">▶</button>
+                        <video id="video3" controls>
+                            <source src="video/fear_video.mp4" type="video/mp4">
+                            Je browser ondersteunt de videotag niet.
+                        </video>
+                    </div>
+                    <div class="card-body">
+                        <h3>ANGST</h3>
+                        <p>Een intens AI-experiment dat onze diepste angsten verkent — text-to-video beelden met beklemmend audiodesign.</p>
+                    </div>
+                    <span class="tool-badge">AI Video Generator</span>
+                </div>
+
+                <!-- Western Confrontatie -->
+                <div class="project-card">
+                    <div class="card-video-wrap" style="position:relative; overflow:hidden; background:#0a0a0a;">
+                        <img src="images/western-thumb.jpg" alt="Western Miniatuur" class="video-poster" id="thumbnail4">
+                        <button class="custom-play-button" id="play4">▶</button>
+                        <video id="video4" controls>
+                            <source src="video/western_video.mp4" type="video/mp4">
+                            Je browser ondersteunt de videotag niet.
+                        </video>
+                    </div>
+                    <div class="card-body">
+                        <h3>Western Confrontatie</h3>
+                        <p>Een digitale westerndroom vol stof en duels — waar het Oude Westen het nieuwe algoritme ontmoet.</p>
+                    </div>
+                    <span class="tool-badge">AI Video Generator</span>
+                </div>
+
+            </div>
+        </div><!-- /categorie 4 -->
+
+    </main>
+
 </div><!-- /page-wrapper -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="webgl-bg.js"></script>
-  </body>
+
+<!-- SCRIPTS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="webgl-bg.js"></script>
+
+<script>
+    /* Hamburger */
+    document.getElementById('hamburger-menu').addEventListener('click', function () {
+        document.querySelector('.menu').classList.toggle('active');
+    });
+
+    /* Local video play buttons */
+    function setupVideo(thumbnailId, playBtnId, videoId) {
+        const thumbnail = document.getElementById(thumbnailId);
+        const playBtn   = document.getElementById(playBtnId);
+        const video     = document.getElementById(videoId);
+        if (thumbnail && playBtn && video) {
+            function startPlay() {
+                thumbnail.style.display = 'none';
+                playBtn.style.display   = 'none';
+                video.style.display     = 'block';
+                video.play();
+            }
+            playBtn.addEventListener('click', startPlay);
+            thumbnail.addEventListener('click', startPlay);
+        }
+    }
+    setupVideo('thumbnail1', 'play1', 'video1');
+    setupVideo('thumbnail2', 'play2', 'video2');
+    setupVideo('thumbnail3', 'play3', 'video3');
+    setupVideo('thumbnail4', 'play4', 'video4');
+</script>
+
+</body>
 </html>
