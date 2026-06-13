@@ -7,7 +7,7 @@
     <link rel="apple-touch-icon" href="images/logoeddie.jpg">
     <meta name="theme-color" content="#1a1a1a">
     <title>🎵 Muziek — Eddiecool AI Music Studio</title>
-    <meta name="description" content="Luister naar AI-gegenereerde muziek van Eddiecool. 27 unieke tracks gecreëerd met kunstmatige intelligentie.">
+    <meta name="description" content="Luister naar 44 AI-gegenereerde tracks van Eddiecool. Vijf sonische werelden — geen snaren, geen toetsen, uitsluitend pure verbeelding vertaald naar data.">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="neo-theme.css">
@@ -77,7 +77,7 @@
         .music-hero .hero-sub {
             font-size: clamp(0.95rem, 1.8vw, 1.15rem);
             color: var(--neo-text-muted);
-            max-width: 500px;
+            max-width: 680px;
             margin: 0 auto 40px;
             line-height: 1.7;
         }
@@ -155,6 +155,31 @@
             padding: 0 24px 80px;
         }
 
+        /* WERELD SECTIE */
+        .world-section {
+            margin-bottom: 64px;
+        }
+
+        .world-header {
+            margin-bottom: 32px;
+        }
+
+        .world-header h2 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: clamp(1.4rem, 3vw, 2rem);
+            font-weight: 900;
+            color: #ffffff;
+            margin: 0 0 8px;
+            letter-spacing: -0.5px;
+        }
+
+        .world-header .world-desc {
+            font-size: 0.88rem;
+            color: var(--neo-text-muted);
+            line-height: 1.5;
+            margin: 0 0 20px;
+        }
+
         .section-divider {
             display: flex;
             align-items: center;
@@ -177,6 +202,13 @@
             text-transform: uppercase;
             color: var(--neo-accent);
             white-space: nowrap;
+        }
+
+        /* MUSIC GRID */
+        .music-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
         }
 
         /* TRACK KAART */
@@ -356,7 +388,7 @@
     <div class="page-wrapper">
 
         <!-- NAV -->
-            <nav>
+        <nav>
         <div class="logo">
             <a href="index.html">
                 <img src="images/logo.png" alt="Eddiecool Logo" class="logo-img">
@@ -378,8 +410,8 @@
         <!-- HERO -->
         <section class="music-hero">
             <div class="hero-badge">✦ AI Generated Music Studio</div>
-            <h1>40 Tracks.<br>Nul Instrumenten.</h1>
-            <p class="hero-sub">Muziek geboren uit algoritmes — iedere noot gegenereerd door kunstmatige intelligentie.</p>
+            <h1>44 Tracks.<br>Nul Instrumenten.</h1>
+            <p class="hero-sub">Geen snaren, geen toetsen, uitsluitend pure verbeelding vertaald naar data. In deze sonische werkplaats smelt kunstmatige intelligentie naadloos samen met menselijke intuïtie. Elke noot en elke beat is geboren uit geavanceerde algoritmes, gestuurd door het ritme van Vibe Coding. Ontdek een digitaal gecomponeerd audiolandschap, opgedeeld in vijf unieke werelden.</p>
             <div class="sound-wave" aria-hidden="true">
                 <span></span><span></span><span></span><span></span><span></span>
                 <span></span><span></span><span></span><span></span><span></span>
@@ -391,13 +423,18 @@
         <div class="stats-row">
             <div class="stat-pill">
                 <span class="stat-icon">🎵</span>
-                <span class="stat-val">40</span>
+                <span class="stat-val">44</span>
                 <span class="stat-lbl">Tracks</span>
             </div>
             <div class="stat-pill">
                 <span class="stat-icon">🤖</span>
                 <span class="stat-val">100%</span>
                 <span class="stat-lbl">AI Gegenereerd</span>
+            </div>
+            <div class="stat-pill">
+                <span class="stat-icon">🌍</span>
+                <span class="stat-val">5</span>
+                <span class="stat-lbl">Sonische Werelden</span>
             </div>
             <div class="stat-pill">
                 <span class="stat-icon">🎛️</span>
@@ -408,977 +445,880 @@
 
         <!-- MUZIEK GALERIJ -->
         <main class="music-gallery">
-            <div class="section-divider"><span>Alle Tracks</span></div>
 
-            <div class="music-grid" id="music-grid">
+            <!-- ═══════════════════════════════════════ -->
+            <!-- WERELD 1: RITME SONGS                   -->
+            <!-- ═══════════════════════════════════════ -->
+            <div class="world-section">
+                <div class="world-header">
+                    <div class="section-divider"><span>⚙️ Wereld I</span></div>
+                    <h2>Ritme Songs</h2>
+                    <p class="world-desc">Mechanische precisie ontmoet pulserende beats. Tracks geboren uit de taal van algoritmes en kwaliteitscontrole — gestructureerd, energiek en in perfecte sync.</p>
+                </div>
+                <div class="music-grid">
 
-                <!-- Track 01 -->
-                <article class="track-card" data-track="1">
-                    <div class="card-glow"></div>
-                    <div class="track-header">
-                        <div class="track-meta">
-                            <span class="track-num">Track 01</span>
-                            <h2 class="track-title">Ayaya Loma 19</h2>
+                    <article class="track-card" data-track="1">
+                        <div class="card-glow"></div>
+                        <div class="track-header">
+                            <div class="track-meta">
+                                <span class="track-num">Track 01</span>
+                                <h2 class="track-title">50 Years Of Precision</h2>
+                            </div>
+                            <button class="play-btn" aria-label="Afspelen 50 Years Of Precision" data-id="track-01">
+                                <span class="play-icon">▶</span>
+                            </button>
                         </div>
-                        <button class="play-btn" aria-label="Afspelen Ayaya Loma 19" data-id="track-01">
-                            <span class="play-icon">▶</span>
-                        </button>
-                    </div>
-                    <div class="progress-track" data-id="track-01">
-                        <div class="progress-fill"></div>
-                    </div>
-                    <div class="time-row">
-                        <span class="time-current">0:00</span>
-                        <span class="time-total">–:––</span>
-                    </div>
-                    <audio class="track-audio" id="track-01" preload="metadata">
-                        <source src="assets/audio/Ayaya loma 19.mp3" type="audio/mpeg">
-                    </audio>
-                </article>
+                        <div class="progress-track" data-id="track-01"><div class="progress-fill"></div></div>
+                        <div class="time-row"><span class="time-current">0:00</span><span class="time-total">–:––</span></div>
+                        <audio class="track-audio" id="track-01" preload="metadata">
+                            <source src="assets/audio/50 years of precision.mp3" type="audio/mpeg">
+                        </audio>
+                    </article>
 
-                <!-- Track 02 -->
-                <article class="track-card" data-track="2">
-                    <div class="card-glow"></div>
-                    <div class="track-header">
-                        <div class="track-meta">
-                            <span class="track-num">Track 02</span>
-                            <h2 class="track-title">Beštro Ťaž 03</h2>
+                    <article class="track-card" data-track="2">
+                        <div class="card-glow"></div>
+                        <div class="track-header">
+                            <div class="track-meta">
+                                <span class="track-num">Track 02</span>
+                                <h2 class="track-title">Calibration Sensation</h2>
+                            </div>
+                            <button class="play-btn" aria-label="Afspelen Calibration Sensation" data-id="track-02">
+                                <span class="play-icon">▶</span>
+                            </button>
                         </div>
-                        <button class="play-btn" aria-label="Afspelen Beštro Ťaž 03" data-id="track-02">
-                            <span class="play-icon">▶</span>
-                        </button>
-                    </div>
-                    <div class="progress-track" data-id="track-02">
-                        <div class="progress-fill"></div>
-                    </div>
-                    <div class="time-row">
-                        <span class="time-current">0:00</span>
-                        <span class="time-total">–:––</span>
-                    </div>
-                    <audio class="track-audio" id="track-02" preload="metadata">
-                        <source src="assets/audio/Beštro ťaž 03.mp3" type="audio/mpeg">
-                    </audio>
-                </article>
+                        <div class="progress-track" data-id="track-02"><div class="progress-fill"></div></div>
+                        <div class="time-row"><span class="time-current">0:00</span><span class="time-total">–:––</span></div>
+                        <audio class="track-audio" id="track-02" preload="metadata">
+                            <source src="assets/audio/Calibration Sensation.mp3" type="audio/mpeg">
+                        </audio>
+                    </article>
 
-                <!-- Track 03 -->
-                <article class="track-card" data-track="3">
-                    <div class="card-glow"></div>
-                    <div class="track-header">
-                        <div class="track-meta">
-                            <span class="track-num">Track 03</span>
-                            <h2 class="track-title">Blooms 04</h2>
+                    <article class="track-card" data-track="3">
+                        <div class="card-glow"></div>
+                        <div class="track-header">
+                            <div class="track-meta">
+                                <span class="track-num">Track 03</span>
+                                <h2 class="track-title">Coins Jingle</h2>
+                            </div>
+                            <button class="play-btn" aria-label="Afspelen Coins Jingle" data-id="track-03">
+                                <span class="play-icon">▶</span>
+                            </button>
                         </div>
-                        <button class="play-btn" aria-label="Afspelen Blooms 04" data-id="track-03">
-                            <span class="play-icon">▶</span>
-                        </button>
-                    </div>
-                    <div class="progress-track" data-id="track-03">
-                        <div class="progress-fill"></div>
-                    </div>
-                    <div class="time-row">
-                        <span class="time-current">0:00</span>
-                        <span class="time-total">–:––</span>
-                    </div>
-                    <audio class="track-audio" id="track-03" preload="metadata">
-                        <source src="assets/audio/Blooms 04.mp3" type="audio/mpeg">
-                    </audio>
-                </article>
+                        <div class="progress-track" data-id="track-03"><div class="progress-fill"></div></div>
+                        <div class="time-row"><span class="time-current">0:00</span><span class="time-total">–:––</span></div>
+                        <audio class="track-audio" id="track-03" preload="metadata">
+                            <source src="assets/audio/Coins jingle 07.mp3" type="audio/mpeg">
+                        </audio>
+                    </article>
 
-                <!-- Track 04 -->
-                <article class="track-card" data-track="4">
-                    <div class="card-glow"></div>
-                    <div class="track-header">
-                        <div class="track-meta">
-                            <span class="track-num">Track 04</span>
-                            <h2 class="track-title">Blooms 09</h2>
+                    <article class="track-card" data-track="4">
+                        <div class="card-glow"></div>
+                        <div class="track-header">
+                            <div class="track-meta">
+                                <span class="track-num">Track 04</span>
+                                <h2 class="track-title">Groove Tonight</h2>
+                            </div>
+                            <button class="play-btn" aria-label="Afspelen Groove Tonight" data-id="track-04">
+                                <span class="play-icon">▶</span>
+                            </button>
                         </div>
-                        <button class="play-btn" aria-label="Afspelen Blooms 09" data-id="track-04">
-                            <span class="play-icon">▶</span>
-                        </button>
-                    </div>
-                    <div class="progress-track" data-id="track-04">
-                        <div class="progress-fill"></div>
-                    </div>
-                    <div class="time-row">
-                        <span class="time-current">0:00</span>
-                        <span class="time-total">–:––</span>
-                    </div>
-                    <audio class="track-audio" id="track-04" preload="metadata">
-                        <source src="assets/audio/Blooms 09.mp3" type="audio/mpeg">
-                    </audio>
-                </article>
+                        <div class="progress-track" data-id="track-04"><div class="progress-fill"></div></div>
+                        <div class="time-row"><span class="time-current">0:00</span><span class="time-total">–:––</span></div>
+                        <audio class="track-audio" id="track-04" preload="metadata">
+                            <source src="assets/audio/Groove Tonight.mp3" type="audio/mpeg">
+                        </audio>
+                    </article>
 
-                <!-- Track 05 -->
-                <article class="track-card" data-track="5">
-                    <div class="card-glow"></div>
-                    <div class="track-header">
-                        <div class="track-meta">
-                            <span class="track-num">Track 05</span>
-                            <h2 class="track-title">Cobh's Cold 18</h2>
+                    <article class="track-card" data-track="5">
+                        <div class="card-glow"></div>
+                        <div class="track-header">
+                            <div class="track-meta">
+                                <span class="track-num">Track 05</span>
+                                <h2 class="track-title">Lab Coat Legend</h2>
+                            </div>
+                            <button class="play-btn" aria-label="Afspelen Lab Coat Legend" data-id="track-05">
+                                <span class="play-icon">▶</span>
+                            </button>
                         </div>
-                        <button class="play-btn" aria-label="Afspelen Cobh's Cold 18" data-id="track-05">
-                            <span class="play-icon">▶</span>
-                        </button>
-                    </div>
-                    <div class="progress-track" data-id="track-05">
-                        <div class="progress-fill"></div>
-                    </div>
-                    <div class="time-row">
-                        <span class="time-current">0:00</span>
-                        <span class="time-total">–:––</span>
-                    </div>
-                    <audio class="track-audio" id="track-05" preload="metadata">
-                        <source src="assets/audio/Cobh's cold 18.mp3" type="audio/mpeg">
-                    </audio>
-                </article>
+                        <div class="progress-track" data-id="track-05"><div class="progress-fill"></div></div>
+                        <div class="time-row"><span class="time-current">0:00</span><span class="time-total">–:––</span></div>
+                        <audio class="track-audio" id="track-05" preload="metadata">
+                            <source src="assets/audio/Lab Coat Legend.mp3" type="audio/mpeg">
+                        </audio>
+                    </article>
 
-                <!-- Track 06 -->
-                <article class="track-card" data-track="6">
-                    <div class="card-glow"></div>
-                    <div class="track-header">
-                        <div class="track-meta">
-                            <span class="track-num">Track 06</span>
-                            <h2 class="track-title">Coins Jingle 07</h2>
+                    <article class="track-card" data-track="6">
+                        <div class="card-glow"></div>
+                        <div class="track-header">
+                            <div class="track-meta">
+                                <span class="track-num">Track 06</span>
+                                <h2 class="track-title">Precision Groove</h2>
+                            </div>
+                            <button class="play-btn" aria-label="Afspelen Precision Groove" data-id="track-06">
+                                <span class="play-icon">▶</span>
+                            </button>
                         </div>
-                        <button class="play-btn" aria-label="Afspelen Coins Jingle 07" data-id="track-06">
-                            <span class="play-icon">▶</span>
-                        </button>
-                    </div>
-                    <div class="progress-track" data-id="track-06">
-                        <div class="progress-fill"></div>
-                    </div>
-                    <div class="time-row">
-                        <span class="time-current">0:00</span>
-                        <span class="time-total">–:––</span>
-                    </div>
-                    <audio class="track-audio" id="track-06" preload="metadata">
-                        <source src="assets/audio/Coins jingle 07.mp3" type="audio/mpeg">
-                    </audio>
-                </article>
+                        <div class="progress-track" data-id="track-06"><div class="progress-fill"></div></div>
+                        <div class="time-row"><span class="time-current">0:00</span><span class="time-total">–:––</span></div>
+                        <audio class="track-audio" id="track-06" preload="metadata">
+                            <source src="assets/audio/Precision groove.mp3" type="audio/mpeg">
+                        </audio>
+                    </article>
 
-                <!-- Track 07 -->
-                <article class="track-card" data-track="7">
-                    <div class="card-glow"></div>
-                    <div class="track-header">
-                        <div class="track-meta">
-                            <span class="track-num">Track 07</span>
-                            <h2 class="track-title">Donau Se Geur 11</h2>
+                    <article class="track-card" data-track="7">
+                        <div class="card-glow"></div>
+                        <div class="track-header">
+                            <div class="track-meta">
+                                <span class="track-num">Track 07</span>
+                                <h2 class="track-title">QC Blues</h2>
+                            </div>
+                            <button class="play-btn" aria-label="Afspelen QC Blues" data-id="track-07">
+                                <span class="play-icon">▶</span>
+                            </button>
                         </div>
-                        <button class="play-btn" aria-label="Afspelen Donau Se Geur 11" data-id="track-07">
-                            <span class="play-icon">▶</span>
-                        </button>
-                    </div>
-                    <div class="progress-track" data-id="track-07">
-                        <div class="progress-fill"></div>
-                    </div>
-                    <div class="time-row">
-                        <span class="time-current">0:00</span>
-                        <span class="time-total">–:––</span>
-                    </div>
-                    <audio class="track-audio" id="track-07" preload="metadata">
-                        <source src="assets/audio/Donau se geur 11.mp3" type="audio/mpeg">
-                    </audio>
-                </article>
+                        <div class="progress-track" data-id="track-07"><div class="progress-fill"></div></div>
+                        <div class="time-row"><span class="time-current">0:00</span><span class="time-total">–:––</span></div>
+                        <audio class="track-audio" id="track-07" preload="metadata">
+                            <source src="assets/audio/QC blues.mp3" type="audio/mpeg">
+                        </audio>
+                    </article>
 
-                <!-- Track 08 -->
-                <article class="track-card" data-track="8">
-                    <div class="card-glow"></div>
-                    <div class="track-header">
-                        <div class="track-meta">
-                            <span class="track-num">Track 08</span>
-                            <h2 class="track-title">Fais Tourner 08</h2>
+                    <article class="track-card" data-track="8">
+                        <div class="card-glow"></div>
+                        <div class="track-header">
+                            <div class="track-meta">
+                                <span class="track-num">Track 08</span>
+                                <h2 class="track-title">Quality Never Gets Old</h2>
+                            </div>
+                            <button class="play-btn" aria-label="Afspelen Quality Never Gets Old" data-id="track-08">
+                                <span class="play-icon">▶</span>
+                            </button>
                         </div>
-                        <button class="play-btn" aria-label="Afspelen Fais Tourner 08" data-id="track-08">
-                            <span class="play-icon">▶</span>
-                        </button>
-                    </div>
-                    <div class="progress-track" data-id="track-08">
-                        <div class="progress-fill"></div>
-                    </div>
-                    <div class="time-row">
-                        <span class="time-current">0:00</span>
-                        <span class="time-total">–:––</span>
-                    </div>
-                    <audio class="track-audio" id="track-08" preload="metadata">
-                        <source src="assets/audio/Fais tourner 08.mp3" type="audio/mpeg">
-                    </audio>
-                </article>
+                        <div class="progress-track" data-id="track-08"><div class="progress-fill"></div></div>
+                        <div class="time-row"><span class="time-current">0:00</span><span class="time-total">–:––</span></div>
+                        <audio class="track-audio" id="track-08" preload="metadata">
+                            <source src="assets/audio/Quality never gets old.mp3" type="audio/mpeg">
+                        </audio>
+                    </article>
 
-                <!-- Track 09 -->
-                <article class="track-card" data-track="9">
-                    <div class="card-glow"></div>
-                    <div class="track-header">
-                        <div class="track-meta">
-                            <span class="track-num">Track 09</span>
-                            <h2 class="track-title">Fiolerna Skrattar 17</h2>
+                    <article class="track-card" data-track="9">
+                        <div class="card-glow"></div>
+                        <div class="track-header">
+                            <div class="track-meta">
+                                <span class="track-num">Track 09</span>
+                                <h2 class="track-title">Stamped And Approved</h2>
+                            </div>
+                            <button class="play-btn" aria-label="Afspelen Stamped And Approved" data-id="track-09">
+                                <span class="play-icon">▶</span>
+                            </button>
                         </div>
-                        <button class="play-btn" aria-label="Afspelen Fiolerna Skrattar 17" data-id="track-09">
-                            <span class="play-icon">▶</span>
-                        </button>
-                    </div>
-                    <div class="progress-track" data-id="track-09">
-                        <div class="progress-fill"></div>
-                    </div>
-                    <div class="time-row">
-                        <span class="time-current">0:00</span>
-                        <span class="time-total">–:––</span>
-                    </div>
-                    <audio class="track-audio" id="track-09" preload="metadata">
-                        <source src="assets/audio/Fiolerna skrattar 17.mp3" type="audio/mpeg">
-                    </audio>
-                </article>
+                        <div class="progress-track" data-id="track-09"><div class="progress-fill"></div></div>
+                        <div class="time-row"><span class="time-current">0:00</span><span class="time-total">–:––</span></div>
+                        <audio class="track-audio" id="track-09" preload="metadata">
+                            <source src="assets/audio/Stamped and approved.mp3" type="audio/mpeg">
+                        </audio>
+                    </article>
 
-                <!-- Track 10 -->
-                <article class="track-card" data-track="10">
-                    <div class="card-glow"></div>
-                    <div class="track-header">
-                        <div class="track-meta">
-                            <span class="track-num">Track 10</span>
-                            <h2 class="track-title">Groove Tonight</h2>
+                    <article class="track-card" data-track="10">
+                        <div class="card-glow"></div>
+                        <div class="track-header">
+                            <div class="track-meta">
+                                <span class="track-num">Track 10</span>
+                                <h2 class="track-title">The Accuracy Anthem</h2>
+                            </div>
+                            <button class="play-btn" aria-label="Afspelen The Accuracy Anthem" data-id="track-10">
+                                <span class="play-icon">▶</span>
+                            </button>
                         </div>
-                        <button class="play-btn" aria-label="Afspelen Groove Tonight" data-id="track-10">
-                            <span class="play-icon">▶</span>
-                        </button>
-                    </div>
-                    <div class="progress-track" data-id="track-10">
-                        <div class="progress-fill"></div>
-                    </div>
-                    <div class="time-row">
-                        <span class="time-current">0:00</span>
-                        <span class="time-total">–:––</span>
-                    </div>
-                    <audio class="track-audio" id="track-10" preload="metadata">
-                        <source src="assets/audio/Groove Tonight.mp3" type="audio/mpeg">
-                    </audio>
-                </article>
+                        <div class="progress-track" data-id="track-10"><div class="progress-fill"></div></div>
+                        <div class="time-row"><span class="time-current">0:00</span><span class="time-total">–:––</span></div>
+                        <audio class="track-audio" id="track-10" preload="metadata">
+                            <source src="assets/audio/The accuracy Anthem.mp3" type="audio/mpeg">
+                        </audio>
+                    </article>
 
-                <!-- Track 11 -->
-                <article class="track-card" data-track="11">
-                    <div class="card-glow"></div>
-                    <div class="track-header">
-                        <div class="track-meta">
-                            <span class="track-num">Track 11</span>
-                            <h2 class="track-title">Gypsy Flower 14</h2>
+                    <article class="track-card" data-track="11">
+                        <div class="card-glow"></div>
+                        <div class="track-header">
+                            <div class="track-meta">
+                                <span class="track-num">Track 11</span>
+                                <h2 class="track-title">The Certificaten Shuffle</h2>
+                            </div>
+                            <button class="play-btn" aria-label="Afspelen The Certificaten Shuffle" data-id="track-11">
+                                <span class="play-icon">▶</span>
+                            </button>
                         </div>
-                        <button class="play-btn" aria-label="Afspelen Gypsy Flower 14" data-id="track-11">
-                            <span class="play-icon">▶</span>
-                        </button>
-                    </div>
-                    <div class="progress-track" data-id="track-11">
-                        <div class="progress-fill"></div>
-                    </div>
-                    <div class="time-row">
-                        <span class="time-current">0:00</span>
-                        <span class="time-total">–:––</span>
-                    </div>
-                    <audio class="track-audio" id="track-11" preload="metadata">
-                        <source src="assets/audio/Gypsy flower 14.mp3" type="audio/mpeg">
-                    </audio>
-                </article>
+                        <div class="progress-track" data-id="track-11"><div class="progress-fill"></div></div>
+                        <div class="time-row"><span class="time-current">0:00</span><span class="time-total">–:––</span></div>
+                        <audio class="track-audio" id="track-11" preload="metadata">
+                            <source src="assets/audio/The certificaten shuffle.mp3" type="audio/mpeg">
+                        </audio>
+                    </article>
 
-                <!-- Track 12 -->
-                <article class="track-card" data-track="12">
-                    <div class="card-glow"></div>
-                    <div class="track-header">
-                        <div class="track-meta">
-                            <span class="track-num">Track 12</span>
-                            <h2 class="track-title">Gypsy Queen 13</h2>
+                    <article class="track-card" data-track="12">
+                        <div class="card-glow"></div>
+                        <div class="track-header">
+                            <div class="track-meta">
+                                <span class="track-num">Track 12</span>
+                                <h2 class="track-title">They Are Coming</h2>
+                            </div>
+                            <button class="play-btn" aria-label="Afspelen They Are Coming" data-id="track-12">
+                                <span class="play-icon">▶</span>
+                            </button>
                         </div>
-                        <button class="play-btn" aria-label="Afspelen Gypsy Queen 13" data-id="track-12">
-                            <span class="play-icon">▶</span>
-                        </button>
-                    </div>
-                    <div class="progress-track" data-id="track-12">
-                        <div class="progress-fill"></div>
-                    </div>
-                    <div class="time-row">
-                        <span class="time-current">0:00</span>
-                        <span class="time-total">–:––</span>
-                    </div>
-                    <audio class="track-audio" id="track-12" preload="metadata">
-                        <source src="assets/audio/Gypsy queen 13.mp3" type="audio/mpeg">
-                    </audio>
-                </article>
+                        <div class="progress-track" data-id="track-12"><div class="progress-fill"></div></div>
+                        <div class="time-row"><span class="time-current">0:00</span><span class="time-total">–:––</span></div>
+                        <audio class="track-audio" id="track-12" preload="metadata">
+                            <source src="assets/audio/They are coming.mp3" type="audio/mpeg">
+                        </audio>
+                    </article>
 
-                <!-- Track 13 -->
-                <article class="track-card" data-track="13">
-                    <div class="card-glow"></div>
-                    <div class="track-header">
-                        <div class="track-meta">
-                            <span class="track-num">Track 13</span>
-                            <h2 class="track-title">Kalimaya 05</h2>
+                    <article class="track-card" data-track="13">
+                        <div class="card-glow"></div>
+                        <div class="track-header">
+                            <div class="track-meta">
+                                <span class="track-num">Track 13</span>
+                                <h2 class="track-title">The Perfect Spec</h2>
+                            </div>
+                            <button class="play-btn" aria-label="Afspelen The Perfect Spec" data-id="track-13">
+                                <span class="play-icon">▶</span>
+                            </button>
                         </div>
-                        <button class="play-btn" aria-label="Afspelen Kalimaya 05" data-id="track-13">
-                            <span class="play-icon">▶</span>
-                        </button>
-                    </div>
-                    <div class="progress-track" data-id="track-13">
-                        <div class="progress-fill"></div>
-                    </div>
-                    <div class="time-row">
-                        <span class="time-current">0:00</span>
-                        <span class="time-total">–:––</span>
-                    </div>
-                    <audio class="track-audio" id="track-13" preload="metadata">
-                        <source src="assets/audio/Kalimaya 05.mp3" type="audio/mpeg">
-                    </audio>
-                </article>
+                        <div class="progress-track" data-id="track-13"><div class="progress-fill"></div></div>
+                        <div class="time-row"><span class="time-current">0:00</span><span class="time-total">–:––</span></div>
+                        <audio class="track-audio" id="track-13" preload="metadata">
+                            <source src="assets/audio/the perfect spec.mp3" type="audio/mpeg">
+                        </audio>
+                    </article>
 
-                <!-- Track 14 -->
-                <article class="track-card" data-track="14">
-                    <div class="card-glow"></div>
-                    <div class="track-header">
-                        <div class="track-meta">
-                            <span class="track-num">Track 14</span>
-                            <h2 class="track-title">Kalimaya 12</h2>
-                        </div>
-                        <button class="play-btn" aria-label="Afspelen Kalimaya 12" data-id="track-14">
-                            <span class="play-icon">▶</span>
-                        </button>
-                    </div>
-                    <div class="progress-track" data-id="track-14">
-                        <div class="progress-fill"></div>
-                    </div>
-                    <div class="time-row">
-                        <span class="time-current">0:00</span>
-                        <span class="time-total">–:––</span>
-                    </div>
-                    <audio class="track-audio" id="track-14" preload="metadata">
-                        <source src="assets/audio/Kalimaya 12.mp3" type="audio/mpeg">
-                    </audio>
-                </article>
+                </div><!-- /music-grid Wereld 1 -->
+            </div><!-- /world-section 1 -->
 
-                <!-- Track 15 -->
-                <article class="track-card" data-track="15">
-                    <div class="card-glow"></div>
-                    <div class="track-header">
-                        <div class="track-meta">
-                            <span class="track-num">Track 15</span>
-                            <h2 class="track-title">Neeché Chaal 06</h2>
-                        </div>
-                        <button class="play-btn" aria-label="Afspelen Neeché Chaal 06" data-id="track-15">
-                            <span class="play-icon">▶</span>
-                        </button>
-                    </div>
-                    <div class="progress-track" data-id="track-15">
-                        <div class="progress-fill"></div>
-                    </div>
-                    <div class="time-row">
-                        <span class="time-current">0:00</span>
-                        <span class="time-total">–:––</span>
-                    </div>
-                    <audio class="track-audio" id="track-15" preload="metadata">
-                        <source src="assets/audio/Neeché chaal 06.mp3" type="audio/mpeg">
-                    </audio>
-                </article>
 
-                <!-- Track 16 -->
-                <article class="track-card" data-track="16">
-                    <div class="card-glow"></div>
-                    <div class="track-header">
-                        <div class="track-meta">
-                            <span class="track-num">Track 16</span>
-                            <h2 class="track-title">Njora Kvelda 10</h2>
-                        </div>
-                        <button class="play-btn" aria-label="Afspelen Njora Kvelda 10" data-id="track-16">
-                            <span class="play-icon">▶</span>
-                        </button>
-                    </div>
-                    <div class="progress-track" data-id="track-16">
-                        <div class="progress-fill"></div>
-                    </div>
-                    <div class="time-row">
-                        <span class="time-current">0:00</span>
-                        <span class="time-total">–:––</span>
-                    </div>
-                    <audio class="track-audio" id="track-16" preload="metadata">
-                        <source src="assets/audio/Njora kvelda 10.mp3" type="audio/mpeg">
-                    </audio>
-                </article>
+            <!-- ═══════════════════════════════════════ -->
+            <!-- WERELD 2: EPIC AND THEATRAL             -->
+            <!-- ═══════════════════════════════════════ -->
+            <div class="world-section">
+                <div class="world-header">
+                    <div class="section-divider"><span>🎭 Wereld II</span></div>
+                    <h2>Epic and Theatral</h2>
+                    <p class="world-desc">Bombastische soundscapes en cinematische architectuur. Duistere harmonieën, dramatische crescendo's en een gevoel dat de wereld op het punt staat te veranderen.</p>
+                </div>
+                <div class="music-grid">
 
-                <!-- Track 17 -->
-                <article class="track-card" data-track="17">
-                    <div class="card-glow"></div>
-                    <div class="track-header">
-                        <div class="track-meta">
-                            <span class="track-num">Track 17</span>
-                            <h2 class="track-title">Schaduwspel</h2>
+                    <article class="track-card" data-track="14">
+                        <div class="card-glow"></div>
+                        <div class="track-header">
+                            <div class="track-meta">
+                                <span class="track-num">Track 14</span>
+                                <h2 class="track-title">Cor Ferreum</h2>
+                            </div>
+                            <button class="play-btn" aria-label="Afspelen Cor Ferreum" data-id="track-14">
+                                <span class="play-icon">▶</span>
+                            </button>
                         </div>
-                        <button class="play-btn" aria-label="Afspelen Schaduwspel" data-id="track-17">
-                            <span class="play-icon">▶</span>
-                        </button>
-                    </div>
-                    <div class="progress-track" data-id="track-17">
-                        <div class="progress-fill"></div>
-                    </div>
-                    <div class="time-row">
-                        <span class="time-current">0:00</span>
-                        <span class="time-total">–:––</span>
-                    </div>
-                    <audio class="track-audio" id="track-17" preload="metadata">
-                        <source src="assets/audio/Schaduwspel.mp3" type="audio/mpeg">
-                    </audio>
-                </article>
+                        <div class="progress-track" data-id="track-14"><div class="progress-fill"></div></div>
+                        <div class="time-row"><span class="time-current">0:00</span><span class="time-total">–:––</span></div>
+                        <audio class="track-audio" id="track-14" preload="metadata">
+                            <source src="assets/audio/cor_ferreum.mp3" type="audio/mpeg">
+                        </audio>
+                    </article>
 
-                <!-- Track 18 -->
-                <article class="track-card" data-track="18">
-                    <div class="card-glow"></div>
-                    <div class="track-header">
-                        <div class="track-meta">
-                            <span class="track-num">Track 18</span>
-                            <h2 class="track-title">Shadow Strings</h2>
+                    <article class="track-card" data-track="15">
+                        <div class="card-glow"></div>
+                        <div class="track-header">
+                            <div class="track-meta">
+                                <span class="track-num">Track 15</span>
+                                <h2 class="track-title">Cuore Elettrico</h2>
+                            </div>
+                            <button class="play-btn" aria-label="Afspelen Cuore Elettrico" data-id="track-15">
+                                <span class="play-icon">▶</span>
+                            </button>
                         </div>
-                        <button class="play-btn" aria-label="Afspelen Shadow Strings" data-id="track-18">
-                            <span class="play-icon">▶</span>
-                        </button>
-                    </div>
-                    <div class="progress-track" data-id="track-18">
-                        <div class="progress-fill"></div>
-                    </div>
-                    <div class="time-row">
-                        <span class="time-current">0:00</span>
-                        <span class="time-total">–:––</span>
-                    </div>
-                    <audio class="track-audio" id="track-18" preload="metadata">
-                        <source src="assets/audio/Shadow Strings.mp3" type="audio/mpeg">
-                    </audio>
-                </article>
+                        <div class="progress-track" data-id="track-15"><div class="progress-fill"></div></div>
+                        <div class="time-row"><span class="time-current">0:00</span><span class="time-total">–:––</span></div>
+                        <audio class="track-audio" id="track-15" preload="metadata">
+                            <source src="assets/audio/cuore_elettrico.mp3" type="audio/mpeg">
+                        </audio>
+                    </article>
 
-                <!-- Track 19 -->
-                <article class="track-card" data-track="19">
-                    <div class="card-glow"></div>
-                    <div class="track-header">
-                        <div class="track-meta">
-                            <span class="track-num">Track 19</span>
-                            <h2 class="track-title">Sinistere Pamfluit</h2>
+                    <article class="track-card" data-track="16">
+                        <div class="card-glow"></div>
+                        <div class="track-header">
+                            <div class="track-meta">
+                                <span class="track-num">Track 16</span>
+                                <h2 class="track-title">Fais Tourner</h2>
+                            </div>
+                            <button class="play-btn" aria-label="Afspelen Fais Tourner" data-id="track-16">
+                                <span class="play-icon">▶</span>
+                            </button>
                         </div>
-                        <button class="play-btn" aria-label="Afspelen Sinistere Pamfluit" data-id="track-19">
-                            <span class="play-icon">▶</span>
-                        </button>
-                    </div>
-                    <div class="progress-track" data-id="track-19">
-                        <div class="progress-fill"></div>
-                    </div>
-                    <div class="time-row">
-                        <span class="time-current">0:00</span>
-                        <span class="time-total">–:––</span>
-                    </div>
-                    <audio class="track-audio" id="track-19" preload="metadata">
-                        <source src="assets/audio/Sinistere Pamfluit.mp3" type="audio/mpeg">
-                    </audio>
-                </article>
+                        <div class="progress-track" data-id="track-16"><div class="progress-fill"></div></div>
+                        <div class="time-row"><span class="time-current">0:00</span><span class="time-total">–:––</span></div>
+                        <audio class="track-audio" id="track-16" preload="metadata">
+                            <source src="assets/audio/Fais tourner 08.mp3" type="audio/mpeg">
+                        </audio>
+                    </article>
 
-                <!-- Track 20 -->
-                <article class="track-card" data-track="20">
-                    <div class="card-glow"></div>
-                    <div class="track-header">
-                        <div class="track-meta">
-                            <span class="track-num">Track 20</span>
-                            <h2 class="track-title">Tamburinen 02</h2>
+                    <article class="track-card" data-track="17">
+                        <div class="card-glow"></div>
+                        <div class="track-header">
+                            <div class="track-meta">
+                                <span class="track-num">Track 17</span>
+                                <h2 class="track-title">Fiolerna Skrattar</h2>
+                            </div>
+                            <button class="play-btn" aria-label="Afspelen Fiolerna Skrattar" data-id="track-17">
+                                <span class="play-icon">▶</span>
+                            </button>
                         </div>
-                        <button class="play-btn" aria-label="Afspelen Tamburinen 02" data-id="track-20">
-                            <span class="play-icon">▶</span>
-                        </button>
-                    </div>
-                    <div class="progress-track" data-id="track-20">
-                        <div class="progress-fill"></div>
-                    </div>
-                    <div class="time-row">
-                        <span class="time-current">0:00</span>
-                        <span class="time-total">–:––</span>
-                    </div>
-                    <audio class="track-audio" id="track-20" preload="metadata">
-                        <source src="assets/audio/Tamburinen 02.mp3" type="audio/mpeg">
-                    </audio>
-                </article>
+                        <div class="progress-track" data-id="track-17"><div class="progress-fill"></div></div>
+                        <div class="time-row"><span class="time-current">0:00</span><span class="time-total">–:––</span></div>
+                        <audio class="track-audio" id="track-17" preload="metadata">
+                            <source src="assets/audio/Fiolerna skrattar 17.mp3" type="audio/mpeg">
+                        </audio>
+                    </article>
 
-                <!-- Track 21 -->
-                <article class="track-card" data-track="21">
-                    <div class="card-glow"></div>
-                    <div class="track-header">
-                        <div class="track-meta">
-                            <span class="track-num">Track 21</span>
-                            <h2 class="track-title">They Are Coming</h2>
+                    <article class="track-card" data-track="18">
+                        <div class="card-glow"></div>
+                        <div class="track-header">
+                            <div class="track-meta">
+                                <span class="track-num">Track 18</span>
+                                <h2 class="track-title">Gypsy Flower</h2>
+                            </div>
+                            <button class="play-btn" aria-label="Afspelen Gypsy Flower" data-id="track-18">
+                                <span class="play-icon">▶</span>
+                            </button>
                         </div>
-                        <button class="play-btn" aria-label="Afspelen They Are Coming" data-id="track-21">
-                            <span class="play-icon">▶</span>
-                        </button>
-                    </div>
-                    <div class="progress-track" data-id="track-21">
-                        <div class="progress-fill"></div>
-                    </div>
-                    <div class="time-row">
-                        <span class="time-current">0:00</span>
-                        <span class="time-total">–:––</span>
-                    </div>
-                    <audio class="track-audio" id="track-21" preload="metadata">
-                        <source src="assets/audio/They are coming.mp3" type="audio/mpeg">
-                    </audio>
-                </article>
+                        <div class="progress-track" data-id="track-18"><div class="progress-fill"></div></div>
+                        <div class="time-row"><span class="time-current">0:00</span><span class="time-total">–:––</span></div>
+                        <audio class="track-audio" id="track-18" preload="metadata">
+                            <source src="assets/audio/Gypsy flower 14.mp3" type="audio/mpeg">
+                        </audio>
+                    </article>
 
-                <!-- Track 22 -->
-                <article class="track-card" data-track="22">
-                    <div class="card-glow"></div>
-                    <div class="track-header">
-                        <div class="track-meta">
-                            <span class="track-num">Track 22</span>
-                            <h2 class="track-title">Tikiti Waka 01</h2>
+                    <article class="track-card" data-track="19">
+                        <div class="card-glow"></div>
+                        <div class="track-header">
+                            <div class="track-meta">
+                                <span class="track-num">Track 19</span>
+                                <h2 class="track-title">Gypsy Queen</h2>
+                            </div>
+                            <button class="play-btn" aria-label="Afspelen Gypsy Queen" data-id="track-19">
+                                <span class="play-icon">▶</span>
+                            </button>
                         </div>
-                        <button class="play-btn" aria-label="Afspelen Tikiti Waka 01" data-id="track-22">
-                            <span class="play-icon">▶</span>
-                        </button>
-                    </div>
-                    <div class="progress-track" data-id="track-22">
-                        <div class="progress-fill"></div>
-                    </div>
-                    <div class="time-row">
-                        <span class="time-current">0:00</span>
-                        <span class="time-total">–:––</span>
-                    </div>
-                    <audio class="track-audio" id="track-22" preload="metadata">
-                        <source src="assets/audio/Tikiti Waka 01_.mp3" type="audio/mpeg">
-                    </audio>
-                </article>
+                        <div class="progress-track" data-id="track-19"><div class="progress-fill"></div></div>
+                        <div class="time-row"><span class="time-current">0:00</span><span class="time-total">–:––</span></div>
+                        <audio class="track-audio" id="track-19" preload="metadata">
+                            <source src="assets/audio/Gypsy queen 13.mp3" type="audio/mpeg">
+                        </audio>
+                    </article>
 
-                <!-- Track 23 -->
-                <article class="track-card" data-track="23">
-                    <div class="card-glow"></div>
-                    <div class="track-header">
-                        <div class="track-meta">
-                            <span class="track-num">Track 23</span>
-                            <h2 class="track-title">Tikiti Waka 15</h2>
+                    <article class="track-card" data-track="20">
+                        <div class="card-glow"></div>
+                        <div class="track-header">
+                            <div class="track-meta">
+                                <span class="track-num">Track 20</span>
+                                <h2 class="track-title">Nek Pukne Tlo</h2>
+                            </div>
+                            <button class="play-btn" aria-label="Afspelen Nek Pukne Tlo" data-id="track-20">
+                                <span class="play-icon">▶</span>
+                            </button>
                         </div>
-                        <button class="play-btn" aria-label="Afspelen Tikiti Waka 15" data-id="track-23">
-                            <span class="play-icon">▶</span>
-                        </button>
-                    </div>
-                    <div class="progress-track" data-id="track-23">
-                        <div class="progress-fill"></div>
-                    </div>
-                    <div class="time-row">
-                        <span class="time-current">0:00</span>
-                        <span class="time-total">–:––</span>
-                    </div>
-                    <audio class="track-audio" id="track-23" preload="metadata">
-                        <source src="assets/audio/Tikiti waka 15.mp3" type="audio/mpeg">
-                    </audio>
-                </article>
+                        <div class="progress-track" data-id="track-20"><div class="progress-fill"></div></div>
+                        <div class="time-row"><span class="time-current">0:00</span><span class="time-total">–:––</span></div>
+                        <audio class="track-audio" id="track-20" preload="metadata">
+                            <source src="assets/audio/nek_pukne_tlo.mp3" type="audio/mpeg">
+                        </audio>
+                    </article>
 
-                <!-- Track 24 -->
-                <article class="track-card" data-track="24">
-                    <div class="card-glow"></div>
-                    <div class="track-header">
-                        <div class="track-meta">
-                            <span class="track-num">Track 24</span>
-                            <h2 class="track-title">Whispers Of The Heart 01</h2>
+                    <article class="track-card" data-track="21">
+                        <div class="card-glow"></div>
+                        <div class="track-header">
+                            <div class="track-meta">
+                                <span class="track-num">Track 21</span>
+                                <h2 class="track-title">Schaduwspel</h2>
+                            </div>
+                            <button class="play-btn" aria-label="Afspelen Schaduwspel" data-id="track-21">
+                                <span class="play-icon">▶</span>
+                            </button>
                         </div>
-                        <button class="play-btn" aria-label="Afspelen Whispers Of The Heart 01" data-id="track-24">
-                            <span class="play-icon">▶</span>
-                        </button>
-                    </div>
-                    <div class="progress-track" data-id="track-24">
-                        <div class="progress-fill"></div>
-                    </div>
-                    <div class="time-row">
-                        <span class="time-current">0:00</span>
-                        <span class="time-total">–:––</span>
-                    </div>
-                    <audio class="track-audio" id="track-24" preload="metadata">
-                        <source src="assets/audio/Whispers of the Heart 01.mp3" type="audio/mpeg">
-                    </audio>
-                </article>
+                        <div class="progress-track" data-id="track-21"><div class="progress-fill"></div></div>
+                        <div class="time-row"><span class="time-current">0:00</span><span class="time-total">–:––</span></div>
+                        <audio class="track-audio" id="track-21" preload="metadata">
+                            <source src="assets/audio/Schaduwspel.mp3" type="audio/mpeg">
+                        </audio>
+                    </article>
 
-                <!-- Track 25 -->
-                <article class="track-card" data-track="25">
-                    <div class="card-glow"></div>
-                    <div class="track-header">
-                        <div class="track-meta">
-                            <span class="track-num">Track 25</span>
-                            <h2 class="track-title">Éveillons 16</h2>
+                    <article class="track-card" data-track="22">
+                        <div class="card-glow"></div>
+                        <div class="track-header">
+                            <div class="track-meta">
+                                <span class="track-num">Track 22</span>
+                                <h2 class="track-title">Shadow Strings</h2>
+                            </div>
+                            <button class="play-btn" aria-label="Afspelen Shadow Strings" data-id="track-22">
+                                <span class="play-icon">▶</span>
+                            </button>
                         </div>
-                        <button class="play-btn" aria-label="Afspelen Éveillons 16" data-id="track-25">
-                            <span class="play-icon">▶</span>
-                        </button>
-                    </div>
-                    <div class="progress-track" data-id="track-25">
-                        <div class="progress-fill"></div>
-                    </div>
-                    <div class="time-row">
-                        <span class="time-current">0:00</span>
-                        <span class="time-total">–:––</span>
-                    </div>
-                    <audio class="track-audio" id="track-25" preload="metadata">
-                        <source src="assets/audio/Éveillons 16.mp3" type="audio/mpeg">
-                    </audio>
-                </article>
+                        <div class="progress-track" data-id="track-22"><div class="progress-fill"></div></div>
+                        <div class="time-row"><span class="time-current">0:00</span><span class="time-total">–:––</span></div>
+                        <audio class="track-audio" id="track-22" preload="metadata">
+                            <source src="assets/audio/Shadow Strings.mp3" type="audio/mpeg">
+                        </audio>
+                    </article>
 
-                <!-- Track 26 -->
-                <article class="track-card" data-track="26">
-                    <div class="card-glow"></div>
-                    <div class="track-header">
-                        <div class="track-meta">
-                            <span class="track-num">Track 26</span>
-                            <h2 class="track-title">50 Years Of Precision</h2>
+                    <article class="track-card" data-track="23">
+                        <div class="card-glow"></div>
+                        <div class="track-header">
+                            <div class="track-meta">
+                                <span class="track-num">Track 23</span>
+                                <h2 class="track-title">Sinistere Pamfluit</h2>
+                            </div>
+                            <button class="play-btn" aria-label="Afspelen Sinistere Pamfluit" data-id="track-23">
+                                <span class="play-icon">▶</span>
+                            </button>
                         </div>
-                        <button class="play-btn" aria-label="Afspelen 50 Years Of Precision" data-id="track-26">
-                            <span class="play-icon">▶</span>
-                        </button>
-                    </div>
-                    <div class="progress-track" data-id="track-26">
-                        <div class="progress-fill"></div>
-                    </div>
-                    <div class="time-row">
-                        <span class="time-current">0:00</span>
-                        <span class="time-total">–:––</span>
-                    </div>
-                    <audio class="track-audio" id="track-26" preload="metadata">
-                        <source src="assets/audio/50 years of precision.mp3" type="audio/mpeg">
-                    </audio>
-                </article>
+                        <div class="progress-track" data-id="track-23"><div class="progress-fill"></div></div>
+                        <div class="time-row"><span class="time-current">0:00</span><span class="time-total">–:––</span></div>
+                        <audio class="track-audio" id="track-23" preload="metadata">
+                            <source src="assets/audio/Sinistere Pamfluit.mp3" type="audio/mpeg">
+                        </audio>
+                    </article>
 
-                <!-- Track 27 -->
-                <article class="track-card" data-track="27">
-                    <div class="card-glow"></div>
-                    <div class="track-header">
-                        <div class="track-meta">
-                            <span class="track-num">Track 27</span>
-                            <h2 class="track-title">Calibration Sensation</h2>
+                    <article class="track-card" data-track="24">
+                        <div class="card-glow"></div>
+                        <div class="track-header">
+                            <div class="track-meta">
+                                <span class="track-num">Track 24</span>
+                                <h2 class="track-title">Spatium Frangitur</h2>
+                            </div>
+                            <button class="play-btn" aria-label="Afspelen Spatium Frangitur" data-id="track-24">
+                                <span class="play-icon">▶</span>
+                            </button>
                         </div>
-                        <button class="play-btn" aria-label="Afspelen Calibration Sensation" data-id="track-27">
-                            <span class="play-icon">▶</span>
-                        </button>
-                    </div>
-                    <div class="progress-track" data-id="track-27">
-                        <div class="progress-fill"></div>
-                    </div>
-                    <div class="time-row">
-                        <span class="time-current">0:00</span>
-                        <span class="time-total">–:––</span>
-                    </div>
-                    <audio class="track-audio" id="track-27" preload="metadata">
-                        <source src="assets/audio/Calibration Sensation.mp3" type="audio/mpeg">
-                    </audio>
-                </article>
+                        <div class="progress-track" data-id="track-24"><div class="progress-fill"></div></div>
+                        <div class="time-row"><span class="time-current">0:00</span><span class="time-total">–:––</span></div>
+                        <audio class="track-audio" id="track-24" preload="metadata">
+                            <source src="assets/audio/spatium_frangitur.mp3" type="audio/mpeg">
+                        </audio>
+                    </article>
 
-                <!-- Track 28 -->
-                <article class="track-card" data-track="28">
-                    <div class="card-glow"></div>
-                    <div class="track-header">
-                        <div class="track-meta">
-                            <span class="track-num">Track 28</span>
-                            <h2 class="track-title">Lab Coat Legend</h2>
+                    <article class="track-card" data-track="25">
+                        <div class="card-glow"></div>
+                        <div class="track-header">
+                            <div class="track-meta">
+                                <span class="track-num">Track 25</span>
+                                <h2 class="track-title">Umbra E Ti Chiar Tu</h2>
+                            </div>
+                            <button class="play-btn" aria-label="Afspelen Umbra E Ti Chiar Tu" data-id="track-25">
+                                <span class="play-icon">▶</span>
+                            </button>
                         </div>
-                        <button class="play-btn" aria-label="Afspelen Lab Coat Legend" data-id="track-28">
-                            <span class="play-icon">▶</span>
-                        </button>
-                    </div>
-                    <div class="progress-track" data-id="track-28">
-                        <div class="progress-fill"></div>
-                    </div>
-                    <div class="time-row">
-                        <span class="time-current">0:00</span>
-                        <span class="time-total">–:––</span>
-                    </div>
-                    <audio class="track-audio" id="track-28" preload="metadata">
-                        <source src="assets/audio/Lab Coat Legend.mp3" type="audio/mpeg">
-                    </audio>
-                </article>
+                        <div class="progress-track" data-id="track-25"><div class="progress-fill"></div></div>
+                        <div class="time-row"><span class="time-current">0:00</span><span class="time-total">–:––</span></div>
+                        <audio class="track-audio" id="track-25" preload="metadata">
+                            <source src="assets/audio/umbra_e_ti_chiar_tu.mp3" type="audio/mpeg">
+                        </audio>
+                    </article>
 
-                <!-- Track 29 -->
-                <article class="track-card" data-track="29">
-                    <div class="card-glow"></div>
-                    <div class="track-header">
-                        <div class="track-meta">
-                            <span class="track-num">Track 29</span>
-                            <h2 class="track-title">Precision Groove</h2>
-                        </div>
-                        <button class="play-btn" aria-label="Afspelen Precision Groove" data-id="track-29">
-                            <span class="play-icon">▶</span>
-                        </button>
-                    </div>
-                    <div class="progress-track" data-id="track-29">
-                        <div class="progress-fill"></div>
-                    </div>
-                    <div class="time-row">
-                        <span class="time-current">0:00</span>
-                        <span class="time-total">–:––</span>
-                    </div>
-                    <audio class="track-audio" id="track-29" preload="metadata">
-                        <source src="assets/audio/Precision groove.mp3" type="audio/mpeg">
-                    </audio>
-                </article>
+                </div><!-- /music-grid Wereld 2 -->
+            </div><!-- /world-section 2 -->
 
-                <!-- Track 30 -->
-                <article class="track-card" data-track="30">
-                    <div class="card-glow"></div>
-                    <div class="track-header">
-                        <div class="track-meta">
-                            <span class="track-num">Track 30</span>
-                            <h2 class="track-title">Qc Blues</h2>
-                        </div>
-                        <button class="play-btn" aria-label="Afspelen Qc Blues" data-id="track-30">
-                            <span class="play-icon">▶</span>
-                        </button>
-                    </div>
-                    <div class="progress-track" data-id="track-30">
-                        <div class="progress-fill"></div>
-                    </div>
-                    <div class="time-row">
-                        <span class="time-current">0:00</span>
-                        <span class="time-total">–:––</span>
-                    </div>
-                    <audio class="track-audio" id="track-30" preload="metadata">
-                        <source src="assets/audio/QC blues.mp3" type="audio/mpeg">
-                    </audio>
-                </article>
 
-                <!-- Track 31 -->
-                <article class="track-card" data-track="31">
-                    <div class="card-glow"></div>
-                    <div class="track-header">
-                        <div class="track-meta">
-                            <span class="track-num">Track 31</span>
-                            <h2 class="track-title">Quality Never Gets Old</h2>
-                        </div>
-                        <button class="play-btn" aria-label="Afspelen Quality Never Gets Old" data-id="track-31">
-                            <span class="play-icon">▶</span>
-                        </button>
-                    </div>
-                    <div class="progress-track" data-id="track-31">
-                        <div class="progress-fill"></div>
-                    </div>
-                    <div class="time-row">
-                        <span class="time-current">0:00</span>
-                        <span class="time-total">–:––</span>
-                    </div>
-                    <audio class="track-audio" id="track-31" preload="metadata">
-                        <source src="assets/audio/Quality never gets old.mp3" type="audio/mpeg">
-                    </audio>
-                </article>
+            <!-- ═══════════════════════════════════════ -->
+            <!-- WERELD 3: SONGS OF THE UNKNOWN          -->
+            <!-- ═══════════════════════════════════════ -->
+            <div class="world-section">
+                <div class="world-header">
+                    <div class="section-divider"><span>🌑 Wereld III</span></div>
+                    <h2>Songs of the Unknown</h2>
+                    <p class="world-desc">Mysterieuze en atmosferische composities die zich niet laten definiëren. Geluidstexturen die het onderbewuste aanspreken — zwevendend tussen het bekende en het onbestaande.</p>
+                </div>
+                <div class="music-grid">
 
-                <!-- Track 32 -->
-                <article class="track-card" data-track="32">
-                    <div class="card-glow"></div>
-                    <div class="track-header">
-                        <div class="track-meta">
-                            <span class="track-num">Track 32</span>
-                            <h2 class="track-title">Stamped And Approved</h2>
+                    <article class="track-card" data-track="26">
+                        <div class="card-glow"></div>
+                        <div class="track-header">
+                            <div class="track-meta">
+                                <span class="track-num">Track 26</span>
+                                <h2 class="track-title">Balann Vibes</h2>
+                            </div>
+                            <button class="play-btn" aria-label="Afspelen Balann Vibes" data-id="track-26">
+                                <span class="play-icon">▶</span>
+                            </button>
                         </div>
-                        <button class="play-btn" aria-label="Afspelen Stamped And Approved" data-id="track-32">
-                            <span class="play-icon">▶</span>
-                        </button>
-                    </div>
-                    <div class="progress-track" data-id="track-32">
-                        <div class="progress-fill"></div>
-                    </div>
-                    <div class="time-row">
-                        <span class="time-current">0:00</span>
-                        <span class="time-total">–:––</span>
-                    </div>
-                    <audio class="track-audio" id="track-32" preload="metadata">
-                        <source src="assets/audio/Stamped and approved.mp3" type="audio/mpeg">
-                    </audio>
-                </article>
+                        <div class="progress-track" data-id="track-26"><div class="progress-fill"></div></div>
+                        <div class="time-row"><span class="time-current">0:00</span><span class="time-total">–:––</span></div>
+                        <audio class="track-audio" id="track-26" preload="metadata">
+                            <source src="assets/audio/Balann vibes.mp3" type="audio/mpeg">
+                        </audio>
+                    </article>
 
-                <!-- Track 33 -->
-                <article class="track-card" data-track="33">
-                    <div class="card-glow"></div>
-                    <div class="track-header">
-                        <div class="track-meta">
-                            <span class="track-num">Track 33</span>
-                            <h2 class="track-title">The Accuracy Anthem</h2>
+                    <article class="track-card" data-track="27">
+                        <div class="card-glow"></div>
+                        <div class="track-header">
+                            <div class="track-meta">
+                                <span class="track-num">Track 27</span>
+                                <h2 class="track-title">Cobh's Cold</h2>
+                            </div>
+                            <button class="play-btn" aria-label="Afspelen Cobh's Cold" data-id="track-27">
+                                <span class="play-icon">▶</span>
+                            </button>
                         </div>
-                        <button class="play-btn" aria-label="Afspelen The Accuracy Anthem" data-id="track-33">
-                            <span class="play-icon">▶</span>
-                        </button>
-                    </div>
-                    <div class="progress-track" data-id="track-33">
-                        <div class="progress-fill"></div>
-                    </div>
-                    <div class="time-row">
-                        <span class="time-current">0:00</span>
-                        <span class="time-total">–:––</span>
-                    </div>
-                    <audio class="track-audio" id="track-33" preload="metadata">
-                        <source src="assets/audio/The accuracy Anthem.mp3" type="audio/mpeg">
-                    </audio>
-                </article>
+                        <div class="progress-track" data-id="track-27"><div class="progress-fill"></div></div>
+                        <div class="time-row"><span class="time-current">0:00</span><span class="time-total">–:––</span></div>
+                        <audio class="track-audio" id="track-27" preload="metadata">
+                            <source src="assets/audio/Cobh's cold 18.mp3" type="audio/mpeg">
+                        </audio>
+                    </article>
 
-                <!-- Track 34 -->
-                <article class="track-card" data-track="34">
-                    <div class="card-glow"></div>
-                    <div class="track-header">
-                        <div class="track-meta">
-                            <span class="track-num">Track 34</span>
-                            <h2 class="track-title">The Certificaten Shuffle</h2>
+                    <article class="track-card" data-track="28">
+                        <div class="card-glow"></div>
+                        <div class="track-header">
+                            <div class="track-meta">
+                                <span class="track-num">Track 28</span>
+                                <h2 class="track-title">Donau Se Geur</h2>
+                            </div>
+                            <button class="play-btn" aria-label="Afspelen Donau Se Geur" data-id="track-28">
+                                <span class="play-icon">▶</span>
+                            </button>
                         </div>
-                        <button class="play-btn" aria-label="Afspelen The Certificaten Shuffle" data-id="track-34">
-                            <span class="play-icon">▶</span>
-                        </button>
-                    </div>
-                    <div class="progress-track" data-id="track-34">
-                        <div class="progress-fill"></div>
-                    </div>
-                    <div class="time-row">
-                        <span class="time-current">0:00</span>
-                        <span class="time-total">–:––</span>
-                    </div>
-                    <audio class="track-audio" id="track-34" preload="metadata">
-                        <source src="assets/audio/The certificaten shuffle.mp3" type="audio/mpeg">
-                    </audio>
-                </article>
+                        <div class="progress-track" data-id="track-28"><div class="progress-fill"></div></div>
+                        <div class="time-row"><span class="time-current">0:00</span><span class="time-total">–:––</span></div>
+                        <audio class="track-audio" id="track-28" preload="metadata">
+                            <source src="assets/audio/Donau se geur 11.mp3" type="audio/mpeg">
+                        </audio>
+                    </article>
 
-                <!-- Track 35 -->
-                <article class="track-card" data-track="35">
-                    <div class="card-glow"></div>
-                    <div class="track-header">
-                        <div class="track-meta">
-                            <span class="track-num">Track 35</span>
-                            <h2 class="track-title">Cor Ferreum</h2>
+                    <article class="track-card" data-track="29">
+                        <div class="card-glow"></div>
+                        <div class="track-header">
+                            <div class="track-meta">
+                                <span class="track-num">Track 29</span>
+                                <h2 class="track-title">Éveillons</h2>
+                            </div>
+                            <button class="play-btn" aria-label="Afspelen Éveillons" data-id="track-29">
+                                <span class="play-icon">▶</span>
+                            </button>
                         </div>
-                        <button class="play-btn" aria-label="Afspelen Cor Ferreum" data-id="track-35">
-                            <span class="play-icon">▶</span>
-                        </button>
-                    </div>
-                    <div class="progress-track" data-id="track-35">
-                        <div class="progress-fill"></div>
-                    </div>
-                    <div class="time-row">
-                        <span class="time-current">0:00</span>
-                        <span class="time-total">–:––</span>
-                    </div>
-                    <audio class="track-audio" id="track-35" preload="metadata">
-                        <source src="assets/audio/cor_ferreum.mp3" type="audio/mpeg">
-                    </audio>
-                </article>
+                        <div class="progress-track" data-id="track-29"><div class="progress-fill"></div></div>
+                        <div class="time-row"><span class="time-current">0:00</span><span class="time-total">–:––</span></div>
+                        <audio class="track-audio" id="track-29" preload="metadata">
+                            <source src="assets/audio/Éveillons 16.mp3" type="audio/mpeg">
+                        </audio>
+                    </article>
 
-                <!-- Track 36 -->
-                <article class="track-card" data-track="36">
-                    <div class="card-glow"></div>
-                    <div class="track-header">
-                        <div class="track-meta">
-                            <span class="track-num">Track 36</span>
-                            <h2 class="track-title">Cuore Elettrico</h2>
+                    <article class="track-card" data-track="30">
+                        <div class="card-glow"></div>
+                        <div class="track-header">
+                            <div class="track-meta">
+                                <span class="track-num">Track 30</span>
+                                <h2 class="track-title">Flowers</h2>
+                            </div>
+                            <button class="play-btn" aria-label="Afspelen Flowers" data-id="track-30">
+                                <span class="play-icon">▶</span>
+                            </button>
                         </div>
-                        <button class="play-btn" aria-label="Afspelen Cuore Elettrico" data-id="track-36">
-                            <span class="play-icon">▶</span>
-                        </button>
-                    </div>
-                    <div class="progress-track" data-id="track-36">
-                        <div class="progress-fill"></div>
-                    </div>
-                    <div class="time-row">
-                        <span class="time-current">0:00</span>
-                        <span class="time-total">–:––</span>
-                    </div>
-                    <audio class="track-audio" id="track-36" preload="metadata">
-                        <source src="assets/audio/cuore_elettrico.mp3" type="audio/mpeg">
-                    </audio>
-                </article>
+                        <div class="progress-track" data-id="track-30"><div class="progress-fill"></div></div>
+                        <div class="time-row"><span class="time-current">0:00</span><span class="time-total">–:––</span></div>
+                        <audio class="track-audio" id="track-30" preload="metadata">
+                            <source src="assets/audio/Flowers.mp3" type="audio/mpeg">
+                        </audio>
+                    </article>
 
-                <!-- Track 37 -->
-                <article class="track-card" data-track="37">
-                    <div class="card-glow"></div>
-                    <div class="track-header">
-                        <div class="track-meta">
-                            <span class="track-num">Track 37</span>
-                            <h2 class="track-title">Nek Pukne Tlo</h2>
+                    <article class="track-card" data-track="31">
+                        <div class="card-glow"></div>
+                        <div class="track-header">
+                            <div class="track-meta">
+                                <span class="track-num">Track 31</span>
+                                <h2 class="track-title">Trees</h2>
+                            </div>
+                            <button class="play-btn" aria-label="Afspelen Trees" data-id="track-31">
+                                <span class="play-icon">▶</span>
+                            </button>
                         </div>
-                        <button class="play-btn" aria-label="Afspelen Nek Pukne Tlo" data-id="track-37">
-                            <span class="play-icon">▶</span>
-                        </button>
-                    </div>
-                    <div class="progress-track" data-id="track-37">
-                        <div class="progress-fill"></div>
-                    </div>
-                    <div class="time-row">
-                        <span class="time-current">0:00</span>
-                        <span class="time-total">–:––</span>
-                    </div>
-                    <audio class="track-audio" id="track-37" preload="metadata">
-                        <source src="assets/audio/nek_pukne_tlo.mp3" type="audio/mpeg">
-                    </audio>
-                </article>
+                        <div class="progress-track" data-id="track-31"><div class="progress-fill"></div></div>
+                        <div class="time-row"><span class="time-current">0:00</span><span class="time-total">–:––</span></div>
+                        <audio class="track-audio" id="track-31" preload="metadata">
+                            <source src="assets/audio/Trees.mp3" type="audio/mpeg">
+                        </audio>
+                    </article>
 
-                <!-- Track 38 -->
-                <article class="track-card" data-track="38">
-                    <div class="card-glow"></div>
-                    <div class="track-header">
-                        <div class="track-meta">
-                            <span class="track-num">Track 38</span>
-                            <h2 class="track-title">Spatium Frangitur</h2>
+                    <article class="track-card" data-track="32">
+                        <div class="card-glow"></div>
+                        <div class="track-header">
+                            <div class="track-meta">
+                                <span class="track-num">Track 32</span>
+                                <h2 class="track-title">Whispers Of The Heart</h2>
+                            </div>
+                            <button class="play-btn" aria-label="Afspelen Whispers Of The Heart" data-id="track-32">
+                                <span class="play-icon">▶</span>
+                            </button>
                         </div>
-                        <button class="play-btn" aria-label="Afspelen Spatium Frangitur" data-id="track-38">
-                            <span class="play-icon">▶</span>
-                        </button>
-                    </div>
-                    <div class="progress-track" data-id="track-38">
-                        <div class="progress-fill"></div>
-                    </div>
-                    <div class="time-row">
-                        <span class="time-current">0:00</span>
-                        <span class="time-total">–:––</span>
-                    </div>
-                    <audio class="track-audio" id="track-38" preload="metadata">
-                        <source src="assets/audio/spatium_frangitur.mp3" type="audio/mpeg">
-                    </audio>
-                </article>
+                        <div class="progress-track" data-id="track-32"><div class="progress-fill"></div></div>
+                        <div class="time-row"><span class="time-current">0:00</span><span class="time-total">–:––</span></div>
+                        <audio class="track-audio" id="track-32" preload="metadata">
+                            <source src="assets/audio/Whispers of the Heart 01.mp3" type="audio/mpeg">
+                        </audio>
+                    </article>
 
-                <!-- Track 39 -->
-                <article class="track-card" data-track="39">
-                    <div class="card-glow"></div>
-                    <div class="track-header">
-                        <div class="track-meta">
-                            <span class="track-num">Track 39</span>
-                            <h2 class="track-title">The Perfect Spec</h2>
-                        </div>
-                        <button class="play-btn" aria-label="Afspelen The Perfect Spec" data-id="track-39">
-                            <span class="play-icon">▶</span>
-                        </button>
-                    </div>
-                    <div class="progress-track" data-id="track-39">
-                        <div class="progress-fill"></div>
-                    </div>
-                    <div class="time-row">
-                        <span class="time-current">0:00</span>
-                        <span class="time-total">–:––</span>
-                    </div>
-                    <audio class="track-audio" id="track-39" preload="metadata">
-                        <source src="assets/audio/the perfect spec.mp3" type="audio/mpeg">
-                    </audio>
-                </article>
+                </div><!-- /music-grid Wereld 3 -->
+            </div><!-- /world-section 3 -->
 
-                <!-- Track 40 -->
-                <article class="track-card" data-track="40">
-                    <div class="card-glow"></div>
-                    <div class="track-header">
-                        <div class="track-meta">
-                            <span class="track-num">Track 40</span>
-                            <h2 class="track-title">Umbra E Ti Chiar Tu</h2>
+
+            <!-- ═══════════════════════════════════════ -->
+            <!-- WERELD 4: CLASSIC ATMOSPHERE            -->
+            <!-- ═══════════════════════════════════════ -->
+            <div class="world-section">
+                <div class="world-header">
+                    <div class="section-divider"><span>🎼 Wereld IV</span></div>
+                    <h2>Classic Atmosphere</h2>
+                    <p class="world-desc">Tijdloze klanken herschapen door AI. De geest van de klassieke compositie geïnterpreteerd door algoritmes — vertrouwd in sfeer, revolutionair in oorsprong.</p>
+                </div>
+                <div class="music-grid">
+
+                    <article class="track-card" data-track="33">
+                        <div class="card-glow"></div>
+                        <div class="track-header">
+                            <div class="track-meta">
+                                <span class="track-num">Track 33</span>
+                                <h2 class="track-title">Classic Feeling</h2>
+                            </div>
+                            <button class="play-btn" aria-label="Afspelen Classic Feeling" data-id="track-33">
+                                <span class="play-icon">▶</span>
+                            </button>
                         </div>
-                        <button class="play-btn" aria-label="Afspelen Umbra E Ti Chiar Tu" data-id="track-40">
-                            <span class="play-icon">▶</span>
-                        </button>
-                    </div>
-                    <div class="progress-track" data-id="track-40">
-                        <div class="progress-fill"></div>
-                    </div>
-                    <div class="time-row">
-                        <span class="time-current">0:00</span>
-                        <span class="time-total">–:––</span>
-                    </div>
-                    <audio class="track-audio" id="track-40" preload="metadata">
-                        <source src="assets/audio/umbra_e_ti_chiar_tu.mp3" type="audio/mpeg">
-                    </audio>
-                </article>
-            </div><!-- /music-grid -->
+                        <div class="progress-track" data-id="track-33"><div class="progress-fill"></div></div>
+                        <div class="time-row"><span class="time-current">0:00</span><span class="time-total">–:––</span></div>
+                        <audio class="track-audio" id="track-33" preload="metadata">
+                            <source src="assets/audio/Classic feeling.mp3" type="audio/mpeg">
+                        </audio>
+                    </article>
+
+                    <article class="track-card" data-track="34">
+                        <div class="card-glow"></div>
+                        <div class="track-header">
+                            <div class="track-meta">
+                                <span class="track-num">Track 34</span>
+                                <h2 class="track-title">Classic Ideas</h2>
+                            </div>
+                            <button class="play-btn" aria-label="Afspelen Classic Ideas" data-id="track-34">
+                                <span class="play-icon">▶</span>
+                            </button>
+                        </div>
+                        <div class="progress-track" data-id="track-34"><div class="progress-fill"></div></div>
+                        <div class="time-row"><span class="time-current">0:00</span><span class="time-total">–:––</span></div>
+                        <audio class="track-audio" id="track-34" preload="metadata">
+                            <source src="assets/audio/Classic ideas.mp3" type="audio/mpeg">
+                        </audio>
+                    </article>
+
+                    <article class="track-card" data-track="35">
+                        <div class="card-glow"></div>
+                        <div class="track-header">
+                            <div class="track-meta">
+                                <span class="track-num">Track 35</span>
+                                <h2 class="track-title">Classic Moments</h2>
+                            </div>
+                            <button class="play-btn" aria-label="Afspelen Classic Moments" data-id="track-35">
+                                <span class="play-icon">▶</span>
+                            </button>
+                        </div>
+                        <div class="progress-track" data-id="track-35"><div class="progress-fill"></div></div>
+                        <div class="time-row"><span class="time-current">0:00</span><span class="time-total">–:––</span></div>
+                        <audio class="track-audio" id="track-35" preload="metadata">
+                            <source src="assets/audio/Classic moments.mp3" type="audio/mpeg">
+                        </audio>
+                    </article>
+
+                    <article class="track-card" data-track="36">
+                        <div class="card-glow"></div>
+                        <div class="track-header">
+                            <div class="track-meta">
+                                <span class="track-num">Track 36</span>
+                                <h2 class="track-title">Classic Song</h2>
+                            </div>
+                            <button class="play-btn" aria-label="Afspelen Classic Song" data-id="track-36">
+                                <span class="play-icon">▶</span>
+                            </button>
+                        </div>
+                        <div class="progress-track" data-id="track-36"><div class="progress-fill"></div></div>
+                        <div class="time-row"><span class="time-current">0:00</span><span class="time-total">–:––</span></div>
+                        <audio class="track-audio" id="track-36" preload="metadata">
+                            <source src="assets/audio/Classic song.mp3" type="audio/mpeg">
+                        </audio>
+                    </article>
+
+                    <article class="track-card" data-track="37">
+                        <div class="card-glow"></div>
+                        <div class="track-header">
+                            <div class="track-meta">
+                                <span class="track-num">Track 37</span>
+                                <h2 class="track-title">Classic Vibes</h2>
+                            </div>
+                            <button class="play-btn" aria-label="Afspelen Classic Vibes" data-id="track-37">
+                                <span class="play-icon">▶</span>
+                            </button>
+                        </div>
+                        <div class="progress-track" data-id="track-37"><div class="progress-fill"></div></div>
+                        <div class="time-row"><span class="time-current">0:00</span><span class="time-total">–:––</span></div>
+                        <audio class="track-audio" id="track-37" preload="metadata">
+                            <source src="assets/audio/Classic vibes.mp3" type="audio/mpeg">
+                        </audio>
+                    </article>
+
+                </div><!-- /music-grid Wereld 4 -->
+            </div><!-- /world-section 4 -->
+
+
+            <!-- ═══════════════════════════════════════ -->
+            <!-- WERELD 5: EASTERN BOUNDARIES            -->
+            <!-- ═══════════════════════════════════════ -->
+            <div class="world-section">
+                <div class="world-header">
+                    <div class="section-divider"><span>🌏 Wereld V</span></div>
+                    <h2>Eastern Boundaries</h2>
+                    <p class="world-desc">Exotische ritmes en oosterse toonladders, herschreven door AI. Waar eeuwenoude tradities versmelten met digitale klanktechnologie — ritmisch, hypnotisch en grenzend aan het onbekende.</p>
+                </div>
+                <div class="music-grid">
+
+                    <article class="track-card" data-track="38">
+                        <div class="card-glow"></div>
+                        <div class="track-header">
+                            <div class="track-meta">
+                                <span class="track-num">Track 38</span>
+                                <h2 class="track-title">Ayaya Loma</h2>
+                            </div>
+                            <button class="play-btn" aria-label="Afspelen Ayaya Loma" data-id="track-38">
+                                <span class="play-icon">▶</span>
+                            </button>
+                        </div>
+                        <div class="progress-track" data-id="track-38"><div class="progress-fill"></div></div>
+                        <div class="time-row"><span class="time-current">0:00</span><span class="time-total">–:––</span></div>
+                        <audio class="track-audio" id="track-38" preload="metadata">
+                            <source src="assets/audio/Ayaya loma.mp3" type="audio/mpeg">
+                        </audio>
+                    </article>
+
+                    <article class="track-card" data-track="39">
+                        <div class="card-glow"></div>
+                        <div class="track-header">
+                            <div class="track-meta">
+                                <span class="track-num">Track 39</span>
+                                <h2 class="track-title">Beštro Ťaž</h2>
+                            </div>
+                            <button class="play-btn" aria-label="Afspelen Beštro Ťaž" data-id="track-39">
+                                <span class="play-icon">▶</span>
+                            </button>
+                        </div>
+                        <div class="progress-track" data-id="track-39"><div class="progress-fill"></div></div>
+                        <div class="time-row"><span class="time-current">0:00</span><span class="time-total">–:––</span></div>
+                        <audio class="track-audio" id="track-39" preload="metadata">
+                            <source src="assets/audio/Beštro ťaž.mp3" type="audio/mpeg">
+                        </audio>
+                    </article>
+
+                    <article class="track-card" data-track="40">
+                        <div class="card-glow"></div>
+                        <div class="track-header">
+                            <div class="track-meta">
+                                <span class="track-num">Track 40</span>
+                                <h2 class="track-title">Kalimaya 05</h2>
+                            </div>
+                            <button class="play-btn" aria-label="Afspelen Kalimaya 05" data-id="track-40">
+                                <span class="play-icon">▶</span>
+                            </button>
+                        </div>
+                        <div class="progress-track" data-id="track-40"><div class="progress-fill"></div></div>
+                        <div class="time-row"><span class="time-current">0:00</span><span class="time-total">–:––</span></div>
+                        <audio class="track-audio" id="track-40" preload="metadata">
+                            <source src="assets/audio/Kalimaya 05.mp3" type="audio/mpeg">
+                        </audio>
+                    </article>
+
+                    <article class="track-card" data-track="41">
+                        <div class="card-glow"></div>
+                        <div class="track-header">
+                            <div class="track-meta">
+                                <span class="track-num">Track 41</span>
+                                <h2 class="track-title">Kalimaya 12</h2>
+                            </div>
+                            <button class="play-btn" aria-label="Afspelen Kalimaya 12" data-id="track-41">
+                                <span class="play-icon">▶</span>
+                            </button>
+                        </div>
+                        <div class="progress-track" data-id="track-41"><div class="progress-fill"></div></div>
+                        <div class="time-row"><span class="time-current">0:00</span><span class="time-total">–:––</span></div>
+                        <audio class="track-audio" id="track-41" preload="metadata">
+                            <source src="assets/audio/Kalimaya 12.mp3" type="audio/mpeg">
+                        </audio>
+                    </article>
+
+                    <article class="track-card" data-track="42">
+                        <div class="card-glow"></div>
+                        <div class="track-header">
+                            <div class="track-meta">
+                                <span class="track-num">Track 42</span>
+                                <h2 class="track-title">Neeché Chaal</h2>
+                            </div>
+                            <button class="play-btn" aria-label="Afspelen Neeché Chaal" data-id="track-42">
+                                <span class="play-icon">▶</span>
+                            </button>
+                        </div>
+                        <div class="progress-track" data-id="track-42"><div class="progress-fill"></div></div>
+                        <div class="time-row"><span class="time-current">0:00</span><span class="time-total">–:––</span></div>
+                        <audio class="track-audio" id="track-42" preload="metadata">
+                            <source src="assets/audio/Neeché chaal.mp3" type="audio/mpeg">
+                        </audio>
+                    </article>
+
+                    <article class="track-card" data-track="43">
+                        <div class="card-glow"></div>
+                        <div class="track-header">
+                            <div class="track-meta">
+                                <span class="track-num">Track 43</span>
+                                <h2 class="track-title">Tamburinen</h2>
+                            </div>
+                            <button class="play-btn" aria-label="Afspelen Tamburinen" data-id="track-43">
+                                <span class="play-icon">▶</span>
+                            </button>
+                        </div>
+                        <div class="progress-track" data-id="track-43"><div class="progress-fill"></div></div>
+                        <div class="time-row"><span class="time-current">0:00</span><span class="time-total">–:––</span></div>
+                        <audio class="track-audio" id="track-43" preload="metadata">
+                            <source src="assets/audio/Tamburinen 02.mp3" type="audio/mpeg">
+                        </audio>
+                    </article>
+
+                    <article class="track-card" data-track="44">
+                        <div class="card-glow"></div>
+                        <div class="track-header">
+                            <div class="track-meta">
+                                <span class="track-num">Track 44</span>
+                                <h2 class="track-title">Tikiti Waka</h2>
+                            </div>
+                            <button class="play-btn" aria-label="Afspelen Tikiti Waka" data-id="track-44">
+                                <span class="play-icon">▶</span>
+                            </button>
+                        </div>
+                        <div class="progress-track" data-id="track-44"><div class="progress-fill"></div></div>
+                        <div class="time-row"><span class="time-current">0:00</span><span class="time-total">–:––</span></div>
+                        <audio class="track-audio" id="track-44" preload="metadata">
+                            <source src="assets/audio/Tikiti Waka_.mp3" type="audio/mpeg">
+                        </audio>
+                    </article>
+
+                </div><!-- /music-grid Wereld 5 -->
+            </div><!-- /world-section 5 -->
+
+            <!-- FOOTER NOTE -->
+            <footer style="text-align:center; padding: 24px; color: var(--neo-text-muted); font-size: 0.85rem; position: relative; z-index: 1;">
+                Alle muziek is 100% AI-gegenereerd via Udio &amp; Suno. &mdash;
+                <a href="projects.html" style="color: var(--neo-accent); text-decoration: none; font-weight: 600;">Bekijk meer projecten →</a>
+            </footer>
+
         </main>
-
-        <!-- FOOTER NOTE -->
-        <footer style="text-align:center; padding: 24px; color: var(--neo-text-muted); font-size: 0.85rem; position: relative; z-index: 1;">
-            Alle muziek is 100% AI-gegenereerd via Udio &amp; Suno. &mdash;
-            <a href="projects.html" style="color: var(--neo-accent); text-decoration: none; font-weight: 600;">Bekijk meer projecten →</a>
-        </footer>
 
     </div><!-- /page-wrapper -->
 
