@@ -6,58 +6,195 @@
     <link rel="icon" type="image/jpeg" href="images/logoeddie.jpg">
     <link rel="apple-touch-icon" href="images/logoeddie.jpg">
     <meta name="theme-color" content="#1a1a1a">
-    <title>AI Galerij - Eddiecool</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <title>🖼️ AI Galerij — Eddiecool Beeldenstudio</title>
+    <meta name="description" content="Ontdek de AI Galerij van Eddiecool. Pixels geboetseerd door prompts — van hyperrealistische actiemomenten tot grensverleggend surrealisme, ingedeeld in vier visuele werelden.">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="neo-theme.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/css/lightbox.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/css/lightbox.min.css" rel="stylesheet">
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-SYG5T1Z0MV"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-SYG5T1Z0MV');
+    </script>
+
     <style>
-        body {
-            font-family: 'Inter', sans-serif;
-        }
-        .gallery {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px; /* Ruimte tussen de afbeeldingen */
-            justify-content: center;
-            padding: 20px;
-        }
-        .gallery-item {
-            width: 250px; /* Vaste breedte voor elk item */
+        body { font-family: 'Inter', sans-serif; }
+
+        /* ── HERO ── */
+        .gallery-hero {
+            position: relative; z-index: 1;
             text-align: center;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            border-radius: 8px;
+            padding: 70px 24px 50px;
+        }
+        .gallery-hero::after {
+            content: ''; position: absolute;
+            bottom: 0; left: 50%; transform: translateX(-50%);
+            width: 40%; height: 1px;
+            background: linear-gradient(90deg, transparent, var(--neo-accent), transparent);
+        }
+        .hero-badge {
+            display: inline-block;
+            background: rgba(168, 85, 247, 0.12);
+            border: 1px solid rgba(168, 85, 247, 0.35);
+            color: var(--neo-accent);
+            font-size: 0.72rem; font-weight: 700;
+            letter-spacing: 0.22em; text-transform: uppercase;
+            padding: 6px 18px; border-radius: 100px;
+            margin-bottom: 28px; backdrop-filter: blur(8px);
+        }
+        .gallery-hero h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: clamp(2.2rem, 5.5vw, 4rem);
+            font-weight: 900; line-height: 1.08;
+            letter-spacing: -1.5px; margin: 0 0 18px;
+            background: linear-gradient(135deg, #fff 0%, var(--neo-accent) 55%, var(--neo-accent2) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .gallery-hero .hero-sub {
+            font-size: clamp(0.95rem, 1.8vw, 1.1rem);
+            color: var(--neo-text-muted);
+            max-width: 720px; margin: 0 auto;
+            line-height: 1.75;
+        }
+
+        /* ── STATS ── */
+        .stats-row {
+            display: flex; justify-content: center;
+            gap: 20px; flex-wrap: wrap;
+            padding: 48px 24px 52px;
+            position: relative; z-index: 1;
+        }
+        .stat-pill {
+            display: flex; align-items: center; gap: 10px;
+            background: var(--neo-surface); border-radius: 100px;
+            padding: 12px 22px;
+            box-shadow: 5px 5px 10px var(--neo-shadow-dark), -5px -5px 10px var(--neo-shadow-light);
+            font-size: 0.875rem;
+        }
+        .stat-pill .stat-icon { font-size: 1.1rem; }
+        .stat-pill .stat-val  { font-weight: 700; color: #fff; }
+        .stat-pill .stat-lbl  { color: var(--neo-text-muted); font-size: 0.8rem; }
+
+        /* ── GALLERY WRAPPER ── */
+        .gallery-content {
+            position: relative; z-index: 1;
+            max-width: 1200px; margin: 0 auto;
+            padding: 0 24px 80px;
+        }
+
+        /* ── CATEGORIE SECTIE ── */
+        .category-section { margin-bottom: 72px; }
+        .category-header  { margin-bottom: 32px; }
+        .category-header h2 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: clamp(1.4rem, 3vw, 2rem);
+            font-weight: 900; color: #ffffff;
+            margin: 0 0 8px; letter-spacing: -0.5px;
+        }
+        .category-header .cat-desc {
+            font-size: 0.88rem; color: var(--neo-text-muted);
+            line-height: 1.5; margin: 0 0 20px;
+        }
+
+        /* ── SECTION DIVIDER ── */
+        .section-divider {
+            display: flex; align-items: center; gap: 16px;
+            margin-bottom: 36px;
+        }
+        .section-divider::before,
+        .section-divider::after {
+            content: ''; flex: 1; height: 1px;
+            background: rgba(168, 85, 247, 0.18);
+        }
+        .section-divider span {
+            font-size: 0.68rem; font-weight: 700;
+            letter-spacing: 0.2em; text-transform: uppercase;
+            color: var(--neo-accent); white-space: nowrap;
+        }
+
+        /* ── MASONRY-STYLE GRID ── */
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 20px;
+        }
+
+        /* ── IMAGE CARD ── */
+        .image-card {
+            background: var(--neo-surface);
+            border-radius: 16px;
+            box-shadow: 6px 6px 14px var(--neo-shadow-dark), -6px -6px 14px var(--neo-shadow-light);
+            border: 1px solid rgba(255, 255, 255, 0.04);
             overflow: hidden;
-            background-color: #2d2d2d; /* Donkere achtergrond voor het item */
+            transition: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
+            display: flex; flex-direction: column;
+            position: relative;
         }
-        .gallery-item img {
-            width: 100%;
-            height: auto;
-            display: block;
-            transition: transform 0.3s ease;
+        .image-card::before {
+            content: ''; position: absolute;
+            inset: 0; z-index: 1; pointer-events: none; border-radius: inherit;
+            background: linear-gradient(135deg, rgba(255,255,255,0.025) 0%, transparent 60%);
         }
-        .gallery-item:hover img {
-            transform: scale(1.05);
+        .image-card:hover {
+            box-shadow: 10px 10px 22px var(--neo-shadow-dark), -10px -10px 22px var(--neo-shadow-light), 0 0 28px var(--neo-glow);
+            transform: translateY(-5px);
+            border-color: rgba(168, 85, 247, 0.2);
         }
-        .caption {
-            padding: 10px;
-            font-size: 0.9em;
-            color: #ccc; /* Lichte tekstkleur voor contrast */
+        .image-card a {
+            display: block; overflow: hidden;
+            border-radius: 16px 16px 0 0;
+        }
+        .image-card img {
+            width: 100%; height: 200px;
+            object-fit: cover; display: block;
+            transition: transform 0.4s ease;
+        }
+        .image-card:hover img {
+            transform: scale(1.06);
+        }
+
+        /* caption row */
+        .img-caption {
+            padding: 10px 14px 4px;
+            font-size: 0.8rem;
+            color: var(--neo-text-muted);
+            line-height: 1.4;
+            flex: 1;
+        }
+
+        /* AI badge */
+        .ai-badge {
+            display: flex; justify-content: center; align-items: center;
+            margin: 6px 14px 14px;
+            background: rgba(168, 85, 247, 0.07);
+            border: 1px solid rgba(168, 85, 247, 0.2);
+            border-radius: 100px;
+            padding: 4px 12px;
+            font-size: 0.65rem; font-weight: 700;
+            letter-spacing: 0.14em; text-transform: uppercase;
+            color: var(--neo-accent);
+            width: fit-content;
+            align-self: center;
+        }
+        .ai-badge::before { content: '✦'; margin-right: 5px; font-size: 0.6rem; }
+
+        @media (max-width: 640px) {
+            .image-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
         }
     </style>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'G-SYG5T1Z0MV'); // VERVANG DIT DOOR JOUW MEASUREMENT ID
-    </script>
-    <meta name="description" content="Bewonder de AI Galerij van Eddiecool. Een visuele reis door adembenemende, hyperrealistische AI-kunstwerken en creatieve beeldgeneratie experimenten.">
 </head>
+
 <body>
 <div class="page-wrapper">
-        <nav>
+
+    <!-- NAV -->
+    <nav>
         <div class="logo">
             <a href="index.html">
                 <img src="images/logo.png" alt="Eddiecool Logo" class="logo-img">
@@ -67,78 +204,501 @@
         <ul class="menu">
             <li><a href="index.html">🏠 Home</a></li>
             <li><a href="projects.html">✨ Projecten</a></li>
-            <li><a href="ai_gallery.html">🖼️ Galerij</a></li>
+            <li><a href="ai_gallery.html" class="active">🖼️ Galerij</a></li>
             <li><a href="muziek.html">🎵 Muziek</a></li>
-            <li><a href="VibeCoding.html">⚡ Vibe Coding</a></li> 
+            <li><a href="VibeCoding.html">⚡ Vibe Coding</a></li>
             <li><a href="ai_apps.html">📱 AI Apps</a></li>
             <li><a href="about.html">ℹ️ Over Mij</a></li>
             <li><a href="contact.html">📧 Contact</a></li>
         </ul>
-    </nav>  
-    
-    <h1>🖼️ AI Galerij</h1>
-    <h2>Klik op een afbeelding om deze te vergroten</h2>
-    
-    <div class="gallery">
-        <div class="gallery-item"><a href="images/art1.jpg" data-lightbox="ai-gallery" data-title="Twee gezichten, één verhaal."><img src="images/art1.jpg" alt="Gespleten portretten" loading="lazy"></a><p class="caption">Twee gezichten, één verhaal.</p></div>
-        <div class="gallery-item"><a href="images/art2.jpg" data-lightbox="ai-gallery" data-title="De verzamelaar en zijn wonderkabinet."><img src="images/art2.jpg" alt="Man in hoge hoed" loading="lazy"></a><p class="caption">De verzamelaar en zijn wonderkabinet.</p></div>
-        <div class="gallery-item"><a href="images/art3.jpg" data-lightbox="ai-gallery" data-title="Welkom in het theater van de AI."><img src="images/art3.jpg" alt="Vrouw in rood circus" loading="lazy"></a><p class="caption">Welkom in het theater van de AI.</p></div>
-        <div class="gallery-item"><a href="images/art4.jpg" data-lightbox="ai-gallery" data-title="Echo's in een verlaten kamer."><img src="images/art4.jpg" alt="Vervallen kamer met geesten" loading="lazy"></a><p class="caption">Echo's in een verlaten kamer.</p></div>
-        <div class="gallery-item"><a href="images/art5.jpg" data-lightbox="ai-gallery" data-title="De oerkracht van een digitale tijger."><img src="images/art5.jpg" alt="Gloeiende tijger" loading="lazy"></a><p class="caption">De oerkracht van een digitale tijger.</p></div>
-        <div class="gallery-item"><a href="images/art6.jpg" data-lightbox="ai-gallery" data-title="Een geest van data dwaalt door het bos."><img src="images/art6.jpg" alt="Blauwe geest in bos" loading="lazy"></a><p class="caption">Een geest van data dwaalt door het bos.</p></div>
+    </nav>
 
-        <div class="gallery-item"><a href="images/art7.jpg" data-lightbox="ai-gallery" data-title="Verdwaald in een vergeten herinnering."><img src="images/art7.jpg" alt="Vrouw in witte jurk in ruïne" loading="lazy"></a><p class="caption">Verdwaald in een vergeten herinnering.</p></div>
-        <div class="gallery-item"><a href="images/art8.jpg" data-lightbox="ai-gallery" data-title="Portret van een heer, in lagen opgebouwd."><img src="images/art8.jpg" alt="Man met snor collage" loading="lazy"></a><p class="caption">Portret van een heer, in lagen opgebouwd.</p></div>
-        <div class="gallery-item"><a href="images/art9.jpg" data-lightbox="ai-gallery" data-title="De mars van de droomijsbeer."><img src="images/art9.jpg" alt="Twee etherische olifanten" loading="lazy"></a><p class="caption">De mars van de droomijsbeer.</p></div>
-        <div class="gallery-item"><a href="images/art10.jpg" data-lightbox="ai-gallery" data-title="Mechanische reuzen in een mistig landschap."><img src="images/art10.jpg" alt="Twee mechanische olifanten" loading="lazy"></a><p class="caption">Mechanische reuzen in een mistig landschap.</p></div>
-        <div class="gallery-item"><a href="images/art11.jpg" data-lightbox="ai-gallery" data-title="De tijd tikt in haar gedachten."><img src="images/art11.jpg" alt="Vrouwengezicht met klokwerk" loading="lazy"></a><p class="caption">De tijd tikt in haar gedachten.</p></div>
-        <div class="gallery-item"><a href="images/art12.jpg" data-lightbox="ai-gallery" data-title="De witte tijger, herboren in staal."><img src="images/art12.jpg" alt="Mechanische witte tijger" loading="lazy"></a><p class="caption">De witte tijger, herboren in staal.</p></div>
-        
-        <div class="gallery-item"><a href="images/art13.jpg" data-lightbox="ai-gallery" data-title="Straatbeeld uit een vervlogen, grauwe tijd."><img src="images/art13.jpg" alt="Verlaten straat met oude auto" loading="lazy"></a><p class="caption">Straatbeeld uit een vervlogen, grauwe tijd.</p></div>
-        <div class="gallery-item"><a href="images/art14.jpg" data-lightbox="ai-gallery" data-title="Zelfs met een vriend is de nacht eng."><img src="images/art14.jpg" alt="Kind met teddybeer kijkt naar huis" loading="lazy"></a><p class="caption">Zelfs met een vriend is de nacht eng.</p></div>
-        <div class="gallery-item"><a href="images/art15.jpg" data-lightbox="ai-gallery" data-title="Gebroken spiegel, versplinterde ziel."><img src="images/art15.jpg" alt="Reflectie in gebroken spiegel" loading="lazy"></a><p class="caption">Gebroken spiegel, versplinterde ziel.</p></div>
-        <div class="gallery-item"><a href="images/art16.jpg" data-lightbox="ai-gallery" data-title="Wie wacht er aan het einde van de gang?"><img src="images/art16.jpg" alt="Geest aan het einde van een gang" loading="lazy"></a><p class="caption">Wie wacht er aan het einde van de gang?</p></div>
-        <div class="gallery-item"><a href="images/art17.jpg" data-lightbox="ai-gallery" data-title="De bruid wacht in het schemerlicht."><img src="images/art17.jpg" alt="Geestachtige bruid" loading="lazy"></a><p class="caption">De bruid wacht in het schemerlicht.</p></div>
-        <div class="gallery-item"><a href="images/art18.jpg" data-lightbox="ai-gallery" data-title="Eenzame boom, getuige van de tijd."><img src="images/art18.jpg" alt="Eenzame boom op eiland" loading="lazy"></a><p class="caption">Eenzame boom, getuige van de tijd.</p></div>
+    <!-- HERO -->
+    <section class="gallery-hero">
+        <div class="hero-badge">✦ Generative AI Beeldenstudio</div>
+        <h1>🖼️ AI Galerij</h1>
+        <p class="hero-sub">Pixels geboetseerd door prompts. Welkom in de visuele kern van de speelplaats, waar ruwe gedachten via taal worden omgezet in beeld. Geen penselen of donkere kamers, maar de pure synthese van verbeelding en geavanceerde neurale netwerken zoals Midjourney en Leonardo AI. Ontdek een uitdijende collectie, van hyperrealistische actiemomenten tot grensverleggend surrealisme.</p>
+    </section>
 
-        <div class="gallery-item"><a href="images/art19.jpg" data-lightbox="ai-gallery" data-title="Kijkend naar de oneindige kosmos."><img src="images/art19.jpg" alt="Persoon kijkt naar sterrenhemel" loading="lazy"></a><p class="caption">Kijkend naar de oneindige kosmos.</p></div>
-        <div class="gallery-item"><a href="images/art20.jpg" data-lightbox="ai-gallery" data-title="De snaren van haar ziel rocken luid."><img src="images/art20.jpg" alt="Vrouw speelt op een explosieve gitaar" loading="lazy"></a><p class="caption">De snaren van haar ziel rocken luid.</p></div>
-        <div class="gallery-item"><a href="images/art21.jpg" data-lightbox="ai-gallery" data-title="Porseleinen huid, gebroken van binnen."><img src="images/art21.jpg" alt="Vrouw met gebarsten porseleinen huid" loading="lazy"></a><p class="caption">Porseleinen huid, gebroken van binnen.</p></div>
-        <div class="gallery-item"><a href="images/art22.jpg" data-lightbox="ai-gallery" data-title="Verloren in een schaakbord-dimensie."><img src="images/art22.jpg" alt="Figuren in een zwart-wit geblokte kamer" loading="lazy"></a><p class="caption">Verloren in een schaakbord-dimensie.</p></div>
-        <div class="gallery-item"><a href="images/art23.jpg" data-lightbox="ai-gallery" data-title="De excentrieke meester van het circus."><img src="images/art23.jpg" alt="Man met rode hoge hoed" loading="lazy"></a><p class="caption">De excentrieke meester van het circus.</p></div>
-        <div class="gallery-item"><a href="images/art24.jpg" data-lightbox="ai-gallery" data-title="De tijd staat even stil voor hem."><img src="images/art24.jpg" alt="Man in een kamer vol klokken" loading="lazy"></a><p class="caption">De tijd staat even stil voor hem.</p></div>
-        
-        <div class="gallery-item"><a href="images/art25.jpg" data-lightbox="ai-gallery" data-title="Alleen in de mist van een vroege ochtend."><img src="images/art25.jpg" alt="Silhouet in mistig landschap" loading="lazy"></a><p class="caption">Alleen in de mist van een vroege ochtend.</p></div>
-        <div class="gallery-item"><a href="images/art26.jpg" data-lightbox="ai-gallery" data-title="Uit de scherven van het verleden."><img src="images/art26.jpg" alt="Figuur komt uit gebroken glas" loading="lazy"></a><p class="caption">Uit de scherven van het verleden.</p></div>
-        <div class="gallery-item"><a href="images/art27.jpg" data-lightbox="ai-gallery" data-title="De laatste akkoorden van de dag."><img src="images/art27.jpg" alt="Gitaar op strand bij zonsondergang" loading="lazy"></a><p class="caption">De laatste akkoorden van de dag.</p></div>
-        <div class="gallery-item"><a href="images/art28.jpg" data-lightbox="ai-gallery" data-title="Schimmen die voor eeuwig ronddwalen."><img src="images/art28.jpg" alt="Twee geesten in een gang" loading="lazy"></a><p class="caption">Schimmen die voor eeuwig ronddwalen.</p></div>
-        <div class="gallery-item"><a href="images/art29.jpg" data-lightbox="ai-gallery" data-title="De zwaarte van onuitgesproken woorden."><img src="images/art29.jpg" alt="Vrouw in diepe gedachten" loading="lazy"></a><p class="caption">De zwaarte van onuitgesproken woorden.</p></div>
-        <div class="gallery-item"><a href="images/art30.jpg" data-lightbox="ai-gallery" data-title="Haar ware kleuren komen naar boven."><img src="images/art30.jpg" alt="Vrouw met gebarsten verf op gezicht" loading="lazy"></a><p class="caption">Haar ware kleuren komen naar boven.</p></div>
-
-        <div class="gallery-item"><a href="images/art31.jpg" data-lightbox="ai-gallery" data-title="Een ijzige blik die alles doorziet."><img src="images/art31.jpg" alt="Vrouw met kort wit haar" loading="lazy"></a><p class="caption">Een ijzige blik die alles doorziet.</p></div>
-        <div class="gallery-item"><a href="images/art32.jpg" data-lightbox="ai-gallery" data-title="Een canvas van huid en emotie."><img src="images/art32.jpg" alt="Vrouwengezicht met verfstreken" loading="lazy"></a><p class="caption">Een canvas van huid en emotie.</p></div>
-        <div class="gallery-item"><a href="images/art33.jpg" data-lightbox="ai-gallery" data-title="De pure essentie van muziek."><img src="images/art33.jpg" alt="Vrouw speelt gitaar in zwart-wit" loading="lazy"></a><p class="caption">De pure essentie van muziek.</p></div>
-        <div class="gallery-item"><a href="images/art34.jpg" data-lightbox="ai-gallery" data-title="Niet elke lach is vriendelijk."><img src="images/art34.jpg" alt="Griezelige kleurrijke clown" loading="lazy"></a><p class="caption">Niet elke lach is vriendelijk.</p></div>
-        <div class="gallery-item"><a href="images/art35.jpg" data-lightbox="ai-gallery" data-title="Samen op weg naar het einde van de wereld."><img src="images/art35.jpg" alt="Twee figuren in een desolaat landschap" loading="lazy"></a><p class="caption">Samen op weg naar het einde van de wereld.</p></div>
-        <div class="gallery-item"><a href="images/art36.jpg" data-lightbox="ai-gallery" data-title="Verstilde elegantie in marmer."><img src="images/art36.jpg" alt="Standbeelden in een lichte kamer" loading="lazy"></a><p class="caption">Verstilde elegantie in marmer.</p></div>
-        
-        <div class="gallery-item"><a href="images/art37.jpg" data-lightbox="ai-gallery" data-title="Kathedraal van een vergeten tijdperk."><img src="images/art37.jpg" alt="Groot koepelgebouw" loading="lazy"></a><p class="caption">Kathedraal van een vergeten tijdperk.</p></div>
-        <div class="gallery-item"><a href="images/art38.jpg" data-lightbox="ai-gallery" data-title="Dansend op het ritme van de nacht."><img src="images/art38.jpg" alt="Ballerina danst onder de maan" loading="lazy"></a><p class="caption">Dansend op het ritme van de nacht.</p></div>
-        <div class="gallery-item"><a href="images/art39.jpg" data-lightbox="ai-gallery" data-title="Gedachten en gezichten vloeien samen."><img src="images/art39.jpg" alt="Dubbel portret van vrouw" loading="lazy"></a><p class="caption">Gedachten en gezichten vloeien samen.</p></div>
-        <div class="gallery-item"><a href="images/art40.jpg" data-lightbox="ai-gallery" data-title="Alleen in de straten van de toekomst."><img src="images/art40.jpg" alt="Figuur in een futuristische neon stad" loading="lazy"></a><p class="caption">Alleen in de straten van de toekomst.</p></div>
+    <!-- STATS -->
+    <div class="stats-row">
+        <div class="stat-pill">
+            <span class="stat-icon">🖼️</span>
+            <span class="stat-val">44</span>
+            <span class="stat-lbl">Werken</span>
+        </div>
+        <div class="stat-pill">
+            <span class="stat-icon">🤖</span>
+            <span class="stat-val">100%</span>
+            <span class="stat-lbl">Generative AI</span>
+        </div>
+        <div class="stat-pill">
+            <span class="stat-icon">📂</span>
+            <span class="stat-val">4</span>
+            <span class="stat-lbl">Visuele Werelden</span>
+        </div>
+        <div class="stat-pill">
+            <span class="stat-icon">🛠️</span>
+            <span class="stat-val">Midjourney · Leonardo</span>
+            <span class="stat-lbl">Tools</span>
+        </div>
     </div>
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/js/lightbox.min.js"></script>
-    
-    <script>
-      document.getElementById("hamburger-menu").addEventListener("click", function() {
-          var menu = document.querySelector(".menu");
-          menu.classList.toggle("active");
-      });
-    </script>
+
+    <!-- GALERIJ INHOUD -->
+    <main class="gallery-content">
+
+
+        <!-- ════════════════════════════════════════ -->
+        <!-- CATEGORIE I: ACTIE & KINETICA            -->
+        <!-- ════════════════════════════════════════ -->
+        <div class="category-section">
+            <div class="category-header">
+                <div class="section-divider"><span>⚡ Wereld I</span></div>
+                <h2>Actie &amp; Kinetica</h2>
+                <p class="cat-desc">Energie bevroren in een enkel frame. Van verzengende muziekoptredens tot ijskoude wilde krachten — beweging als kunst, gegenereerd door pure promptkracht.</p>
+            </div>
+            <div class="image-grid">
+
+                <div class="image-card">
+                    <a href="images/art20.jpg" data-lightbox="cat1" data-title="De snaren van haar ziel rocken luid.">
+                        <img src="images/art20.jpg" alt="Vrouw speelt op een explosieve gitaar" loading="lazy">
+                    </a>
+                    <p class="img-caption">De snaren van haar ziel rocken luid.</p>
+                    <span class="ai-badge">Generative AI Image</span>
+                </div>
+
+                <div class="image-card">
+                    <a href="images/art27.jpg" data-lightbox="cat1" data-title="De laatste akkoorden van de dag.">
+                        <img src="images/art27.jpg" alt="Gitaar op strand bij zonsondergang" loading="lazy">
+                    </a>
+                    <p class="img-caption">De laatste akkoorden van de dag.</p>
+                    <span class="ai-badge">Generative AI Image</span>
+                </div>
+
+                <div class="image-card">
+                    <a href="images/art33.jpg" data-lightbox="cat1" data-title="De pure essentie van muziek.">
+                        <img src="images/art33.jpg" alt="Vrouw speelt gitaar in zwart-wit" loading="lazy">
+                    </a>
+                    <p class="img-caption">De pure essentie van muziek.</p>
+                    <span class="ai-badge">Generative AI Image</span>
+                </div>
+
+                <div class="image-card">
+                    <a href="images/art38.jpg" data-lightbox="cat1" data-title="Dansend op het ritme van de nacht.">
+                        <img src="images/art38.jpg" alt="Ballerina danst onder de maan" loading="lazy">
+                    </a>
+                    <p class="img-caption">Dansend op het ritme van de nacht.</p>
+                    <span class="ai-badge">Generative AI Image</span>
+                </div>
+
+                <div class="image-card">
+                    <a href="images/art5.jpg" data-lightbox="cat1" data-title="De oerkracht van een digitale tijger.">
+                        <img src="images/art5.jpg" alt="Gloeiende tijger" loading="lazy">
+                    </a>
+                    <p class="img-caption">De oerkracht van een digitale tijger.</p>
+                    <span class="ai-badge">Generative AI Image</span>
+                </div>
+
+                <div class="image-card">
+                    <a href="images/art12.jpg" data-lightbox="cat1" data-title="De witte tijger, herboren in staal.">
+                        <img src="images/art12.jpg" alt="Mechanische witte tijger" loading="lazy">
+                    </a>
+                    <p class="img-caption">De witte tijger, herboren in staal.</p>
+                    <span class="ai-badge">Generative AI Image</span>
+                </div>
+
+                <div class="image-card">
+                    <a href="images/art10.jpg" data-lightbox="cat1" data-title="Mechanische reuzen in een mistig landschap.">
+                        <img src="images/art10.jpg" alt="Twee mechanische olifanten" loading="lazy">
+                    </a>
+                    <p class="img-caption">Mechanische reuzen in een mistig landschap.</p>
+                    <span class="ai-badge">Generative AI Image</span>
+                </div>
+
+                <div class="image-card">
+                    <a href="images/art9.jpg" data-lightbox="cat1" data-title="De mars van de droomijsbeer.">
+                        <img src="images/art9.jpg" alt="Etherische olifanten" loading="lazy">
+                    </a>
+                    <p class="img-caption">De mars van de droomijsbeer.</p>
+                    <span class="ai-badge">Generative AI Image</span>
+                </div>
+
+            </div>
+        </div><!-- /categorie 1 -->
+
+
+        <!-- ════════════════════════════════════════ -->
+        <!-- CATEGORIE II: CINEMATIC REALISM          -->
+        <!-- ════════════════════════════════════════ -->
+        <div class="category-section">
+            <div class="category-header">
+                <div class="section-divider"><span>🎥 Wereld II</span></div>
+                <h2>Cinematic Realism</h2>
+                <p class="cat-desc">Hyperrealistische composities die de grens tussen foto en generatief beeld volledig uitwissen. Straatbeelden, karakters en landschappen die elke lens zouden kunnen misleiden.</p>
+            </div>
+            <div class="image-grid">
+
+                <div class="image-card">
+                    <a href="images/art13.jpg" data-lightbox="cat2" data-title="Straatbeeld uit een vervlogen, grauwe tijd.">
+                        <img src="images/art13.jpg" alt="Verlaten straat met oude auto" loading="lazy">
+                    </a>
+                    <p class="img-caption">Straatbeeld uit een vervlogen, grauwe tijd.</p>
+                    <span class="ai-badge">Generative AI Image</span>
+                </div>
+
+                <div class="image-card">
+                    <a href="images/art2.jpg" data-lightbox="cat2" data-title="De verzamelaar en zijn wonderkabinet.">
+                        <img src="images/art2.jpg" alt="Man in hoge hoed" loading="lazy">
+                    </a>
+                    <p class="img-caption">De verzamelaar en zijn wonderkabinet.</p>
+                    <span class="ai-badge">Generative AI Image</span>
+                </div>
+
+                <div class="image-card">
+                    <a href="images/art8.jpg" data-lightbox="cat2" data-title="Portret van een heer, in lagen opgebouwd.">
+                        <img src="images/art8.jpg" alt="Man met snor collage" loading="lazy">
+                    </a>
+                    <p class="img-caption">Portret van een heer, in lagen opgebouwd.</p>
+                    <span class="ai-badge">Generative AI Image</span>
+                </div>
+
+                <div class="image-card">
+                    <a href="images/art25.jpg" data-lightbox="cat2" data-title="Alleen in de mist van een vroege ochtend.">
+                        <img src="images/art25.jpg" alt="Silhouet in mistig landschap" loading="lazy">
+                    </a>
+                    <p class="img-caption">Alleen in de mist van een vroege ochtend.</p>
+                    <span class="ai-badge">Generative AI Image</span>
+                </div>
+
+                <div class="image-card">
+                    <a href="images/art19.jpg" data-lightbox="cat2" data-title="Kijkend naar de oneindige kosmos.">
+                        <img src="images/art19.jpg" alt="Persoon kijkt naar sterrenhemel" loading="lazy">
+                    </a>
+                    <p class="img-caption">Kijkend naar de oneindige kosmos.</p>
+                    <span class="ai-badge">Generative AI Image</span>
+                </div>
+
+                <div class="image-card">
+                    <a href="images/art35.jpg" data-lightbox="cat2" data-title="Samen op weg naar het einde van de wereld.">
+                        <img src="images/art35.jpg" alt="Twee figuren in desolaat landschap" loading="lazy">
+                    </a>
+                    <p class="img-caption">Samen op weg naar het einde van de wereld.</p>
+                    <span class="ai-badge">Generative AI Image</span>
+                </div>
+
+                <div class="image-card">
+                    <a href="images/art37.jpg" data-lightbox="cat2" data-title="Kathedraal van een vergeten tijdperk.">
+                        <img src="images/art37.jpg" alt="Groot koepelgebouw" loading="lazy">
+                    </a>
+                    <p class="img-caption">Kathedraal van een vergeten tijdperk.</p>
+                    <span class="ai-badge">Generative AI Image</span>
+                </div>
+
+                <div class="image-card">
+                    <a href="images/art36.jpg" data-lightbox="cat2" data-title="Verstilde elegantie in marmer.">
+                        <img src="images/art36.jpg" alt="Standbeelden in een lichte kamer" loading="lazy">
+                    </a>
+                    <p class="img-caption">Verstilde elegantie in marmer.</p>
+                    <span class="ai-badge">Generative AI Image</span>
+                </div>
+
+                <div class="image-card">
+                    <a href="images/art40.jpg" data-lightbox="cat2" data-title="Alleen in de straten van de toekomst.">
+                        <img src="images/art40.jpg" alt="Figuur in futuristische neon stad" loading="lazy">
+                    </a>
+                    <p class="img-caption">Alleen in de straten van de toekomst.</p>
+                    <span class="ai-badge">Generative AI Image</span>
+                </div>
+
+                <div class="image-card">
+                    <a href="images/art31.jpg" data-lightbox="cat2" data-title="Een ijzige blik die alles doorziet.">
+                        <img src="images/art31.jpg" alt="Vrouw met kort wit haar" loading="lazy">
+                    </a>
+                    <p class="img-caption">Een ijzige blik die alles doorziet.</p>
+                    <span class="ai-badge">Generative AI Image</span>
+                </div>
+
+                <div class="image-card">
+                    <a href="images/art29.jpg" data-lightbox="cat2" data-title="De zwaarte van onuitgesproken woorden.">
+                        <img src="images/art29.jpg" alt="Vrouw in diepe gedachten" loading="lazy">
+                    </a>
+                    <p class="img-caption">De zwaarte van onuitgesproken woorden.</p>
+                    <span class="ai-badge">Generative AI Image</span>
+                </div>
+
+                <div class="image-card">
+                    <a href="images/1765314225332.jpg" data-lightbox="cat2" data-title="Nieuw werk uit de digitale studio.">
+                        <img src="images/1765314225332.jpg" alt="AI gegenereerd portret" loading="lazy">
+                    </a>
+                    <p class="img-caption">Nieuw werk uit de digitale studio.</p>
+                    <span class="ai-badge">Generative AI Image</span>
+                </div>
+
+                <div class="image-card">
+                    <a href="images/1774041676594.jpg" data-lightbox="cat2" data-title="Nieuw werk uit de digitale studio.">
+                        <img src="images/1774041676594.jpg" alt="AI gegenereerd beeld" loading="lazy">
+                    </a>
+                    <p class="img-caption">Digitale dimensie, vers uit de rendering.</p>
+                    <span class="ai-badge">Generative AI Image</span>
+                </div>
+
+                <div class="image-card">
+                    <a href="images/file_00000000cbb861f9af31bb22a8e7ba41.jpg" data-lightbox="cat2" data-title="Vers AI-experiment.">
+                        <img src="images/file_00000000cbb861f9af31bb22a8e7ba41.jpg" alt="AI experiment" loading="lazy">
+                    </a>
+                    <p class="img-caption">Vers AI-experiment — onbestemd en vrij.</p>
+                    <span class="ai-badge">Generative AI Image</span>
+                </div>
+
+                <div class="image-card">
+                    <a href="images/file_00000000ce8861f8b787bdd0e1ccd4d2.jpg" data-lightbox="cat2" data-title="Vers AI-experiment.">
+                        <img src="images/file_00000000ce8861f8b787bdd0e1ccd4d2.jpg" alt="AI experiment 2" loading="lazy">
+                    </a>
+                    <p class="img-caption">Algoritmische exploratie zonder kaders.</p>
+                    <span class="ai-badge">Generative AI Image</span>
+                </div>
+
+            </div>
+        </div><!-- /categorie 2 -->
+
+
+        <!-- ════════════════════════════════════════ -->
+        <!-- CATEGORIE III: ABSTRACT & SURREALISME    -->
+        <!-- ════════════════════════════════════════ -->
+        <div class="category-section">
+            <div class="category-header">
+                <div class="section-divider"><span>🌀 Wereld III</span></div>
+                <h2>Abstract &amp; Surrealisme</h2>
+                <p class="cat-desc">Hier verliest de werkelijkheid haar grip. Gespleten zielen, gebarsten spiegels, schimmen en schaakbord-dimensies — surrealisme als data-hallucinatie.</p>
+            </div>
+            <div class="image-grid">
+
+                <div class="image-card">
+                    <a href="images/art1.jpg" data-lightbox="cat3" data-title="Twee gezichten, één verhaal.">
+                        <img src="images/art1.jpg" alt="Gespleten portretten" loading="lazy">
+                    </a>
+                    <p class="img-caption">Twee gezichten, één verhaal.</p>
+                    <span class="ai-badge">Generative AI Image</span>
+                </div>
+
+                <div class="image-card">
+                    <a href="images/art6.jpg" data-lightbox="cat3" data-title="Een geest van data dwaalt door het bos.">
+                        <img src="images/art6.jpg" alt="Blauwe geest in bos" loading="lazy">
+                    </a>
+                    <p class="img-caption">Een geest van data dwaalt door het bos.</p>
+                    <span class="ai-badge">Generative AI Image</span>
+                </div>
+
+                <div class="image-card">
+                    <a href="images/art7.jpg" data-lightbox="cat3" data-title="Verdwaald in een vergeten herinnering.">
+                        <img src="images/art7.jpg" alt="Vrouw in witte jurk in ruïne" loading="lazy">
+                    </a>
+                    <p class="img-caption">Verdwaald in een vergeten herinnering.</p>
+                    <span class="ai-badge">Generative AI Image</span>
+                </div>
+
+                <div class="image-card">
+                    <a href="images/art11.jpg" data-lightbox="cat3" data-title="De tijd tikt in haar gedachten.">
+                        <img src="images/art11.jpg" alt="Vrouwengezicht met klokwerk" loading="lazy">
+                    </a>
+                    <p class="img-caption">De tijd tikt in haar gedachten.</p>
+                    <span class="ai-badge">Generative AI Image</span>
+                </div>
+
+                <div class="image-card">
+                    <a href="images/art15.jpg" data-lightbox="cat3" data-title="Gebroken spiegel, versplinterde ziel.">
+                        <img src="images/art15.jpg" alt="Reflectie in gebroken spiegel" loading="lazy">
+                    </a>
+                    <p class="img-caption">Gebroken spiegel, versplinterde ziel.</p>
+                    <span class="ai-badge">Generative AI Image</span>
+                </div>
+
+                <div class="image-card">
+                    <a href="images/art16.jpg" data-lightbox="cat3" data-title="Wie wacht er aan het einde van de gang?">
+                        <img src="images/art16.jpg" alt="Geest aan het einde van een gang" loading="lazy">
+                    </a>
+                    <p class="img-caption">Wie wacht er aan het einde van de gang?</p>
+                    <span class="ai-badge">Generative AI Image</span>
+                </div>
+
+                <div class="image-card">
+                    <a href="images/art17.jpg" data-lightbox="cat3" data-title="De bruid wacht in het schemerlicht.">
+                        <img src="images/art17.jpg" alt="Geestachtige bruid" loading="lazy">
+                    </a>
+                    <p class="img-caption">De bruid wacht in het schemerlicht.</p>
+                    <span class="ai-badge">Generative AI Image</span>
+                </div>
+
+                <div class="image-card">
+                    <a href="images/art21.jpg" data-lightbox="cat3" data-title="Porseleinen huid, gebroken van binnen.">
+                        <img src="images/art21.jpg" alt="Vrouw met gebarsten porseleinen huid" loading="lazy">
+                    </a>
+                    <p class="img-caption">Porseleinen huid, gebroken van binnen.</p>
+                    <span class="ai-badge">Generative AI Image</span>
+                </div>
+
+                <div class="image-card">
+                    <a href="images/art22.jpg" data-lightbox="cat3" data-title="Verloren in een schaakbord-dimensie.">
+                        <img src="images/art22.jpg" alt="Figuren in zwart-wit geblokte kamer" loading="lazy">
+                    </a>
+                    <p class="img-caption">Verloren in een schaakbord-dimensie.</p>
+                    <span class="ai-badge">Generative AI Image</span>
+                </div>
+
+                <div class="image-card">
+                    <a href="images/art26.jpg" data-lightbox="cat3" data-title="Uit de scherven van het verleden.">
+                        <img src="images/art26.jpg" alt="Figuur komt uit gebroken glas" loading="lazy">
+                    </a>
+                    <p class="img-caption">Uit de scherven van het verleden.</p>
+                    <span class="ai-badge">Generative AI Image</span>
+                </div>
+
+                <div class="image-card">
+                    <a href="images/art28.jpg" data-lightbox="cat3" data-title="Schimmen die voor eeuwig ronddwalen.">
+                        <img src="images/art28.jpg" alt="Twee geesten in een gang" loading="lazy">
+                    </a>
+                    <p class="img-caption">Schimmen die voor eeuwig ronddwalen.</p>
+                    <span class="ai-badge">Generative AI Image</span>
+                </div>
+
+                <div class="image-card">
+                    <a href="images/art30.jpg" data-lightbox="cat3" data-title="Haar ware kleuren komen naar boven.">
+                        <img src="images/art30.jpg" alt="Vrouw met gebarsten verf op gezicht" loading="lazy">
+                    </a>
+                    <p class="img-caption">Haar ware kleuren komen naar boven.</p>
+                    <span class="ai-badge">Generative AI Image</span>
+                </div>
+
+                <div class="image-card">
+                    <a href="images/art32.jpg" data-lightbox="cat3" data-title="Een canvas van huid en emotie.">
+                        <img src="images/art32.jpg" alt="Vrouwengezicht met verfstreken" loading="lazy">
+                    </a>
+                    <p class="img-caption">Een canvas van huid en emotie.</p>
+                    <span class="ai-badge">Generative AI Image</span>
+                </div>
+
+                <div class="image-card">
+                    <a href="images/art39.jpg" data-lightbox="cat3" data-title="Gedachten en gezichten vloeien samen.">
+                        <img src="images/art39.jpg" alt="Dubbel portret van vrouw" loading="lazy">
+                    </a>
+                    <p class="img-caption">Gedachten en gezichten vloeien samen.</p>
+                    <span class="ai-badge">Generative AI Image</span>
+                </div>
+
+                <div class="image-card">
+                    <a href="images/Gemini_Generated_Image_vaa6bxvaa6bxvaa6.jpg" data-lightbox="cat3" data-title="Gemini-gegenereerde dimensie.">
+                        <img src="images/Gemini_Generated_Image_vaa6bxvaa6bxvaa6.jpg" alt="Gemini AI gegenereerde afbeelding" loading="lazy">
+                    </a>
+                    <p class="img-caption">Gemini-gegenereerde dimensie.</p>
+                    <span class="ai-badge">Generative AI Image</span>
+                </div>
+
+            </div>
+        </div><!-- /categorie 3 -->
+
+
+        <!-- ════════════════════════════════════════ -->
+        <!-- CATEGORIE IV: STEAMPUNK & VIBE DESIGN    -->
+        <!-- ════════════════════════════════════════ -->
+        <div class="category-section">
+            <div class="category-header">
+                <div class="section-divider"><span>⚙️ Wereld IV</span></div>
+                <h2>Steampunk &amp; Vibe Design</h2>
+                <p class="cat-desc">De esthetiek van stoom, tandwielen, circusmagie en gothische sfeer. Designs die trippen op nostalgie en digitaal theater — Vibe Coding als visuele taal.</p>
+            </div>
+            <div class="image-grid">
+
+                <div class="image-card">
+                    <a href="images/art3.jpg" data-lightbox="cat4" data-title="Welkom in het theater van de AI.">
+                        <img src="images/art3.jpg" alt="Vrouw in rood circus" loading="lazy">
+                    </a>
+                    <p class="img-caption">Welkom in het theater van de AI.</p>
+                    <span class="ai-badge">Generative AI Image</span>
+                </div>
+
+                <div class="image-card">
+                    <a href="images/art4.jpg" data-lightbox="cat4" data-title="Echo's in een verlaten kamer.">
+                        <img src="images/art4.jpg" alt="Vervallen kamer met geesten" loading="lazy">
+                    </a>
+                    <p class="img-caption">Echo's in een verlaten kamer.</p>
+                    <span class="ai-badge">Generative AI Image</span>
+                </div>
+
+                <div class="image-card">
+                    <a href="images/art14.jpg" data-lightbox="cat4" data-title="Zelfs met een vriend is de nacht eng.">
+                        <img src="images/art14.jpg" alt="Kind met teddybeer kijkt naar huis" loading="lazy">
+                    </a>
+                    <p class="img-caption">Zelfs met een vriend is de nacht eng.</p>
+                    <span class="ai-badge">Generative AI Image</span>
+                </div>
+
+                <div class="image-card">
+                    <a href="images/art18.jpg" data-lightbox="cat4" data-title="Eenzame boom, getuige van de tijd.">
+                        <img src="images/art18.jpg" alt="Eenzame boom op eiland" loading="lazy">
+                    </a>
+                    <p class="img-caption">Eenzame boom, getuige van de tijd.</p>
+                    <span class="ai-badge">Generative AI Image</span>
+                </div>
+
+                <div class="image-card">
+                    <a href="images/art23.jpg" data-lightbox="cat4" data-title="De excentrieke meester van het circus.">
+                        <img src="images/art23.jpg" alt="Man met rode hoge hoed" loading="lazy">
+                    </a>
+                    <p class="img-caption">De excentrieke meester van het circus.</p>
+                    <span class="ai-badge">Generative AI Image</span>
+                </div>
+
+                <div class="image-card">
+                    <a href="images/art24.jpg" data-lightbox="cat4" data-title="De tijd staat even stil voor hem.">
+                        <img src="images/art24.jpg" alt="Man in een kamer vol klokken" loading="lazy">
+                    </a>
+                    <p class="img-caption">De tijd staat even stil voor hem.</p>
+                    <span class="ai-badge">Generative AI Image</span>
+                </div>
+
+                <div class="image-card">
+                    <a href="images/art34.jpg" data-lightbox="cat4" data-title="Niet elke lach is vriendelijk.">
+                        <img src="images/art34.jpg" alt="Griezelige kleurrijke clown" loading="lazy">
+                    </a>
+                    <p class="img-caption">Niet elke lach is vriendelijk.</p>
+                    <span class="ai-badge">Generative AI Image</span>
+                </div>
+
+                <div class="image-card">
+                    <a href="images/art4.jpg" data-lightbox="cat4" data-title="Mechanisch landschap achter verstof glas.">
+                        <img src="images/art4.jpg" alt="Steampunk ruimte" loading="lazy">
+                    </a>
+                    <p class="img-caption">Mechanisch landschap achter verstoft glas.</p>
+                    <span class="ai-badge">Generative AI Image</span>
+                </div>
+
+            </div>
+        </div><!-- /categorie 4 -->
+
+    </main>
+
 </div><!-- /page-wrapper -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="webgl-bg.js"></script>
+
+<!-- SCRIPTS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/js/lightbox.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="webgl-bg.js"></script>
+
+<script>
+    document.getElementById('hamburger-menu').addEventListener('click', function () {
+        document.querySelector('.menu').classList.toggle('active');
+    });
+
+    // Configure lightbox
+    if (typeof lightbox !== 'undefined') {
+        lightbox.option({
+            resizeDuration: 200,
+            wrapAround: true,
+            albumLabel: 'Afbeelding %1 van %2'
+        });
+    }
+</script>
+
 </body>
 </html>
